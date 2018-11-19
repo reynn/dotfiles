@@ -16,7 +16,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-for f in exports.sh aliases.sh functions.sh .fzf.zsh
+for f in .exports.sh .aliases.sh .functions.sh .fzf.zsh
 do
   [ -f $f ] && source $f
 done
