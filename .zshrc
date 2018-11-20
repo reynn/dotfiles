@@ -1,4 +1,4 @@
-export ZSH="/Users/i854273/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 export UPDATE_ZSH_DAYS=3
 
 ZSH_THEME="powerlevel9k/powerlevel9k"

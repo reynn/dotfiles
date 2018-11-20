@@ -1,0 +1,39 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    necessary_packages:
+      - zsh
+      - git
+    config_files:
+      - .aliases.sh
+      - .exports.sh
+      - .functions.sh
+      - .zshrc
+    oh_my_zsh_path: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    git_repos:
+      - repo: https://github.com/robbyrussell/oh-my-zsh.git
+        dest: "{{ oh_my_zsh_path }}"
+      - repo: https://github.com/bhilburn/powerlevel9k.git
+        dest: "{{ oh_my_zsh_path }}/custom/themes/powerlevel9k"
+
+  tasks:
+    - name: Install packages
+      package:
+        name: "{{ necessary_packages }}"
+        state: present
+      become: true
+    - name: Copy configs
+      file:
+        src: "{{ ansible_env.PWD }}/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/{{ item }}"
+        owner: "{{ ansible_effective_user_id }}"
+        group: "{{ ansible_effective_group_id }}"
+        state: link
+      loop: "{{ config_files }}"
+    - name: Clone git repos
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+        depth: 1
+      loop: "{{ git_repos }}"
