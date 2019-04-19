@@ -16,12 +16,18 @@
         dest: "{{ oh_my_zsh_path }}"
       - repo: https://github.com/bhilburn/powerlevel9k.git
         dest: "{{ oh_my_zsh_path }}/custom/themes/powerlevel9k"
+      - repo: https://github.com/mbadolato/iTerm2-Color-Schemes.git
+        dest: "{{ ansible_env.HOME }}/git/mbadolato/iterm2-color"
+      - repo: https://github.com/powerline/fonts.git
+        dest: "{{ ansible_env.HOME }}/git/powerline/fonts"
 
   tasks:
     - name: Install packages
       package:
         name: "{{ necessary_packages }}"
         state: present
+      when:
+        - ansible_system == 'Linux'
       become: true
     - name: Copy configs
       file:
