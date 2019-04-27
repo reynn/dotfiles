@@ -40,3 +40,27 @@ function fzf-ssh {
   zle reset-prompt
 }
 zle     -N     fzf-ssh
+
+function fzf-dps {
+  all_matches=$(docker container ls --format '{{.Names}}')
+  selection=$(echo "$all_matches" | fzf)
+  echo $selection
+  if [ ! -z $selection ]; then
+    BUFFER="docker logs -f $selection"
+    zle accept-line
+  fi
+  zle reset-prompt
+}
+zle     -N     fzf-dps
+
+function fzf-kls {
+  all_matches=$(kubectl get pods -o name)
+  selection=$(echo "$all_matches" | fzf)
+  echo $selection
+  if [ ! -z $selection ]; then
+    BUFFER="kubectl logs -f $selection"
+    zle accept-line
+  fi
+  zle reset-prompt
+}
+zle     -N     fzf-kls

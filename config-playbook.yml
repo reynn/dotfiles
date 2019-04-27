@@ -1,6 +1,5 @@
 ---
-- hosts: 127.0.0.1
-  connection: local
+- hosts: all
   vars:
     necessary_packages:
       - zsh
@@ -32,9 +31,9 @@
         state: present
       when:
         - ansible_system == 'Linux'
-
       become: true
-    - name: Copy configs
+
+    - name: "Copy configs from {{ ansible_env.PWD }}"
       file:
         src: "{{ ansible_env.PWD }}/{{ item }}"
         dest: "{{ ansible_env.HOME }}/{{ item }}"
@@ -42,6 +41,16 @@
         group: "{{ ansible_effective_group_id }}"
         state: link
       loop: "{{ config_files }}"
+      when: "'ungrouped' in group_names"
+
+    - name: "Copy configs from {{ ansible_env.PWD }}"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/{{ item }}"
+        owner: "{{ ansible_effective_user_id }}"
+        group: "{{ ansible_effective_group_id }}"
+      loop: "{{ config_files }}"
+      when: "'ungrouped' not in group_names"
 
     - name: Clone git repos
       git:
