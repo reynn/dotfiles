@@ -4,6 +4,16 @@ function kube() {
   docker run --rm -v "$(pwd):/kube" -v "$HOME/.kube:/root/.kube" -w /kube ${kube_image} "$@"
 }
 
+function k8s_a() {
+  kubectl apply -f $@
+}
+
+function k8s_dar() {
+  RESOURCES=$1
+  echo "Deleting all $RESOURCES resources"
+  kubectl delete $(kubectl get $RESOURCES -o name)
+}
+
 function listenport() {
   PORT=$1
   lsof -nP -i4TCP:$PORT | grep LISTEN | awk '{ print $2 }'
@@ -17,10 +27,3 @@ function killlistening() {
   sudo kill -9 $PROCESS
 }
 
-function helm() {
-  # .appr is for HELM application registry
-  # .helm contains the helm configs
-  # .kube contains the kubernetes config files
-  helm_image=${HELM_IMAGE:-quay.cnqr.delivery/containerhosting/helm-client:v2.7.2-appr-template}
-  docker run --rm -v "$(pwd):/helm" -v "$HOME/.appr:/root/.appr" -v "$HOME/.helm:/root/.helm" -v "$HOME/.kube:/root/.kube" -w /helm $helm_image "$@"
-}

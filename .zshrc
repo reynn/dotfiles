@@ -20,3 +20,6 @@ for f in .exports.sh .aliases.sh .functions.sh .fzf.zsh
 do
   [ -f $f ] && source $f
 done
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
