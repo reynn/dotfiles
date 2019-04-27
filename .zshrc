@@ -1,3 +1,4 @@
+zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 export ZSH="$HOME/.oh-my-zsh"
 export UPDATE_ZSH_DAYS=3
 
@@ -7,19 +8,24 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv status)
 HYPHEN_INSENSITIVE="true"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(
-  git
-  docker
-  kubectl
-  aws
-)
+plugins=()
+
+test -e $(which kubectl) && plugins+=('kubectl')
+test -e $(which aws) && plugins+=('aws')
+test -e $(which docker) && plugins+=('docker')
+test -e $(which git) && plugins+=('git')
 
 source $ZSH/oh-my-zsh.sh
 
-for f in .exports.sh .aliases.sh .functions.sh .fzf.zsh
+imports=(.aliases.sh .bindings.sh .exports.sh .functions.sh .fzf.zsh)
+
+for f in $imports
 do
-  [ -f $f ] && source $f
+  test -e && source $f
 done
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+test -e ~/.fzf.zsh && source ~/.fzf.zsh
+
+zprof # uncomment to debug performance issues with zsh startup

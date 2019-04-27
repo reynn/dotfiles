@@ -7,8 +7,10 @@
       - git
     config_files:
       - .aliases.sh
+      - .bindings.sh
       - .exports.sh
       - .functions.sh
+      - .fzf.zsh
       - .zshrc
     oh_my_zsh_path: "{{ ansible_env.HOME }}/.oh-my-zsh"
     git_repos:
@@ -20,6 +22,8 @@
         dest: "{{ ansible_env.HOME }}/git/mbadolato/iterm2-color"
       - repo: https://github.com/powerline/fonts.git
         dest: "{{ ansible_env.HOME }}/git/powerline/fonts"
+      - repo: https://github.com/junegunn/fzf.git
+        dest: "{{ ansible_env.HOME }}/.fzf"
 
   tasks:
     - name: Install packages
@@ -28,6 +32,7 @@
         state: present
       when:
         - ansible_system == 'Linux'
+
       become: true
     - name: Copy configs
       file:
@@ -37,9 +42,13 @@
         group: "{{ ansible_effective_group_id }}"
         state: link
       loop: "{{ config_files }}"
+
     - name: Clone git repos
       git:
         repo: "{{ item.repo }}"
         dest: "{{ item.dest }}"
         depth: 1
       loop: "{{ git_repos }}"
+
+    - name: Run fzf install script
+      shell: "{{ ansible_env.HOME }}/.fzf/install --no-bash --no-fish --bin --64"

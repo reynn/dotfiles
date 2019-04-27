@@ -1,6 +1,6 @@
 function kube() {
   # .kube contains the kubernetes config files
-  kube_image=${KUBECTL_IMAGE:-quay.cnqr.delivery/containerhosting/kubectl}
+  kube_image=${KUBECTL_IMAGE:-bitnami/kubectl}
   docker run --rm -v "$(pwd):/kube" -v "$HOME/.kube:/root/.kube" -w /kube ${kube_image} "$@"
 }
 
@@ -27,3 +27,16 @@ function killlistening() {
   sudo kill -9 $PROCESS
 }
 
+stty stop undef
+function fzf-ssh {
+  all_matches=$(rg "Host\s+\w+" ~/.ssh/config* | rg -v '\*')
+  only_host_parts=$(echo "$all_matches" | awk '{print $NF}')
+  selection=$(echo "$only_host_parts" | fzf)
+  echo $selection
+  if [ ! -z $selection ]; then
+    BUFFER="ssh $selection"
+    zle accept-line
+  fi
+  zle reset-prompt
+}
+zle     -N     fzf-ssh
