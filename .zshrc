@@ -3,7 +3,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export UPDATE_ZSH_DAYS=3
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context kubecontext dir vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv go_version status dir_writable)
 HYPHEN_INSENSITIVE="true"
 COMPLETION_WAITING_DOTS="true"
