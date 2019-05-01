@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: localhost
   vars:
     necessary_packages:
       - zsh
@@ -33,7 +33,7 @@
         - ansible_system == 'Linux'
       become: true
 
-    - name: "Copy configs from {{ ansible_env.PWD }}"
+    - name: "Link configs from {{ ansible_env.PWD }}"
       file:
         src: "{{ ansible_env.PWD }}/{{ item }}"
         dest: "{{ ansible_env.HOME }}/{{ item }}"
