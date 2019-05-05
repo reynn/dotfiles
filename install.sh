@@ -46,15 +46,26 @@ check_file() {
 
 handle_deps() {
   if check_file /etc/debian_version; then
-    apt-get update && apt-get install --no-install-recommends -y python3-pip git
+    print_install 'Installing packages required for this script and Ansible for Debian machine...'
+    apt-get update
+    apt-get install --no-install-recommends -y \
+        python3-{pip,wheel,setuptools} \
+        jq \
+        build-essential \
+        git \
+        ripgrep
   fi
-  if check_cmd pip; then
-    pip install ansible
-  elif check_cmd pip3; then
-    pip3 install ansible
-  else
-    print_error 'Pip not found'
-    exit 1
+  if !(check_cmd ansible); then
+    if check_cmd pip; then
+      print_install 'Installing ansible using pip...'
+      pip install ansible
+    elif check_cmd pip3; then
+      print_install 'Installing ansible using pip3...'
+      pip3 install ansible
+    else
+      print_error 'Pip not found'
+      exit 1
+    fi
   fi
   if check_cmd git; then
     print_install 'Cloning dotfiles repository...'
@@ -70,7 +81,8 @@ function main() {
     print_install "Handling dependencies where possible..."
     handle_deps
     print_install "Running ansible playbook..."
-    ansible-playbook $DFP/playbook-config.yaml
+    ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
+    # source $HOME/.zshrc
   else
     print_install "Re-linking .zshrc..."
     ln -sfn $DFP/zsh/.zshrc $HOME/.zshrc

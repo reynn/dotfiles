@@ -1,0 +1,138 @@
+# expected data structure:
+# name: string
+# alias: string
+# git:
+#   repo: string
+#   host: string
+#   owner: string
+
+- name: "Getting release information From GitHub for {{ item.name }}"
+  uri:
+    follow_redirects: safe
+    method: GET
+    return_content: yes
+    url: "https://{{ item.git.host | default('api.github.com') }}/repos/{{ item.git.owner }}/{{ item.git.repo }}/releases/latest"
+    validate_certs: no
+  register: get_latest_release_from_github_information
+  tags:
+    - binaries
+
+- set_fact:
+    get_latest_binary_search_regex: darwin|osx|apple
+  when: ansible_os_family == 'Darwin'
+  tags:
+    - binaries
+
+- set_fact:
+    get_latest_binary_search_regex: ubuntu|debian|\.deb$|linux64
+  when: ansible_os_family == 'Debian'
+  tags:
+    - binaries
+
+- set_fact:
+    get_latest_release_from_github_assets: "{{ get_latest_release_from_github_information.json.assets | to_json }}"
+    get_latest_release_from_github_bins_path: "{{ bins_dir | default(ansible_env.HOME + '/.bins') }}"
+    get_latest_release_from_github_alias_path: "{{ alias_dir | default('/usr/local/bin') }}/{{ item.alias | default(item.git.repo) }}"
+  tags:
+    - binaries
+
+- name: "Determining appropriate asset to download from GitHub for {{ item.name }}"
+  shell: |
+    # Filter out the text files from the releases and gather the content type, name and URL to download from
+    d="$(echo '{{ get_latest_release_from_github_assets }}' | jq '[.[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, url: .browser_download_url}]')"
+    # Filter out only releases for the platform we are on
+    u="$(echo $d | jq -r '.[].name' | rg -e '{{ get_latest_binary_search_regex }}')"
+    # Return the valid results to ansible for this platform
+    echo $d | jq -r ".[] | select(.name==\"$u\")"
+  register: get_latest_binary_shell
+  changed_when: get_latest_binary_shell.stderr != ""
+  tags:
+    - binaries
+
+- name:
+  set_fact:
+    get_latest_release_from_github_name: "{{ (get_latest_binary_shell.stdout | from_json).name }}"
+    get_latest_release_from_github_url: "{{ (get_latest_binary_shell.stdout | from_json).url }}"
+    get_latest_release_from_github_type: "{{ (get_latest_binary_shell.stdout | from_json).type }}"
+  tags:
+    - binaries
+
+- name: "Checking if destination download already exists exists"
+  shell: test -r {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_name }}
+  register: get_latest_release_from_github_out_exists
+  changed_when: get_latest_release_from_github_out_exists.stderr != ""
+  failed_when: get_latest_release_from_github_out_exists.stderr != ""
+  tags:
+    - binaries
+
+- name: "Downloading binary"
+  get_url:
+    url: "{{ get_latest_release_from_github_url }}"
+    dest: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_name }}"
+    validate_certs: no
+  register: get_latest_release_from_github_get_url
+  when: 'get_latest_release_from_github_out_exists.rc == 1'
+  tags:
+    - binaries
+
+- name: "Extracting gzip file"
+  shell: |
+    #!/bin/bash -e
+    tar xf {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}
+    find {{ get_latest_release_from_github_get_url.dest | replace('.tar.gz', '') }} -type f -perm +111
+  register: get_latest_release_from_github_extract_gzip
+  when:
+    - 'get_latest_release_from_github_type == "application/gzip"'
+    - 'get_latest_release_from_github_get_url.changed'
+  tags:
+    - binaries
+
+- name: Remove alias before linking
+  file:
+    path: "{{ get_latest_release_from_github_alias_path }}"
+    state: absent
+  when: 'get_latest_release_from_github_get_url.changed'
+  tags:
+    - binaries
+
+- name: "Register symlink after extracting gzip"
+  file:
+    src: "{{ get_latest_release_from_github_extract_gzip.stdout | replace('./', '') }}"
+    path: "{{ get_latest_release_from_github_alias_path }}"
+    state: link
+  when: 'get_latest_release_from_github_extract_gzip.changed'
+  tags:
+    - binaries
+
+- name: Mark binary as executable
+  file:
+    path: "{{ get_latest_release_from_github_get_url.dest }}"
+    mode: "u=rwx,g=rwx,o=rwx"
+  register: get_latest_release_from_github_executable
+  when:
+    - 'get_latest_release_from_github_type == "application/octet-stream"'
+    - '".deb" not in get_latest_release_from_github_name'
+    - 'get_latest_release_from_github_get_url.changed'
+  tags:
+    - binaries
+
+- name: Install deb package
+  apt:
+    deb: "{{ get_latest_release_from_github_get_url.dest }}"
+  register: get_latest_release_from_github_deb_install
+  when:
+    - 'get_latest_release_from_github_type == "application/octet-stream"'
+    - '".deb" in get_latest_release_from_github_name'
+    - 'get_latest_release_from_github_get_url.changed'
+  tags:
+    - binaries
+
+- name: "Register symlink after binary + exec"
+  file:
+    src: "{{ get_latest_release_from_github_get_url.dest }}"
+    path: "{{ get_latest_release_from_github_alias_path }}"
+    state: link
+  when:
+    - 'get_latest_release_from_github_executable.changed'
+  tags:
+    - binaries

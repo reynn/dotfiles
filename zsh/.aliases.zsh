@@ -18,6 +18,8 @@ alias N="| /dev/null"
 alias S='| sort'
 alias G='| grep'
 
+alias update-dotfiles="ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml"
+
 # -----------------------------------------------------------------------------
 # Unix aliases ----------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -55,11 +57,11 @@ alias localip="ipconfig getifaddr en0"
 # -----------------------------------------------------------------------------
 ## Docker:run aliases ---------------------------------------------------------
 alias dr='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash'
-alias dra='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine'
-alias drg='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash golang'
+alias dra='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine:3.9'
+alias drg='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash golang:1.12'
 alias drk='docker run --rm -it -v $PWD:$PWD -v $HOME/.kube:/root/.kube -w $PWD -u 0:0 --entrypoint=/bin/bash bitnami/kubectl'
-alias drp='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python'
-alias dru='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu'
+alias drp='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python:3.7'
+alias dru='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu:19.04'
 
 # -----------------------------------------------------------------------------
 ## Docker:image aliases -------------------------------------------------------

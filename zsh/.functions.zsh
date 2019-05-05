@@ -16,7 +16,7 @@ function k8s_dar() {
 # -----------------------------------------------------------------------------
 # Kubernetes functions --------------------------------------------------------
 function get_latest_gh_assets() {
-  curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '[ .assets[] | {name: .name, url: .browser_download_url} ]'
+  curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '[ .assets[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, url: .browser_download_url} ]'
 }
 
 # -----------------------------------------------------------------------------
@@ -173,3 +173,10 @@ function fzf-kspf {
   zle reset-prompt
 }
 zle -N fzf-kspf
+
+function fzf-funcs {
+  local func=$(functions | rg -e "^[A-Za-z].+\(\) \{$" | tr ' () {' ' ' | fzf -1)
+  BUFFER="$func"
+  zle reset-prompt
+}
+zle -N fzf-funcs
