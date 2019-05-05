@@ -1,21 +1,12 @@
 # dotfiles
 
-## Requirements
-
-Ansible 2.7+
-
-## Run
-
-### Locally
+## Install
 
 ```console
-$ ansible-playbook config-playbook.yaml -i inventory.yaml -l localhost
-```
-
-### Remote Host
-
-Update the `inventory.yaml` file with the desired host.
-
-```console
-$ ansible-playbook config-playbook.yaml -i inventory.yaml -l <remote_host>
+$ curl -L https://raw.githubusercontent.com/reynn/dotfiles/master/install.sh | sh
+>>installing>>dependencies where possible...
+>>installing>>packages required for this script and Ansible for Debian machine...
+>>installing>>ansible using pip3...
+>>installing>>dotfiles repository...
+>>installing>>ansible configuration...
 ```

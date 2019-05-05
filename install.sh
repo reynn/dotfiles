@@ -22,15 +22,15 @@ fg_clear() {
 
 print_error() {
   color_print_fg 208 '>>'
-  color_print_fg 202 'Error'
+  color_print_fg 202 'error'
   color_print_fg 208 '>> '
   color_print_fg 220 $@
   fg_clear
 }
 
-print_install() {
+print_installing() {
   color_print_fg 31 '>>'
-  color_print_fg 33 'Install'
+  color_print_fg 33 'installing'
   color_print_fg 31 '>>'
   color_print_fg 183 $@
   fg_clear
@@ -46,7 +46,7 @@ check_file() {
 
 handle_deps() {
   if check_file /etc/debian_version; then
-    print_install 'Installing packages required for this script and Ansible for Debian machine...'
+    print_installing 'packages required for this script and ansible for debian machine...'
     apt-get update
     apt-get install --no-install-recommends -y \
         python3-{pip,wheel,setuptools} \
@@ -57,18 +57,18 @@ handle_deps() {
   fi
   if !(check_cmd ansible); then
     if check_cmd pip; then
-      print_install 'Installing ansible using pip...'
+      print_installing 'ansible using pip...'
       pip install ansible
     elif check_cmd pip3; then
-      print_install 'Installing ansible using pip3...'
+      print_installing 'ansible using pip3...'
       pip3 install ansible
     else
-      print_error 'Pip not found'
+      print_error 'pip not found'
       exit 1
     fi
   fi
   if check_cmd git; then
-    print_install 'Cloning dotfiles repository...'
+    print_installing 'dotfiles repository...'
     git clone --depth=10 https://github.com/reynn/dotfiles.git $HOME/git/reynn/dotfiles
   else
     print_error 'Git not found'
@@ -78,13 +78,13 @@ handle_deps() {
 
 function main() {
   if [ ! -d "$DFP" ]; then
-    print_install "Handling dependencies where possible..."
+    print_installing "dependencies where possible..."
     handle_deps
-    print_install "Running ansible playbook..."
+    print_installing "ansible configuration..."
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
     # source $HOME/.zshrc
   else
-    print_install "Re-linking .zshrc..."
+    print_installing "re-linking .zshrc..."
     ln -sfn $DFP/zsh/.zshrc $HOME/.zshrc
   fi
 }

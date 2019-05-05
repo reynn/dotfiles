@@ -41,6 +41,10 @@ function kill_listening() {
   sudo kill -9 $process
 }
 
+function check_cmd() {
+  test -r "$(which $1)"
+}
+
 # Run `dig` and display the most useful info
 function digga() {
 	dig +nocmd "$1" any +multiline +noall +answer;

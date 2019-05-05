@@ -16,18 +16,21 @@
   register: get_latest_release_from_github_information
   tags:
     - binaries
+    - update
 
 - set_fact:
     get_latest_binary_search_regex: darwin|osx|apple
   when: ansible_os_family == 'Darwin'
   tags:
     - binaries
+    - update
 
 - set_fact:
     get_latest_binary_search_regex: ubuntu|debian|\.deb$|linux64
   when: ansible_os_family == 'Debian'
   tags:
     - binaries
+    - update
 
 - set_fact:
     get_latest_release_from_github_assets: "{{ get_latest_release_from_github_information.json.assets | to_json }}"
@@ -35,6 +38,7 @@
     get_latest_release_from_github_alias_path: "{{ alias_dir | default('/usr/local/bin') }}/{{ item.alias | default(item.git.repo) }}"
   tags:
     - binaries
+    - update
 
 - name: "Determining appropriate asset to download from GitHub for {{ item.name }}"
   shell: |
@@ -48,6 +52,7 @@
   changed_when: get_latest_binary_shell.stderr != ""
   tags:
     - binaries
+    - update
 
 - name:
   set_fact:
@@ -56,6 +61,7 @@
     get_latest_release_from_github_type: "{{ (get_latest_binary_shell.stdout | from_json).type }}"
   tags:
     - binaries
+    - update
 
 - name: "Checking if destination download already exists exists"
   shell: test -r {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_name }}
@@ -64,6 +70,7 @@
   failed_when: get_latest_release_from_github_out_exists.stderr != ""
   tags:
     - binaries
+    - update
 
 - name: "Downloading binary"
   get_url:
@@ -74,6 +81,7 @@
   when: 'get_latest_release_from_github_out_exists.rc == 1'
   tags:
     - binaries
+    - update
 
 - name: "Extracting gzip file"
   shell: |
@@ -86,6 +94,7 @@
     - 'get_latest_release_from_github_get_url.changed'
   tags:
     - binaries
+    - update
 
 - name: Remove alias before linking
   file:
@@ -94,6 +103,7 @@
   when: 'get_latest_release_from_github_get_url.changed'
   tags:
     - binaries
+    - update
 
 - name: "Register symlink after extracting gzip"
   file:
@@ -103,6 +113,7 @@
   when: 'get_latest_release_from_github_extract_gzip.changed'
   tags:
     - binaries
+    - update
 
 - name: Mark binary as executable
   file:
@@ -115,6 +126,7 @@
     - 'get_latest_release_from_github_get_url.changed'
   tags:
     - binaries
+    - update
 
 - name: Install deb package
   apt:
@@ -126,6 +138,7 @@
     - 'get_latest_release_from_github_get_url.changed'
   tags:
     - binaries
+    - update
 
 - name: "Register symlink after binary + exec"
   file:
@@ -136,3 +149,4 @@
     - 'get_latest_release_from_github_executable.changed'
   tags:
     - binaries
+    - update

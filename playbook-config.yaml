@@ -1,46 +1,23 @@
 ---
 - hosts: localhost
-  vars:
-    necessary_packages:
-      - zsh
-      - git
-      - curl
-      - wget
-      - tmux
-    git_path: "{{ ansible_env.HOME }}/git"
-    dotfiles_path: "{{ git_path }}/reynn/dotfiles"
-    git_repos:
-      - repo: https://github.com/reynn/dotfiles.git
-        dest: "{{ git_path }}/reynn/dotfiles"
-      - repo: https://github.com/robbyrussell/oh-my-zsh.git
-        dest: "{{ git_path }}/robbyrussell/oh-my-zsh"
-      - repo: https://github.com/bhilburn/powerlevel9k.git
-        dest: "{{ git_path }}/robbyrussell/oh-my-zsh/custom/themes/powerlevel9k"
-      - repo: https://github.com/mbadolato/iTerm2-Color-Schemes.git
-        dest: "{{ git_path }}/mbadolato/iterm2-color"
-      - repo: https://github.com/powerline/fonts.git
-        dest: "{{ git_path }}/powerline/fonts"
-      - repo: https://github.com/junegunn/fzf.git
-        dest: "{{ git_path }}/junegunn/fzf"
-    bin_downloads:
-      - name: Ripgrep
-        git:
-          owner: BurntSushi
-          repo: ripgrep
-        alias: rg
-      - name: JQ
-        git:
-          owner: stedolan
-          repo: jq
 
   tasks:
+    - name: Include vars from ansible directory
+      include_vars:
+        dir: ansible/vars
+        extensions:
+          - yaml
+          - yml
+      tags:
+        - always
+
     - name: Install packages
       package:
-        name: "{{ necessary_packages }}"
+        name: "{{ packages.system }}"
         state: present
       when:
         - ansible_system == 'Linux'
-      become: true
+      become: yes
 
     - name: "Link .zshrc file"
       file:
@@ -67,11 +44,23 @@
         mode: 0755
       tags:
         - binaries
+        - update
 
     - include_tasks: "{{ ansible_env.PWD }}/ansible/get-latest-release-from-github.yaml"
       with_items: "{{ bin_downloads }}"
       tags:
         - binaries
+        - update
+
+    - name: Installing pip packages
+      pip:
+        name: "{{ packages.pip }}"
+        state: latest
+        extra_args: --user
+      # loop: "{{ packages.pip }}"
+      tags:
+        - pip
+        - update
 
     - name: Set the default shell to zsh
       user:
