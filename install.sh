@@ -40,7 +40,14 @@ check_cmd() {
   test -r "$(which $1)"
 }
 
+check_file() {
+  test -r "$1"
+}
+
 handle_deps() {
+  if check_file /etc/debian_version; then
+    apt-get update && apt-get install --no-install-recommends -y python3-pip git
+  fi
   if check_cmd pip; then
     pip install ansible
   elif check_cmd pip3; then
