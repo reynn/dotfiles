@@ -54,9 +54,12 @@ alias localip="ipconfig getifaddr en0"
 
 # -----------------------------------------------------------------------------
 ## Docker:run aliases ---------------------------------------------------------
-alias dra="docker run --rm -it -v "$(pwd):$(pwd)" -w $(pwd) --entrypoint=/bin/ash alpine"
-alias drg="docker run --rm -it -v "$(pwd):$(pwd)" -w $(pwd) --entrypoint=/bin/bash golang"
-alias drp="docker run --rm -it -v "$(pwd):$(pwd)" -w $(pwd) --entrypoint=/bin/bash python"
+alias dr='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash'
+alias dra='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine'
+alias drg='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash golang'
+alias drk='docker run --rm -it -v $PWD:$PWD -v $HOME/.kube:/root/.kube -w $PWD -u 0:0 --entrypoint=/bin/bash bitnami/kubectl'
+alias drp='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python'
+alias dru='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu'
 
 # -----------------------------------------------------------------------------
 ## Docker:image aliases -------------------------------------------------------
@@ -68,10 +71,10 @@ alias dc="docker container ls -a"
 
 # -----------------------------------------------------------------------------
 ## Docker:clean aliases -------------------------------------------------------
-alias dclc="docker container rm $(docker container ls -qa)"
-alias dclca="docker container rm -f $(docker container ls -qa)"
-alias dcli="docker image rm $(docker image ls -q)"
-alias dclia="docker image rm -f $(docker image ls -q)"
+alias dclc="docker container rm \$(docker container ls -qa)"
+alias dclca="docker container rm -f \$(docker container ls -qa)"
+alias dcli="docker image rm \$(docker image ls -q)"
+alias dclia="docker image rm -f \$(docker image ls -q)"
 
 # -----------------------------------------------------------------------------
 # SCM aliases -----------------------------------------------------------------

@@ -7,12 +7,6 @@ alias FR="source $FP" # alias reload
 
 # -----------------------------------------------------------------------------
 # Kubernetes functions --------------------------------------------------------
-function kube() {
-  # .kube contains the kubernetes config files
-  local kube_image=${KUBECTL_IMAGE:-bitnami/kubectl}
-  docker run --rm -v "$(pwd):/kube" -v "$HOME/.kube:/root/.kube" -w /kube $kube_image "$@"
-}
-
 function k8s_dar() {
   local resources=$1
   echo "Deleting all $resources resources"
@@ -27,10 +21,11 @@ function get_latest_gh_assets() {
 
 # -----------------------------------------------------------------------------
 # UNIX functions --------------------------------------------------------------
-function color_print() {
-  local start_color=$1
-  local end_color=$2
-  for i in {$1..$2} {$2..$1} ; do echo -en "\e[48;5;${i}m \e[0m" ; done ; echo
+
+function slice_arr() {
+  local i=$1
+  local arr=($@)
+  echo ${arr[@]:${i}}
 }
 
 function listen_port() {
@@ -55,13 +50,63 @@ function digga() {
 # location
 function o() {
 	if [ $# -eq 0 ]; then
-		open .;
+		open .
 	else
-		open "$@";
+		open "$@"
 	fi;
 }
 
 function join_by { local IFS="$1"; shift; echo "$@"; }
+
+# -----------------------------------------------------------------------------
+## Unix:Echo functions --------------------------------------------------------
+function color_print() {
+  local start_color=$1
+  local end_color=$2
+  if [ test -z $start_color || test -z $end_color ]; then
+    return
+  fi
+  for i in {$1..$2}; do
+    color_print_fg $i "$i"
+    fg_clear
+  done
+}
+
+function color_print_fg() {
+  local color=$1
+  local arr=$(slice_arr 2 $@)
+  echo -en "\e[38;5;$1m$arr\e[0m"
+}
+
+function fg_clear() {
+  color_print_fg 0 "\n\e[0n"
+}
+
+function color_print_bg() {
+  local color=$1
+  local arr=$(slice_arr 2 $@)
+  echo -en "\e[48;5;$1m$arr"
+}
+
+function bg_clear() {
+  color_print_bg 0 "\n\e[0n"
+}
+
+function print_error() {
+  color_print_fg 208 '>>'
+  color_print_fg 202 'Error'
+  color_print_fg 208 '>> '
+  color_print_fg 220 "$@"
+  fg_clear
+}
+
+function print_usage() {
+  color_print_fg 104 '>>'
+  color_print_fg 63 'Usage'
+  color_print_fg 104 '>> '
+  color_print_fg 63 "$@"
+  fg_clear
+}
 
 # -----------------------------------------------------------------------------
 # FZF functions ---------------------------------------------------------------
@@ -80,7 +125,7 @@ function fzf-ssh {
   fi
   zle reset-prompt
 }
-zle     -N     fzf-ssh
+zle -N fzf-ssh
 
 # -----------------------------------------------------------------------------
 ## FZF:Docker functions -------------------------------------------------------
@@ -94,7 +139,7 @@ function fzf-dps {
   fi
   zle reset-prompt
 }
-zle     -N     fzf-dps
+zle -N fzf-dps
 
 # -----------------------------------------------------------------------------
 ## FZF:K8S functions ----------------------------------------------------------
@@ -108,7 +153,7 @@ function fzf-kls {
   fi
   zle reset-prompt
 }
-zle     -N     fzf-kls
+zle -N fzf-kls
 
 function fzf-kspf {
   # Get all the available services
@@ -127,4 +172,4 @@ function fzf-kspf {
   fi
   zle reset-prompt
 }
-zle     -N     fzf-kspf
+zle -N fzf-kspf
