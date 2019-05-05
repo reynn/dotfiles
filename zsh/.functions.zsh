@@ -1,11 +1,16 @@
+FP="$DFP/zsh/.functions.zsh"
+
+# -----------------------------------------------------------------------------
+#### File Aliases -------------------------------------------------------------
+alias FE="vim $FP" # alias edit
+alias FR="source $FP" # alias reload
+
+# -----------------------------------------------------------------------------
+# Kubernetes functions --------------------------------------------------------
 function kube() {
   # .kube contains the kubernetes config files
   local kube_image=${KUBECTL_IMAGE:-bitnami/kubectl}
   docker run --rm -v "$(pwd):/kube" -v "$HOME/.kube:/root/.kube" -w /kube $kube_image "$@"
-}
-
-function k8s_a() {
-  kubectl apply -f $@
 }
 
 function k8s_dar() {
@@ -14,12 +19,26 @@ function k8s_dar() {
   kubectl delete $(kubectl get $resources -o name)
 }
 
-function listenport() {
+# -----------------------------------------------------------------------------
+# Kubernetes functions --------------------------------------------------------
+function get_latest_gh_assets() {
+  curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '[ .assets[] | {name: .name, url: .browser_download_url} ]'
+}
+
+# -----------------------------------------------------------------------------
+# UNIX functions --------------------------------------------------------------
+function color_print() {
+  local start_color=$1
+  local end_color=$2
+  for i in {$1..$2} {$2..$1} ; do echo -en "\e[48;5;${i}m \e[0m" ; done ; echo
+}
+
+function listen_port() {
   local port=$1
   lsof -nP -i4TCP:$port | grep LISTEN | awk '{ print $2 }'
 }
 
-function killlistening() {
+function kill_listening() {
   local port=$1
   local process=$(listenport $port)
 
@@ -27,9 +46,29 @@ function killlistening() {
   sudo kill -9 $process
 }
 
+# Run `dig` and display the most useful info
+function digga() {
+	dig +nocmd "$1" any +multiline +noall +answer;
+}
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+function o() {
+	if [ $# -eq 0 ]; then
+		open .;
+	else
+		open "$@";
+	fi;
+}
+
 function join_by { local IFS="$1"; shift; echo "$@"; }
 
+# -----------------------------------------------------------------------------
+# FZF functions ---------------------------------------------------------------
+# -----------------------------------------------------------------------------
 stty stop undef
+# -----------------------------------------------------------------------------
+## FZF:Unix functions ---------------------------------------------------------
 function fzf-ssh {
   local all_matches=$(rg "Host\s+\w+" ~/.ssh/config* | rg -v '\*')
   local only_host_parts=$(echo "$all_matches" | awk '{print $NF}')
@@ -43,6 +82,8 @@ function fzf-ssh {
 }
 zle     -N     fzf-ssh
 
+# -----------------------------------------------------------------------------
+## FZF:Docker functions -------------------------------------------------------
 function fzf-dps {
   local all_matches=$(docker container ls --format '{{.Names}}')
   local selection=$(echo "$all_matches" | fzf)
@@ -55,6 +96,8 @@ function fzf-dps {
 }
 zle     -N     fzf-dps
 
+# -----------------------------------------------------------------------------
+## FZF:K8S functions ----------------------------------------------------------
 function fzf-kls {
   local all_matches=$(kubectl get pods -o name)
   local selection=$(echo "$all_matches" | fzf)

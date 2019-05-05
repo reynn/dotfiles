@@ -1,1 +1,3 @@
 \.ansible
+\.secrets.zsh
+\.git
