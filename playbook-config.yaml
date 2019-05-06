@@ -57,9 +57,11 @@
       file:
         path: "{{ binary_dir | default(ansible_env.HOME + '/.bins') }}"
         state: directory
-        mode: u=rw,g=r,o=r
+        mode: u=rwx,g=rx,o=rx
       tags:
         - binaries
+        - scripts
+        - commands
         - update
 
     - name: Downloading scripts
@@ -70,6 +72,7 @@
         owner: "{{ ansible_user_uid }}"
         group: "{{ ansible_user_gid }}"
       register: base_script_downloads
+      when: item.url is defined
       loop: "{{ scripts }}"
       tags:
         - scripts
@@ -82,6 +85,16 @@
       tags:
         - scripts
       loop: "{{ base_script_downloads.results }}"
+
+    - name: Exec commands
+      command: "{{ item.cmd }}"
+      args:
+        chdir: "{{ item.dir }}"
+      loop: "{{ commands }}"
+      tags:
+        - commands
+
+    # - name: Build helpers binary
 
     - include_tasks: "{{ ansible_env.PWD }}/ansible/get-latest-release-from-github.yaml"
       with_items: "{{ bin_downloads }}"

@@ -6,41 +6,14 @@
 #   host: string
 #   owner: string
 
-- name: "Getting release information From GitHub for {{ item.name }}"
-  uri:
-    follow_redirects: safe
-    method: GET
-    return_content: yes
-    url: "https://{{ item.git.host | default('api.github.com') }}/repos/{{ item.git.owner }}/{{ item.git.repo }}/releases/latest"
-    validate_certs: no
-  register: get_latest_release_from_github_information
-  tags:
-    - binaries
-    - update
-
 - set_fact:
-    get_latest_binary_search_regex: darwin|osx|apple
-  when: ansible_os_family == 'Darwin'
+    get_latest_release_from_github_bins_path: "{{ bins_dir }}/{{ item.name }}_bin"
+    get_latest_release_from_github_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.git.repo) }}"
   tags:
     - binaries
     - update
 
-- set_fact:
-    get_latest_binary_search_regex: ubuntu|debian|\.deb$|linux64
-  when: ansible_os_family == 'Debian'
-  tags:
-    - binaries
-    - update
-
-- set_fact:
-    get_latest_release_from_github_assets: "{{ get_latest_release_from_github_information.json.assets | to_json }}"
-    get_latest_release_from_github_bins_path: "{{ bins_dir | default(ansible_env.HOME + '/.bins') }}/{{ item.name }}"
-    get_latest_release_from_github_alias_path: "{{ alias_dir | default(ansible_env.HOME + '/.bin') }}/{{ item.alias | default(item.git.repo) }}"
-  tags:
-    - binaries
-    - update
-
-- name: Create subdirectory
+- name: Create Binary subdirectory
   file:
     path: "{{ get_latest_release_from_github_bins_path }}"
     state: directory
@@ -49,25 +22,24 @@
     - update
 
 - name: "Determining appropriate asset to download from GitHub for {{ item.name }}"
-  shell: |
-    # Filter out the text files from the releases and gather the content type, name and URL to download from
-    d="$(echo '{{ get_latest_release_from_github_assets }}' | jq '. | {tag: .tag_name, assets: [{name: .assets[].name, type: .assets[].content_type, url: .assets[].browser_download_url}]})"
-    # Filter out only releases for the platform we are on
-    u="$(echo $d | jq -r '.assets[].name' | rg -e '{{ get_latest_binary_search_regex }}')"
-    # Return the valid results to ansible for this platform
-    echo $d | jq -r ".assets[] | select(.name==\"$u\")"
+  shell: helpers gh get asset --owner {{ item.git.owner }} --repo {{ item.git.repo }}
   register: get_latest_binary_shell
-  changed_when: get_latest_binary_shell.stderr != ""
+  tags:
+    - binaries
+    - update
+
+- debug:
+    var: get_latest_binary_shell
   tags:
     - binaries
     - update
 
 - name:
   set_fact:
-    get_latest_release_from_github_name: "{{ (get_latest_binary_shell.stdout | from_json).name }}"
-    get_latest_release_from_github_url: "{{ (get_latest_binary_shell.stdout | from_json).url }}"
-    get_latest_release_from_github_type: "{{ (get_latest_binary_shell.stdout | from_json).type }}"
-    get_latest_release_from_github_tag: "{{ (get_latest_binary_shell.stdout | from_json).tag }}"
+    get_latest_release_from_github_name: "{{ (get_latest_binary_shell.stdout | from_json)[0].name }}"
+    get_latest_release_from_github_url: "{{ (get_latest_binary_shell.stdout | from_json)[0].url }}"
+    get_latest_release_from_github_type: "{{ (get_latest_binary_shell.stdout | from_json)[0].type }}"
+    get_latest_release_from_github_tag: "{{ (get_latest_binary_shell.stdout | from_json)[0].tag }}"
   tags:
     - binaries
     - update
@@ -77,6 +49,14 @@
   register: get_latest_release_from_github_out_exists
   changed_when: get_latest_release_from_github_out_exists.stderr != ""
   failed_when: get_latest_release_from_github_out_exists.stderr != ""
+  tags:
+    - binaries
+    - update
+
+- name: Creating version subdirectory
+  file:
+    path: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}"
+    state: directory
   tags:
     - binaries
     - update
@@ -96,7 +76,7 @@
   shell: |
     #!/bin/bash -e
     tar xf {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
-    find {{ get_latest_release_from_github_get_url.dest | replace('.tar.gz', '') }} -type f -perm +111
+    find {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }} -type f -perm +111
   register: get_latest_release_from_github_extract_gzip
   when:
     - 'get_latest_release_from_github_type == "application/gzip"'
@@ -108,9 +88,9 @@
 - name: Extracting zip file
   shell: |
     #!/bin/bash -e
-    unzip {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
-    find {{ get_latest_release_from_github_get_url.dest | replace('.tar.gz', '') }} -type f -perm +111
-  register: get_latest_release_from_github_extract_gzip
+    unzip -qq {{ get_latest_release_from_github_get_url.dest }} -d {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
+    find {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }} -type f -perm +111
+  register: get_latest_release_from_github_extract_zip
   when:
     - 'get_latest_release_from_github_type == "application/zip"'
     - 'get_latest_release_from_github_get_url.changed'
@@ -133,6 +113,16 @@
     path: "{{ get_latest_release_from_github_alias_path }}"
     state: link
   when: 'get_latest_release_from_github_extract_gzip.changed'
+  tags:
+    - binaries
+    - update
+
+- name: "Register symlink after extracting zip"
+  file:
+    src: "{{ get_latest_release_from_github_extract_zip.stdout | replace('./', '') }}"
+    path: "{{ get_latest_release_from_github_alias_path }}"
+    state: link
+  when: 'get_latest_release_from_github_extract_zip.changed'
   tags:
     - binaries
     - update

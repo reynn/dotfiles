@@ -51,7 +51,7 @@ handle_deps() {
     apt-get install --no-install-recommends -y \
         python3-{pip,wheel,setuptools} \
         build-essential \
-        git \
+        git
   fi
   if !(check_cmd ansible); then
     if check_cmd pip; then
@@ -73,7 +73,6 @@ handle_deps() {
     exit 1
   fi
 }
-
 function main() {
   if [ ! -d "$DFP" ]; then
     print_installing "dependencies where possible..."

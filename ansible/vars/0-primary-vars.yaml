@@ -1,5 +1,6 @@
 # ------------
 # Strings
+bins_dir: "{{ ansible_env.HOME }}/.bins"
 git_path: "{{ ansible_env.HOME }}/git"
 dotfiles_path: "{{ git_path }}/reynn/dotfiles"
 
@@ -29,6 +30,10 @@ bin_downloads:
     git:
       owner: stedolan
       repo: jq
+  - name: exa
+    git:
+      owner: ogham
+      repo: exa
 git_repos:
   - repo: https://github.com/reynn/dotfiles.git
     dest: "{{ git_path }}/reynn/dotfiles"
@@ -42,7 +47,10 @@ git_repos:
     dest: "{{ git_path }}/powerline/fonts"
   - repo: https://github.com/junegunn/fzf.git
     dest: "{{ git_path }}/junegunn/fzf"
-
+commands:
+  # - "eval $(gimme stable)"
+  - cmd: "go build -o {{ bins_dir }}/helpers main.go"
+    dir: "{{ git_path }}/reynn/dotfiles/go/helpers"
 scripts:
   - name: gimme
     url: https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
