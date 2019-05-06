@@ -1,6 +1,7 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 export GFP="$HOME/git"
 export DFP="$GFP/reynn/dotfiles"
+export DIR_BINS="$HOME/.bins"
 FP="$DFP/zsh/.zshrc"
 
 # -----------------------------------------------------------------------------
@@ -40,6 +41,7 @@ test -r "$(which git)" && plugins+=('git')
 
 # -----------------------------------------------------------------------------
 ## ZSH:Init -------------------------------------------------------------------
+export ZSH="$GFP/robbyrussell/oh-my-zsh"
 source $GFP/robbyrussell/oh-my-zsh/oh-my-zsh.sh
 
 # -----------------------------------------------------------------------------
@@ -67,8 +69,14 @@ export IMPORT_DIRECTORIES=(zsh)
 
 import_zsh_files $IMPORT_DIRECTORIES
 
+if test -r "$DIR_BINS/gimme"; then
+  echo "running gimme"
+  eval "$(gimme stable)"
+  clear
+fi
+
 test -r "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-test -r ~/.fzf.zsh && source ~/.fzf.zsh
+test -r $DFP/zsh/.fzf.zsh && source $DFP/zsh/.fzf.zsh
 
 # zprof # uncomment to debug performance issues with zsh startup

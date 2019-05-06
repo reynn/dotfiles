@@ -4,12 +4,19 @@
   tasks:
     - name: Include vars from ansible directory
       include_vars:
-        dir: ansible/vars
+        dir: "{{ playbook_dir }}/ansible/vars"
         extensions:
           - yaml
           - yml
       tags:
         - always
+
+    - name: Install certificate handling for darwin
+      shell: "sh '/Applications/Python\ {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install\ Certificates.command'"
+      when:
+        - ansible_system == 'Darwin'
+      tags:
+        - pip
 
     - name: Install packages
       package:
@@ -19,9 +26,18 @@
         - ansible_system == 'Linux'
       become: yes
 
+    - name: Installing pip packages
+      pip:
+        name: "{{ packages.pip }}"
+        state: latest
+        extra_args: --user
+      tags:
+        - pip
+        - update
+
     - name: "Link .zshrc file"
       file:
-        src: "{{ ansible_env.PWD }}/zsh/.zshrc"
+        src: "{{ playbook_dir }}/zsh/.zshrc"
         dest: "{{ ansible_env.HOME }}/.zshrc"
         owner: "{{ ansible_effective_user_id }}"
         group: "{{ ansible_effective_group_id }}"
@@ -41,25 +57,36 @@
       file:
         path: "{{ binary_dir | default(ansible_env.HOME + '/.bins') }}"
         state: directory
-        mode: 0755
+        mode: u=rw,g=r,o=r
       tags:
         - binaries
         - update
+
+    - name: Downloading scripts
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ binary_dir | default(ansible_env.HOME + '/.bins') }}/{{ item.name }}"
+        mode: u=rwx,g=rx,o=rx
+        owner: "{{ ansible_user_uid }}"
+        group: "{{ ansible_user_gid }}"
+      register: base_script_downloads
+      loop: "{{ scripts }}"
+      tags:
+        - scripts
+        - update
+
+    - name: Exec scripts (Automated)
+      debug:
+        msg: "{{ item }}"
+      when: item.changed
+      tags:
+        - scripts
+      loop: "{{ base_script_downloads.results }}"
 
     - include_tasks: "{{ ansible_env.PWD }}/ansible/get-latest-release-from-github.yaml"
       with_items: "{{ bin_downloads }}"
       tags:
         - binaries
-        - update
-
-    - name: Installing pip packages
-      pip:
-        name: "{{ packages.pip }}"
-        state: latest
-        extra_args: --user
-      # loop: "{{ packages.pip }}"
-      tags:
-        - pip
         - update
 
     - name: Set the default shell to zsh

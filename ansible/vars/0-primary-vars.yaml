@@ -1,3 +1,10 @@
+# ------------
+# Strings
+git_path: "{{ ansible_env.HOME }}/git"
+dotfiles_path: "{{ git_path }}/reynn/dotfiles"
+
+# ------------
+# Maps
 packages:
   system:
     - zsh
@@ -6,10 +13,22 @@ packages:
     - wget
     - tmux
   pip:
+    - certifi
     - Pygments
     - yq
-git_path: "{{ ansible_env.HOME }}/git"
-dotfiles_path: "{{ git_path }}/reynn/dotfiles"
+
+# ------------
+# Lists
+bin_downloads:
+  - name: Ripgrep
+    git:
+      owner: BurntSushi
+      repo: ripgrep
+    alias: rg
+  - name: JQ
+    git:
+      owner: stedolan
+      repo: jq
 git_repos:
   - repo: https://github.com/reynn/dotfiles.git
     dest: "{{ git_path }}/reynn/dotfiles"
@@ -23,13 +42,8 @@ git_repos:
     dest: "{{ git_path }}/powerline/fonts"
   - repo: https://github.com/junegunn/fzf.git
     dest: "{{ git_path }}/junegunn/fzf"
-bin_downloads:
-  - name: Ripgrep
-    git:
-      owner: BurntSushi
-      repo: ripgrep
-    alias: rg
-  - name: JQ
-    git:
-      owner: stedolan
-      repo: jq
+
+scripts:
+  - name: gimme
+    url: https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
+    args: stable

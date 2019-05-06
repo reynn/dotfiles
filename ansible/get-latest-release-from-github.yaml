@@ -34,8 +34,16 @@
 
 - set_fact:
     get_latest_release_from_github_assets: "{{ get_latest_release_from_github_information.json.assets | to_json }}"
-    get_latest_release_from_github_bins_path: "{{ bins_dir | default(ansible_env.HOME + '/.bins') }}"
-    get_latest_release_from_github_alias_path: "{{ alias_dir | default('/usr/local/bin') }}/{{ item.alias | default(item.git.repo) }}"
+    get_latest_release_from_github_bins_path: "{{ bins_dir | default(ansible_env.HOME + '/.bins') }}/{{ item.name }}"
+    get_latest_release_from_github_alias_path: "{{ alias_dir | default(ansible_env.HOME + '/.bin') }}/{{ item.alias | default(item.git.repo) }}"
+  tags:
+    - binaries
+    - update
+
+- name: Create subdirectory
+  file:
+    path: "{{ get_latest_release_from_github_bins_path }}"
+    state: directory
   tags:
     - binaries
     - update
@@ -43,11 +51,11 @@
 - name: "Determining appropriate asset to download from GitHub for {{ item.name }}"
   shell: |
     # Filter out the text files from the releases and gather the content type, name and URL to download from
-    d="$(echo '{{ get_latest_release_from_github_assets }}' | jq '[.[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, url: .browser_download_url}]')"
+    d="$(echo '{{ get_latest_release_from_github_assets }}' | jq '. | {tag: .tag_name, assets: [{name: .assets[].name, type: .assets[].content_type, url: .assets[].browser_download_url}]})"
     # Filter out only releases for the platform we are on
-    u="$(echo $d | jq -r '.[].name' | rg -e '{{ get_latest_binary_search_regex }}')"
+    u="$(echo $d | jq -r '.assets[].name' | rg -e '{{ get_latest_binary_search_regex }}')"
     # Return the valid results to ansible for this platform
-    echo $d | jq -r ".[] | select(.name==\"$u\")"
+    echo $d | jq -r ".assets[] | select(.name==\"$u\")"
   register: get_latest_binary_shell
   changed_when: get_latest_binary_shell.stderr != ""
   tags:
@@ -59,12 +67,13 @@
     get_latest_release_from_github_name: "{{ (get_latest_binary_shell.stdout | from_json).name }}"
     get_latest_release_from_github_url: "{{ (get_latest_binary_shell.stdout | from_json).url }}"
     get_latest_release_from_github_type: "{{ (get_latest_binary_shell.stdout | from_json).type }}"
+    get_latest_release_from_github_tag: "{{ (get_latest_binary_shell.stdout | from_json).tag }}"
   tags:
     - binaries
     - update
 
 - name: "Checking if destination download already exists exists"
-  shell: test -r {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_name }}
+  shell: test -r {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}/{{ get_latest_release_from_github_name }}
   register: get_latest_release_from_github_out_exists
   changed_when: get_latest_release_from_github_out_exists.stderr != ""
   failed_when: get_latest_release_from_github_out_exists.stderr != ""
@@ -75,7 +84,7 @@
 - name: "Downloading binary"
   get_url:
     url: "{{ get_latest_release_from_github_url }}"
-    dest: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_name }}"
+    dest: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}/{{ get_latest_release_from_github_name }}"
     validate_certs: no
   register: get_latest_release_from_github_get_url
   when: 'get_latest_release_from_github_out_exists.rc == 1'
@@ -86,11 +95,24 @@
 - name: "Extracting gzip file"
   shell: |
     #!/bin/bash -e
-    tar xf {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}
+    tar xf {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
     find {{ get_latest_release_from_github_get_url.dest | replace('.tar.gz', '') }} -type f -perm +111
   register: get_latest_release_from_github_extract_gzip
   when:
     - 'get_latest_release_from_github_type == "application/gzip"'
+    - 'get_latest_release_from_github_get_url.changed'
+  tags:
+    - binaries
+    - update
+
+- name: Extracting zip file
+  shell: |
+    #!/bin/bash -e
+    unzip {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
+    find {{ get_latest_release_from_github_get_url.dest | replace('.tar.gz', '') }} -type f -perm +111
+  register: get_latest_release_from_github_extract_gzip
+  when:
+    - 'get_latest_release_from_github_type == "application/zip"'
     - 'get_latest_release_from_github_get_url.changed'
   tags:
     - binaries

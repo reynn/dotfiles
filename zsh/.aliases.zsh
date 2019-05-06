@@ -26,8 +26,9 @@ alias update-dotfiles="ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/pla
 
 # -----------------------------------------------------------------------------
 ## UNIX:General aliases -------------------------------------------------------
-alias cecho='echo -e'
-alias path='cecho ${PATH//:/\\n}'
+alias eecho='echo -e'
+alias path='eecho ${PATH//:/\\n}'
+alias ccat='pygmentize'
 
 # -----------------------------------------------------------------------------
 ## UNIX:Movement aliases ------------------------------------------------------

@@ -14,9 +14,10 @@ function k8s_dar() {
 }
 
 # -----------------------------------------------------------------------------
-# Kubernetes functions --------------------------------------------------------
+# GitHub functions ------------------------------------------------------------
 function get_latest_gh_assets() {
-  curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '[ .assets[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, url: .browser_download_url} ]'
+  local res=$(curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '. | {tag: .tag_name, assets: [{name: .assets[].name, type: .assets[].content_type, url: .assets[].browser_download_url}]}')
+  echo $res #| jq '[ { tag: .tag_name}.assets[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, tag: .tag_name, url: .browser_download_url} ]'
 }
 
 # -----------------------------------------------------------------------------
@@ -60,7 +61,11 @@ function o() {
 	fi;
 }
 
-function join_by { local IFS="$1"; shift; echo "$@"; }
+function join_by() {
+  local IFS="$1"
+  shift
+  echo "$@"
+}
 
 # -----------------------------------------------------------------------------
 ## Unix:Echo functions --------------------------------------------------------
@@ -113,6 +118,15 @@ function print_usage() {
 }
 
 # -----------------------------------------------------------------------------
+# Golang functions ------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+# Change go versions
+function chgo() {
+  eval "$(GIMME_GO_VERSION=$1 gimme)"
+}
+
+# -----------------------------------------------------------------------------
 # FZF functions ---------------------------------------------------------------
 # -----------------------------------------------------------------------------
 stty stop undef
@@ -147,7 +161,7 @@ zle -N fzf-dps
 
 # -----------------------------------------------------------------------------
 ## FZF:K8S functions ----------------------------------------------------------
-function fzf-kls {
+function fzf-k8s-logs {
   local all_matches=$(kubectl get pods -o name)
   local selection=$(echo "$all_matches" | fzf)
   echo $selection
@@ -157,9 +171,9 @@ function fzf-kls {
   fi
   zle reset-prompt
 }
-zle -N fzf-kls
+zle -N fzf-k8s-logs
 
-function fzf-kspf {
+function fzf-k8s-port-forward {
   # Get all the available services
   local all_matches=$(kubectl get services --all-namespaces -o json | jq -r '.items[].metadata | {name: .name, namespace: .namespace}')
   # User selects a service by it's name
@@ -176,11 +190,12 @@ function fzf-kspf {
   fi
   zle reset-prompt
 }
-zle -N fzf-kspf
+zle -N fzf-k8s-port-forward
 
+# CTRL+F - show a list of functions and insert
 function fzf-funcs {
-  local func=$(functions | rg -e "^[A-Za-z].+\(\) \{$" | tr ' () {' ' ' | fzf -1)
-  BUFFER="$func"
+  local func=$(functions | rg -e "^[A-Za-z].+\(\) \{$" | tr ' () {' ' ' | fzf-tmux -d 15)
   zle reset-prompt
+  return $func
 }
 zle -N fzf-funcs

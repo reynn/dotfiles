@@ -9,8 +9,8 @@ alias BR="source $FP" # alias reload
 # FZF Bindings ----------------------------------------------------------------
 bindkey "^s" fzf-ssh
 bindkey "^l" fzf-dps
-bindkey "^k" fzf-kls
-bindkey "^p" fzf-kspf
+bindkey "^k^l" fzf-k8s-logs
+bindkey "^k^p" fzf-k8s-port-forward
 bindkey "^f" fzf-funcs
 
 # -----------------------------------------------------------------------------

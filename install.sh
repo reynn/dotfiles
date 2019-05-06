@@ -50,10 +50,8 @@ handle_deps() {
     apt-get update
     apt-get install --no-install-recommends -y \
         python3-{pip,wheel,setuptools} \
-        jq \
         build-essential \
         git \
-        ripgrep
   fi
   if !(check_cmd ansible); then
     if check_cmd pip; then

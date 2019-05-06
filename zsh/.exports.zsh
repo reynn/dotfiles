@@ -7,31 +7,29 @@ alias ER="source $FP" # alias reload
 
 # -----------------------------------------------------------------------------
 # UNIX exports ----------------------------------------------------------------
-export SSH_KEY_PATH="~/.ssh/rsa_id"
+export SSH_KEY_PATH='~/.ssh/rsa_id'
 export EDITOR='vim'
-export PATH="$PATH:$HOME/go/bin"
+export PATH="$HOME/.bins:$HOME/.cargo/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:$HOME/go/bin:$HOME/git/bin:$HOME/git/junegunn/fzf/bin:/usr/local/go/bin:/usr/local/MacGPG2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
-export HISTSIZE='32768';
-export HISTFILESIZE="${HISTSIZE}";
+export HISTSIZE='32768'
+export HISTFILESIZE="$HISTSIZE"
 # Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth';
+export HISTCONTROL='ignoreboth'
 
 # -----------------------------------------------------------------------------
 # K8S exports -----------------------------------------------------------------
-export K8S_DEFAULT_NAMESPACE="development"
+export K8S_DEFAULT_NAMESPACE='development'
 
 # -----------------------------------------------------------------------------
 # GO exports ------------------------------------------------------------------
 export GOPATH="$HOME/go"
-export GO111MODULE="on"
+export GO111MODULE='on'
 
 # -----------------------------------------------------------------------------
 # Git exports -----------------------------------------------------------------
-export PATH="$PATH:$HOME/git/bin"
 # export GIT_CONFIG="$DFP/git/gitconfig"
 
 # -----------------------------------------------------------------------------
 # ZSH Exports -----------------------------------------------------------------
-export ZSH="$HOME/.oh-my-zsh"
 export UPDATE_ZSH_DAYS=3
