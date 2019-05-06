@@ -86,10 +86,18 @@
         - scripts
       loop: "{{ base_script_downloads.results }}"
 
+    - name: Exec gimme
+      shell: eval "$(gimme stable)"
+      tags:
+        - commands
+        - scripts
+        - binaries
+        - updates
+
     - name: Exec commands
       command: "{{ item.cmd }}"
       args:
-        chdir: "{{ item.dir }}"
+        chdir: "{{ item.dir | default('.') }}"
       loop: "{{ commands }}"
       tags:
         - commands

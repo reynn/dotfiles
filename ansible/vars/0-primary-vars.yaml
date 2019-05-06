@@ -48,7 +48,6 @@ git_repos:
   - repo: https://github.com/junegunn/fzf.git
     dest: "{{ git_path }}/junegunn/fzf"
 commands:
-  # - "eval $(gimme stable)"
   - cmd: "go build -o {{ bins_dir }}/helpers main.go"
     dir: "{{ git_path }}/reynn/dotfiles/go/helpers"
 scripts:

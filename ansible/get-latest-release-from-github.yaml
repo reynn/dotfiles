@@ -65,7 +65,6 @@
   get_url:
     url: "{{ get_latest_release_from_github_url }}"
     dest: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}/{{ get_latest_release_from_github_name }}"
-    validate_certs: no
   register: get_latest_release_from_github_get_url
   when: 'get_latest_release_from_github_out_exists.rc == 1'
   tags:

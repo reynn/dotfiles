@@ -78,6 +78,8 @@ function main() {
     print_installing "dependencies where possible..."
     handle_deps
     print_installing "ansible configuration..."
+    mkdir "$HOME/.bins"
+    export PATH="$HOME/.bins:$PATH"
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
     # source $HOME/.zshrc
   else
