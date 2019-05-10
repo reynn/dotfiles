@@ -69,11 +69,14 @@ export IMPORT_DIRECTORIES=(zsh)
 
 import_zsh_files $IMPORT_DIRECTORIES
 
-if test -r "$DIR_BINS/gimme"; then
-  echo "running gimme"
-  eval "$(gimme stable)"
-  clear
+if test -r "$HOME/.gimme/envs/latest.env"; then
+  source $HOME/.gimme/envs/latest.env
 fi
+
+iterm2_print_user_vars() {
+  iterm2_set_user_var kubecontext $(kubectl config current-context)
+  iterm2_set_user_var kubenamespace $(kubectl config get-contexts | rg '\*' | awk '{print $5}')
+}
 
 test -r "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
