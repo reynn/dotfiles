@@ -62,7 +62,7 @@ alias drash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash'
 alias drsh='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/sh'
 alias dr='drbash'
 
-alias gen_version="docker run --rm -v $PWD:$PWD -w $PWD quay.io/reynn/docker-versioner:0.9.0"
+alias gen_version='docker run --rm -v $PWD:$PWD -w $PWD quay.io/reynn/docker-versioner:0.9.0'
 
 alias dra='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine:3.9'
 alias drg='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash golang:1.12'
