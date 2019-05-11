@@ -81,10 +81,11 @@ function main() {
     mkdir "$HOME/.bins"
     export PATH="$HOME/.bins:$PATH"
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
+    ln -sfn $DFP/.zshrc $HOME/.zshrc
     # source $HOME/.zshrc
   else
     print_installing "re-linking .zshrc..."
-    ln -sfn $DFP/zsh/.zshrc $HOME/.zshrc
+    ln -sfn $DFP/.zshrc $HOME/.zshrc
   fi
 }
 

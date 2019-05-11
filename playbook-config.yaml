@@ -37,11 +37,13 @@
 
     - name: "Link .zshrc file"
       file:
-        src: "{{ playbook_dir }}/zsh/.zshrc"
+        src: "{{ playbook_dir }}/.zshrc"
         dest: "{{ ansible_env.HOME }}/.zshrc"
         owner: "{{ ansible_effective_user_id }}"
         group: "{{ ansible_effective_group_id }}"
         state: link
+      tags:
+        - update
 
     - name: Clone git repos
       git:
@@ -49,9 +51,13 @@
         dest: "{{ item.dest }}"
         depth: 1
       loop: "{{ git_repos }}"
+      tags:
+        - update
 
     - name: Run fzf install script
       shell: "{{ git_path }}/junegunn/fzf/install --bin --64"
+      tags:
+        - update
 
     - name: Ensure binary dirs exist
       file:

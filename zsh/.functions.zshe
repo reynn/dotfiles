@@ -78,25 +78,25 @@ function check_cmd() {
 
 # Run `dig` and display the most useful info
 function digga() {
-  dig +nocmd "$1" any +multiline +noall +answer;
+	dig +nocmd "$1" any +multiline +noall +answer;
 }
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
 function o() {
-  if [ $# -eq 0 ]; then
-    open .
-  else
-    open "$@"
-  fi;
+	if [ $# -eq 0 ]; then
+		open .
+	else
+		open "$@"
+	fi;
 }
 
 function bin_completion() {
   for bin in minikube kubectl; do
-    print_info "Getting completions for $bin"
+    echo -en "\e[38;5;35m$DIVIDER Getting completions for $bin" && fg_clear
     source <($bin completion zsh)
   done
-}
+}f
 
 function join_by() {
   local IFS="$1"
@@ -121,11 +121,11 @@ function print_info() {
 }
 
 function print_warning() {
-  echo -en "$TXT_DIVIDER$FMT_WARNING Warning $TXT_DIVIDER $FMT_WARNING$@$FMT_CLEAR_ALL\n"
+  echo -en "$TXT_DIVIDER$FMT_WARNING $WarningTXT_DIVIDER $FMT_WARNING$@$FMT_CLEAR_ALL\n"
 }
 
 function print_usage() {
-  echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$@$FMT_CLEAR_ALL\n"
+  echo -en "$TXT_DIVIDER$FMT_USAGE $UsageTXT_DIVIDER $FMT_USAGE$@$FMT_CLEAR_ALL\n"
 }
 
 # -----------------------------------------------------------------------------
@@ -134,10 +134,7 @@ function print_usage() {
 
 # Change go versions
 function chgo() {
-  local env_file="$HOME/.gimme/envs/latest.env"
-  if test -r $env_file; then
-    source $env_file
-  fi
+  eval "$(GIMME_GO_VERSION=$1 gimme)"
 }
 
 # -----------------------------------------------------------------------------

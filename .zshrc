@@ -1,11 +1,11 @@
-# zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
+zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 export GFP="$HOME/git"
 export DFP="$GFP/reynn/dotfiles"
 export DIR_BINS="$HOME/.bins"
 FP="$DFP/zsh/.zshrc"
 
 # -----------------------------------------------------------------------------
-## File Aliases ---------------------------------------------------------------
+#### File Aliases -------------------------------------------------------------
 alias ZE="vim $FP" # alias edit
 alias ZR="source $FP" # alias reload
 
@@ -34,7 +34,6 @@ HYPHEN_INSENSITIVE="true"
 COMPLETION_WAITING_DOTS="true"
 
 plugins=()
-test -r "$(which kubectl)" && plugins+=('kubectl')
 test -r "$(which aws)" && plugins+=('aws')
 test -r "$(which docker)" && plugins+=('docker')
 test -r "$(which git)" && plugins+=('git')
@@ -50,17 +49,18 @@ source $GFP/robbyrussell/oh-my-zsh/oh-my-zsh.sh
 # -----------------------------------------------------------------------------
 ## Imports:Function -----------------------------------------------------------
 alias izf="import_zsh_files $IMPORT_DIRECTORIES"
+# export DEBUG="true"
 function import_zsh_files() {
   for d in $1
   do
-    debugEcho ">>Searching dir :$d"
-    for f in $(ls -a $DFP/$d | rg -e '.(f|c|z)sh$')
+    debugEcho ">> Searching dir :$d"
+    for f in $(find $DFP/$d -type f)
     do
       local dfp_dir="$DFP/$d/$f"
       local home_dir="$HOME/$f"
-      debugEcho ">>>Sourcing :: $dfp_dir"
+      debugEcho ">>> Sourcing :: $dfp_dir"
       source $dfp_dir
-      debugEcho ">>>Sourcing :: $home_dir"
+      debugEcho ">>> Sourcing :: $home_dir"
       test -r $home_dir && source $home_dir
     done
   done
@@ -73,13 +73,8 @@ if test -r "$HOME/.gimme/envs/latest.env"; then
   source $HOME/.gimme/envs/latest.env
 fi
 
-iterm2_print_user_vars() {
-  iterm2_set_user_var kubecontext $(kubectl config current-context)
-  iterm2_set_user_var kubenamespace $(kubectl config get-contexts | rg '\*' | awk '{print $5}')
-}
-
 test -r "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 test -r $DFP/zsh/.fzf.zsh && source $DFP/zsh/.fzf.zsh
 
-# zprof # uncomment to debug performance issues with zsh startup
+zprof # uncomment to debug performance issues with zsh startup

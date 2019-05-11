@@ -17,6 +17,7 @@ package cmd
 import (
 	"fmt"
 	"strings"
+	"strconv"
 
 	"github.com/spf13/cobra"
 )
@@ -24,6 +25,9 @@ import (
 var (
 	// Vars
 	delimiter string
+	replaceCount string
+	replaceSubstring string
+	replaceReplacement string
 
 	// Commands
 	textCmd = &cobra.Command{
@@ -43,11 +47,30 @@ var (
 			return nil
 		},
 	}
+	replaceCmd = &cobra.Command{
+		Use: "replace",
+		Short: "Replace text in a string",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			text := strings.Join(args, " ")
+			count := -1
+			if replaceCount != "-1" {
+				i, e := strconv.Atoi(replaceCount)
+				if e == nil {
+					count = i
+				}
+			}
+			fmt.Printf(strings.Replace(text, replaceSubstring, replaceReplacement, count) + "\n")
+			return nil
+		},
+	}
 )
 
 func init() {
 	splitCmd.Flags().StringVarP(&delimiter, "delimiter", "d", " ", "The delimiter to use when spliting the string")
+	replaceCmd.Flags().StringVarP(&replaceCount, "count", "i", "-1", "The amount or times the substring will replace")
+	replaceCmd.Flags().StringVarP(&replaceSubstring, "substring", "s", "\\", "The text that will be replaced")
+	replaceCmd.Flags().StringVarP(&replaceReplacement, "replacement", "r", "-", "What will replace the substring")
 
-	textCmd.AddCommand(splitCmd)
+	textCmd.AddCommand(splitCmd, replaceCmd)
 	rootCmd.AddCommand(textCmd)
 }
