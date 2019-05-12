@@ -1,4 +1,4 @@
-zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
+# zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 export GFP="$HOME/git"
 export DFP="$GFP/reynn/dotfiles"
 export DIR_BINS="$HOME/.bins"
@@ -54,7 +54,7 @@ function import_zsh_files() {
   for d in $1
   do
     debugEcho ">> Searching dir :$d"
-    for f in $(find $DFP/$d -type f)
+    for f in $(ls -a $DFP/$d)
     do
       local dfp_dir="$DFP/$d/$f"
       local home_dir="$HOME/$f"
@@ -77,4 +77,4 @@ test -r "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 test -r $DFP/zsh/.fzf.zsh && source $DFP/zsh/.fzf.zsh
 
-zprof # uncomment to debug performance issues with zsh startup
+# zprof # uncomment to debug performance issues with zsh startup

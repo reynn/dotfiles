@@ -13,34 +13,106 @@ function k8s_dar() {
   kubectl delete $(kubectl get $resources -o name)
 }
 
-function get_k8s_service_account_config() {
+function k8s_get_service_account_config() {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
     print_usage "$0 <sa_name> <namespace>"
     return 1
+  fi
+  local kubeconfig="$3"
+  if test -z $kubeconfig; then
+    print_info_label "K8S-SA" "Creating temp file for the kubeconfig..."
+    kubeconfig="$(mktemp -t kubeconfig.yaml)"
   fi
 
   local sa_name="$1"
   local namespace="$2"
   local sa_uri="$namespace/$sa_name"
 
-  print_info "Checking for $sa_uri"
+  print_debug_label "K8S-SA" "kubeconfig temp file $kubeconfig"
+
+  print_info_label "K8S-SA" "Checking for $sa_uri"
 
   if test -z "$(kubectl -n $namespace get sa $sa_name -o json --ignore-not-found)"; then
-    print_warning "ServiceAccount >> Creating $sa_uri"
+    print_warning_label "K8S-SA" "Creating $sa_uri, account will have no permissions by default."
     kubectl create serviceaccount -n $namespace $sa_name
   fi
 
-  print_info "Secret >> Getting secret"
+  print_info_label "K8S-SA" "Getting secret..."
   local sa_secret=$(kubectl get sa "$sa_name" --namespace="$namespace" -o json | jq -r '.secrets[0].name')
-  print_warning "Secret >> name $sa_secret"
+  print_debug_label "K8S-SA" "name $sa_secret"
 
-  print_info "Secret >> Getting ca.cert"
+  print_info_label "K8S-SA" "Getting ca.cert..."
   local ca_crt="$(kubectl get secret --namespace $namespace $sa_secret -o json | jq -r '.data["ca.crt"]' | base64 -D)"
+  local ca_crt_file="$(mktemp -t k8s_ca.crt)"
+  echo $ca_crt >> $ca_crt_file
+  print_debug_label "K8S-SA" "CA.crt - $ca_crt"
 
-  # echo -en "\e[38;5; 34 "All done! Test with:"
-  # echo "KUBECONFIG=${KUBECFG_FILE_NAME} kubectl get pods"
-  # KUBECONFIG=${KUBECFG_FILE_NAME} kubectl get pods
+  print_info_label "K8S-SA" "Getting SA token..."
+  local sa_token=$(kubectl get secret --namespace $namespace $sa_secret -o json | jq -r '.data["token"]' | base64 -D)
+  print_debug_label "K8S-SA" "token - $sa_token"
+
+  local context=$(kubectl config current-context)
+  print_info_label "K8S-SA" "Setting context..."
+
+  local cluster_name=$(kubectl config get-contexts "$context" | awk '{print $3}' | tail -n 1)
+  print_info_label "K8S-SA" "Cluster name $cluster_name..."
+
+  local endpoint=$(kubectl config view -o jsonpath="{.clusters[?(@.name == \"$cluster_name\")].cluster.server}")
+  print_info_label "K8S-SA" "Endpoint $endpoint..."
+
+  print_info_label "K8S-SA" "Preparing - $namespace-conf"
+  print_info_label "K8S-SA" "Adding a cluster entry in kubeconfig..."
+  kubectl config set-cluster "$cluster_name" \
+    --kubeconfig="$kubeconfig" \
+    --server="$endpoint" \
+    --certificate-authority="$ca_crt_file" \
+    --embed-certs=true
+  print_info_label "K8S-SA" "Adding token credentials entry in kubeconfig..."
+  kubectl config set-credentials \
+    "$sa_name-$namespace-$cluster_name" \
+    --kubeconfig="$kubeconfig" \
+    --token="$sa_token"
+  print_info_label "K8S-SA" "Adding a context entry in kubeconfig..."
+  kubectl config set-context \
+    "$sa_name-$namespace-$cluster_name" \
+    --kubeconfig="$kubeconfig" \
+    --cluster="$cluster_name" \
+    --user="$sa_name-$namespace-$cluster_name" \
+    --namespace="$namespace"
+  print_info_label "K8S-SA" "Setting context in kubeconfig..."
+  kubectl config use-context "$sa_name-$namespace-$cluster_name" --kubeconfig="$kubeconfig"
+  cat $kubeconfig
+  for f in $ca_crt_file $kubeconfig; do
+    print_debug_label "K8S-SA" "Unlinking file $f"
+    unlink $f
+  done
+}
+
+# -----------------------------------------------------------------------------
+# Golang functions ------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+# Change go versions
+function go_ch() {
+  if test -n "$1"; then
+    print_info "Go $TXT_DIVIDER$FMT_INFO Running Gimme with $1"
+    eval "$(gimme $1)"
+  else
+    print_info "Go $TXT_DIVIDER$FMT_INFO Sourcing latest Go env..."
+    local env_file="$HOME/.gimme/envs/latest.env"
+    if test -r $env_file; then
+      source $env_file
+    fi
+  fi
+}
+
+# Get coverage report for testing go projects
+function go_cover () {
+  local t=$(mktemp -t cover)
+  go test $COVERFLAGS -coverprofile=$t $@ \
+    && go tool cover -func=$t \
+    && unlink $t
 }
 
 # -----------------------------------------------------------------------------
@@ -112,32 +184,40 @@ function print_debug() {
   echo -en "$TXT_DIVIDER$FMT_DEBUG Debug $TXT_DIVIDER $FMT_DEBUG$@$FMT_CLEAR_ALL\n"
 }
 
+function print_debug_label() {
+  if test -z "$DEBUG"; then return; fi
+  echo -en "$TXT_DIVIDER$FMT_DEBUG Debug $TXT_DIVIDER $FMT_DEBUG$1 $TXT_DIVIDER $FMT_DEBUG$2$FMT_CLEAR_ALL\n"
+}
+
 function print_error() {
   echo -en "$TXT_DIVIDER$FMT_ERROR Error $TXT_DIVIDER $FMT_ERROR$@$FMT_CLEAR_ALL\n"
+}
+function print_error_label() {
+  echo -en "$TXT_DIVIDER$FMT_ERROR Error $TXT_DIVIDER $FMT_ERROR$1 $TXT_DIVIDER $FMT_ERROR$2$FMT_CLEAR_ALL\n"
 }
 
 function print_info() {
   echo -en "$TXT_DIVIDER$FMT_INFO Info $TXT_DIVIDER $FMT_INFO$@$FMT_CLEAR_ALL\n"
 }
 
+function print_info_label() {
+  echo -en "$TXT_DIVIDER$FMT_INFO Info $TXT_DIVIDER $FMT_INFO$1 $TXT_DIVIDER $FMT_INFO$2$FMT_CLEAR_ALL\n"
+}
+
 function print_warning() {
   echo -en "$TXT_DIVIDER$FMT_WARNING Warning $TXT_DIVIDER $FMT_WARNING$@$FMT_CLEAR_ALL\n"
+}
+
+function print_warning_label() {
+  echo -en "$TXT_DIVIDER$FMT_WARNING Warning $TXT_DIVIDER $FMT_WARNING$1 $TXT_DIVIDER $FMT_WARNING$2$FMT_CLEAR_ALL\n"
 }
 
 function print_usage() {
   echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$@$FMT_CLEAR_ALL\n"
 }
 
-# -----------------------------------------------------------------------------
-# Golang functions ------------------------------------------------------------
-# -----------------------------------------------------------------------------
-
-# Change go versions
-function chgo() {
-  local env_file="$HOME/.gimme/envs/latest.env"
-  if test -r $env_file; then
-    source $env_file
-  fi
+function print_usage_label() {
+  echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$1 $TXT_DIVIDER $FMT_USAGE$2$FMT_CLEAR_ALL\n"
 }
 
 # -----------------------------------------------------------------------------
