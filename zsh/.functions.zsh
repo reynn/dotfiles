@@ -16,20 +16,24 @@ function k8s_dar() {
 function k8s_get_service_account_config() {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
-    print_usage "$0 <sa_name> <namespace>"
+    print_usage "$0 <sa_name> <namespace> <out_file|optional>"
     return 1
   fi
   local kubeconfig="$3"
   if test -z $kubeconfig; then
     print_info_label "K8S-SA" "Creating temp file for the kubeconfig..."
     kubeconfig="$(mktemp -t kubeconfig.yaml)"
+  else
+    print_debug_label "K8S-SA" "Setting permissions for $kubeconfig..."
+    touch $kubeconfig
+    chmod 0644 $kubeconfig
   fi
 
   local sa_name="$1"
   local namespace="$2"
   local sa_uri="$namespace/$sa_name"
 
-  print_debug_label "K8S-SA" "kubeconfig temp file $kubeconfig"
+  print_debug_label "K8S-SA" "kubeconfig file $kubeconfig"
 
   print_info_label "K8S-SA" "Checking for $sa_uri"
 
@@ -82,11 +86,13 @@ function k8s_get_service_account_config() {
     --namespace="$namespace"
   print_info_label "K8S-SA" "Setting context in kubeconfig..."
   kubectl config use-context "$sa_name-$namespace-$cluster_name" --kubeconfig="$kubeconfig"
-  cat $kubeconfig
-  for f in $ca_crt_file $kubeconfig; do
-    print_debug_label "K8S-SA" "Unlinking file $f"
-    unlink $f
-  done
+  print_debug_label "K8S-SA" "Deleting ca.crt temp file..."
+  unlink $ca_crt_file
+  if test -z $3; then
+    print_debug_label "K8S-SA" "Deleting kubeconfig..."
+    cat $kubeconfig
+    unlink $kubeconfig;
+  fi
 }
 
 # -----------------------------------------------------------------------------
