@@ -124,8 +124,12 @@ function go_cover () {
 # -----------------------------------------------------------------------------
 # GitHub functions ------------------------------------------------------------
 function get_latest_gh_assets() {
+  if test -z $1; then
+    print_usage "$0 <git_owner> <git_repository>"
+    return 1
+  fi
   local res=$(curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '. | {tag: .tag_name, assets: [{name: .assets[].name, type: .assets[].content_type, url: .assets[].browser_download_url}]}')
-  echo $res #| jq '[ { tag: .tag_name}.assets[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, tag: .tag_name, url: .browser_download_url} ]'
+  echo $res | jq '[.assets[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, tag: .tag_name, url: .browser_download_url} ]'
 }
 
 # -----------------------------------------------------------------------------

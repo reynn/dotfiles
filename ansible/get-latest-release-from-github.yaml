@@ -28,12 +28,6 @@
     - binaries
     - update
 
-- debug:
-    var: get_latest_binary_shell
-  tags:
-    - binaries
-    - update
-
 - name:
   set_fact:
     get_latest_release_from_github_name: "{{ (get_latest_binary_shell.stdout | from_json)[0].name }}"
@@ -44,7 +38,7 @@
     - binaries
     - update
 
-- name: "Checking if destination download already exists exists"
+- name: Checking if destination download already exists exists
   shell: test -r {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}/{{ get_latest_release_from_github_name }}
   register: get_latest_release_from_github_out_exists
   changed_when: get_latest_release_from_github_out_exists.stderr != ""
@@ -61,7 +55,7 @@
     - binaries
     - update
 
-- name: "Downloading binary"
+- name: Downloading binary
   get_url:
     url: "{{ get_latest_release_from_github_url }}"
     dest: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}/{{ get_latest_release_from_github_name }}"
@@ -71,14 +65,19 @@
     - binaries
     - update
 
-- name: "Extracting gzip file"
+- debug: msg="{{get_latest_release_from_github_name.find(".tar.gz")}}"
+  tags:
+    - binaries
+    - update
+
+- name: Extracting gzip file
   shell: |
     #!/bin/bash -e
     tar xf {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
-    find {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }} -type f -perm +111
+    find {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }} -type f -perm +111 | grep -v .tar.gz
   register: get_latest_release_from_github_extract_gzip
   when:
-    - 'get_latest_release_from_github_type == "application/gzip"'
+    - 'get_latest_release_from_github_type == "application/gzip" or get_latest_release_from_github_name.find(".tar.gz") >= 1'
     - 'get_latest_release_from_github_get_url.changed'
   tags:
     - binaries
@@ -106,7 +105,7 @@
     - binaries
     - update
 
-- name: "Register symlink after extracting gzip"
+- name: Register symlink after extracting gzip
   file:
     src: "{{ get_latest_release_from_github_extract_gzip.stdout | replace('./', '') }}"
     path: "{{ get_latest_release_from_github_alias_path }}"
@@ -116,7 +115,7 @@
     - binaries
     - update
 
-- name: "Register symlink after extracting zip"
+- name: Register symlink after extracting zip
   file:
     src: "{{ get_latest_release_from_github_extract_zip.stdout | replace('./', '') }}"
     path: "{{ get_latest_release_from_github_alias_path }}"
@@ -134,6 +133,7 @@
   when:
     - 'get_latest_release_from_github_type == "application/octet-stream"'
     - '".deb" not in get_latest_release_from_github_name'
+    - '".tar.gz" not in get_latest_release_from_github_name'
     - 'get_latest_release_from_github_get_url.changed'
   tags:
     - binaries

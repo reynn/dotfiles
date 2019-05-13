@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"regexp"
 	"runtime"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -35,7 +36,21 @@ type filterFunc func(asset assetReturn) bool
 
 func filterPlatform(asset assetReturn) bool {
 	debugPrint("Filter: %s | Name: %s\n", assetPlatform, asset.Name)
-	matched, err := regexp.MatchString(assetPlatform, asset.Name)
+	matched, err := regexp.MatchString(assetPlatform, strings.ToLower(asset.Name))
+	if err != nil {
+		return false
+	}
+	return matched
+}
+
+func filterArchitecture(asset assetReturn) bool {
+	var arch string
+	switch runtime.GOARCH {
+		case "amd64":
+			arch = "amd64|x86_64|x8664"
+	}
+	debugPrint("Filter: %s | Name: %s\n", arch, asset.Name)
+	matched, err := regexp.MatchString(arch, strings.ToLower(asset.Name))
 	if err != nil {
 		return false
 	}
@@ -87,6 +102,9 @@ var (
 				fmt.Printf("%s\n", string(b))
 			} else {
 				assets := filterAssets(ret, filterPlatform)
+				if len(assets) > 1 {
+					assets = filterAssets(assets, filterArchitecture)
+				}
 				b, e := json.Marshal(assets)
 				if e != nil {
 					return e
