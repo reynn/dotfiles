@@ -21,23 +21,23 @@ packages:
 # ------------
 # Lists
 bin_downloads:
-  # - name: Ripgrep
-  #   git:
-  #     owner: BurntSushi
-  #     repo: ripgrep
-  #   alias: rg
-  # - name: JQ
-  #   git:
-  #     owner: stedolan
-  #     repo: jq
-  # - name: exa
-  #   git:
-  #     owner: ogham
-  #     repo: exa
-  # - name: skaffold
-  #   git:
-  #     owner: GoogleContainerTools
-  #     repo: skaffold
+  - name: Ripgrep
+    git:
+      owner: BurntSushi
+      repo: ripgrep
+    alias: rg
+  - name: JQ
+    git:
+      owner: stedolan
+      repo: jq
+  - name: exa
+    git:
+      owner: ogham
+      repo: exa
+  - name: skaffold
+    git:
+      owner: GoogleContainerTools
+      repo: skaffold
   - name: goreleaser
     git:
       owner: goreleaser
