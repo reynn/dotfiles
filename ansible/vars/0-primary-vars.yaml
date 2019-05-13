@@ -42,6 +42,10 @@ bin_downloads:
     git:
       owner: goreleaser
       repo: goreleaser
+  - name: minikube
+    git:
+      owner: kubernetes
+      repo: minikube
 git_repos:
   - repo: https://github.com/reynn/dotfiles.git
     dest: "{{ git_path }}/reynn/dotfiles"
