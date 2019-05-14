@@ -84,14 +84,6 @@
         - scripts
         - update
 
-    - name: Exec scripts (Automated)
-      debug:
-        msg: "{{ item }}"
-      when: item.changed
-      tags:
-        - scripts
-      loop: "{{ base_script_downloads.results }}"
-
     - name: Exec gimme
       shell: eval "$(gimme stable)"
       tags:
