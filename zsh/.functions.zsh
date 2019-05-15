@@ -7,6 +7,7 @@ alias FR="source $FP" # alias reload
 
 # -----------------------------------------------------------------------------
 # Kubernetes functions --------------------------------------------------------
+
 function k8s_dar() {
   local resources=$1
   echo "Deleting all $resources resources"
@@ -96,8 +97,26 @@ function k8s_get_service_account_config() {
 }
 
 # -----------------------------------------------------------------------------
-# Golang functions ------------------------------------------------------------
+# Docker functions ------------------------------------------------------------
+
+function docker_retag_and_push() {
+  local image=$1
+  if test -z $image; then
+    print_usage "$0 <image[:tag]> <tag{default=dev}> <registry{default=quay.io/reynn}>"
+    return 1
+  fi
+  local tag="${2:-dev}"
+  local registry="${3:-quay.io/reynn}"
+  local splitImageName=("${(@f)$(helpers text split -d ':' "$image")}")
+  if [ ${#splitImageName[@]} -eq 2 ]; then
+    tag="${splitImageName[2]}"
+  fi
+  print_info_label "docker_retag_and_push" "Retagging $image:$tag to $registry/$image:$tag"
+  docker tag "$image" "$registry/$image:$tag"
+}
+
 # -----------------------------------------------------------------------------
+# Golang functions ------------------------------------------------------------
 
 # Change go versions
 function go_ch() {
@@ -123,6 +142,7 @@ function go_cover () {
 
 # -----------------------------------------------------------------------------
 # GitHub functions ------------------------------------------------------------
+
 function get_latest_gh_assets() {
   if test -z $1; then
     print_usage "$0 <git_owner> <git_repository>"

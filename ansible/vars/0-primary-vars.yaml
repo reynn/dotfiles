@@ -66,3 +66,6 @@ scripts:
   - name: gimme
     url: https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
     args: stable
+  - name: nvm
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh
+    args: stable

@@ -56,6 +56,10 @@ alias localip="ipconfig getifaddr en0"
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
+## Docker:funcs aliases -------------------------------------------------------
+alias retag="docker_retag_and_push"
+
+# -----------------------------------------------------------------------------
 ## Docker:run aliases ---------------------------------------------------------
 alias drbash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash'
 alias drash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash'
