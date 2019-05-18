@@ -76,18 +76,18 @@ alias dru='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubunt
 
 # -----------------------------------------------------------------------------
 ## Docker:image aliases -------------------------------------------------------
-alias di="docker image ls -a"
+alias d_ls_im="docker image ls -a"
 
 # -----------------------------------------------------------------------------
 ## Docker:container aliases ---------------------------------------------------
-alias dc="docker container ls -a"
+alias d_ls_co="docker container ls -a"
 
 # -----------------------------------------------------------------------------
 ## Docker:clean aliases -------------------------------------------------------
-alias dclc="docker container rm \$(docker container ls -qa)"
-alias dclca="docker container rm -f \$(docker container ls -qa)"
-alias dcli="docker image rm \$(docker image ls -q)"
-alias dclia="docker image rm -f \$(docker image ls -q)"
+alias d_clean_co="docker container rm \$(docker container ls -qa)"
+alias d_clean_all_co="docker container rm -f \$(docker container ls -qa)"
+alias d_clean_im="docker image rm \$(docker image ls -q)"
+alias d_clean_all_im="docker image rm -f \$(docker image ls -q)"
 
 # -----------------------------------------------------------------------------
 # SCM aliases -----------------------------------------------------------------

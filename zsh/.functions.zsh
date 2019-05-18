@@ -17,7 +17,7 @@ function k8s_dar() {
 function k8s_get_service_account_config() {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
-    print_usage "$0 <sa_name> <namespace> <out_file|optional>"
+    print_usage "$0" "<sa_name> <namespace> <out_file|optional>"
     return 1
   fi
   local kubeconfig="$3"
@@ -102,7 +102,7 @@ function k8s_get_service_account_config() {
 function docker_retag_and_push() {
   local image=$1
   if test -z $image; then
-    print_usage "$0 <image[:tag]> <tag{default=dev}> <registry{default=quay.io/reynn}>"
+    print_usage "$0" "<image[:tag]> <tag{default=dev}> <registry{default=quay.io/reynn}>"
     return 1
   fi
   local tag="${2:-dev}"
@@ -113,6 +113,40 @@ function docker_retag_and_push() {
   fi
   print_info_label "docker_retag_and_push" "Retagging $image:$tag to $registry/$image:$tag"
   docker tag "$image" "$registry/$image:$tag"
+}
+
+# -----------------------------------------------------------------------------
+# Minikube functions ----------------------------------------------------------
+
+function new_minikube() {
+  local k8s_version="1.14.1"
+  local memory="${2:-4096}"
+  if [ "$1" = '-h' ]; then
+    print_usage "$0" "<k8s_version:$k8s_version> <memory:$memory>"
+    return 0
+  elif test -n "$1"; then
+    echo "k8s_version $k8s_version"
+    k8s_version="$1"
+  fi
+
+  print_info_label "$0" "Checking for existing minikube..."
+  if test $(minikube status --format '{{.Host}}'); then
+    print_info_label "$0" "Deleting existing minikube..."
+    minikube stop
+    minikube delete
+  fi
+
+  print_info_label "$0" "Creating new minikube instance <k8s_version:$k8s_version> <memory:$memory>..."
+
+  minikube start \
+    --kubernetes-version=v$k8s_version \
+    --memory=$memory \
+    --bootstrapper=kubeadm \
+    --extra-config=kubelet.authentication-token-webhook=true \
+    --extra-config=kubelet.authorization-mode=Webhook \
+    --extra-config=scheduler.address=0.0.0.0 \
+    --extra-config=controller-manager.address=0.0.0.0 \
+    --vm-driver hyperkit
 }
 
 # -----------------------------------------------------------------------------
@@ -145,7 +179,7 @@ function go_cover () {
 
 function get_latest_gh_assets() {
   if test -z $1; then
-    print_usage "$0 <git_owner> <git_repository>"
+    print_usage "$0" "<git_owner> <git_repository>"
     return 1
   fi
   local res=$(curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '. | {tag: .tag_name, assets: [{name: .assets[].name, type: .assets[].content_type, url: .assets[].browser_download_url}]}')
@@ -168,7 +202,11 @@ function listen_port() {
 
 function kill_listening() {
   local port=$1
-  local process=$(listenport $port)
+  if test -z $port; then
+    print_usage "$0" "<port_number>"
+    return 1
+  fi
+  local process=$(listen_port $port)
 
   echo "Killing process $process"
   sudo kill -9 $process
@@ -194,8 +232,14 @@ function o() {
 }
 
 function bin_completion() {
-  for bin in minikube kubectl; do
-    print_info "Getting completions for $bin"
+  local bins=(minikube kubectl helm)
+  local in=($@)
+  if [ ${#in[@]} -gt 0 ]; then
+    print_debug_label "$0" "overriding defaults..."
+    bins=($@)
+  fi
+  for bin in $bins; do
+    print_info "Sourcing completions for $bin"
     source <($bin completion zsh)
   done
 }
@@ -243,11 +287,7 @@ function print_warning_label() {
 }
 
 function print_usage() {
-  echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$@$FMT_CLEAR_ALL\n"
-}
-
-function print_usage_label() {
-  echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$1 $TXT_DIVIDER $FMT_USAGE$2$FMT_CLEAR_ALL\n"
+  echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$1 $2$FMT_CLEAR_ALL\n"
 }
 
 # -----------------------------------------------------------------------------

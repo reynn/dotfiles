@@ -9,7 +9,7 @@ alias ER="source $FP" # alias reload
 # UNIX exports ----------------------------------------------------------------
 export SSH_KEY_PATH='~/.ssh/rsa_id'
 export EDITOR='vim'
-export PATH="$HOME/.bins:$HOME/.cargo/bin:$HOME/.npm-global/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:$HOME/go/bin:$HOME/git/bin:$HOME/git/junegunn/fzf/bin:/usr/local/go/bin:/usr/local/MacGPG2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$HOME/.bins:$HOME/.cargo/bin:$HOME/Library/Python/3.7/bin:$HOME/.npm-global/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:$HOME/go/bin:$HOME/git/bin:$HOME/git/junegunn/fzf/bin:/usr/local/go/bin:/usr/local/MacGPG2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
 export HISTSIZE='32768'
