@@ -359,11 +359,18 @@ zle -N fzf-dps
 # -----------------------------------------------------------------------------
 ## FZF:K8S functions ----------------------------------------------------------
 function fzf-k8s-logs {
-  local all_matches=$(kubectl get pods -o name)
-  local selection=$(echo "$all_matches" | fzf)
-  echo $selection
+  if test -n $K8S_NAMESPACE; then
+    local all_matches=$(kubectl get pods --all-namespaces -o json | jq '.items[] | {name: .metadata.name, namespace: .metadata.namespace}')
+  else
+    local all_matches=$(kubectl get pods --namespace $K8S_NAMESPACE -o json | jq '.items[] | {name: .metadata.name, namespace: .metadata.namespace}')
+  fi
+  local selection=$(echo "$all_matches" | jq -r '.name' | fzf)
+  print_debug_label "$0.selection" "$selection"
+  local namespace=$(echo "$all_matches" | jq ". | select(.name==\"$selection\").namespace" -r)
+  print_debug_label "$0.namespace" "$namespace"
   if [ ! -z $selection ]; then
-    BUFFER="kubectl logs -f $selection"
+    BUFFER="kubectl logs -n $namespace -f $selection"
+    echo $BUFFER
     zle accept-line
   fi
   zle reset-prompt
