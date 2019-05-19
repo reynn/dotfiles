@@ -14,6 +14,37 @@ function k8s_dar() {
   kubectl delete $(kubectl get $resources -o name)
 }
 
+function install_helm_chart() {
+  local values_path=`echo ${HELM_VALUES_PATH:-"$DFP/k8s/helm/values"}`
+  local all_matches=$(find $values_path -type f -name "*$1*.yaml")
+  local selected_chart=$(echo "$all_matches" | fzf)
+  local relative_values_file=$(realpath --relative-to=$selected_chart $PWD)
+  print_debug_label "$0.relative_values_file" "$relative_values_file"
+  local selection=$(basename $selected_chart)
+  local splitSelection=("${(@f)$(helpers text split -d '_' "$selection")}")
+  print_debug_label "$0.selection" "$selection"
+
+  local release_name=$(echo "$splitSelection[1]")
+  local namespace=$(dirname $selected_chart | xargs basename)
+
+  # if splitSelection > 2; then chart_repository included
+  if [ ${#splitImageName[@]} -gt 2 ]; then
+    tag="${splitImageName[2]}"
+    local chart_name="$(echo $splitSelection[3] | cut -d"." -f1)"
+    local chart_repository="$(echo $splitSelection[2])"
+  # else; stable
+  else
+    local chart_name=$(echo "$splitSelection[2]" | cut -d"." -f1)
+    local chart_repository="stable"
+  # fi
+  fi
+  print_debug_label "$0.release_name" "$release_name"
+  print_debug_label "$0.namespace" "$namespace"
+  print_debug_label "$0.chart_repository" "$chart_repository"
+  print_debug_label "$0.chart_name" "$chart_name"
+  echo "helm upgrade -i --namespace $namespace -f $relative_values_file $release_name $chart_repository/$chart_name"
+}
+
 function k8s_get_service_account_config() {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
@@ -107,7 +138,9 @@ function docker_retag_and_push() {
   fi
   local tag="${2:-dev}"
   local registry="${3:-quay.io/reynn}"
+  # split
   local splitImageName=("${(@f)$(helpers text split -d ':' "$image")}")
+  # length
   if [ ${#splitImageName[@]} -eq 2 ]; then
     tag="${splitImageName[2]}"
   fi

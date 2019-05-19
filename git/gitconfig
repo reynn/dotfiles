@@ -185,3 +185,5 @@
   # Make `git push` push relevant annotated tags when pushing branches out.
   followTags = true
   rebase = "true"
+[user]
+	signingKey = A917EA0E538A2C1A

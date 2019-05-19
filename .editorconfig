@@ -8,9 +8,9 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.py]
+[{python/*,*.py}]
 indent_size = 4
-indent_style = tab
+indent_style = space
 
 [*.go]
 indent_size = 4

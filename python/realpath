@@ -1,0 +1,19 @@
+#!/usr/bin/env python3.7
+import os
+from pathlib import Path
+from argparse import ArgumentParser
+
+
+def entry_point():
+    parser = ArgumentParser(description='')
+    parser.add_argument('--relative-to', '-r', required=True)
+    parser.add_argument('paths', metavar='PATHS', type=str, nargs='+')
+    args = parser.parse_args()
+
+    r = args.relative_to
+    p = args.paths[0]
+    print(os.path.relpath(r, p))
+
+
+if __name__ == '__main__':
+    entry_point()
