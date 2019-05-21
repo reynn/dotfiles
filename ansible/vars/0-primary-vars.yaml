@@ -46,20 +46,24 @@ bin_downloads:
     git:
       owner: kubernetes
       repo: minikube
+  - name: rio
+    git:
+      owner: rancher
+      repo: rio
 git_repos:
-  - repo: https://github.com/reynn/dotfiles.git
+  - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ git_path }}/reynn/dotfiles"
-  - repo: https://github.com/reynn/k8s.git
+  - repo: git@github.com:reynn/k8s.git
     dest: "{{ git_path }}/reynn/k8s"
-  - repo: https://github.com/robbyrussell/oh-my-zsh.git
+  - repo: git@github.com:robbyrussell/oh-my-zsh.git
     dest: "{{ git_path }}/robbyrussell/oh-my-zsh"
-  - repo: https://github.com/bhilburn/powerlevel9k.git
+  - repo: git@github.com:bhilburn/powerlevel9k.git
     dest: "{{ git_path }}/robbyrussell/oh-my-zsh/custom/themes/powerlevel9k"
-  - repo: https://github.com/mbadolato/iTerm2-Color-Schemes.git
+  - repo: git@github.com:mbadolato/iTerm2-Color-Schemes.git
     dest: "{{ git_path }}/mbadolato/iterm2-color"
-  - repo: https://github.com/powerline/fonts.git
+  - repo: git@github.com:powerline/fonts.git
     dest: "{{ git_path }}/powerline/fonts"
-  - repo: https://github.com/junegunn/fzf.git
+  - repo: git@github.com:junegunn/fzf.git
     dest: "{{ git_path }}/junegunn/fzf"
 commands:
   - cmd: "go build -o {{ bins_dir }}/helpers main.go"

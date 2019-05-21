@@ -48,7 +48,17 @@ function install_helm_chart() {
 function k8s_get_service_account_config() {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
-    print_usage "$0" "<sa_name> <namespace> <out_file|optional>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Description | Get a Kubeconfig.yaml for the specified Service account. Creates account if it doesn't exist."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Usage       | $0 <sa_name> <namespace> <out_file>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "sa_name     | Name of a K8S service account. Will be created if it doesn't exist."
+    print_usage "$0" "namespace   | Namespace the service account should exist in."
+    print_usage "$0" "out_file    | Where to write the kubeconfig to, will output to stdout if not set."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Example     | \`$0 example-sa\` (Retag test-image to quay.io/reynn/test-image:dev)"
+    print_usage "$0" "Example     | \`$0 example-sa development\` (Create SA example-sa in the development namespace)"
     return 1
   fi
   local kubeconfig="$3"
@@ -133,7 +143,17 @@ function k8s_get_service_account_config() {
 function docker_retag_and_push() {
   local image=$1
   if test -z $image; then
-    print_usage "$0" "<image[:tag]> <tag{default=dev}> <registry{default=quay.io/reynn}>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Description | Retag a Docker image with the provided tag and registry."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Usage       | $0 <image> <tag> <registry>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "image       | Name of an image to retag"
+    print_usage "$0" "tag         | New tag name (Default: dev)"
+    print_usage "$0" "registry    | The registry to push to (Default: quay.io/reynn)"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Example     | \`$0 test-image\`          (Retag test-image to quay.io/reynn/test-image:dev)"
+    print_usage "$0" "Example     | \`$0 test-image:snapshot\` (Retag test-image:snapshot to quay.io/reynn/test-image:dev)"
     return 1
   fi
   local tag="${2:-dev}"
@@ -144,8 +164,8 @@ function docker_retag_and_push() {
   if [ ${#splitImageName[@]} -eq 2 ]; then
     tag="${splitImageName[2]}"
   fi
-  print_info_label "docker_retag_and_push" "Retagging $image:$tag to $registry/$image:$tag"
-  docker tag "$image" "$registry/$image:$tag"
+  print_info_label "$0" "Retagging $image:$tag to $registry/$image:$tag"
+  # docker tag "$image" "$registry/$image:$tag"
 }
 
 # -----------------------------------------------------------------------------
@@ -153,14 +173,23 @@ function docker_retag_and_push() {
 
 function new_minikube() {
   local k8s_version="1.14.1"
-  local memory="${2:-4096}"
+  local memory="${2:-4}"
   if [ "$1" = '-h' ]; then
-    print_usage "$0" "<k8s_version:$k8s_version> <memory:$memory>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Description | Create a new Minikube cluster with provided settings."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Usage       | $0 <kubernetes_version> <memory>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "k8s_version | Version of Kubernetes to use. (Default: 1.14.1)"
+    print_usage "$0" "memory      | Amount of memory to start Minikube with, in Gb. (Default: 4Gb)"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Example     | \`$0 1.14.1 3\` (Start Minikube with 3Gb RAM on K8S v1.14.1)"
     return 0
   elif test -n "$1"; then
     echo "k8s_version $k8s_version"
     k8s_version="$1"
   fi
+  memory="$(($memory*1024))"
 
   print_info_label "$0" "Checking for existing minikube..."
   if test $(minikube status --format '{{.Host}}'); then
@@ -211,12 +240,25 @@ function go_cover () {
 # GitHub functions ------------------------------------------------------------
 
 function get_latest_gh_assets() {
+  local owner=$1
+  local repo=$2
+  local host=${3:-api.github.com}
+
   if test -z $1; then
-    print_usage "$0" "<git_owner> <git_repository>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Description | Create a new Minikube cluster with provided settings."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Usage       | $0 <owner> <repo> <host>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "owner       | The owner of the repository in GitHub"
+    print_usage "$0" "repo        | The repository to get assets from"
+    print_usage "$0" "host        | The API url to check. (Default: api.github.com)"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Example     | \`$0 stedolan jq\` (Get the assets for the most recent JQ release in GitHub)"
+    print_usage "$0" "Example     | \`$0 stedolan jq api.github.enterprise.com\` (Get the latest assets from GCPD in Github Enterprise)"
     return 1
   fi
-  local res=$(curl -Ls https://api.github.com/repos/$1/$2/releases/latest | jq '. | {tag: .tag_name, assets: [{name: .assets[].name, type: .assets[].content_type, url: .assets[].browser_download_url}]}')
-  echo $res | jq '[.assets[] | select(.content_type!="text/plain") | {name: .name, type: .content_type, tag: .tag_name, url: .browser_download_url} ]'
+  helpers gh get --owner $owner --host $host --repo $repo asset --all
 }
 
 # -----------------------------------------------------------------------------
@@ -236,7 +278,14 @@ function listen_port() {
 function kill_listening() {
   local port=$1
   if test -z $port; then
-    print_usage "$0" "<port_number>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Description | Kill process listening on specified port."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Usage       | $0 <port_number>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "port_number | Port number something is listening on"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Example     | \`$0 8000\` (Force kill the process listening on port 8000)"
     return 1
   fi
   local process=$(listen_port $port)
@@ -320,7 +369,8 @@ function print_warning_label() {
 }
 
 function print_usage() {
-  echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$1 $2$FMT_CLEAR_ALL\n"
+  echo -en "$FMT_SET_BOLD$FMT_USAGE$1 $TXT_DIVIDER$FMT_USAGE $2$FMT_CLEAR_ALL\n"
+  # echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$1 $TXT_DIVIDER$FMT_USAGE $2$FMT_CLEAR_ALL\n"
 }
 
 # -----------------------------------------------------------------------------
