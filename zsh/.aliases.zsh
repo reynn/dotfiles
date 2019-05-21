@@ -18,7 +18,7 @@ alias N="| /dev/null"
 alias S='| sort'
 alias G='| grep'
 
-alias update-dotfiles="ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml"
+alias update-dotfiles="ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags update"
 
 # -----------------------------------------------------------------------------
 # Unix aliases ----------------------------------------------------------------

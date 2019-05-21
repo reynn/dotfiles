@@ -28,7 +28,7 @@
     - binaries
     - update
 
-- name:
+- name: Configure release variables
   set_fact:
     get_latest_release_from_github_name: "{{ (get_latest_binary_shell.stdout | from_json)[0].name }}"
     get_latest_release_from_github_url: "{{ (get_latest_binary_shell.stdout | from_json)[0].url }}"
