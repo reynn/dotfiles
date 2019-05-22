@@ -15,6 +15,14 @@ function k8s_dar() {
 }
 
 function install_helm_chart() {
+  if [ "$1" = '-h' ]; then
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Description | Install Helm chart based on set of available values files."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Usage       | $0"
+    print_usage "$0" "------------------------------------------------------------------"
+    return 0
+  fi
   local values_path=`echo ${HELM_VALUES_PATH:-"$DFP/k8s/helm/values"}`
   local all_matches=$(find $values_path -type f -name "*$1*.yaml")
   local selected_chart=$(echo "$all_matches" | fzf)

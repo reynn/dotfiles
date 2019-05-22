@@ -50,6 +50,10 @@ bin_downloads:
     git:
       owner: rancher
       repo: rio
+  - name: doctl
+    git:
+      owner: digitalocean
+      repo: doctl
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ git_path }}/reynn/dotfiles"
