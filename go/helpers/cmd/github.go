@@ -43,11 +43,17 @@ func filterPlatform(asset assetReturn) bool {
 	return matched
 }
 
+func filterShaFiles(asset assetReturn) bool {
+	f := strings.HasSuffix(asset.URL, ".sha256")
+	debugPrint("Filter: %s | Name: %s | Result: %v\n", "sha256", asset.Name, f)
+	return !f
+}
+
 func filterArchitecture(asset assetReturn) bool {
 	var arch string
 	switch runtime.GOARCH {
-		case "amd64":
-			arch = "amd64|x86_64|x8664"
+	case "amd64":
+		arch = "amd64|x86_64|x8664"
 	}
 	debugPrint("Filter: %s | Name: %s\n", arch, asset.Name)
 	matched, err := regexp.MatchString(arch, strings.ToLower(asset.Name))
@@ -102,6 +108,7 @@ var (
 				fmt.Printf("%s\n", string(b))
 			} else {
 				assets := filterAssets(ret, filterPlatform)
+				assets = filterAssets(assets, filterShaFiles)
 				if len(assets) > 1 {
 					assets = filterAssets(assets, filterArchitecture)
 				}

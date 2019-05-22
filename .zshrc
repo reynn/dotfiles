@@ -51,17 +51,12 @@ source $GFP/robbyrussell/oh-my-zsh/oh-my-zsh.sh
 alias izf="import_zsh_files $IMPORT_DIRECTORIES"
 # export DEBUG="true"
 function import_zsh_files() {
-  for d in $1
-  do
+  debugEcho "> Importing zsh files..."
+  for d in $1; do
     debugEcho ">> Searching dir :$d"
-    for f in $(ls -a $DFP/$d)
-    do
-      local dfp_dir="$DFP/$d/$f"
-      local home_dir="$HOME/$f"
-      debugEcho ">>> Sourcing :: $dfp_dir"
-      source $dfp_dir
-      debugEcho ">>> Sourcing :: $home_dir"
-      test -r $home_dir && source $home_dir
+    for f in $(find $DFP/$d -type f -name "*.zsh"); do
+      debugEcho ">>> Sourcing :: $f"
+      source $f
     done
   done
 }

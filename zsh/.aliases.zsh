@@ -35,6 +35,7 @@ alias ccat='pygmentize'
 alias ols="ls -la"
 alias l="exa -lah --group-directories-first --time-style long-iso --color-scale"
 alias ll="l --git-ignore --tree "
+alias cl="clear;l"
 alias cls="clear;ls"
 
 # -----------------------------------------------------------------------------

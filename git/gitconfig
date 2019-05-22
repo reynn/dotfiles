@@ -42,7 +42,7 @@
   # Credit an author on the latest commit ---------------------------------------
   credit = "!f() { if test -z $1; then echo 'git credit <name> <email>' && return; fi; git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
   # Find commits by source code -------------------------------------------------
-  fc = "!f() { if test -z $1; then echo 'git fc <commit-msg>' && return; fi; git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+  fc = "!f() { if test -z $1; then echo 'git fc <commit-msg>' && return; fi; git log --pretty=format:'%C(yellow)%h  %Cblue%ad %Creset%s%Cgreen [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
 
   # ----------------------------------------------------------------------------#
   # Diff aliases ---------------------------------------------------------------#
@@ -65,7 +65,7 @@
   l = log --pretty=oneline -n 20 --graph --abbrev-commit
 
   # Find commits by commit message ----------------------------------------------
-  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad %Creset%s%Cgreen [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
 
   # ----------------------------------------------------------------------------#
   # Pull aliases ---------------------------------------------------------------#
@@ -185,3 +185,5 @@
   # Make `git push` push relevant annotated tags when pushing branches out.
   followTags = true
   rebase = "true"
+[user]
+	signingKey = A917EA0E538A2C1A
