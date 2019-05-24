@@ -26,5 +26,5 @@ function docker_retag_and_push() {
     tag="${splitImageName[2]}"
   fi
   print_info_label "$0" "Retagging $image:$tag to $registry/$image:$tag"
-  # docker tag "$image" "$registry/$image:$tag"
+  docker tag "$image" "$registry/$image:$tag"
 }
