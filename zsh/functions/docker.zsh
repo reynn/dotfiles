@@ -9,6 +9,8 @@ function docker_retag_and_push() {
     print_usage "$0" "------------------------------------------------------------------"
     print_usage "$0" "Usage       | $0 <image> <tag> <registry>"
     print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Parameters  |-----------------------------------------------------"
+    print_usage "$0" "------------------------------------------------------------------"
     print_usage "$0" "image       | Name of an image to retag"
     print_usage "$0" "tag         | New tag name (Default: dev)"
     print_usage "$0" "registry    | The registry to push to (Default: quay.io/reynn)"

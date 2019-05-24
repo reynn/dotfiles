@@ -12,6 +12,8 @@ function get_latest_gh_assets() {
     print_usage "$0" "------------------------------------------------------------------"
     print_usage "$0" "Usage       | $0 <owner> <repo> <host>"
     print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Parameters  |-----------------------------------------------------"
+    print_usage "$0" "------------------------------------------------------------------"
     print_usage "$0" "owner       | The owner of the repository in GitHub"
     print_usage "$0" "repo        | The repository to get assets from"
     print_usage "$0" "host        | The API url to check. (Default: api.github.com)"

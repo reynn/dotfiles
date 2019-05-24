@@ -27,6 +27,8 @@ function kill_listening() {
     print_usage "$0" "------------------------------------------------------------------"
     print_usage "$0" "Usage       | $0 <port_number>"
     print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Parameters  |-----------------------------------------------------"
+    print_usage "$0" "------------------------------------------------------------------"
     print_usage "$0" "port_number | Port number something is listening on"
     print_usage "$0" "------------------------------------------------------------------"
     print_usage "$0" "Example     | \`$0 8000\` (Force kill the process listening on port 8000)"

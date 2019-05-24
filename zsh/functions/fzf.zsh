@@ -34,7 +34,7 @@ zle -N fzf-dps
 # -----------------------------------------------------------------------------
 ## FZF:K8S functions ----------------------------------------------------------
 function fzf-k8s-logs {
-  if test -n $K8S_NAMESPACE; then
+  if test -z $K8S_NAMESPACE; then
     local all_matches=$(kubectl get pods --all-namespaces -o json | jq '.items[] | {name: .metadata.name, namespace: .metadata.namespace}')
   else
     local all_matches=$(kubectl get pods --namespace $K8S_NAMESPACE -o json | jq '.items[] | {name: .metadata.name, namespace: .metadata.namespace}')
