@@ -54,10 +54,10 @@ bin_downloads:
     git:
       owner: digitalocean
       repo: doctl
-  - name: k9s
-    git:
-      owner: derailed
-      repo: k9s
+  # - name: k9s # Commented out, all releases currently marked as pre-release
+  #   git:
+  #     owner: derailed
+  #     repo: k9s
   - name: stern
     git:
       owner: wercker

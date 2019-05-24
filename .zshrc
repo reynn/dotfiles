@@ -27,11 +27,12 @@ function debugEcho() {
 
 # -----------------------------------------------------------------------------
 ## ZSH:Config -----------------------------------------------------------------
-ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv go_version status dir_writable)
-HYPHEN_INSENSITIVE="true"
-COMPLETION_WAITING_DOTS="true"
+ZSH_THEME='powerlevel9k/powerlevel9k'
+POWERLEVEL9K_PROMPT_ON_NEWLINE='true'
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir go_version vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv command_execution_time kubecontext aws status dir_writable)
+HYPHEN_INSENSITIVE='true'
+COMPLETION_WAITING_DOTS='true'
 
 plugins=()
 test -r "$(which aws)" && plugins+=('aws')
@@ -42,6 +43,19 @@ test -r "$(which git)" && plugins+=('git')
 ## ZSH:Init -------------------------------------------------------------------
 export ZSH="$GFP/robbyrussell/oh-my-zsh"
 source $GFP/robbyrussell/oh-my-zsh/oh-my-zsh.sh
+
+# -----------------------------------------------------------------------------
+## ZSH:Functions --------------------------------------------------------------
+prompt_go_version() {
+  local go_version
+  local go_path
+  go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
+  go_path=$(go env GOPATH 2>/dev/null)
+
+  if [[ -n "$go_version" && ("${PWD##$go_path}" != "$PWD" || -f "$PWD/go.mod") ]]; then
+    "$1_prompt_segment" "$0" "$2" "green" "grey93" "$go_version" "GO_ICON"
+  fi
+}
 
 # -----------------------------------------------------------------------------
 # Imports ---------------------------------------------------------------------
