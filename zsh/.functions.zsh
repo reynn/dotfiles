@@ -72,6 +72,30 @@ function bin_completion() {
   done
 }
 
+function join() {
+  if [ "$1" = '-h' ]; then
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Description | array.join()."
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Usage       | $0 <var> <string> <elements>"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Parameters  |-----------------------------------------------------"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "var         | Variable to create"
+    print_usage "$0" "string      | String to join on"
+    print_usage "$0" "elements    | Array to join"
+    print_usage "$0" "------------------------------------------------------------------"
+    print_usage "$0" "Example     | \`$0 joined \" and \" \"\${a[@]}\"; echo \$joined\` (one and two and three three and four and five)"
+    return 1
+  fi
+  # $1 is return variable name
+  # $2 is sep
+  # $3... are the elements to join
+  local var=$1 sep=$2 ret=$3
+  shift 3 || shift $(($#))
+  printf -v "$var" "%s" "$ret${@/#/$sep}"
+}
+
 function join_by() {
   local IFS="$1"
   shift

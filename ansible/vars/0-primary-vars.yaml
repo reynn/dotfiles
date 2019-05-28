@@ -67,6 +67,8 @@ git_repos:
     dest: "{{ git_path }}/reynn/dotfiles"
   - repo: git@github.com:reynn/k8s.git
     dest: "{{ git_path }}/reynn/k8s"
+  - repo: git@github.com:thecasualcoder/kube-fzf.git
+    dest: "{{ git_path }}/thecasualcoder/kube-fzf"
   - repo: git@github.com:robbyrussell/oh-my-zsh.git
     dest: "{{ git_path }}/robbyrussell/oh-my-zsh"
   - repo: git@github.com:bhilburn/powerlevel9k.git

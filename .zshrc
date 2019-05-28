@@ -11,6 +11,7 @@ alias ZR="source $FP" # alias reload
 
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
+source $DFP/zsh/.functions.zsh
 source $DFP/zsh/.exports.zsh
 
 # -----------------------------------------------------------------------------
@@ -78,12 +79,19 @@ export IMPORT_DIRECTORIES=(zsh)
 
 import_zsh_files $IMPORT_DIRECTORIES
 
-if test -r "$HOME/.gimme/envs/latest.env"; then
-  source $HOME/.gimme/envs/latest.env
-fi
+local sourcePaths=(
+  "$HOME/.gimme/envs/latest.env"
+  "$HOME/.iterm2_shell_integration.zsh"
+  "$GFP/thecasualcoder/kube-fzf/kube-fzf.sh"
+)
 
-test -r "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-test -r $DFP/zsh/.fzf.zsh && source $DFP/zsh/.fzf.zsh
+debugEcho "> Sourcing additional files..."
+for sourceable in $sourcePaths; do
+  debugEcho ">> Checking :$sourceable"
+  if test -r "$sourceable"; then
+    debugEcho ">>> Source :$sourceable"
+    source "$sourceable"
+  fi
+done
 
 # zprof # uncomment to debug performance issues with zsh startup

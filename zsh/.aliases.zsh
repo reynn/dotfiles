@@ -70,7 +70,7 @@ alias dr='drbash'
 alias gen_version='docker run --rm -v $PWD:$PWD -w $PWD quay.io/reynn/docker-versioner:0.9.0'
 
 alias dra='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine:3.9'
-alias drg='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash golang:1.12'
+alias drg='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash quay.io/reynn/golang:latest'
 alias drk='docker run --rm -it -v $PWD:$PWD -v $HOME/.kube:/root/.kube -w $PWD -u 0:0 --entrypoint=/bin/bash bitnami/kubectl'
 alias drp='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python:3.7'
 alias dru='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu:19.04'
