@@ -16,6 +16,7 @@ local paths=(
   "$HOME/Library/Python/3.7/bin"
   "$HOME/.npm-global/bin"
   "/Library/Frameworks/Python.framework/Versions/3.7/bin"
+  "$HOME/.krew/bin"
   "$HOME/go/bin"
   "$GFP/thecasualcoder/kube-fzf"
   "$GFP/bin"

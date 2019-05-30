@@ -25,7 +25,7 @@ function install_helm_chart() {
   fi
   local values_path=`echo ${HELM_VALUES_PATH:-"$DFP/k8s/helm/values"}`
   local all_matches=$(find $values_path -type f -name "*$1*.yaml")
-  local selected_chart=$(echo "$all_matches" | fzf)
+  local selected_chart=$(echo "$all_matches" | fzf --height=10 --ansi --reverse --select-1)
   local relative_values_file=$(realpath --relative-to=$selected_chart $PWD)
   print_debug_label "$0.relative_values_file" "$relative_values_file"
   local selection=$(basename $selected_chart)
@@ -51,7 +51,8 @@ function install_helm_chart() {
   print_debug_label "$0.namespace           " "$namespace"
   print_debug_label "$0.chart_repository    " "$chart_repository"
   print_debug_label "$0.chart_name          " "$chart_name"
-  echo "helm upgrade -i --namespace $namespace -f $relative_values_file $release_name $chart_repository/$chart_name"
+  print_info_label "$0" "helm upgrade -i --namespace $namespace -f $relative_values_file $release_name $chart_repository/$chart_name"
+  helm upgrade -i --namespace $namespace -f $relative_values_file $release_name $chart_repository/$chart_name
 }
 
 function k8s_get_service_account_config() {
