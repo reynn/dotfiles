@@ -7,7 +7,7 @@ stty stop undef
 function fzf-ssh {
   local all_matches=$(rg "Host\s+\w+" ~/.ssh/config* | rg -v '\*')
   local only_host_parts=$(echo "$all_matches" | awk '{print $NF}')
-  local selection=$(echo "$only_host_parts" | fzf)
+  local selection=$(echo "$only_host_parts" | fzf --height=10 --ansi --reverse --select-1)
   echo $selection
   if [ ! -z $selection ]; then
     BUFFER="ssh $selection"

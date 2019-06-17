@@ -7,16 +7,13 @@ alias AE="vim $FP" # alias edit
 alias AR="source $FP" # alias reload
 
 # Global Aliases --------------------------------------------------------------
-alias ...='../..'
-alias ....='../../..'
-alias .....='../../../..'
 alias ZR="sh -c \"$DFP/install.sh\""
-alias C='| wc -l'
-alias H='| head'
-alias L="| less"
-alias N="| /dev/null"
-alias S='| sort'
-alias G='| grep'
+alias C='wc -l'
+alias H='head'
+alias L="less"
+alias N="/dev/null"
+alias S='sort'
+alias G='rg'
 
 alias update-dotfiles="ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags update"
 
@@ -28,13 +25,13 @@ alias update-dotfiles="ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/pla
 ## UNIX:General aliases -------------------------------------------------------
 alias eecho='echo -e'
 alias path='eecho ${PATH//:/\\n}'
-alias ccat='pygmentize'
+alias ccat='pygmentize -O style=stata-dark,full'
 
 # -----------------------------------------------------------------------------
 ## UNIX:Movement aliases ------------------------------------------------------
 alias ols="ls -la"
-alias l="exa -lah --group-directories-first --time-style long-iso --color-scale"
-alias ll="l --git-ignore --tree "
+alias l="exa -lah --git-ignore --group-directories-first --time-style long-iso --color-scale"
+alias ll="l --tree"
 alias cl="clear;l"
 alias cls="clear;ls"
 
