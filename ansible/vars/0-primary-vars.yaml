@@ -62,6 +62,10 @@ bin_downloads:
     git:
       owner: wercker
       repo: stern
+  - name: dockle
+    git:
+      owner: goodwithtech
+      repo: dockle
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ git_path }}/reynn/dotfiles"

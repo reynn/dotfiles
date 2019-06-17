@@ -53,7 +53,7 @@ func filterArchitecture(asset assetReturn) bool {
 	var arch string
 	switch runtime.GOARCH {
 	case "amd64":
-		arch = "amd64|x86_64|x8664"
+		arch = "amd64|x86_64|x8664|64bit"
 	}
 	debugPrint("Filter: %s | Name: %s\n", arch, asset.Name)
 	matched, err := regexp.MatchString(arch, strings.ToLower(asset.Name))

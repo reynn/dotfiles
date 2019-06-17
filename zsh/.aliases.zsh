@@ -57,38 +57,38 @@ alias localip="ipconfig getifaddr en0"
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
+## Docker:build aliases -------------------------------------------------------
+alias dok_bui_rel="DOCKER_CONTENT_TRUST=1 docker build"
+
+# -----------------------------------------------------------------------------
 ## Docker:funcs aliases -------------------------------------------------------
-alias retag="docker_retag_and_push"
+alias dok_retag="docker_retag_and_push"
+alias dok_gen_version='docker run --rm -v $PWD:$PWD -w $PWD quay.io/reynn/docker-versioner:0.9.0'
 
 # -----------------------------------------------------------------------------
 ## Docker:run aliases ---------------------------------------------------------
-alias drbash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash'
-alias drash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash'
-alias drsh='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/sh'
-alias dr='drbash'
+alias dok_run_bash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash'
+alias dok_run_ash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash'
+alias dok_run_sh='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/sh'
+alias dok_run='drbash'
 
-alias gen_version='docker run --rm -v $PWD:$PWD -w $PWD quay.io/reynn/docker-versioner:0.9.0'
-
-alias dra='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine:3.9'
-alias drg='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash quay.io/reynn/golang:latest'
-alias drk='docker run --rm -it -v $PWD:$PWD -v $HOME/.kube:/root/.kube -w $PWD -u 0:0 --entrypoint=/bin/bash bitnami/kubectl'
-alias drp='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python:3.7'
-alias dru='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu:19.04'
+alias dok_run_alpine='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine:3.9'
+alias dok_run_go='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash quay.io/reynn/golang:latest'
+alias dok_run_kubectl='docker run --rm -it -v $PWD:$PWD -v $HOME/.kube:/root/.kube -w $PWD -u 0:0 --entrypoint=/bin/bash bitnami/kubectl'
+alias dok_run_python='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python:3.7'
+alias dok_run_ubuntu='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu:19.04'
 
 # -----------------------------------------------------------------------------
-## Docker:image aliases -------------------------------------------------------
-alias d_ls_im="docker image ls -a"
-
-# -----------------------------------------------------------------------------
-## Docker:container aliases ---------------------------------------------------
-alias d_ls_co="docker container ls -a"
+## Docker:list aliases --------------------------------------------------------
+alias dok_ls_im="docker image ls -a"
+alias dok_ls_co="docker container ls -a"
 
 # -----------------------------------------------------------------------------
 ## Docker:clean aliases -------------------------------------------------------
-alias d_clean_co="docker container rm \$(docker container ls -qa)"
-alias d_clean_all_co="docker container rm -f \$(docker container ls -qa)"
-alias d_clean_im="docker image rm \$(docker image ls -q)"
-alias d_clean_all_im="docker image rm -f \$(docker image ls -q)"
+alias dok_cln_con="docker container rm \$(docker container ls -qa)"
+alias dok_cln_all_con="docker container rm -f \$(docker container ls -qa)"
+alias dok_cln_img="docker image rm \$(docker image ls -q)"
+alias dok_cln_all_img="docker image rm -f \$(docker image ls -q)"
 
 # -----------------------------------------------------------------------------
 # SCM aliases -----------------------------------------------------------------
