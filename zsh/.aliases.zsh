@@ -15,7 +15,15 @@ alias N="/dev/null"
 alias S='sort'
 alias G='rg'
 
-alias update-dotfiles="ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags update"
+# -----------------------------------------------------------------------------
+# Tool aliases ----------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+## Tool:terminal aliases -------------------------------------------------------
+alias tock="tock -cms -C 1 -f 'Day %j of %Y -- (%Y.%m.%d)'"
+alias sterns="stern"
+alias stern="stern -E linkerd-proxy"
 
 # -----------------------------------------------------------------------------
 # Unix aliases ----------------------------------------------------------------
@@ -50,6 +58,11 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 
 # -----------------------------------------------------------------------------
+## UNIX:Text aliases ----------------------------------------------------------
+alias lower="tr '[A-Z]' '[a-z]'"
+alias upper="tr '[a-z]' '[A-Z]'"
+
+# -----------------------------------------------------------------------------
 # Docker aliases --------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
@@ -73,6 +86,7 @@ alias dok_run_alpine='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin
 alias dok_run_go='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash quay.io/reynn/golang:latest'
 alias dok_run_kubectl='docker run --rm -it -v $PWD:$PWD -v $HOME/.kube:/root/.kube -w $PWD -u 0:0 --entrypoint=/bin/bash bitnami/kubectl'
 alias dok_run_python='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python:3.7'
+alias dok_run_rust='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash rust:1.35.0'
 alias dok_run_ubuntu='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu:19.04'
 
 # -----------------------------------------------------------------------------
