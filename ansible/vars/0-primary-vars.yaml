@@ -66,6 +66,11 @@ bin_downloads:
     git:
       owner: goodwithtech
       repo: dockle
+  - name: linkerd2
+    git:
+      owner: linkerd
+      repo: linkerd2
+    alias: linkerd
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ git_path }}/reynn/dotfiles"

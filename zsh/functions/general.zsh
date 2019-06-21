@@ -1,5 +1,3 @@
-alias update-dotfiles=""
-
 function update-dotfiles() {
   local tags=${1:-update}
   if [ "$tags" = '-h' ]; then
