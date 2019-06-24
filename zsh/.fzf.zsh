@@ -1,7 +1,7 @@
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "$GFP/junegunn/fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "$GFP/github.com/junegunn/fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
 # ------------
-source "$GFP/junegunn/fzf/shell/key-bindings.zsh"
+source "$GFP/github.com/junegunn/fzf/shell/key-bindings.zsh"

@@ -1,6 +1,6 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 export GFP="$HOME/git"
-export DFP="$GFP/reynn/dotfiles"
+export DFP="$GFP/github.com/reynn/dotfiles"
 export DIR_BINS="$HOME/.bins"
 FP="$DFP/zsh/.zshrc"
 
@@ -13,6 +13,42 @@ alias ZR="source $FP" # alias reload
 # Start -----------------------------------------------------------------------
 source $DFP/zsh/.functions.zsh
 source $DFP/zsh/.exports.zsh
+
+# -----------------------------------------------------------------------------
+# Start:Antibody --------------------------------------------------------------
+source <(antibody init)
+
+# Setup required env var for oh-my-zsh plugins
+export ZSH="$(antibody home)/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh"
+
+antibody bundle robbyrussell/oh-my-zsh
+
+local zsh_plugins=(
+  docker
+  docker-compose
+  git
+  git-flow
+  gpg-agent
+  httpie
+  jsontools
+  pass
+  rsync
+  ssh-agent
+  tmux
+)
+
+for pl in $zsh_plugins; do
+  antibody bundle robbyrussell/oh-my-zsh path:plugins/$pl
+done
+
+# Other bundles
+antibody bundle zsh-users/zsh-autosuggestions
+
+# This needs to be the last bundle.
+antibody bundle zsh-users/zsh-syntax-highlighting
+
+# Load the theme.
+antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 
 # -----------------------------------------------------------------------------
 ## Start:Functions ------------------------------------------------------------
@@ -34,16 +70,6 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir go_version vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv command_execution_time kubecontext aws status dir_writable)
 HYPHEN_INSENSITIVE='true'
 COMPLETION_WAITING_DOTS='true'
-
-plugins=()
-test -r "$(which aws)" && plugins+=('aws')
-test -r "$(which docker)" && plugins+=('docker')
-test -r "$(which git)" && plugins+=('git')
-
-# -----------------------------------------------------------------------------
-## ZSH:Init -------------------------------------------------------------------
-export ZSH="$GFP/robbyrussell/oh-my-zsh"
-source $GFP/robbyrussell/oh-my-zsh/oh-my-zsh.sh
 
 # -----------------------------------------------------------------------------
 ## ZSH:Functions --------------------------------------------------------------
@@ -82,7 +108,7 @@ import_zsh_files $IMPORT_DIRECTORIES
 local sourcePaths=(
   "$HOME/.gimme/envs/latest.env"
   "$HOME/.iterm2_shell_integration.zsh"
-  "$GFP/thecasualcoder/kube-fzf/kube-fzf.sh"
+  "$GFP/github.com/thecasualcoder/kube-fzf/kube-fzf.sh"
 )
 
 debugEcho "> Sourcing additional files..."

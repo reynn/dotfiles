@@ -1,6 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 export GFP="$HOME/git"
-export DFP="$GFP/reynn/dotfiles"
+export DFP="$GFP/github.com/reynn/dotfiles"
 
 # -----------------------------------------------------------------------------
 # Helper functions ------------------------------------------------------------
@@ -75,10 +75,10 @@ handle_deps() {
 }
 function main() {
   if [ ! -d "$DFP" ]; then
-    print_installing "dependencies where possible..."
+    print_installing "dependencies..."
     handle_deps
     print_installing "ansible configuration..."
-    mkdir "$HOME/.bins"
+    mkdir -p "$HOME/.bins"
     export PATH="$HOME/.bins:$PATH"
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
     ln -sfn $DFP/.zshrc $HOME/.zshrc
