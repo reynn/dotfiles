@@ -55,7 +55,7 @@
         - update
 
     - name: Run fzf install script
-      shell: "{{ git_path }}/junegunn/fzf/install --bin --64"
+      shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
       tags:
         - update
 
