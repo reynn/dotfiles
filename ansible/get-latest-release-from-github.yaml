@@ -1,55 +1,54 @@
 # expected data structure:
-# name: string
+# repository: string
 # alias: string
-# git:
-#   repo: string
-#   host: string
-#   owner: string
 
 - set_fact:
-    get_latest_release_from_github_bins_path: "{{ bins_dir }}/{{ item.name }}_bin"
-    get_latest_release_from_github_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.git.repo) }}"
+    glrfg_host: "{{ item.repository.split('/')[0:-2] | join('/') }}"
+    glrfg_owner: "{{ item.repository.split('/')[-2] }}"
+    glrfg_repository: "{{ item.repository.split('/')[-1] }}"
+    glrfg_bins_path: "{{ bins_dir }}/{{ item.repository.split('/')[-1] }}_bin"
+    glrfg_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.repository.split('/')[-1]) }}"
   tags:
     - binaries
     - update
 
 - name: Create Binary subdirectory
   file:
-    path: "{{ get_latest_release_from_github_bins_path }}"
+    path: "{{ glrfg_bins_path }}"
     state: directory
   tags:
     - binaries
     - update
 
-- name: "Determining appropriate asset to download from GitHub for {{ item.name }}"
-  shell: helpers gh get asset --owner {{ item.git.owner }} --repo {{ item.git.repo }}
-  register: get_latest_binary_shell
+- name: "Determining appropriate asset to download from GitHub for {{ item.repository }}"
+  shell: helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }}
+  register: glrfg_binary_shell
   tags:
     - binaries
     - update
 
 - name: Configure release variables
   set_fact:
-    get_latest_release_from_github_name: "{{ (get_latest_binary_shell.stdout | from_json)[0].name }}"
-    get_latest_release_from_github_url: "{{ (get_latest_binary_shell.stdout | from_json)[0].url }}"
-    get_latest_release_from_github_type: "{{ (get_latest_binary_shell.stdout | from_json)[0].type }}"
-    get_latest_release_from_github_tag: "{{ (get_latest_binary_shell.stdout | from_json)[0].tag }}"
+    glrfg_name: "{{ (glrfg_binary_shell.stdout | from_json)[0].name }}"
+    glrfg_url: "{{ (glrfg_binary_shell.stdout | from_json)[0].url }}"
+    glrfg_type: "{{ (glrfg_binary_shell.stdout | from_json)[0].type }}"
+    glrfg_tag: "{{ (glrfg_binary_shell.stdout | from_json)[0].tag }}"
   tags:
     - binaries
     - update
 
 - name: Checking if destination download already exists exists
-  shell: test -r {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}/{{ get_latest_release_from_github_name }}
-  register: get_latest_release_from_github_out_exists
-  changed_when: get_latest_release_from_github_out_exists.stderr != ""
-  failed_when: get_latest_release_from_github_out_exists.stderr != ""
+  shell: test -r {{ glrfg_bins_path }}/{{ glrfg_tag }}/{{ glrfg_name }}
+  register: glrfg_out_exists
+  changed_when: glrfg_out_exists.stderr != ""
+  failed_when: glrfg_out_exists.stderr != ""
   tags:
     - binaries
     - update
 
 - name: Creating version subdirectory
   file:
-    path: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}"
+    path: "{{ glrfg_bins_path }}/{{ glrfg_tag }}"
     state: directory
   tags:
     - binaries
@@ -57,10 +56,10 @@
 
 - name: Downloading binary
   get_url:
-    url: "{{ get_latest_release_from_github_url }}"
-    dest: "{{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}/{{ get_latest_release_from_github_name }}"
-  register: get_latest_release_from_github_get_url
-  when: 'get_latest_release_from_github_out_exists.rc == 1'
+    url: "{{ glrfg_url }}"
+    dest: "{{ glrfg_bins_path }}/{{ glrfg_tag }}/{{ glrfg_name }}"
+  register: glrfg_get_url
+  when: 'glrfg_out_exists.rc == 1'
   tags:
     - binaries
     - update
@@ -68,12 +67,12 @@
 - name: Extracting gzip file
   shell: |
     #!/bin/bash -e
-    tar xf {{ get_latest_release_from_github_get_url.dest }} -C {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
-    find {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }} -type f -perm +111 | grep -v .tar.gz
-  register: get_latest_release_from_github_extract_gzip
+    tar xf {{ glrfg_get_url.dest }} -C {{ glrfg_bins_path }}/{{ glrfg_tag }}
+    find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm +111 | grep -v .tar.gz
+  register: glrfg_extract_gzip
   when:
-    - 'get_latest_release_from_github_type == "application/gzip" or get_latest_release_from_github_name.find(".tar.gz") >= 1'
-    - 'get_latest_release_from_github_get_url.changed'
+    - 'glrfg_type == "application/gzip" or glrfg_name.find(".tar.gz") >= 1'
+    - 'glrfg_get_url.changed'
   tags:
     - binaries
     - update
@@ -81,78 +80,78 @@
 - name: Extracting zip file
   shell: |
     #!/bin/bash -e
-    unzip -qq {{ get_latest_release_from_github_get_url.dest }} -d {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }}
-    find {{ get_latest_release_from_github_bins_path }}/{{ get_latest_release_from_github_tag }} -type f -perm +111
-  register: get_latest_release_from_github_extract_zip
+    unzip -qq {{ glrfg_get_url.dest }} -d {{ glrfg_bins_path }}/{{ glrfg_tag }}
+    find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm +111
+  register: glrfg_extract_zip
   when:
-    - 'get_latest_release_from_github_type == "application/zip"'
-    - 'get_latest_release_from_github_get_url.changed'
+    - 'glrfg_type == "application/zip"'
+    - 'glrfg_get_url.changed'
   tags:
     - binaries
     - update
 
 - name: Remove alias before linking
   file:
-    path: "{{ get_latest_release_from_github_alias_path }}"
+    path: "{{ glrfg_alias_path }}"
     state: absent
-  when: 'get_latest_release_from_github_get_url.changed'
+  when: 'glrfg_get_url.changed'
   tags:
     - binaries
     - update
 
 - name: Register symlink after extracting gzip
   file:
-    src: "{{ get_latest_release_from_github_extract_gzip.stdout | replace('./', '') }}"
-    path: "{{ get_latest_release_from_github_alias_path }}"
+    src: "{{ glrfg_extract_gzip.stdout | replace('./', '') }}"
+    path: "{{ glrfg_alias_path }}"
     state: link
-  when: 'get_latest_release_from_github_extract_gzip.changed'
+  when: 'glrfg_extract_gzip.changed'
   tags:
     - binaries
     - update
 
 - name: Register symlink after extracting zip
   file:
-    src: "{{ get_latest_release_from_github_extract_zip.stdout | replace('./', '') }}"
-    path: "{{ get_latest_release_from_github_alias_path }}"
+    src: "{{ glrfg_extract_zip.stdout | replace('./', '') }}"
+    path: "{{ glrfg_alias_path }}"
     state: link
-  when: 'get_latest_release_from_github_extract_zip.changed'
+  when: 'glrfg_extract_zip.changed'
   tags:
     - binaries
     - update
 
 - name: Mark binary as executable
   file:
-    path: "{{ get_latest_release_from_github_get_url.dest }}"
+    path: "{{ glrfg_get_url.dest }}"
     mode: "u=rwx,g=rwx,o=rwx"
-  register: get_latest_release_from_github_executable
+  register: glrfg_executable
   when:
-    - 'get_latest_release_from_github_type == "application/octet-stream"'
-    - '".deb" not in get_latest_release_from_github_name'
-    - '".tar.gz" not in get_latest_release_from_github_name'
-    - 'get_latest_release_from_github_get_url.changed'
+    - 'glrfg_type == "application/octet-stream"'
+    - '".deb" not in glrfg_name'
+    - '".tar.gz" not in glrfg_name'
+    - 'glrfg_get_url.changed'
   tags:
     - binaries
     - update
 
 - name: Install deb package
   apt:
-    deb: "{{ get_latest_release_from_github_get_url.dest }}"
-  register: get_latest_release_from_github_deb_install
+    deb: "{{ glrfg_get_url.dest }}"
+  register: glrfg_deb_install
   when:
-    - 'get_latest_release_from_github_type == "application/octet-stream"'
-    - '".deb" in get_latest_release_from_github_name'
-    - 'get_latest_release_from_github_get_url.changed'
+    - 'glrfg_type == "application/octet-stream"'
+    - '".deb" in glrfg_name'
+    - 'glrfg_get_url.changed'
   tags:
     - binaries
     - update
 
 - name: "Register symlink after binary + exec"
   file:
-    src: "{{ get_latest_release_from_github_get_url.dest }}"
-    path: "{{ get_latest_release_from_github_alias_path }}"
+    src: "{{ glrfg_get_url.dest }}"
+    path: "{{ glrfg_alias_path }}"
     state: link
   when:
-    - 'get_latest_release_from_github_executable.changed'
+    - 'glrfg_executable.changed'
   tags:
     - binaries
     - update

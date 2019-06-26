@@ -73,7 +73,7 @@
     - name: Downloading scripts
       get_url:
         url: "{{ item.url }}"
-        dest: "{{ binary_dir | default(ansible_env.HOME + '/.bins') }}/{{ item.name }}"
+        dest: "{{ item.dir }}/{{ item.name }}"
         mode: u=rwx,g=rx,o=rx
         owner: "{{ ansible_user_uid }}"
         group: "{{ ansible_user_gid }}"
@@ -99,8 +99,6 @@
       loop: "{{ commands }}"
       tags:
         - commands
-
-    # - name: Build helpers binary
 
     - include_tasks: "{{ ansible_env.PWD }}/ansible/get-latest-release-from-github.yaml"
       with_items: "{{ bin_downloads }}"

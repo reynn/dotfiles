@@ -2,7 +2,7 @@
 # Strings
 bins_dir: "{{ ansible_env.HOME }}/.bins"
 git_path: "{{ ansible_env.HOME }}/git"
-dotfiles_path: "{{ git_path }}/reynn/dotfiles"
+dotfiles_path: "{{ git_path }}/github.com/reynn/dotfiles"
 
 # ------------
 # Maps
@@ -21,55 +21,21 @@ packages:
 # ------------
 # Lists
 bin_downloads:
-  - name: Ripgrep
-    git:
-      owner: BurntSushi
-      repo: ripgrep
+  - repository: api.github.com/BurntSushi/ripgrep
     alias: rg
-  - name: JQ
-    git:
-      owner: stedolan
-      repo: jq
-  - name: exa
-    git:
-      owner: ogham
-      repo: exa
-  - name: skaffold
-    git:
-      owner: GoogleContainerTools
-      repo: skaffold
-  - name: goreleaser
-    git:
-      owner: goreleaser
-      repo: goreleaser
-  - name: minikube
-    git:
-      owner: kubernetes
-      repo: minikube
-  - name: rio
-    git:
-      owner: rancher
-      repo: rio
-  - name: doctl
-    git:
-      owner: digitalocean
-      repo: doctl
-  # - name: k9s # Commented out, all releases currently marked as pre-release
-  #   git:
-  #     owner: derailed
-  #     repo: k9s
-  - name: stern
-    git:
-      owner: wercker
-      repo: stern
-  - name: dockle
-    git:
-      owner: goodwithtech
-      repo: dockle
-  - name: linkerd2
-    git:
-      owner: linkerd
-      repo: linkerd2
+  - repository: api.github.com/stedolan/jq
+  - repository: api.github.com/ogham/exa
+  - repository: api.github.com/GoogleContainerTools/skaffold
+  - repository: api.github.com/goreleaser/goreleaser
+  - repository: api.github.com/kubernetes/minikube
+  - repository: api.github.com/rancher/rio
+  - repository: api.github.com/digitalocean/doctl
+  # - repository: api.github.com/derailed/k9s # Commented out, all releases currently marked as pre-release
+  - repository: api.github.com/wercker/stern
+  - repository: api.github.com/goodwithtech/dockle
+  - repository: api.github.com/k14s/kwt
+  - repository: api.github.com/k14s/kapp
+  - repository: api.github.com/linkerd/linkerd2
     alias: linkerd
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
@@ -87,12 +53,20 @@ git_repos:
 commands:
   - cmd: "go build -o {{ bins_dir }}/helpers main.go"
     dir: "{{ git_path }}/github.com/reynn/dotfiles/go/helpers"
+  - cmd: "sh /tmp/antibody -b {{ bins_dir }}"
 scripts:
   - name: gimme
     url: https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
+    dir: "{{ bins_dir }}"
+  - name: antibody
+    url: https://git.io/antibody
+    dir: /tmp
   - name: nvm
     url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh
+    dir: "{{ bins_dir }}"
   - name: kubectx
     url: https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx
+    dir: "{{ bins_dir }}"
   - name: kubens
     url: https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens
+    dir: "{{ bins_dir }}"
