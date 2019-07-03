@@ -80,7 +80,7 @@ alias dok_gen_version='docker run --rm -v $PWD:$PWD -w $PWD quay.io/reynn/docker
 alias dok_run_bash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash'
 alias dok_run_ash='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash'
 alias dok_run_sh='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/sh'
-alias dok_run='drbash'
+alias dok_run='dok_run_sh'
 
 alias dok_run_alpine='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/ash alpine:3.9'
 alias dok_run_go='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash quay.io/reynn/golang:latest'

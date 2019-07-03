@@ -57,6 +57,7 @@
     - name: Run fzf install script
       shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
       tags:
+        - commands
         - update
 
     - name: Ensure binary dirs exist
@@ -67,7 +68,6 @@
       tags:
         - binaries
         - scripts
-        - commands
         - update
 
     - name: Downloading scripts
@@ -82,6 +82,7 @@
       loop: "{{ scripts }}"
       tags:
         - scripts
+        - commands
         - update
 
     - name: Exec gimme
