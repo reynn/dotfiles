@@ -22,16 +22,17 @@ function listen_port() {
 function kill_listening() {
   local port=$1
   if test -z $port; then
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Description | Kill process listening on specified port."
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Usage       | $0 <port_number>"
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Parameters  |-----------------------------------------------------"
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "port_number | Port number something is listening on"
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Example     | \`$0 8000\` (Force kill the process listening on port 8000)"
+    print_usage "$0" "
+    ------------------------------------------------------------------
+    Description | Kill process listening on specified port.
+    ------------------------------------------------------------------
+    Usage       | $0 <port_number>
+    ------------------------------------------------------------------
+    Parameters  |-----------------------------------------------------
+    ------------------------------------------------------------------
+    port_number | Port number something is listening on
+    ------------------------------------------------------------------
+    Example     | \`$0 8000\` (Force kill the process listening on port 8000)"
     return 1
   fi
   local process=$(listen_port $port)
@@ -63,7 +64,7 @@ function bin_completion() {
   local bins=(minikube kubectl helm)
   local in=($@)
   if [ ${#in[@]} -gt 0 ]; then
-    print_debug_label "$0" "overriding defaults..."
+    print_debug "$0" "overriding defaults..."
     bins=($@)
   fi
   for bin in $bins; do
@@ -74,18 +75,19 @@ function bin_completion() {
 
 function join() {
   if [ "$1" = '-h' ]; then
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Description | array.join()."
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Usage       | $0 <var> <string> <elements>"
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Parameters  |-----------------------------------------------------"
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "var         | Variable to create"
-    print_usage "$0" "string      | String to join on"
-    print_usage "$0" "elements    | Array to join"
-    print_usage "$0" "------------------------------------------------------------------"
-    print_usage "$0" "Example     | \`$0 joined \" and \" \"\${a[@]}\"; echo \$joined\` (one and two and three three and four and five)"
+    print_usage "$0" "
+    ------------------------------------------------------------------
+    Description | array.join().
+    ------------------------------------------------------------------
+    Usage       | $0 var string elements
+    ------------------------------------------------------------------
+    Parameters  |-----------------------------------------------------
+    ------------------------------------------------------------------
+    var         | Variable to create
+    string      | String to join on
+    elements    | Array to join
+    ------------------------------------------------------------------
+    Example     | \`$0 joined \" and \" \"\${a[@]}\"; echo \$joined\` (one and two and three three and four and five)"
     return 1
   fi
   # $1 is return variable name
@@ -107,38 +109,21 @@ function join_by() {
 
 function print_debug() {
   if test -z "$DEBUG"; then return; fi
-  echo -en "$TXT_DIVIDER$FMT_DEBUG Debug $TXT_DIVIDER $FMT_DEBUG$@$FMT_CLEAR_ALL\n"
-}
-
-function print_debug_label() {
-  if test -z "$DEBUG"; then return; fi
   echo -en "$TXT_DIVIDER$FMT_DEBUG Debug $TXT_DIVIDER $FMT_DEBUG$1 $TXT_DIVIDER $FMT_DEBUG$2$FMT_CLEAR_ALL\n"
 }
 
 function print_error() {
-  echo -en "$TXT_DIVIDER$FMT_ERROR Error $TXT_DIVIDER $FMT_ERROR$@$FMT_CLEAR_ALL\n"
-}
-function print_error_label() {
   echo -en "$TXT_DIVIDER$FMT_ERROR Error $TXT_DIVIDER $FMT_ERROR$1 $TXT_DIVIDER $FMT_ERROR$2$FMT_CLEAR_ALL\n"
 }
 
 function print_info() {
-  echo -en "$TXT_DIVIDER$FMT_INFO Info $TXT_DIVIDER $FMT_INFO$@$FMT_CLEAR_ALL\n"
-}
-
-function print_info_label() {
   echo -en "$TXT_DIVIDER$FMT_INFO Info $TXT_DIVIDER $FMT_INFO$1 $TXT_DIVIDER $FMT_INFO$2$FMT_CLEAR_ALL\n"
 }
 
 function print_warning() {
-  echo -en "$TXT_DIVIDER$FMT_WARNING Warning $TXT_DIVIDER $FMT_WARNING$@$FMT_CLEAR_ALL\n"
-}
-
-function print_warning_label() {
   echo -en "$TXT_DIVIDER$FMT_WARNING Warning $TXT_DIVIDER $FMT_WARNING$1 $TXT_DIVIDER $FMT_WARNING$2$FMT_CLEAR_ALL\n"
 }
 
 function print_usage() {
   echo -en "$FMT_SET_BOLD$FMT_USAGE$1 $TXT_DIVIDER$FMT_USAGE $2$FMT_CLEAR_ALL\n"
-  # echo -en "$TXT_DIVIDER$FMT_USAGE Usage $TXT_DIVIDER $FMT_USAGE$1 $TXT_DIVIDER$FMT_USAGE $2$FMT_CLEAR_ALL\n"
 }
