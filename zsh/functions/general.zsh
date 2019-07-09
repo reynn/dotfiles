@@ -9,10 +9,8 @@ function update-dotfiles() {
   fi
   set -x
   if test -z $tags; then
-    echo "Executing without tags"
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
   else
-    echo "Executing with tags $tags"
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags $tags
   fi
   set +x
