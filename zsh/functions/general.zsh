@@ -2,13 +2,20 @@
 # Dotfiles functions ----------------------------------------------------------
 
 function update-dotfiles() {
-  local tags=${1:-update}
+  local tags="$1"
   if [ "$tags" = '-h' ]; then
     print_usage_json "$(get-help $0)"
     return 0
   fi
-
-  ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags $tags
+  set -x
+  if test -z $tags; then
+    echo "Executing without tags"
+    ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
+  else
+    echo "Executing with tags $tags"
+    ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags $tags
+  fi
+  set +x
 }
 
 # -----------------------------------------------------------------------------
