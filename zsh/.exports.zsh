@@ -18,8 +18,8 @@ local paths=(
   "/Library/Frameworks/Python.framework/Versions/3.7/bin"
   "$HOME/.krew/bin"
   "$HOME/go/bin"
-  "$GFP/github.com/thecasualcoder/kube-fzf"
   "$GFP/bin"
+  "$GFP/github.com/thecasualcoder/kube-fzf"
   "$GFP/github.com/junegunn/fzf/bin"
   "/usr/local/go/bin"
   "/usr/local/MacGPG2/bin"
@@ -41,7 +41,7 @@ export HISTCONTROL='ignoreboth'
 # -----------------------------------------------------------------------------
 # K8S exports -----------------------------------------------------------------
 export K8S_DEFAULT_NAMESPACE='development'
-export HELM_VALUES_PATH="$GFP/reynn/k8s/helm/values"
+export HELM_VALUES_PATH="$GFP/github.com/reynn/k8s/helm/values"
 
 # -----------------------------------------------------------------------------
 # GO exports ------------------------------------------------------------------

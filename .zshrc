@@ -41,12 +41,8 @@ for pl in $zsh_plugins; do
   antibody bundle robbyrussell/oh-my-zsh path:plugins/$pl
 done
 
-# Other bundles
 antibody bundle zsh-users/zsh-autosuggestions
-
-# This needs to be the last bundle.
 antibody bundle zsh-users/zsh-syntax-highlighting
-
 # Load the theme.
 antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 
@@ -89,7 +85,6 @@ prompt_go_version() {
 
 # -----------------------------------------------------------------------------
 ## Imports:Function -----------------------------------------------------------
-alias izf="import_zsh_files $IMPORT_DIRECTORIES"
 # export DEBUG="true"
 function import_zsh_files() {
   debugEcho "> Importing zsh files..."
@@ -103,6 +98,7 @@ function import_zsh_files() {
 }
 export IMPORT_DIRECTORIES=(zsh)
 
+alias izf="import_zsh_files $IMPORT_DIRECTORIES"
 import_zsh_files $IMPORT_DIRECTORIES
 
 local sourcePaths=(

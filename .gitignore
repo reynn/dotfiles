@@ -1,3 +1,5 @@
 \.ansible
 \.secrets.zsh
 \.git
+
+\.idea/

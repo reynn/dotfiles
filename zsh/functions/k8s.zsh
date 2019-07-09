@@ -19,7 +19,7 @@ function install_helm_chart() {
     print_usage_json "$(get-help $0)"
     return 0
   fi
-  local values_path=`echo ${HELM_VALUES_PATH:-"$DFP/k8s/helm/values"}`
+  local values_path="${HELM_VALUES_PATH:-"$DFP/k8s/helm/values"}"
   local all_matches=$(find $values_path -type f -name "*$1*.yaml")
   local selected_chart=$(echo "$all_matches" | fzf --height=10 --ansi --reverse --select-1)
   local relative_values_file=$(realpath --relative-to=$selected_chart $PWD)

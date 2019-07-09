@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 export GFP="$HOME/git"
 export DFP="$GFP/github.com/reynn/dotfiles"
 
@@ -49,7 +49,9 @@ handle_deps() {
     print_installing 'packages required for this script and ansible for debian machine...'
     apt-get update
     apt-get install --no-install-recommends -y \
-        python3-{pip,wheel,setuptools} \
+        python3-{dev,pip,wheel,setuptools} \
+        # libxml2-dev \
+        # libxslt-dev \
         build-essential \
         git
   fi
@@ -73,6 +75,7 @@ handle_deps() {
     exit 1
   fi
 }
+
 function main() {
   if [ ! -d "$DFP" ]; then
     print_installing "dependencies..."

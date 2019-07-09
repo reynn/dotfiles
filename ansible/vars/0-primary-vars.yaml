@@ -15,6 +15,7 @@ packages:
     - tmux
   pip:
     - certifi
+    - httpie
     - Pygments
     - yq
 
@@ -35,13 +36,18 @@ bin_downloads:
   - repository: api.github.com/goodwithtech/dockle
   - repository: api.github.com/k14s/kwt
   - repository: api.github.com/k14s/kapp
+  - repository: api.github.com/k14s/kbld
+  - repository: api.github.com/k14s/ytt
   - repository: api.github.com/linkerd/linkerd2
     alias: linkerd
+  - repository: api.github.com/sharkdp/fd
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
-    dest: "{{ git_path }}/github.com/reynn/dotfiles"
+    dest: "{{ dotfiles_path }}"
   - repo: git@github.com:reynn/k8s.git
     dest: "{{ git_path }}/github.com/reynn/k8s"
+  - repo: git@github.com:helm/charts.git
+    dest: "{{ git_path }}/github.com/helm/charts"
   - repo: git@github.com:thecasualcoder/kube-fzf.git
     dest: "{{ git_path }}/github.com/thecasualcoder/kube-fzf"
   - repo: git@github.com:mbadolato/iTerm2-Color-Schemes.git
@@ -52,7 +58,7 @@ git_repos:
     dest: "{{ git_path }}/github.com/junegunn/fzf"
 commands:
   - cmd: "go build -o {{ bins_dir }}/helpers main.go"
-    dir: "{{ git_path }}/github.com/reynn/dotfiles/go/helpers"
+    dir: "{{ dotfiles_path }}/go/helpers"
   - cmd: "sh /tmp/antibody -b {{ bins_dir }}"
 scripts:
   - name: gimme
