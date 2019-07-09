@@ -4,13 +4,8 @@
 function aws_get_instance_pricing() {
   local type=$1
   if [ "$type" = '-h' ]; then
-    print_usage "$0" "
-    ------------------------------------------------------------------
-    Description | Get pricing information for AWS Instances.
-    ------------------------------------------------------------------
-    Usage       | $0 <instance_type>
-    ------------------------------------------------------------------"
-    return 1
+    print_usage_json "$(get-help $0)"
+    return 0
   fi
 
   print_debug "$@" "Input [$type]"
@@ -67,18 +62,8 @@ function aws_get_instance_pricing() {
 function aws_get_matching_stacks() {
   local matcher=$1
   if [ "$1" = '-h' ]; then
-    print_usage "$0" "
-    ------------------------------------------------------------------
-    Description | Get AWS CloudFormation stacks matching a certain criteria.
-    ------------------------------------------------------------------
-    Usage       | $0 <matcher>
-    ------------------------------------------------------------------
-    Parameters  |-----------------------------------------------------
-    ------------------------------------------------------------------
-    image       | What to match when searching (Default *)
-    ------------------------------------------------------------------
-    Example     | \`$0 *test*\` (Find stacks including the word test)"
-    return 1
+    print_usage_json "$(get-help $0)"
+    return 0
   fi
   aws cloudformation list-stacks --query "StackSummaries[].StackName" | jq -r "map(match(\".*$matcher.*\"; \"ig\")) | .[].string"
 }

@@ -16,12 +16,7 @@ function k8s_dar() {
 
 function install_helm_chart() {
   if [ "$1" = '-h' ]; then
-    print_usage "$0" "
-    ------------------------------------------------------------------
-    Description | Install Helm chart based on set of available values files.
-    ------------------------------------------------------------------
-    Usage       | $0
-    ------------------------------------------------------------------"
+    print_usage_json "$(get-help $0)"
     return 0
   fi
   local values_path=`echo ${HELM_VALUES_PATH:-"$DFP/k8s/helm/values"}`
@@ -59,23 +54,12 @@ function install_helm_chart() {
 function k8s_get_sa_config() {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
-    print_usage "$0" "
-    ------------------------------------------------------------------
-    Description | Get a Kubeconfig.yaml for the specified Service account. Creates account if it doesn't exist.
-    ------------------------------------------------------------------
-    Usage       | $0 <sa_name> <namespace> <out_file>
-    ------------------------------------------------------------------
-    Parameters  |-----------------------------------------------------
-    ------------------------------------------------------------------
-    sa_name     | Name of a K8S service account. Will be created if it doesn't exist.
-    namespace   | Namespace the service account should exist in.
-    out_file    | Where to write the kubeconfig to, will output to stdout if not set.
-    ------------------------------------------------------------------
-    Example     | \`$0 example-sa\` (Retag test-image to quay.io/reynn/test-image:dev)
-    Example     | \`$0 example-sa development\` (Create SA example-sa in the development namespace)"
-    return 1
+    print_usage_json "$(get-help $0)"
+    return 0
   fi
+
   local kubeconfig="$3"
+
   if test -z $kubeconfig; then
     print_info "$0" "Creating temp file for the kubeconfig..."
     kubeconfig="$(mktemp -t kubeconfig.yaml)"
