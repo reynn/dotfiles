@@ -1,37 +1,47 @@
 #!/usr/bin/env python3
 
-from argparse import ArgumentParser
 import sys
+import os
 
-escape_code = '\033['
-FMT_ERROR = f"{escape_code}38;5;196m"
-FMT_DEBUG = f"{escape_code}38;5;243m"
-FMT_INFO = f"{escape_code}38;5;2m"
-FMT_WARNING = f"{escape_code}38;5;226m"
-FMT_CLEAR = f"{escape_code}0m"
+from argparse import ArgumentParser
+
+
+def _set_colors():
+    def _get_color_from_env(name: str) -> str:
+        return os.getenv(name, '').replace('\e[', '')
+
+    global FMT_DEBUG
+    global FMT_INFO
+    global FMT_WARNING
+    global FMT_ERROR
+    FMT_DEBUG = _get_color_from_env("FMT_DEBUG")
+    FMT_INFO = _get_color_from_env("FMT_INFO")
+    FMT_WARNING = _get_color_from_env("FMT_WARNING")
+    FMT_ERROR = _get_color_from_env("FMT_ERROR")
 
 
 def _format_label(l: str) -> str:
-    if l is None:
-        return ""
-    else:
-        return f".{l}"
+    return "" if l is None else f".{l}"
+
+
+def _print(color: str, level: str, label: str, text: str):
+    print(f"\033[{color}>> {level} >> {label} >> {text}\033[0m")
 
 
 def print_debug(t: str, f_n: str, l: str):
-    print(f"{FMT_DEBUG}>> debug >> {f_n}{l} >> {t}{FMT_CLEAR}")
+    _print(FMT_DEBUG, 'debug', f_n+l, t)
 
 
 def print_info(t: str, f_n: str, l: str):
-    print(f"{FMT_INFO}>> info >> {f_n}{l} >> {t}{FMT_CLEAR}")
+    _print(FMT_INFO, 'info', f_n+l, t)
 
 
 def print_warning(t: str, f_n: str, l: str):
-    print(f"{FMT_WARNING}>> warning >> {f_n}{l} >> {t}{FMT_CLEAR}")
+    _print(FMT_WARNING, 'warning', f_n+l, t)
 
 
 def print_error(t: str, f_n: str, l: str):
-    print(f"{FMT_ERROR}>> error >> {f_n}{l} >> {t}{FMT_CLEAR}")
+    _print(FMT_ERROR, 'error', f_n+l, t)
 
 
 def main():
@@ -39,7 +49,11 @@ def main():
     example usage:
     py_print [level] [func_name] [label{optional}] [text]
     --------------------------------------------
-    py_print debug install_helm_chart selection kfk_incubator_kafka.yaml
+    py_print \
+      --level debug \
+      --name install_helm_chart \
+      --label selection \
+      kfk_incubator_kafka.yaml
     >> debug >> install_helm_chart.selection >> kfk_incubator_kafka.yaml
     '''
 
@@ -51,15 +65,17 @@ def main():
     parser.add_argument("text", help="The string to print")
     args = parser.parse_args()
 
-    level = str(args.level)
+    level = str(args.level).lower()
     func_name = str(args.name)
     label = _format_label(args.label)
     text = args.text
-    if level.lower() == 'error':
+    _set_colors()
+
+    if level == 'error':
         print_error(t=text, l=label, f_n=func_name)
-    elif level.lower() == 'warning':
+    elif level == 'warning':
         print_warning(t=text, l=label, f_n=func_name)
-    elif level.lower() == 'debug':
+    elif level == 'debug':
         print_debug(t=text, l=label, f_n=func_name)
     else:
         print_info(t=text, l=label, f_n=func_name)
