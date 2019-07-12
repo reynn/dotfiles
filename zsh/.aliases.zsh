@@ -34,6 +34,7 @@ alias stern="stern -E linkerd-proxy"
 alias eecho='echo -e'
 alias path='eecho ${PATH//:/\\n}'
 alias ccat='pygmentize -O style=stata-dark,full'
+alias please='sudo'
 
 # -----------------------------------------------------------------------------
 ## UNIX:Movement aliases ------------------------------------------------------

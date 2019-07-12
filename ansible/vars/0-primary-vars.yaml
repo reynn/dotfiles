@@ -18,6 +18,7 @@ packages:
     - httpie
     - Pygments
     - yq
+    - youtube_dl
 
 # ------------
 # Lists
