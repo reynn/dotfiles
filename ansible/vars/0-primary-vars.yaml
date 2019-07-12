@@ -56,6 +56,8 @@ git_repos:
     dest: "{{ git_path }}/github.com/powerline/fonts"
   - repo: git@github.com:junegunn/fzf.git
     dest: "{{ git_path }}/github.com/junegunn/fzf"
+  - repo: git@github.com:VundleVim/Vundle.vim.git
+    dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
 commands:
   - cmd: "go build -o {{ bins_dir }}/helpers main.go"
     dir: "{{ dotfiles_path }}/go/helpers"
