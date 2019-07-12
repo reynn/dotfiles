@@ -1,6 +1,7 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 export GFP="$HOME/git"
 export DFP="$GFP/github.com/reynn/dotfiles"
+export HELP_JSON="$DFP/zsh/function_help.json"
 export DIR_BINS="$HOME/.bins"
 FP="$DFP/zsh/.zshrc"
 

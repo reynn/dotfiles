@@ -126,4 +126,15 @@ export FMT_CLEAR_HIDDEN="\e[28m"
 
 # -----------------------------------------------------------------------------
 ## Text:Characters ------------------------------------------------------------
-export TXT_DIVIDER="$FMT_CLEAR_ALL$FMT_DEBUG$FMT_SET_BOLD>>"
+function text_divider() {
+  local fmt="${1:-"$FMT_DEBUG"}"
+  local divider="${2:-">>"}"
+  printf "$FMT_CLEAR_ALL$fmt$FMT_SET_BOLD$divider"
+}
+
+function TXT_DIVIDER() { text_divider }
+function INFO_TXT_DIVIDER() { text_divider $FMT_INFO }
+function ERROR_TXT_DIVIDER() { text_divider $FMT_ERROR }
+function DEBUG_TXT_DIVIDER() { text_divider $FMT_DEBUG }
+function USAGE_TXT_DIVIDER() { text_divider $FMT_USAGE }
+function WARNING_TXT_DIVIDER() { text_divider $FMT_WARNING }

@@ -53,5 +53,12 @@ export GO111MODULE='on'
 # export GIT_CONFIG="$DFP/git/gitconfig"
 
 # -----------------------------------------------------------------------------
+# FZF exports -----------------------------------------------------------------
+
+export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border"
+export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# -----------------------------------------------------------------------------
 # ZSH Exports -----------------------------------------------------------------
 export UPDATE_ZSH_DAYS=3

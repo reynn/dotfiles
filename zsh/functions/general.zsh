@@ -4,16 +4,14 @@
 function update-dotfiles() {
   local tags="$1"
   if [ "$tags" = '-h' ]; then
-    print_usage_json "$(get-help $0)"
+    print_usage_json "$0"
     return 0
   fi
-  set -x
   if test -z $tags; then
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
   else
     ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags $tags
   fi
-  set +x
 }
 
 # -----------------------------------------------------------------------------
@@ -57,7 +55,7 @@ function str_length() {
   echo "$(echo "$1" | wc -c | tr -d '[:space:]')"
 }
 
-function str_repeat() {
+function print_repeated() {
   local repeat_count=${1:-100}
   local repeat_char=${2:-=}
   printf "%${repeat_count}s" |tr " " "$repeat_char"

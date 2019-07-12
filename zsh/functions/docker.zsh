@@ -4,7 +4,7 @@
 function docker_retag_and_push() {
   local image=$1
   if test -z $image; then
-    print_usage_json "$(get-help $0)"
+    print_usage_json "$0"
     return 0
   fi
   local tag="${2:-dev}"

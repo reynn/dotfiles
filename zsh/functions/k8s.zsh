@@ -16,11 +16,10 @@ function k8s_dar() {
 
 function install_helm_chart() {
   if [ "$1" = '-h' ]; then
-    print_usage_json "$(get-help $0)"
+    print_usage_json "$0"
     return 0
   fi
-  local values_path="${HELM_VALUES_PATH:-"$DFP/k8s/helm/values"}"
-  local all_matches=$(find $values_path -type f -name "*$1*.yaml")
+  local all_matches=$(_get_value_files)
   local selected_chart=$(echo "$all_matches" | fzf --height=10 --ansi --reverse --select-1)
   local relative_values_file=$(realpath --relative-to=$selected_chart $PWD)
   print_debug "$0.relative_values_file" "$relative_values_file"
@@ -51,10 +50,55 @@ function install_helm_chart() {
   helm upgrade -i --namespace $namespace -f $relative_values_file $release_name $chart_repository/$chart_name
 }
 
+function install_helm_app() {
+  local charts_folder=${1:-"$GFP/github.com/helm/charts"}
+  local values_folder=${1:-"$GFP/github.com/reynn/k8s/helm/values"}
+  local selected_chart=$(_get_charts $charts_folder)
+  print_debug "$0.chart" "$selected_chart"
+  local selected_value_file=$(_get_value_files $values_folder)
+  print_debug "$0.values" "$selected_value_file"
+  local namespace="$(echo $selected_value_file | cut -d'/' -f10)"
+  local rel_name="$(echo $selected_value_file | cut -d'/'  -f11 | cut -d'_' -f1)"
+
+  local args=(
+    "--namespace" "$namespace"
+    "-f" "$selected_value_file"
+    "-n" "$rel_name"
+    "$selected_chart"
+  )
+  print_debug "$0.args" "[[ $args ]]"
+
+  (
+    echo 'from subshell'
+    sleep 3
+  )
+
+  echo $args | xargs helm template # | kapp -y deploy -a $rel_name -f -
+}
+
+function _get_charts() {
+  local f=${1:-"$GFP/github.com/helm/charts"}
+  print_debug "$0.folder" "$f"
+  local s_c=$(fd -t f -d 3 Chart.yaml $f | \
+              awk -F '[/]' '{printf "\033[01;34m%s\033[0m %s\n", $8, $9}' | \
+              fzf --ansi --preview="pygmentize -P style=autumn $f/{1}/{2}/values.yaml")
+  echo "$f/$(echo $s_c | tr ' ' '/')"
+}
+
+function _get_value_files() {
+  local f=${1:-"$GFP/github.com/reynn/k8s/helm/values"}
+  print_debug "$0.folder" "$f"
+  local s_c=$(fd -t f -d 3 -e yaml . $f | \
+              cut -d'/' -f10- | \
+              awk -F '[/]' '{printf "\033[01;34m%s\033[0m %s\n", $1, $2}' | \
+              fzf --ansi --preview="pygmentize -P style=autumn $f/{1}/{2}")
+  echo "$f/$(echo $s_c | tr ' ' '/')"
+}
+
 function k8s_get_sa_config() {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
-    print_usage_json "$(get-help $0)"
+    print_usage_json "$0"
     return 0
   fi
 
