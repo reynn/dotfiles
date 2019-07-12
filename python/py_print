@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser
+import sys
+
+escape_code = '\033['
+FMT_ERROR = f"{escape_code}38;5;196m"
+FMT_DEBUG = f"{escape_code}38;5;243m"
+FMT_INFO = f"{escape_code}38;5;2m"
+FMT_WARNING = f"{escape_code}38;5;226m"
+FMT_CLEAR = f"{escape_code}0m"
+
+
+def _format_label(l: str) -> str:
+    if l is None:
+        return ""
+    else:
+        return f".{l}"
+
+
+def print_debug(t: str, f_n: str, l: str):
+    print(f"{FMT_DEBUG}>> debug >> {f_n}{l} >> {t}{FMT_CLEAR}")
+
+
+def print_info(t: str, f_n: str, l: str):
+    print(f"{FMT_INFO}>> info >> {f_n}{l} >> {t}{FMT_CLEAR}")
+
+
+def print_warning(t: str, f_n: str, l: str):
+    print(f"{FMT_WARNING}>> warning >> {f_n}{l} >> {t}{FMT_CLEAR}")
+
+
+def print_error(t: str, f_n: str, l: str):
+    print(f"{FMT_ERROR}>> error >> {f_n}{l} >> {t}{FMT_CLEAR}")
+
+
+def main():
+    '''
+    example usage:
+    py_print [level] [func_name] [label{optional}] [text]
+    --------------------------------------------
+    py_print debug install_helm_chart selection kfk_incubator_kafka.yaml
+    >> debug >> install_helm_chart.selection >> kfk_incubator_kafka.yaml
+    '''
+
+    parser = ArgumentParser()
+    parser.add_argument("--level", help="The level to print at")
+    parser.add_argument(
+        "--name", help="The name of the function calling print")
+    parser.add_argument("--label", help="An optional label to add")
+    parser.add_argument("text", help="The string to print")
+    args = parser.parse_args()
+
+    level = str(args.level)
+    func_name = str(args.name)
+    label = _format_label(args.label)
+    text = args.text
+    if level.lower() == 'error':
+        print_error(t=text, l=label, f_n=func_name)
+    elif level.lower() == 'warning':
+        print_warning(t=text, l=label, f_n=func_name)
+    elif level.lower() == 'debug':
+        print_debug(t=text, l=label, f_n=func_name)
+    else:
+        print_info(t=text, l=label, f_n=func_name)
+
+
+if __name__ == '__main__':
+    main()

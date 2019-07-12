@@ -91,62 +91,21 @@ function join_by() {
 ## Unix:Echo functions --------------------------------------------------------
 
 function print_debug() {
-  if test -z "$DEBUG"; then return; fi
-  echo -en "$DEBUG_TXT_DIVIDER\
-$FMT_DEBUG \
-Debug \
-$DEBUG_TXT_DIVIDER \
-$FMT_DEBUG\
-$funcstack[2]$2 \
-$DEBUG_TXT_DIVIDER \
-$FMT_DEBUG\
-$1\
-$FMT_CLEAR_ALL\n"
+  if test -n "$DEBUG"; then
+    py_print --level debug --label "$1" --name "$funcstack[2]" "$2"
+  fi
 }
 
 function print_error() {
-  echo -en "$ERROR_TXT_DIVIDER\
-$FMT_ERROR \
-Error \
-$ERROR_TXT_DIVIDER \
-$FMT_ERROR\
-$funcstack[2]$2 \
-$ERROR_TXT_DIVIDER \
-$FMT_ERROR\
-$1\
-$FMT_CLEAR_ALL\n"
+  py_print --level error --label "$1" --name "$funcstack[2]" "$2"
 }
 
 function print_info() {
-  echo -en "$INFO_TXT_DIVIDER\
-$FMT_INFO \
-Info \
-$INFO_TXT_DIVIDER \
-$FMT_INFO\
-$funcstack[2]$2 \
-$INFO_TXT_DIVIDER \
-$FMT_INFO\
-$1\
-$FMT_CLEAR_ALL\n"
+  py_print --level info --label "$1" --name "$funcstack[2]" "$2"
 }
 
 function print_warning() {
-  echo -en "$WARNING_TXT_DIVIDER\
-$FMT_WARNING \
-Warning \
-$WARNING_TXT_DIVIDER \
-$FMT_WARNING\
-$funcstack[2]$2 \
-$WARNING_TXT_DIVIDER \
-$FMT_WARNING\
-$1\
-$FMT_CLEAR_ALL\n"
-}
-
-function get-help() {
-  local func_name=$1
-  if test -z $func_name; then func_name=$(cat $HELP_JSON | jq -r 'keys | .[]' | fzf -1); fi
-  print_usage_json "$func_name"
+  py_print --level warning --label "$1" --name "$funcstack[2]" "$2"
 }
 
 function print_usage_json() {
