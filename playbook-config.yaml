@@ -75,8 +75,8 @@
         url: "{{ item.url }}"
         dest: "{{ item.dir }}/{{ item.name }}"
         mode: u=rwx,g=rx,o=rx
-        owner: "{{ ansible_user_uid }}"
-        group: "{{ ansible_user_gid }}"
+        owner: "{{ ansible_user_uid | quote }}"
+        group: "{{ ansible_user_gid | quote }}"
       register: base_script_downloads
       when: item.url is defined
       loop: "{{ scripts }}"

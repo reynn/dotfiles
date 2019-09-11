@@ -23,14 +23,14 @@ packages:
 # Lists
 bin_downloads:
   - repository: api.github.com/sharkdp/bat                    # A cat(1) clone with wings.
-  - repository: api.github.com/Canop/broot                    # A new way to see and navigate directory trees
+  # - repository: api.github.com/Canop/broot                    # A new way to see and navigate directory trees
   - repository: api.github.com/goodwithtech/dockle            # Container Image Linter for Security
   - repository: api.github.com/digitalocean/doctl             # Digital Ocean CLI
   - repository: api.github.com/ogham/exa                      # A modern version of ‘ls’.
   - repository: api.github.com/sharkdp/fd                     # A simple, fast and user-friendly alternative to 'find'
   - repository: api.github.com/goreleaser/goreleaser          # Deliver Go binaries as fast and easily as possible
   - repository: api.github.com/stedolan/jq                    # CLI JSON processor
-  - repository: api.github.com/derailed/k9s                   # Kubernetes CLI To Manage Your Clusters In Style!
+  # - repository: api.github.com/derailed/k9s                   # Kubernetes CLI To Manage Your Clusters In Style!
   - repository: api.github.com/k14s/kapp                      # A simple deployment tool focused on the concept of "Kubernetes application"
   - repository: api.github.com/k14s/kbld                      # Image building and pushing
   - repository: api.github.com/k14s/kwt                       # Kubernetes Workstation Tools CLI
