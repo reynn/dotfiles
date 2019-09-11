@@ -8,6 +8,10 @@ alias FR="source $FP" # alias reload
 # -----------------------------------------------------------------------------
 # UNIX functions --------------------------------------------------------------
 
+function zsudo() {
+  sudo zsh -c "$functions[$1]" "$@"
+}
+
 function slice_arr() {
   local i=$1
   local arr=($@)
@@ -32,7 +36,11 @@ function kill_listening() {
 }
 
 function check_cmd() {
-  test -r "$(which $1)"
+  test -x "$(command -v $1)"
+}
+
+function dig_ip() {
+  dig +nocmd "$1" A +noall +answer | grep -v 'CNAME' | awk '{ print $5 }' | head -n 1
 }
 
 # Run `dig` and display the most useful info
@@ -51,8 +59,7 @@ function o() {
 }
 
 function length() {
-  local in=($@)
-  echo "${#in[@]}"
+  echo "$#"
 }
 
 function bin_completion() {

@@ -38,6 +38,7 @@ bin_downloads:
   - repository: api.github.com/k14s/kapp
   - repository: api.github.com/k14s/kbld
   - repository: api.github.com/k14s/ytt
+  - repository: api.github.com/starship/starship
   - repository: api.github.com/linkerd/linkerd2
     alias: linkerd
   - repository: api.github.com/sharkdp/fd
