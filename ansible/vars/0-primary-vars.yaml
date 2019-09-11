@@ -22,26 +22,29 @@ packages:
 # ------------
 # Lists
 bin_downloads:
-  - repository: api.github.com/BurntSushi/ripgrep
-    alias: rg
-  - repository: api.github.com/stedolan/jq
-  - repository: api.github.com/ogham/exa
-  - repository: api.github.com/GoogleContainerTools/skaffold
-  - repository: api.github.com/goreleaser/goreleaser
-  - repository: api.github.com/kubernetes/minikube
-  - repository: api.github.com/rancher/rio
-  - repository: api.github.com/digitalocean/doctl
-  # - repository: api.github.com/derailed/k9s # Commented out, all releases currently marked as pre-release
-  - repository: api.github.com/wercker/stern
-  - repository: api.github.com/goodwithtech/dockle
-  - repository: api.github.com/k14s/kwt
-  - repository: api.github.com/k14s/kapp
-  - repository: api.github.com/k14s/kbld
-  - repository: api.github.com/k14s/ytt
-  - repository: api.github.com/starship/starship
-  - repository: api.github.com/linkerd/linkerd2
+  - repository: api.github.com/sharkdp/bat                    # A cat(1) clone with wings.
+  - repository: api.github.com/Canop/broot                    # A new way to see and navigate directory trees
+  - repository: api.github.com/goodwithtech/dockle            # Container Image Linter for Security
+  - repository: api.github.com/digitalocean/doctl             # Digital Ocean CLI
+  - repository: api.github.com/ogham/exa                      # A modern version of ‘ls’.
+  - repository: api.github.com/sharkdp/fd                     # A simple, fast and user-friendly alternative to 'find'
+  - repository: api.github.com/goreleaser/goreleaser          # Deliver Go binaries as fast and easily as possible
+  - repository: api.github.com/stedolan/jq                    # CLI JSON processor
+  - repository: api.github.com/derailed/k9s                   # Kubernetes CLI To Manage Your Clusters In Style!
+  - repository: api.github.com/k14s/kapp                      # A simple deployment tool focused on the concept of "Kubernetes application"
+  - repository: api.github.com/k14s/kbld                      # Image building and pushing
+  - repository: api.github.com/k14s/kwt                       # Kubernetes Workstation Tools CLI
+  - repository: api.github.com/linkerd/linkerd2               # A service mesh for Kubernetes and beyond
     alias: linkerd
-  - repository: api.github.com/sharkdp/fd
+  - repository: api.github.com/kubernetes/minikube            # Run Kubernetes locally
+  - repository: api.github.com/ryochack/peep                  # The CLI text viewer tool that works like less command on small pane within the terminal window.
+  - repository: api.github.com/rancher/rio                    # Kubernetes based MicroPaaS (Adds additional features to Kubernetes)
+  - repository: api.github.com/BurntSushi/ripgrep             # recursively searches directories for a regex pattern
+    alias: rg
+  - repository: api.github.com/GoogleContainerTools/skaffold  # Easy and Repeatable Kubernetes Development
+  - repository: api.github.com/starship/starship              # The cross-shell prompt for astronauts.
+  - repository: api.github.com/wercker/stern                  # K8s logging helper
+  - repository: api.github.com/k14s/ytt                       # YAML templating tool that works on YAML structure instead of text
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ dotfiles_path }}"
