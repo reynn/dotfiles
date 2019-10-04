@@ -13,24 +13,36 @@ local paths=(
   "$HOME/.bins"
   "$HOME/.cargo/bin"
   "$DFP/python"
-  "$HOME/Library/Python/3.7/bin"
   "$HOME/.npm-global/bin"
-  "/Library/Frameworks/Python.framework/Versions/3.7/bin"
-  "$HOME/.krew/bin"
+  "$HOME/.local/bin"
   "$HOME/go/bin"
   "$GFP/bin"
   "$GFP/github.com/thecasualcoder/kube-fzf"
   "$GFP/github.com/junegunn/fzf/bin"
   "/usr/local/go/bin"
-  "/usr/local/MacGPG2/bin"
+  # Unix paths
   "/usr/local/bin"
-  "/usr/bin"
-  "/bin"
+  "/snap/bin"
   "/usr/sbin"
+  "/usr/bin"
   "/sbin"
+  "/bin"
+  # Mac paths
+  "/usr/local/MacGPG2/bin"
+  "$HOME/Library/Python/3.7/bin"
+  "/Library/Frameworks/Python.framework/Versions/3.7/bin"
 )
-join tmpPath ":" "${paths[@]}"
-export PATH="$tmpPath"
+export PATH=""
+for p in $paths; do
+  if test -d $p; then
+    echo "Path exists $p"
+    if test -z $PATH; then
+      export PATH="$p"
+    else
+      export PATH="$p:$PATH"
+    fi
+  fi
+done
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
 export HISTSIZE='32768'
