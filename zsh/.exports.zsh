@@ -35,7 +35,7 @@ local paths=(
 export PATH=""
 for p in $paths; do
   if test -d $p; then
-    echo "Path exists $p"
+    print_debug "path" "$p"
     if test -z $PATH; then
       export PATH="$p"
     else
