@@ -183,7 +183,7 @@ function k8s_get_sa_config() {
 # Minikube functions ----------------------------------------------------------
 
 function new_minikube() {
-  local k8s_version="1.14.1"
+  local k8s_version="1.16.0"
   local memory="${2:-4}"
   if [ "$1" = '-h' ]; then
     print_usage "$0" "
@@ -194,10 +194,10 @@ function new_minikube() {
     ------------------------------------------------------------------
     Parameters  |-----------------------------------------------------
     ------------------------------------------------------------------
-    k8s_version | Version of Kubernetes to use. (Default: 1.14.1)
+    k8s_version | Version of Kubernetes to use. (Default: 1.16.0)
     memory      | Amount of memory to start Minikube with, in Gb. (Default: 4Gb)
     ------------------------------------------------------------------
-    Example     | \`$0 1.14.1 3\` (Start Minikube with 3Gb RAM on K8S v1.14.1)"
+    Example     | \`$0 1.15.0 3\` (Start Minikube with 3Gb RAM on K8S v1.16.0)"
     return 0
   elif test -n "$1"; then
     echo "k8s_version $k8s_version"
