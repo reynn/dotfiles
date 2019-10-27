@@ -70,7 +70,7 @@
       shell: |
         #!/bin/bash -e
         tar xf {{ glrfg_get_url.dest }} -C {{ glrfg_bins_path }}/{{ glrfg_tag }}
-        find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm +111 | grep -v .tar.gz
+        find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm -111 | grep -v .tar.gz
       register: glrfg_extract_gzip
       when:
         - 'glrfg_type == "application/gzip" or glrfg_name.find(".tar.gz") >= 1'
@@ -83,7 +83,7 @@
       shell: |
         #!/bin/bash -e
         unzip -qq {{ glrfg_get_url.dest }} -d {{ glrfg_bins_path }}/{{ glrfg_tag }}
-        find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm +111
+        find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm -111
       register: glrfg_extract_zip
       when:
         - 'glrfg_type == "application/zip"'

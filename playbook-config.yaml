@@ -39,8 +39,6 @@
       file:
         src: "{{ playbook_dir }}/.zshrc"
         dest: "{{ ansible_env.HOME }}/.zshrc"
-        owner: "{{ ansible_effective_user_id | quote }}"
-        group: "{{ ansible_effective_group_id | quote }}"
         state: link
       tags:
         - update
