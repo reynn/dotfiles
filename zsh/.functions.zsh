@@ -58,6 +58,17 @@ function o() {
   fi;
 }
 
+function auto_retry() {
+  false
+  while [ $? -ne 0 ]; do
+    "$@" || (sleep 1;false)
+  done
+}
+
+function ssh_auto_retry() {
+  auto-retry ssh "$@"
+}
+
 function length() {
   echo "$#"
 }

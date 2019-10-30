@@ -88,7 +88,7 @@ alias dok_run_alpine='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin
 alias dok_run_go='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash quay.io/reynn/golang:latest'
 alias dok_run_kubectl='docker run --rm -it -v $PWD:$PWD -v $HOME/.kube:/root/.kube -w $PWD -u 0:0 --entrypoint=/bin/bash bitnami/kubectl'
 alias dok_run_python='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash python:3.7'
-alias dok_run_rust='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash rust:1.35.0'
+alias dok_run_rust='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash rust:1.38.0'
 alias dok_run_ubuntu='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu:19.04'
 
 # -----------------------------------------------------------------------------
