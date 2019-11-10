@@ -18,6 +18,10 @@ function slice_arr() {
   echo ${arr[@]:${i}}
 }
 
+function tmux-connect {
+  TERM=xterm-256color ssh $1 -t "tmux new-session -s ssh-sess || tmux attach-session -t ssh-sess"
+}
+
 function listen_port() {
   local port=$1
   lsof -nP -i4TCP:$port | grep LISTEN | awk '{ print $2 }'
