@@ -1,7 +1,7 @@
 {
   "go.formatTool": "goimports",
   "python.linting.pylintEnabled": false,
-  "python.linting.pep8Enabled": true,
+  "python.linting.pycodestyleEnabled": true,
   "python.linting.enabled": true,
   "python.pythonPath": "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3"
 }

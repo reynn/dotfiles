@@ -12,7 +12,7 @@ export EDITOR='vim'
 local paths=(
   "$HOME/.bins"
   "$HOME/.cargo/bin"
-  "$DFP/python"
+  "$DFP/scripts"
   "$HOME/.npm-global/bin"
   "$HOME/.local/bin"
   "$HOME/go/bin"
