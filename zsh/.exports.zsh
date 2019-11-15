@@ -10,6 +10,7 @@ alias ER="source $FP" # alias reload
 export SSH_KEY_PATH='~/.ssh/rsa_id'
 export EDITOR='vim'
 local paths=(
+  "$GFP/github.com/v"
   "$HOME/.bins"
   "$HOME/.cargo/bin"
   "$DFP/scripts"

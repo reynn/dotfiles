@@ -47,7 +47,7 @@ alias cls="clear;ls"
 # -----------------------------------------------------------------------------
 ## UNIX:Directory aliases -----------------------------------------------------
 alias mkdir="mkdir -p"
-alias chall='sudo chmod -R u=rwx,g=rwx,o=rwx ./*; sudo chown -R "$(id -u):$(id -g)" ./*'
+alias chall='sudo chmod -R u=rwx,g=rw,o=rw ./*; sudo chown -R "$(id -u):$(id -g)" ./*'
 
 # -----------------------------------------------------------------------------
 ## UNIX:Readability aliases ---------------------------------------------------
@@ -63,6 +63,12 @@ alias localip="ipconfig getifaddr en0"
 ## UNIX:Text aliases ----------------------------------------------------------
 alias lower="tr '[A-Z]' '[a-z]'"
 alias upper="tr '[a-z]' '[A-Z]'"
+
+# -----------------------------------------------------------------------------
+# Tool aliases ----------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+alias bfg='java -jar $HOME/.bins/bfg.jar'
 
 # -----------------------------------------------------------------------------
 # Docker aliases --------------------------------------------------------------
@@ -91,17 +97,19 @@ alias dok_run_python='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin
 alias dok_run_rust='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash rust:1.38.0'
 alias dok_run_ubuntu='docker run --rm -it -v $PWD:$PWD -w $PWD --entrypoint=/bin/bash ubuntu:19.04'
 
+alias dok_run_redis='docker run --name redis -d -p 6379:6379 redis:alpine3.10'
+
 # -----------------------------------------------------------------------------
 ## Docker:list aliases --------------------------------------------------------
-alias dok_ls_im="docker image ls -a"
-alias dok_ls_co="docker container ls -a"
+alias dok_ls_im='docker image ls -a'
+alias dok_ls_co='docker container ls -a'
 
 # -----------------------------------------------------------------------------
 ## Docker:clean aliases -------------------------------------------------------
-alias dok_cln_con="docker container rm \$(docker container ls -qa)"
-alias dok_cln_all_con="docker container rm -f \$(docker container ls -qa)"
-alias dok_cln_img="docker image rm \$(docker image ls -q)"
-alias dok_cln_all_img="docker image rm -f \$(docker image ls -q)"
+alias dok_cln_con='docker container rm $(docker container ls -qa)'
+alias dok_cln_all_con='docker container rm -f $(docker container ls -qa)'
+alias dok_cln_img='docker image rm $(docker image ls -q)'
+alias dok_cln_all_img='docker image rm -f $(docker image ls -q)'
 
 # -----------------------------------------------------------------------------
 # SCM aliases -----------------------------------------------------------------
