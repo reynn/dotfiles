@@ -5,14 +5,14 @@
     - name: Include vars from ansible directory
       include_vars:
         dir: "{{ playbook_dir }}/ansible/vars"
-        extensions:
-          - yaml
-          - yml
+        ignore_unknown_extensions: yes
       tags:
         - always
 
     - name: Install certificate handling for darwin
-      shell: "sh '/Applications/Python\ {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install\ Certificates.command'"
+      shell: "sh '/Applications/Python {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install Certificates.command'"
+      register: cert_handler
+      changed_when: '"Requirement already up-to-date" not in cert_handler.stdout'
       when:
         - ansible_system == 'Darwin'
       tags:
