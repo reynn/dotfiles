@@ -12,5 +12,12 @@ youtube-dl \
   -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]' \
   --merge-output-format mp4 \
   --add-metadata \
+  --no-continue \
+  --no-overwrites \
   --write-thumbnail \
+  --embed-thumbnail \
+  --all-subs \
+  --sub-format "srt" \
+  --embed-subs \
+  --dateafter "$(date +%Y)0101" \
   --batch-file="$CHANNEL_LIST"

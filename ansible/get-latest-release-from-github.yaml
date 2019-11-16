@@ -27,6 +27,13 @@
     - binaries
     - update
 
+- debug:
+    var: glrfg_binary_shell
+  when: debug_mode|default(False)|bool
+  tags:
+    - binaries
+    - update
+
 - name: Configure release variables
   set_fact:
     glrfg_name: "{{ (glrfg_binary_shell.stdout | from_json)[0].name }}"

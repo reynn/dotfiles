@@ -15,6 +15,8 @@ alias N="/dev/null"
 alias S='sort'
 alias G='rg'
 
+alias BIN_DOWNLOADS='cat $DFP/ansible/vars/0-primary-vars.yaml | yq -r ".bin_downloads[].repository"'
+
 # -----------------------------------------------------------------------------
 # Tool aliases ----------------------------------------------------------------
 # -----------------------------------------------------------------------------
