@@ -19,5 +19,4 @@ youtube-dl \
   --all-subs \
   --sub-format "srt" \
   --embed-subs \
-  --dateafter "$(date +%Y)0101" \
   --batch-file="$CHANNEL_LIST"
