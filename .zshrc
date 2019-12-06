@@ -16,7 +16,7 @@ source $DFP/zsh/.functions.zsh
 source $DFP/zsh/.exports.zsh
 
 # -----------------------------------------------------------------------------
-# Start:Antibody --------------------------------------------------------------
+# Antibody:Setup --------------------------------------------------------------
 source <(antibody init)
 
 # Setup required env var for oh-my-zsh plugins
@@ -25,25 +25,36 @@ export ZSH="$(antibody home)/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrus
 antibody bundle robbyrussell/oh-my-zsh
 
 local zsh_plugins=(
+  dircycle
   docker
   docker-compose
+  encode64
+  extract
   git
   git-flow
+  git-hubflow
   gpg-agent
   httpie
   jsontools
+  kubectl
+  osx
   pass
+  pip
+  pipenv
+  python
   rsync
   ssh-agent
+  sudo
   tmux
+  vscode
+  web-search
 )
 
 for pl in $zsh_plugins; do
   antibody bundle robbyrussell/oh-my-zsh path:plugins/$pl
 done
 
-antibody bundle zsh-users/zsh-autosuggestions
-antibody bundle zsh-users/zsh-syntax-highlighting
+antibody bundle zsh-users/zsh-autosuggestions zsh-users/zsh-syntax-highlighting
 # Load the theme.
 antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 

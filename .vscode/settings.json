@@ -3,5 +3,5 @@
   "python.linting.pylintEnabled": false,
   "python.linting.pycodestyleEnabled": true,
   "python.linting.enabled": true,
-  "python.pythonPath": "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3"
+  "python.pythonPath": "/Users/i854273/.local/share/virtualenvs/dotfiles-ZXDqRlfa/bin/python"
 }

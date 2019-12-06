@@ -14,6 +14,10 @@ function update-dotfiles() {
   fi
 }
 
+function load-plugin() {
+  antibody bundle robbyrussell/oh-my-zsh path:plugins/$1
+}
+
 # -----------------------------------------------------------------------------
 # String/Printing functions ---------------------------------------------------
 
