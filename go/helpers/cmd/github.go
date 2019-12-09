@@ -77,6 +77,7 @@ func filterAssets(assets []assetReturn, filter filterFunc) []assetReturn {
 var (
 	// Vars
 	assetAll      bool
+	prerelease    bool
 	assetPlatform string
 	ghHost        string
 	ghOwner       string
@@ -125,7 +126,10 @@ var (
 
 func getLatestAssetContent() []assetReturn {
 	ret := []assetReturn{}
-	ghURL := fmt.Sprintf("https://%s/repos/%s/%s/releases/latest", ghHost, ghOwner, ghRepo)
+	ghURL := fmt.Sprintf("https://%s/repos/%s/%s/releases", ghHost, ghOwner, ghRepo)
+	if !prerelease {
+		ghURL += "/latest"
+	}
 	debugPrint("Getting information from %s\n", ghURL)
 	resp, httpErr := http.Get(ghURL)
 	if httpErr != nil {
@@ -171,10 +175,12 @@ func getPlatform() string {
 func init() {
 	getAssetURLCmd.Flags().StringVarP(&assetPlatform, "platform-regex", "p", getPlatform(), "Download only assets that contain this platform designation")
 	getAssetURLCmd.Flags().BoolVarP(&assetAll, "all", "a", false, "Downloads all assets regardless of what platform its for")
+	getAssetURLCmd.Flags().BoolVarP(&prerelease, "prerelease", "e", false, "Include pre-release assets to be considered as latest")
 
 	githubCmd.PersistentFlags().StringVar(&ghHost, "host", "api.github.com", "GitHub instance to query")
 	githubCmd.PersistentFlags().StringVar(&ghOwner, "owner", "", "Owner to query")
 	githubCmd.PersistentFlags().StringVar(&ghRepo, "repo", "", "Repository to query")
+
 	getCmd.AddCommand(getAssetURLCmd)
 	githubCmd.AddCommand(getCmd)
 	rootCmd.AddCommand(githubCmd)

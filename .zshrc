@@ -15,6 +15,9 @@ alias ZR="source $FP" # alias reload
 source $DFP/zsh/.functions.zsh
 source $DFP/zsh/.exports.zsh
 
+zstyle :omz:plugins:ssh-agent agent-forwarding on
+zstyle :omz:plugins:ssh-agent identities aws-ss-reTeam.pem id_autocm id_ghe id_public_github id_rsa
+
 # -----------------------------------------------------------------------------
 # Antibody:Setup --------------------------------------------------------------
 source <(antibody init)
@@ -38,7 +41,6 @@ local zsh_plugins=(
   jsontools
   kubectl
   osx
-  pass
   pip
   pipenv
   python
@@ -54,7 +56,8 @@ for pl in $zsh_plugins; do
   antibody bundle robbyrussell/oh-my-zsh path:plugins/$pl
 done
 
-antibody bundle zsh-users/zsh-autosuggestions zsh-users/zsh-syntax-highlighting
+antibody bundle zsh-users/zsh-autosuggestions
+antibody bundle zsh-users/zsh-syntax-highlighting
 # Load the theme.
 antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 
@@ -102,7 +105,7 @@ function import_zsh_files() {
   debugEcho "> Importing zsh files..."
   for d in $1; do
     debugEcho ">> Searching dir :$d"
-    for f in $(find $DFP/$d -type f -name "*.zsh"); do
+    for f in $(fd -I -t f -H -e zsh . $DFP/$d); do
       debugEcho ">>> Sourcing :: $f"
       source $f
     done

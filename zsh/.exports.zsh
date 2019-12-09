@@ -10,7 +10,6 @@ alias ER="source $FP" # alias reload
 export SSH_KEY_PATH='~/.ssh/rsa_id'
 export EDITOR='vim'
 local paths=(
-  "$GFP/github.com/v"
   "$HOME/.bins"
   "$HOME/.cargo/bin"
   "$DFP/scripts"
@@ -21,6 +20,10 @@ local paths=(
   "$GFP/github.com/thecasualcoder/kube-fzf"
   "$GFP/github.com/junegunn/fzf/bin"
   "/usr/local/go/bin"
+  # Mac paths
+  "/usr/local/MacGPG2/bin"
+  "$HOME/Library/Python/3.8/bin"
+  "/Library/Frameworks/Python.framework/Versions/3.8/bin"
   # Unix paths
   "/usr/local/bin"
   "/snap/bin"
@@ -28,10 +31,6 @@ local paths=(
   "/usr/bin"
   "/sbin"
   "/bin"
-  # Mac paths
-  "/usr/local/MacGPG2/bin"
-  "$HOME/Library/Python/3.7/bin"
-  "/Library/Frameworks/Python.framework/Versions/3.7/bin"
 )
 export PATH=""
 for p in $paths; do
@@ -40,7 +39,7 @@ for p in $paths; do
     if test -z $PATH; then
       export PATH="$p"
     else
-      export PATH="$p:$PATH"
+      export PATH="$PATH:$p"
     fi
   fi
 done
@@ -69,7 +68,7 @@ export GO111MODULE='on'
 # FZF exports -----------------------------------------------------------------
 
 export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border"
-export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_DEFAULT_COMMAND='fd -t f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # -----------------------------------------------------------------------------

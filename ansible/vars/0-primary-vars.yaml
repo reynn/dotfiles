@@ -19,36 +19,58 @@ packages:
     - Pygments
     - yq
     - youtube_dl
+  cargo:
+    - broot
+    - exa
+    - ripgrep
+  brew:
+    - tmux
+    - zsh
 
 # ------------
 # Lists
 # TODO: Add alternate filter option for Canop/broot
 # TODO: Add ability to pull pre-releases
 bin_downloads:
-  - repository: api.github.com/sharkdp/bat # A cat(1) clone with wings.
-  # - repository: api.github.com/Canop/broot # A new way to see and navigate directory trees
-  - repository: api.github.com/goodwithtech/dockle # Container Image Linter for Security
-  - repository: api.github.com/digitalocean/doctl # Digital Ocean CLI
-  - repository: api.github.com/ogham/exa # A modern version of ‘ls’.
-  - repository: api.github.com/sharkdp/fd # A simple, fast and user-friendly alternative to 'find'
-  - repository: api.github.com/goreleaser/goreleaser # Deliver Go binaries as fast and easily as possible
-  - repository: api.github.com/stedolan/jq # CLI JSON processor
-  # - repository: api.github.com/derailed/k9s                   # Kubernetes CLI To Manage Your Clusters In Style!
-  - repository: api.github.com/k14s/kapp # A simple deployment tool focused on the concept of "Kubernetes application"
-  - repository: api.github.com/k14s/kbld # Image building and pushing
-  - repository: api.github.com/k14s/kwt # Kubernetes Workstation Tools CLI
-  - repository: api.github.com/k14s/ytt # YAML templating tool that works on YAML structure instead of text
-  - repository: api.github.com/helm/helm # Kubernetes Workstation Tools CLI
-  - repository: api.github.com/linkerd/linkerd2 # A service mesh for Kubernetes and beyond
+  - repository: sharkdp/bat
+    description: A cat(1) clone with wings
+  - repository: goodwithtech/dockle
+    description: Container Image Linter for Security
+  - repository: digitalocean/doctl
+    description: Digital Ocean CLI
+  - repository: sharkdp/fd
+    description: A simple, fast and user-friendly alternative to 'find'
+  - repository: goreleaser/goreleaser
+    description: Deliver Go binaries as fast and easily as possible
+  - repository: stedolan/jq
+    description: CLI JSON processor
+  # - repository: derailed/k9s
+  #   description: Kubernetes CLI To Manage Your Clusters In Style!
+  - repository: k14s/kapp
+    description: A simple deployment tool focused on the concept of "Kubernetes application"
+  - repository: k14s/kbld
+    description: Image building and pushing
+  - repository: k14s/kwt
+    description: Kubernetes Workstation Tools CLI
+  - repository: k14s/ytt
+    description: YAML templating tool that works on YAML structure instead of text
+  - repository: helm/helm
+    description: Kubernetes Workstation Tools CLI
+  - repository: linkerd/linkerd2
+    description: A service mesh for Kubernetes and beyond
     alias: linkerd
-  - repository: api.github.com/kubernetes/minikube # Run Kubernetes locally
-  - repository: api.github.com/ryochack/peep # The CLI text viewer tool that works like less command on small pane within the terminal window.
-  - repository: api.github.com/rancher/rio # Kubernetes based MicroPaaS (Adds additional features to Kubernetes)
-  - repository: api.github.com/BurntSushi/ripgrep # recursively searches directories for a regex pattern
-    alias: rg
-  - repository: api.github.com/GoogleContainerTools/skaffold # Easy and Repeatable Kubernetes Development
-  - repository: api.github.com/starship/starship # The cross-shell prompt for astronauts.
-  - repository: api.github.com/wercker/stern # K8s logging helper
+  - repository: kubernetes/minikube
+    description: Run Kubernetes locally
+  - repository: ryochack/peep
+    description: The CLI text viewer tool that works like less command on small pane within the terminal window
+  - repository: rancher/rio
+    description: Kubernetes based MicroPaaS (Adds additional features to Kubernetes)
+  - repository: GoogleContainerTools/skaffold
+    description: Easy and Repeatable Kubernetes Development
+  - repository: starship/starship
+    description: The cross-shell prompt for astronauts
+  - repository: wercker/stern
+    description: K8s logging helper
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ dotfiles_path }}"

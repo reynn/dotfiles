@@ -3,8 +3,8 @@
 # alias: string
 - name: Configure basic vars
   set_fact:
-    glrfg_host: "{{ item.repository.split('/')[0:-2] | join('/') }}"
-    glrfg_owner: "{{ item.repository.split('/')[-2] }}"
+    glrfg_host: "{{ item.host | default('api.github.com') }}"
+    glrfg_owner: "{{ item.repository.split('/')[0] }}"
     glrfg_repository: "{{ item.repository.split('/')[-1] }}"
     glrfg_bins_path: "{{ bins_dir }}/{{ item.repository.split('/')[-1] }}_bin"
     glrfg_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.repository.split('/')[-1]) }}"

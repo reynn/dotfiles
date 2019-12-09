@@ -26,6 +26,16 @@
         - ansible_system == 'Linux'
       become: yes
 
+    - name: Installing brew packages
+      homebrew:
+        name: "{{ packages.brew }}"
+        state: latest
+      when:
+        - ansible_system == 'Darwin'
+      tags:
+        - brew
+        - update
+
     - name: Installing pip packages
       pip:
         name: "{{ packages.pip }}"
@@ -33,6 +43,18 @@
         extra_args: --user
       tags:
         - pip
+        - update
+
+    - name: Installing cargo packages
+      command:
+        argv:
+          - cargo
+          - install
+          - -f
+          - "{{ item }}"
+      loop: "{{ packages.cargo }}"
+      tags:
+        - cargo
         - update
 
     - name: "Link .zshrc file"
@@ -102,7 +124,7 @@
         - commands
 
     - include_tasks: "{{ ansible_env.PWD }}/ansible/get-latest-release-from-github.yaml"
-      with_items: "{{ bin_downloads }}"
+      loop: "{{ bin_downloads }}"
       tags:
         - binaries
         - update

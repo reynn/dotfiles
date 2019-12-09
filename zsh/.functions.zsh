@@ -12,6 +12,10 @@ function zsudo() {
   sudo zsh -c "$functions[$1]" "$@"
 }
 
+function mkcd() {
+  mkdir -p "$@" && cd "$_"
+}
+
 function slice_arr() {
   local i=$1
   local arr=($@)
