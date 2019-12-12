@@ -57,13 +57,16 @@
         - cargo
         - update
 
-    - name: "Link .zshrc file"
+    - name: "Link files"
       file:
-        src: "{{ playbook_dir }}/.zshrc"
-        dest: "{{ ansible_env.HOME }}/.zshrc"
+        src: "{{ playbook_dir }}/{{ item.src }}"
+        dest: "{{ item.dest }}"
+        force: yes
         state: link
+      loop: "{{ file_links }}"
       tags:
         - update
+        - links
 
     - name: Clone git repos
       git:

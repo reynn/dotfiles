@@ -8,10 +8,11 @@ alias AR="source $FP" # alias reload
 
 # Global Aliases --------------------------------------------------------------
 alias ZR="sh -c \"$DFP/install.sh\""
+
 alias C='wc -l'
 alias H='head'
-alias L="less"
-alias N="/dev/null"
+alias L='less'
+alias N='/dev/null'
 alias S='sort'
 alias G='rg'
 

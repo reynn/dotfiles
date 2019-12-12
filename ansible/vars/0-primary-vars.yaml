@@ -4,6 +4,12 @@ bins_dir: "{{ ansible_env.HOME }}/.bins"
 git_path: "{{ ansible_env.HOME }}/git"
 dotfiles_path: "{{ git_path }}/github.com/reynn/dotfiles"
 
+file_links:
+  - src: ".zshrc"
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+  - src: ".vimrc"
+    dest: "{{ ansible_env.HOME }}/.vimrc"
+
 # ------------
 # Maps
 packages:

@@ -15,8 +15,15 @@ alias ZR="source $FP" # alias reload
 source $DFP/zsh/.functions.zsh
 source $DFP/zsh/.exports.zsh
 
-zstyle :omz:plugins:ssh-agent agent-forwarding on
-zstyle :omz:plugins:ssh-agent identities aws-ss-reTeam.pem id_autocm id_ghe id_public_github id_rsa
+# zstyle :omz:plugins:ssh-agent agent-forwarding on
+case "$(hostname)" in
+  C02VPB5XHTD6)
+    zstyle :omz:plugins:ssh-agent identities aws-ss-reTeam.pem id_autocm id_ghe id_public_github id_rsa
+    ;;
+  *)
+    zstyle :omz:plugins:ssh-agent identities id_rsa
+    ;;
+esac
 
 # -----------------------------------------------------------------------------
 # Antibody:Setup --------------------------------------------------------------

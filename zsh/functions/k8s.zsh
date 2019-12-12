@@ -61,19 +61,14 @@ function install_helm_app() {
   local rel_name="$(echo $selected_value_file | cut -d'/'  -f11 | cut -d'_' -f1)"
 
   local args=(
-    "--namespace" "$namespace"
-    "-f" "$selected_value_file"
-    "-n" "$rel_name"
+    "--namespace $namespace"
+    "-f $selected_value_file"
+    "-n $rel_name"
     "$selected_chart"
   )
   print_debug "$0.args" "[[ $args ]]"
 
-  (
-    echo 'from subshell'
-    sleep 3
-  )
-
-  echo $args | xargs helm template # | kapp -y deploy -a $rel_name -f -
+  echo $args #| xargs helm template # | kapp -y deploy -a $rel_name -f -
 }
 
 function _get_charts() {
