@@ -16,7 +16,7 @@ alias N='/dev/null'
 alias S='sort'
 alias G='rg'
 
-alias BIN_DOWNLOADS='cat $DFP/ansible/vars/0-primary-vars.yaml | yq -r ".bin_downloads[].repository"'
+alias BIN_DOWNLOADS='cat $DFP/ansible/vars/0-primary-vars.yaml | yq -r ".bin_downloads[].repository" | sort'
 
 # -----------------------------------------------------------------------------
 # Tool aliases ----------------------------------------------------------------
@@ -35,7 +35,7 @@ alias stern="stern -E linkerd-proxy"
 # -----------------------------------------------------------------------------
 ## UNIX:General aliases -------------------------------------------------------
 alias eecho='echo -e'
-alias path='eecho ${PATH//:/\\n}'
+alias paths='eecho ${PATH//:/\\n}'
 alias ccat='pygmentize -O style=stata-dark,full'
 alias please='sudo'
 

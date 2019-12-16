@@ -7,9 +7,16 @@ alias ER="source $FP" # alias reload
 
 # -----------------------------------------------------------------------------
 # UNIX exports ----------------------------------------------------------------
+
+export XDG_MAIN="$HOME/.xdg"
+export XDG_CACHE_HOME="$XDG_MAIN/cache"
+export XDG_CONFIG_HOME="$XDG_MAIN/config"
+export XDG_DATA_HOME="$XDG_MAIN/data"
+
 export SSH_KEY_PATH='~/.ssh/rsa_id'
 export EDITOR='vim'
-local paths=(
+
+export POSSIBLE_PATHS=(
   "$HOME/.bins"
   "$HOME/.cargo/bin"
   "$DFP/scripts"
@@ -32,8 +39,9 @@ local paths=(
   "/sbin"
   "/bin"
 )
+
 export PATH=""
-for p in $paths; do
+for p in $POSSIBLE_PATHS; do
   if test -d $p; then
     print_debug "path" "$p"
     if test -z $PATH; then
