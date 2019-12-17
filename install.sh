@@ -67,7 +67,7 @@ handle_deps() {
   fi
   if check_cmd git; then
     print_installing 'dotfiles repository...'
-    git clone --depth=10 https://github.com/reynn/dotfiles.git $HOME/git/reynn/dotfiles
+    git clone --depth=10 https://github.com/reynn/dotfiles.git $DFP
   else
     print_error 'Git not found'
     exit 1
