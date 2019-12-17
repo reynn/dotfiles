@@ -50,8 +50,6 @@ handle_deps() {
     apt-get update
     apt-get install --no-install-recommends -y \
         python3-{dev,pip,wheel,setuptools} \
-        # libxml2-dev \
-        # libxslt-dev \
         build-essential \
         git
   fi
