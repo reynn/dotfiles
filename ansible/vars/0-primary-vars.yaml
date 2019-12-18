@@ -62,8 +62,6 @@ bin_downloads:
     description: Kubernetes Workstation Tools CLI
   - repository: k14s/ytt
     description: YAML templating tool that works on YAML structure instead of text
-  - repository: helm/helm
-    description: Kubernetes Workstation Tools CLI
   - repository: linkerd/linkerd2
     description: A service mesh for Kubernetes and beyond
     alias: linkerd

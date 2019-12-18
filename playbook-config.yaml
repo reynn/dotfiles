@@ -135,8 +135,8 @@
       tags:
         - commands
 
-    - include_tasks: "{{ ansible_env.PWD }}/ansible/get-latest-release-from-github.yaml"
-      loop: "{{ bin_downloads }}"
+    - include_tasks: "{{ ansible_env.PWD }}/ansible/github-release.yaml"
+      loop: "{{ bin_downloads | sort(attribute='repository') }}"
       tags:
         - binaries
         - update
