@@ -13,10 +13,13 @@ export XDG_CACHE_HOME="$XDG_MAIN/cache"
 export XDG_CONFIG_HOME="$XDG_MAIN/config"
 export XDG_DATA_HOME="$XDG_MAIN/data"
 
+export PYENV_ROOT="$GFP/pyenv/pyenv"
+
 export SSH_KEY_PATH='~/.ssh/rsa_id'
 export EDITOR='vim'
 
 export POSSIBLE_PATHS=(
+  "$PYENV_ROOT/bin"
   "$HOME/.bins"
   "$HOME/.cargo/bin"
   "$DFP/scripts"
@@ -29,7 +32,7 @@ export POSSIBLE_PATHS=(
   "/usr/local/go/bin"
   # Mac paths
   "/usr/local/MacGPG2/bin"
-  "$HOME/Library/Python/3.8/bin"
+  # "$HOME/Library/Python/3.8/bin"
   "/Library/Frameworks/Python.framework/Versions/3.8/bin"
   # Unix paths
   "/usr/local/bin"
@@ -43,7 +46,6 @@ export POSSIBLE_PATHS=(
 export PATH=""
 for p in $POSSIBLE_PATHS; do
   if test -d $p; then
-    print_debug "path" "$p"
     if test -z $PATH; then
       export PATH="$p"
     else
@@ -78,6 +80,18 @@ export GO111MODULE='on'
 export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border"
 export FZF_DEFAULT_COMMAND='fd -t f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# -----------------------------------------------------------------------------
+# Text ------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+## Text:Formats ---------------------------------------------------------------
+
+export FMT_ERROR="\e[38;5;m"
+export FMT_DEBUG="\e[38;5;243m"
+export FMT_INFO="\e[38;5;2m"
+export FMT_WARNING="\e[38;5;226m"
+export FMT_USAGE="\e[38;5;57m"
 
 # -----------------------------------------------------------------------------
 # ZSH Exports -----------------------------------------------------------------

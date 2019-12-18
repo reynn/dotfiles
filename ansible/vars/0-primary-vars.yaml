@@ -25,6 +25,8 @@ packages:
     - Pygments
     - yq
     - youtube_dl
+    - pipenv
+    - docker
   cargo:
     - broot
     - exa
@@ -77,6 +79,23 @@ bin_downloads:
     description: The cross-shell prompt for astronauts
   - repository: wercker/stern
     description: K8s logging helper
+docker_images:
+  - name: fantia.jp
+    source: build
+    build:
+      pull: yes
+      path: "{{ dotfiles_path }}/docker/fantia.jp"
+  - name: pixiv
+    source: build
+    build:
+      pull: yes
+      path: "{{ dotfiles_path }}/docker/pixiv"
+  - name: yiff.party
+    source: build
+    build:
+      pull: yes
+      path: "{{ dotfiles_path }}/docker/yiff.party"
+
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ dotfiles_path }}"

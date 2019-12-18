@@ -95,6 +95,15 @@
         - scripts
         - update
 
+    - name: Build Docker images
+      docker_image: "{{ item }}"
+      loop: "{{ docker_images }}"
+      loop_control:
+        label: "{{ item.name }}"
+      tags:
+        - docker
+        - update
+
     - name: Downloading scripts
       get_url:
         url: "{{ item.url }}"
