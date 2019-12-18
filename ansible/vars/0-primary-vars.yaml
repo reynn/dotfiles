@@ -34,6 +34,7 @@ packages:
   brew:
     - tmux
     - zsh
+    - pyenv
 
 # ------------
 # Lists

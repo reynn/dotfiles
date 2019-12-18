@@ -5,43 +5,35 @@ import os
 
 from argparse import ArgumentParser
 
-
-def _set_colors():
-    def _get_color_from_env(name: str) -> str:
-        return os.getenv(name, '').replace('\e[', '')
-
-    global FMT_DEBUG
-    global FMT_INFO
-    global FMT_WARNING
-    global FMT_ERROR
-    FMT_DEBUG = _get_color_from_env("FMT_DEBUG")
-    FMT_INFO = _get_color_from_env("FMT_INFO")
-    FMT_WARNING = _get_color_from_env("FMT_WARNING")
-    FMT_ERROR = _get_color_from_env("FMT_ERROR")
+FMT_ERROR = "38;5;m"
+FMT_DEBUG = "38;5;243m"
+FMT_INFO = "38;5;2m"
+FMT_WARNING = "38;5;226m"
+FMT_USAGE = "38;5;57m"
 
 
-def _format_label(l: str) -> str:
-    return "" if l is None else f".{l}"
+def _format_label(label: str) -> str:
+    return "" if label is None or label == '' else f".{label}"
 
 
 def _print(color: str, level: str, label: str, text: str):
     print(f"\033[{color}>> {level} >> {label} >> {text}\033[0m")
 
 
-def print_debug(t: str, f_n: str, l: str):
-    _print(FMT_DEBUG, 'debug', f_n+l, t)
+def print_debug(t: str, func_name: str, label: str):
+    _print(FMT_DEBUG, 'debug', func_name+label, t)
 
 
-def print_info(t: str, f_n: str, l: str):
-    _print(FMT_INFO, 'info', f_n+l, t)
+def print_info(t: str, func_name: str, label: str):
+    _print(FMT_INFO, 'info', func_name+label, t)
 
 
-def print_warning(t: str, f_n: str, l: str):
-    _print(FMT_WARNING, 'warning', f_n+l, t)
+def print_warning(t: str, func_name: str, label: str):
+    _print(FMT_WARNING, 'warning', func_name+label, t)
 
 
-def print_error(t: str, f_n: str, l: str):
-    _print(FMT_ERROR, 'error', f_n+l, t)
+def print_error(t: str, func_name: str, label: str):
+    _print(FMT_ERROR, 'error', func_name+label, t)
 
 
 def main():
@@ -59,8 +51,7 @@ def main():
 
     parser = ArgumentParser()
     parser.add_argument("--level", help="The level to print at")
-    parser.add_argument(
-        "--name", help="The name of the function calling print")
+    parser.add_argument("--name", help="The name of the calling function")
     parser.add_argument("--label", help="An optional label to add")
     parser.add_argument("text", help="The string to print")
     args = parser.parse_args()
@@ -69,16 +60,15 @@ def main():
     func_name = str(args.name)
     label = _format_label(args.label)
     text = args.text
-    _set_colors()
 
     if level == 'error':
-        print_error(t=text, l=label, f_n=func_name)
+        print_error(t=text, label=label, func_name=func_name)
     elif level == 'warning':
-        print_warning(t=text, l=label, f_n=func_name)
+        print_warning(t=text, label=label, func_name=func_name)
     elif level == 'debug':
-        print_debug(t=text, l=label, f_n=func_name)
+        print_debug(t=text, label=label, func_name=func_name)
     else:
-        print_info(t=text, l=label, f_n=func_name)
+        print_info(t=text, label=label, func_name=func_name)
 
 
 if __name__ == '__main__':

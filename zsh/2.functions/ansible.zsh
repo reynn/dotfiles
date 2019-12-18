@@ -1,5 +1,8 @@
+#!/bin/usr/env zsh
+
 # -----------------------------------------------------------------------------
 # Ansible functions -----------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function generate_ssh_config_from_ansible_inventory() {
   local INVENTORY_FILE="$1"
@@ -16,6 +19,7 @@ function generate_ssh_config_from_ansible_inventory() {
       local ip="$(echo $entry | jq -r '.ip')"
       local user="$(echo $entry | jq -r '.user')"
       local identFile="$(echo $entry | jq -r '.ident')"
+      print_info "host" "$name@$ip"
 
       echo "Host $name" >> $CONFIG_DIRECTORY/$dc
       echo "  HostName $ip" >> $CONFIG_DIRECTORY/$dc

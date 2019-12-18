@@ -1,9 +1,16 @@
+#!/bin/usr/env zsh
+
 # -----------------------------------------------------------------------------
 # Artifactory functions -------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function artifactory_upload() {
   local matcher="${1:-*}"
-  local repo="${2:-ext-util-sandbox-local}"
+  local subfolder="${2:-}"
+  local repo="${3:-ext-util-sandbox-local}"
+  if test -n "$subfolder"; then
+    repo="$repo/$subfolder/"
+  fi
   local pattern="$PWD/$matcher"
   local spec_file="/tmp/`date '+%Y%m%d-%H%M%S'`-upload-spec.json"
 
@@ -19,7 +26,7 @@ function artifactory_upload() {
 function artifactory_download() {
   local matcher="${1:-*}"
   local repo="${2:-util-release}"
-  local pattern="$repo/$matcher"
+  local pattern="$repo/*$matcher*"
   local spec_file="/tmp/`date '+%Y%m%d-%H%M%S'`-download-spec.json"
 
   jq \
@@ -35,8 +42,8 @@ function artifactory_download() {
 function artifactory_search() {
   local matcher="${1:-*}"
   local repo="${2:-util-release}"
-  local pattern="$repo/$matcher"
-  local spec_file="/tmp/`date '+%Y%m%d-%H%M%S'`-download-spec.json"
+  local pattern="$repo/*$matcher*"
+  local spec_file="/tmp/`date '+%Y%m%d-%H%M%S'`-search-spec.json"
 
   jq \
     -n \

@@ -1,5 +1,8 @@
+#!/bin/usr/env zsh
+
 # -----------------------------------------------------------------------------
 # FZF functions ---------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 stty stop undef
 # -----------------------------------------------------------------------------
@@ -40,10 +43,10 @@ function fzf-k8s-logs {
     local all_matches=$(kubectl get pods --namespace $K8S_NAMESPACE -o json | jq '.items[] | {name: .metadata.name, namespace: .metadata.namespace}')
   fi
   local pod=$(echo "$all_matches" | jq -r '.name' | fzf)
-  print_debug "$0.pod" "$pod"
+  print_debug "$pod" "pod"
   local namespace=$(echo "$all_matches" | jq ". | select(.name==\"$pod\").namespace" -r)
   local container="$(kubectl get pod -n $namespace $pod -o json | jq -r '.spec.containers[].name' | fzf -1)"
-  print_debug "$0.namespace" "$namespace"
+  print_debug "$namespace" "namespace"
   if [ ! -z $pod ]; then
     BUFFER="kubectl logs -n $namespace -f $pod -c $container"
     echo $BUFFER

@@ -3,7 +3,7 @@ export GFP="$HOME/git"
 export DFP="$GFP/github.com/reynn/dotfiles"
 export HELP_JSON="$DFP/zsh/function_help.json"
 export DIR_BINS="$HOME/.bins"
-# export DEBUG='true'
+export DEBUG='true'
 FP="$DFP/zsh/.zshrc"
 
 # -----------------------------------------------------------------------------
@@ -14,8 +14,8 @@ alias ZR="source $FP" # alias reload
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
 
-source $DFP/zsh/functions/general.zsh
-source $DFP/zsh/.exports.zsh
+source $DFP/zsh/2.functions/general.zsh
+source $DFP/zsh/3.exports/general.zsh
 
 # zstyle :omz:plugins:ssh-agent agent-forwarding on
 case "$(hostname)" in
@@ -100,10 +100,10 @@ prompt_go_version() {
 # -----------------------------------------------------------------------------
 ## Imports:Function -----------------------------------------------------------
 
-export IMPORT_DIRECTORIES=(zsh)
+export IMPORT_DIRECTORIES=($DFP/zsh)
 
 alias izf="import_zsh_files $IMPORT_DIRECTORIES"
-import_zsh_files $IMPORT_DIRECTORIES
+izf
 
 local sourcePaths=(
   "$HOME/.gimme/envs/latest.env"
@@ -111,13 +111,9 @@ local sourcePaths=(
   "$GFP/github.com/thecasualcoder/kube-fzf/kube-fzf.sh"
 )
 
-print_debug 'Sourcing additional files'
+print_debug 'sourcing additional files'
 for sourceable in $sourcePaths; do
-  print_debug 'checking' "$sourceable"
-  if test -r "$sourceable"; then
-    print_debug 'source' "$sourceable"
-    source "$sourceable"
-  fi
+  import $sourceable
 done
 
 eval "$(pyenv init -)"

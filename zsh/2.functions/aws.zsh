@@ -1,5 +1,8 @@
+#!/bin/usr/env zsh
+
 # -----------------------------------------------------------------------------
 # AWS functions ---------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function aws_get_instance_pricing() {
   local type=$1
@@ -8,7 +11,7 @@ function aws_get_instance_pricing() {
     return 0
   fi
 
-  print_debug "$@" "Input [$type]"
+  print_debug "Input [$type]"
 
   local instance_types=()
 

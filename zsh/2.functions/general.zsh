@@ -1,7 +1,10 @@
+#!/bin/usr/env zsh
+
 # -----------------------------------------------------------------------------
 # Dotfiles functions ----------------------------------------------------------
+# -----------------------------------------------------------------------------
 
-function update-dotfiles() {
+function update_dotfiles() {
   local tags="$1"
   if [ "$tags" = '-h' ]; then
     print_usage_json "$0"
@@ -14,26 +17,30 @@ function update-dotfiles() {
   fi
 }
 
-function load-plugin() {
+function load_plugin() {
   antibody bundle robbyrussell/oh-my-zsh path:plugins/$1
 }
 
-# -----------------------------------------------------------------------------
-# Custom functions ------------------------------------------------------------
-
 function import_zsh_files() {
-  print_debug 'importing' 'zsh files'
+  print_debug "zsh files from $1"
   for d in $1; do
-    print_debug 'searching' "dir $d"
-    for f in $(fd -I -t f -H -e zsh . $DFP/$d | sort --reverse --unique --ignore-case); do
-      print_debug 'sourcing' "$f"
-      source $f
+    for f in $(fd -I -t f -H -e zsh . $d); do
+      import $f
     done
   done
 }
 
+function import() {
+  local sourceable="$1"
+  if test -r "$sourceable"; then
+    print_debug "$sourceable"
+    source "$sourceable"
+  fi
+}
+
 # -----------------------------------------------------------------------------
 # UNIX functions --------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function zsudo() {
   sudo zsh -c "$functions[$1]" "$@"
@@ -49,7 +56,7 @@ function slice_arr() {
   echo ${arr[@]:${i}}
 }
 
-function tmux-connect {
+function tmux_connect {
   TERM=xterm-256color ssh $1 -t "tmux new-session -s ssh-sess || tmux attach-session -t ssh-sess"
 }
 
@@ -145,20 +152,20 @@ function join_by() {
 
 function print_debug() {
   if test -n "$DEBUG"; then
-    py_print --level debug --label "$1" --name "$funcstack[2]" "$2"
+    py_print --level debug --label "$2" --name "$funcstack[2]" "$1"
   fi
 }
 
 function print_error() {
-  py_print --level error --label "$1" --name "$funcstack[2]" "$2"
+  py_print --level error --label "$2" --name "$funcstack[2]" "$1"
 }
 
 function print_info() {
-  py_print --level info --label "$1" --name "$funcstack[2]" "$2"
+  py_print --level info --label "$2" --name "$funcstack[2]" "$1"
 }
 
 function print_warning() {
-  py_print --level warning --label "$1" --name "$funcstack[2]" "$2"
+  py_print --level warning --label "$2" --name "$funcstack[2]" "$1"
 }
 
 function print_usage_json() {
