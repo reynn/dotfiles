@@ -3,3 +3,4 @@ zsh/secrets/*
 \.git
 \.idea/
 \.vscode/
+images/

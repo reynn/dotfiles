@@ -14,6 +14,7 @@ alias ZR="source $FP" # alias reload
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
 
+source $DFP/zsh/2.functions/text.zsh
 source $DFP/zsh/2.functions/general.zsh
 source $DFP/zsh/3.exports/general.zsh
 
