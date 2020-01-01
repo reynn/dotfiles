@@ -24,6 +24,7 @@ packages:
     - httpie
     - Pygments
     - yq
+    - pipenv
     - youtube_dl
     - pipenv
     - docker
@@ -40,6 +41,7 @@ packages:
 # Lists
 # TODO: Add alternate filter option for Canop/broot
 # TODO: Add ability to pull pre-releases
+# TODO: Add ability to overwrite to specific arch/prefix for linkerd2
 bin_downloads:
   - repository: sharkdp/bat
     description: A cat(1) clone with wings
@@ -63,9 +65,11 @@ bin_downloads:
     description: Kubernetes Workstation Tools CLI
   - repository: k14s/ytt
     description: YAML templating tool that works on YAML structure instead of text
-  - repository: linkerd/linkerd2
-    description: A service mesh for Kubernetes and beyond
-    alias: linkerd
+  - repository: helm/helm
+    description: Kubernetes Workstation Tools CLI
+  # - repository: linkerd/linkerd2
+  #   description: A service mesh for Kubernetes and beyond
+  #   alias: linkerd
   - repository: kubernetes/minikube
     description: Run Kubernetes locally
   - repository: ryochack/peep
@@ -124,7 +128,7 @@ scripts:
     url: https://git.io/antibody
     dir: /tmp
   - name: nvm
-    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
     dir: "{{ bins_dir }}"
   - name: kubectx
     url: https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx
