@@ -43,7 +43,7 @@ function import() {
 # -----------------------------------------------------------------------------
 
 function zsudo() {
-  sudo zsh -c "$functions[$1]" "$@"
+  sudo -E zsh -c "$functions[$1]" "$@"
 }
 
 function mkcd() {
@@ -73,7 +73,7 @@ function kill_listening() {
   fi
   local process=$(listen_port $port)
 
-  echo "Killing process $process"
+  print_info "$process" 'process_id'
   sudo kill -9 $process
 }
 
@@ -82,7 +82,7 @@ function check_cmd() {
 }
 
 function dig_ip() {
-  dig +nocmd "$1" A +noall +answer | grep -v 'CNAME' | awk '{ print $5 }' | head -n 1
+  dig +nocmd "$1" A +noall +answer | grep -v 'CNAME' | awk '{print $5}' | head -n 1
 }
 
 # Run `dig` and display the most useful info
@@ -103,12 +103,12 @@ function o() {
 function auto_retry() {
   false
   while [ $? -ne 0 ]; do
-    "$@" || (sleep 1; false)
+    "$@" || (sleep 3; false)
   done
 }
 
 function ssh_auto_retry() {
-  auto-retry ssh "$@"
+  auto_retry ssh "$@"
 }
 
 function length() {

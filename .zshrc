@@ -4,12 +4,6 @@ export DFP="$GFP/github.com/reynn/dotfiles"
 export HELP_JSON="$DFP/zsh/function_help.json"
 export DIR_BINS="$HOME/.bins"
 # export DEBUG='true'
-FP="$DFP/zsh/.zshrc"
-
-# -----------------------------------------------------------------------------
-#### File Aliases -------------------------------------------------------------
-alias ZE="vim $FP" # alias edit
-alias ZR="source $FP" # alias reload
 
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
@@ -117,6 +111,9 @@ for sourceable in $sourcePaths; do
   import $sourceable
 done
 
-eval "$(pyenv init -)"
+# If pyenv is installed on this machine always initialize
+if [[ -n "$(command -v pyenv)" ]]; then
+  eval "$(pyenv init -)"
+fi
 
 # zprof # uncomment to debug performance issues with zsh startup

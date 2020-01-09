@@ -44,7 +44,9 @@ export POSSIBLE_PATHS=(
 
 export PATH=""
 for p in $POSSIBLE_PATHS; do
+  # Test if the directory exists
   if test -d $p; then
+    # Test if the existing PATH variable is set to anything
     if test -z $PATH; then
       export PATH="$p"
     else

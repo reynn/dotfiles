@@ -15,10 +15,9 @@ alias BIN_DOWNLOADS='cat $DFP/ansible/vars/0-primary-vars.yaml | yq -r ".bin_dow
 
 # -----------------------------------------------------------------------------
 ## UNIX:General aliases -------------------------------------------------------
-alias eecho='echo -e'
-alias paths='eecho ${PATH//:/\\n}'
-alias ccat='pygmentize -O style=stata-dark,full'
+alias paths='echo -e ${PATH//:/\\n}'
 alias please='sudo'
+alias kill_ssh_agents='ps aux | grep ssh-agent | grep -v grep | awk "{print \$2}" | xargs kill -9'
 
 # -----------------------------------------------------------------------------
 ## UNIX:Movement aliases ------------------------------------------------------
