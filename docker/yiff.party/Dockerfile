@@ -13,4 +13,4 @@ RUN mkdir /app \
   && tar xfv /tmp/master.tar.gz --directory /app \
   && pip install -r /app/$GIT_REPO-master/requirements.txt
 
-ENTRYPOINT [ "python", "/app/Yiff.party-Image-Scraper-master/yiff_image_scraper.py" ]
+ENTRYPOINT [ "python", "/app/${GIT_REPO}-master/yiff_image_scraper.py" ]

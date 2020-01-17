@@ -15,8 +15,8 @@ export XDG_DATA_HOME="$XDG_BASE_PATH/data"
 
 export UPDATE_ZSH_DAYS='3'
 export SSH_KEY_PATH='~/.ssh/rsa_id'
-export EDITOR='vim'
-export PYENV_ROOT="$HOME/.pyenv"
+export EDITOR='nvim'
+export PYENV_ROOT=`pyenv root`
 
 export POSSIBLE_PATHS=(
   "$PYENV_ROOT/bin"
