@@ -1,15 +1,12 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
-export GFP="$HOME/git"
-export DFP="$GFP/github.com/reynn/dotfiles"
-export HELP_JSON="$DFP/zsh/function_help.json"
-export DIR_BINS="$HOME/.bins"
-# export DEBUG='true'
+
+source $HOME/git/github.com/reynn/dotfiles/zsh/_vars.zsh
 
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
 
-source $DFP/zsh/2.functions/text.zsh
 source $DFP/zsh/2.functions/general.zsh
+source $DFP/zsh/2.functions/text.zsh
 source $DFP/zsh/3.exports/general.zsh
 
 # zstyle :omz:plugins:ssh-agent agent-forwarding on
@@ -32,6 +29,7 @@ export ZSH="$(antibody home)/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrus
 antibody bundle robbyrussell/oh-my-zsh
 
 local zsh_plugins=(
+  aws
   dircycle
   docker
   docker-compose
@@ -100,18 +98,21 @@ export IMPORT_DIRECTORIES=($DFP/zsh)
 alias izf="import_zsh_files $IMPORT_DIRECTORIES"
 izf
 
-local sourcePaths=(
+local source_paths=(
   "$HOME/.gimme/envs/latest.env"
   "$HOME/.iterm2_shell_integration.zsh"
   "$GFP/github.com/thecasualcoder/kube-fzf/kube-fzf.sh"
 )
 
 print_debug 'sourcing additional files'
-for sourceable in $sourcePaths; do
+for sourceable in $source_paths; do
   import $sourceable
 done
 
-# If pyenv is installed on this machine always initialize
+# -----------------------------------------------------------------------------
+# Initialization --------------------------------------------------------------
+
+# If pyenv is installed on this machine initialize it
 if [[ -n "$(command -v pyenv)" ]]; then
   eval "$(pyenv init -)"
 fi
