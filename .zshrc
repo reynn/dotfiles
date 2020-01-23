@@ -32,6 +32,7 @@ export ZSH="$(antibody home)/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrus
 antibody bundle robbyrussell/oh-my-zsh
 
 local zsh_plugins=(
+  aws
   dircycle
   docker
   docker-compose
