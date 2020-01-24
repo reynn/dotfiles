@@ -15,6 +15,19 @@ function aws_ec2_ssh_to_instance_via_id() {
   ssh -i ~/.ssh/${key_name}.pem ec2-user@$ip
 }
 
+function aws_ec2_connect_to_test_instance() {
+  local instance_id=$(aws \
+    ec2 \
+    describe-instances \
+    --filters "Name=tag:Name,Values=$USER-test-instance" \
+              "Name=instance-state-name,Values=running" \
+    | jq -r '.Reservations[].Instances[].InstanceId' \
+    | fzf --select-1)
+  if ! test -z "$instance_id"; then
+    aws_ec2_ssh_to_instance_via_id $instance_id
+  fi
+}
+
 function aws_ec2_create_run_instances_json() {
   local ami_id="$1"
   if test -z $ami_id; then
@@ -53,7 +66,7 @@ function aws_ec2_create_test_instance() {
 
   echo "Latest Golden Image AMI is $ami_id..."
 
-  local instance=$(aws ec2 run-instances --output json --cli-input-json "$(aws_create_run_instances_json $ami_id)")
+  local instance=$(aws ec2 run-instances --output json --cli-input-json "$(aws_ec2_create_run_instances_json $ami_id)")
 
   echo "Instance ID: $(echo $instance | jq -r '.Instances[0].InstanceId')"
   echo "IP Address: $(echo $instance | jq -r '.Instances[0].PrivateIpAddress')"
