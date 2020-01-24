@@ -56,7 +56,7 @@ function slice_arr() {
   echo ${arr[@]:${i}}
 }
 
-function tmux_connect {
+function tmux_connect() {
   TERM=xterm-256color ssh $1 -t "tmux new-session -s ssh-sess || tmux attach-session -t ssh-sess"
 }
 
@@ -87,7 +87,7 @@ function dig_ip() {
 
 # Run `dig` and display the most useful info
 function digga() {
-  dig +nocmd "$1" any +multiline +noall +answer;
+  dig +nocmd "$1" any +multiline +noall +answer
 }
 
 # `o` with no arguments opens the current directory, otherwise opens the given
@@ -97,13 +97,16 @@ function o() {
     open .
   else
     open "$@"
-  fi;
+  fi
 }
 
 function auto_retry() {
   false
   while [ $? -ne 0 ]; do
-    "$@" || (sleep 3; false)
+    "$@" || (
+      sleep 3
+      false
+    )
   done
 }
 
@@ -126,4 +129,14 @@ function bin_completion() {
     print_info "Sourcing completions for $bin"
     source <($bin completion zsh)
   done
+}
+
+function get_process_environment() {
+  local filter="${1}"
+  if test -z $filter; then
+    echo "Must provide a filter to ps aux | grep"
+    return 1
+  fi
+  local process_ids=$($(ps aux | grep $filter))
+
 }

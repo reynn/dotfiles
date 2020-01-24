@@ -57,12 +57,12 @@
         - cargo
         - update
 
-    - name: "Link files"
+    - name: "Create Symlinks"
       file:
         src: "{{ playbook_dir }}/{{ item.src }}"
         dest: "{{ item.dest }}"
         force: yes
-        state: link
+        state: "{{ item.state | default('link') }}"
       loop: "{{ file_links }}"
       tags:
         - update

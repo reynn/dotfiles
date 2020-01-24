@@ -4,3 +4,4 @@ zsh/secrets/*
 \.idea/
 \.vscode/
 images/
+configs/nvim/plugged

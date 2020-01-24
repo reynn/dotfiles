@@ -9,6 +9,8 @@ file_links:
     dest: "{{ ansible_env.HOME }}/.zshrc"
   - src: ".vimrc"
     dest: "{{ ansible_env.HOME }}/.vimrc"
+  - src: "configs/nvim"
+    dest: "{{ ansible_env.XDG_CONFIG_HOME }}/nvim"
 
 # ------------
 # Maps
@@ -19,13 +21,11 @@ packages:
     - curl
     - wget
     - tmux
+    - neovim
   pip:
     - certifi
     - httpie
-    - Pygments
     - yq
-    - pipenv
-    - youtube_dl
     - pipenv
     - docker
   cargo:
@@ -36,6 +36,7 @@ packages:
     - tmux
     - zsh
     - pyenv
+    - neovim
 
 # ------------
 # Lists
