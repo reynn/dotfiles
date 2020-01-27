@@ -20,9 +20,9 @@ function aws_ec2_connect_to_test_instance() {
     ec2 \
     describe-instances \
     --filters "Name=tag:Name,Values=$USER-test-instance" \
-              "Name=instance-state-name,Values=running" \
-    | jq -r '.Reservations[].Instances[].InstanceId' \
-    | fzf --select-1)
+    "Name=instance-state-name,Values=running" |
+    jq -r '.Reservations[].Instances[].InstanceId' |
+    fzf --select-1)
   if ! test -z "$instance_id"; then
     aws_ec2_ssh_to_instance_via_id $instance_id
   fi
@@ -62,7 +62,15 @@ function aws_ec2_create_run_instances_json() {
 function aws_ec2_create_test_instance() {
   local ami_search="${1:-golden-image-cis-centos-7.7}"
   local ami_owner="${2:-966799970081}"
-  local ami_id=$(aws ec2 describe-images --filters "Name=name,Values=${ami_search}*" --query 'Images[-1].ImageId' | jq -r '.')
+  local ami_id=$(
+    aws \
+      ec2 \
+      describe-images \
+      --filters "Name=name,Values=${ami_search}*" \
+      --owners "$ami_owner" \
+      --query 'Images[-1].ImageId' \
+      --output text
+  )
 
   echo "Latest Golden Image AMI is $ami_id..."
 
