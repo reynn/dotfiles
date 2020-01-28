@@ -1,4 +1,4 @@
-#!/bin/usr/env zsh
+#!/usr/bin/env zsh
 
 # -----------------------------------------------------------------------------
 # Python functions ------------------------------------------------------------
@@ -19,5 +19,8 @@ function print_table_from_json() {
 }
 
 function run_commands() {
-  echo "$(cd $DFP; pipenv run commands.py $@)"
+  echo "$(
+    cd $DFP
+    pipenv run commands.py $@
+  )"
 }

@@ -127,7 +127,10 @@
         "name": "owner",
         "description": "The owner of the repository in GitHub"
       },
-      { "name": "repo", "description": "The repository to get assets from" },
+      {
+        "name": "repo",
+        "description": "The repository to get assets from"
+      },
       {
         "name": "host",
         "description": "The API url to check. (Default: api.github.com)",

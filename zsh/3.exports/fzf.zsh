@@ -1,8 +1,8 @@
-#!/bin/usr/env zsh
+#!/usr/bin/env zsh
 
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "$GFP/github.com/junegunn/fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "$GFP/github.com/junegunn/fzf/shell/completion.zsh" 2>/dev/null
 
 # Key bindings
 # ------------

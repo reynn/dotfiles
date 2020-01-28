@@ -44,6 +44,10 @@ packages:
 # TODO: Add ability to pull pre-releases
 # TODO: Add ability to overwrite to specific arch/prefix for linkerd2
 bin_downloads:
+  - repository: argoproj/argo
+    description: "Argo Workflows: Get stuff done with Kubernetes"
+  - repository: derailed/k9s
+    description: Kubernetes CLI To Manage Your Clusters In Style!
   - repository: sharkdp/bat
     description: A cat(1) clone with wings
   - repository: goodwithtech/dockle

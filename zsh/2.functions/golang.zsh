@@ -1,4 +1,4 @@
-#!/bin/usr/env zsh
+#!/usr/bin/env zsh
 
 # -----------------------------------------------------------------------------
 # Golang functions ------------------------------------------------------------
@@ -19,9 +19,9 @@ function go_ch() {
 }
 
 # Get coverage report for testing go projects
-function go_cover () {
+function go_cover() {
   local t=$(mktemp -t cover)
-  go test $COVERFLAGS -coverprofile=$t $@ \
-    && go tool cover -func=$t \
-    && unlink $t
+  go test $COVERFLAGS -coverprofile=$t $@ &&
+    go tool cover -func=$t &&
+    unlink $t
 }

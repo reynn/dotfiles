@@ -1,4 +1,4 @@
-#!/bin/usr/env zsh
+#!/usr/bin/env zsh
 
 # -----------------------------------------------------------------------------
 # Kubernetes functions --------------------------------------------------------
@@ -181,18 +181,18 @@ function new_minikube() {
   local k8s_version="1.16.0"
   local memory="${2:-4}"
   if [ "$1" = '-h' ]; then
-    print_usage "$0" "
-    ------------------------------------------------------------------
-    Description | Create a new Minikube cluster with provided settings.
-    ------------------------------------------------------------------
-    Usage       | $0 <kubernetes_version> <memory>
-    ------------------------------------------------------------------
-    Parameters  |-----------------------------------------------------
-    ------------------------------------------------------------------
-    k8s_version | Version of Kubernetes to use. (Default: 1.16.0)
-    memory      | Amount of memory to start Minikube with, in Gb. (Default: 4Gb)
-    ------------------------------------------------------------------
-    Example     | \`$0 1.15.0 3\` (Start Minikube with 3Gb RAM on K8S v1.16.0)"
+    print_usage "
+------------------------------------------------------------------
+Description | Create a new Minikube cluster with provided settings.
+------------------------------------------------------------------
+Usage       | $0 <kubernetes_version> <memory>
+------------------------------------------------------------------
+Parameters  |-----------------------------------------------------
+------------------------------------------------------------------
+k8s_version | Version of Kubernetes to use. (Default: 1.16.0)
+memory      | Amount of memory to start Minikube with, in Gb. (Default: 4Gb)
+------------------------------------------------------------------
+Example     | \`$0 1.16.0 3\` (Start Minikube with 3Gb RAM on K8S v1.16.0)"
     return 0
   elif test -n "$1"; then
     echo "k8s_version $k8s_version"

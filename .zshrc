@@ -1,9 +1,12 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
+autoload -U compinit
 
 source $HOME/git/github.com/reynn/dotfiles/zsh/_vars.zsh
 
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
+
+fpath=($fpath ~/.zsh/completion)
 
 source $DFP/zsh/2.functions/general.zsh
 source $DFP/zsh/2.functions/text.zsh
@@ -11,12 +14,12 @@ source $DFP/zsh/3.exports/general.zsh
 
 # zstyle :omz:plugins:ssh-agent agent-forwarding on
 case "$(hostname)" in
-  C02VPB5XHTD6)
-    zstyle :omz:plugins:ssh-agent identities aws-ss-reTeam.pem id_autocm id_ghe id_public_github id_rsa
-    ;;
-  *)
-    zstyle :omz:plugins:ssh-agent identities id_rsa
-    ;;
+C02VPB5XHTD6)
+  zstyle :omz:plugins:ssh-agent identities aws-ss-reTeam.pem id_autocm id_ghe id_public_github id_rsa
+  ;;
+*)
+  zstyle :omz:plugins:ssh-agent identities id_rsa
+  ;;
 esac
 
 # -----------------------------------------------------------------------------
@@ -116,5 +119,8 @@ done
 if [[ -n "$(command -v pyenv)" ]]; then
   eval "$(pyenv init -)"
 fi
+
+# Initialize completions
+compinit
 
 # zprof # uncomment to debug performance issues with zsh startup

@@ -1,4 +1,4 @@
-#!/bin/usr/env zsh
+#!/usr/bin/env zsh
 
 # -----------------------------------------------------------------------------
 # FZF functions ---------------------------------------------------------------
@@ -7,8 +7,8 @@
 stty stop undef
 # -----------------------------------------------------------------------------
 ## FZF:Unix functions ---------------------------------------------------------
-function fzf-ssh {
-  local all_matches=$(rg "Host\s+\w+" ~/.ssh/config* | rg -v '\*')
+function fzf-ssh() {
+  local all_matches=$(rg "Host\s+\w+" ~/.ssh/config* ~/.ssh/config/* | rg -v '\*')
   local only_host_parts=$(echo "$all_matches" | awk '{print $NF}')
   local selection=$(echo "$only_host_parts" | fzf --height=10 --ansi --reverse --select-1)
   echo $selection
@@ -22,7 +22,7 @@ zle -N fzf-ssh
 
 # -----------------------------------------------------------------------------
 ## FZF:Docker functions -------------------------------------------------------
-function fzf-dps {
+function fzf-dps() {
   local all_matches=$(docker container ls --format '{{.Names}}')
   local selection=$(echo "$all_matches" | fzf)
   echo $selection
@@ -36,7 +36,7 @@ zle -N fzf-dps
 
 # -----------------------------------------------------------------------------
 ## FZF:K8S functions ----------------------------------------------------------
-function fzf-k8s-logs {
+function fzf-k8s-logs() {
   if test -z $K8S_NAMESPACE; then
     local all_matches=$(kubectl get pods --all-namespaces -o json | jq '.items[] | {name: .metadata.name, namespace: .metadata.namespace}')
   else
@@ -56,7 +56,7 @@ function fzf-k8s-logs {
 }
 zle -N fzf-k8s-logs
 
-function fzf-k8s-port-forward {
+function fzf-k8s-port-forward() {
   # Get all the available services
   local all_matches=$(kubectl get services --all-namespaces -o json | jq -r '.items[].metadata | {name: .name, namespace: .namespace}')
   # User selects a service by it's name
@@ -76,7 +76,7 @@ function fzf-k8s-port-forward {
 zle -N fzf-k8s-port-forward
 
 # CTRL+F - show a list of functions and insert
-function fzf-funcs {
+function fzf-funcs() {
   local func=$(functions | rg -e "^[A-Za-z].+\(\) \{$" | tr ' () {' ' ' | fzf-tmux -d 15)
   zle reset-prompt
   return $func

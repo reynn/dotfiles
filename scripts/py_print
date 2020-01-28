@@ -25,6 +25,8 @@ def _format_label(name: str, label: str) -> str:
 def _print(color: str, level: str, label: str, text: str):
     if label:
         print(f"\033[{color}>> {level} >> {label} >> {text}\033[0m")
+    elif level == 'usage':
+        print(f"\033[{color} {text}\033[0m")
     else:
         print(f"\033[{color}>> {level} >> {text}\033[0m")
 
@@ -35,6 +37,10 @@ def print_debug(t: str, func_name: str, label: str):
 
 def print_info(t: str, func_name: str, label: str):
     _print(FMT_INFO, 'info', _format_label(func_name, label), t)
+
+
+def print_usage(t: str, func_name: str, label: str):
+    _print(FMT_USAGE, 'usage', _format_label(func_name, label), t)
 
 
 def print_warning(t: str, func_name: str, label: str):
@@ -75,6 +81,8 @@ def main():
         print_warning(t=text, label=args.label, func_name=func_name)
     elif level == 'debug':
         print_debug(t=text, label=args.label, func_name=func_name)
+    elif level == 'usage':
+        print_usage(t=text, label=args.label, func_name=func_name)
     else:
         print_info(t=text, label=args.label, func_name=func_name)
 
