@@ -1,26 +1,27 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 autoload -U compinit
 
-source $HOME/git/github.com/reynn/dotfiles/zsh/_vars.zsh
-
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
-
+export DEBUG=true
 fpath=($fpath ~/.zsh/completion)
+CURRENT_HOST="$(hostname)"
 
+source $HOME/git/github.com/reynn/dotfiles/zsh/0.vars/general.zsh
 source $DFP/zsh/2.functions/general.zsh
 source $DFP/zsh/2.functions/text.zsh
 source $DFP/zsh/3.exports/general.zsh
 
+if test -d $DFP/zsh/5.hosts/$CURRENT_HOST; then
+  print_info "Souring files for $CURRENT_HOST"
+  files=($(fd -t f -p -e zsh . $DFP/zsh/5.hosts/$CURRENT_HOST))
+  for f in $files; do
+    source $f
+  done
+fi
+
 # zstyle :omz:plugins:ssh-agent agent-forwarding on
-case "$(hostname)" in
-C02VPB5XHTD6)
-  zstyle :omz:plugins:ssh-agent identities aws-ss-reTeam.pem id_autocm id_ghe id_public_github id_rsa
-  ;;
-*)
-  zstyle :omz:plugins:ssh-agent identities id_rsa
-  ;;
-esac
+zstyle :omz:plugins:ssh-agent identities $SSH_IDENTITIES
 
 # -----------------------------------------------------------------------------
 # Antibody:Setup --------------------------------------------------------------
@@ -74,13 +75,24 @@ antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 ## ZSH:Config -----------------------------------------------------------------
 ZSH_THEME='powerlevel9k/powerlevel9k'
 POWERLEVEL9K_PROMPT_ON_NEWLINE='true'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir go_version vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv command_execution_time kubecontext aws status dir_writable)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context
+  dir
+  go_version
+  vcs
+)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv
+  command_execution_time
+  kubecontext
+  aws
+  status
+  dir_writable
+)
 HYPHEN_INSENSITIVE='true'
 COMPLETION_WAITING_DOTS='true'
 
 # -----------------------------------------------------------------------------
 ## ZSH:Functions --------------------------------------------------------------
+# Overwrite the default which doesn't support GO projects using modules
 prompt_go_version() {
   local go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
   local go_path=$(go env GOPATH 2>/dev/null)
@@ -124,3 +136,5 @@ fi
 compinit
 
 # zprof # uncomment to debug performance issues with zsh startup
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

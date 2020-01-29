@@ -6,6 +6,7 @@ DFP="$REYNN/dotfiles"
 HELP_JSON="$DFP/zsh/function_help.json"
 DIR_BINS="$HOME/.bins"
 DEBUG='false'
+SSH_IDENTITIES=(id_rsa)
 
 export GFP
 export REYNN

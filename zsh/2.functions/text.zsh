@@ -21,29 +21,29 @@ function join_by() {
 
 function print_debug() {
   if [[ "$DEBUG" = "true" ]]; then
-    py_print --level debug --label "$2" --name "$funcstack[2]" "$1"
+    py_print --level debug --label "$2" --name "${funcstack[2]}" "$1"
   fi
 }
 
 function print_error() {
-  py_print --level error --label "$2" --name "$funcstack[2]" "$1"
+  py_print --level error --label "$2" --name "${funcstack[2]}" "$1"
 }
 
 function print_info() {
-  py_print --level info --label "$2" --name "$funcstack[2]" "$1"
+  py_print --level info --label "$2" --name "${funcstack[2]}" "$1"
 }
 
 function print_warning() {
-  py_print --level warning --label "$2" --name "$funcstack[2]" "$1"
+  py_print --level warning --label "$2" --name "${funcstack[2]}" "$1"
 }
 
 function print_usage() {
-  py_print --level usage --label "$2" --name "$funcstack[2]" "$1"
+  py_print --level usage --label "$2" --name "${funcstack[2]}" "$1"
 }
 
 function print_usage_json() {
   local func_name="$1"
-  if test -z "$func_name"; then func_name="$funcstack[2]"; fi
+  if test -z "$func_name"; then func_name="${funcstack[2]}"; fi
   print_table_from_json "$HELP_JSON" --function "$func_name"
 }
 
