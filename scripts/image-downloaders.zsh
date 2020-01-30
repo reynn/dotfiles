@@ -13,5 +13,11 @@ FANTIA_CLUBS=(
 for club in $FANTIA_CLUBS; do
   local spl=($(helpers text split -d '|' "$club"))
   print_box "Club ID: ${spl[1]} User: ${spl[2]}"
-  docker run -v "$FANTIA_DIR:/tmp" --rm fantia.jp --key "$FANTIA_KEY" --fanclub "${spl[1]}" --output "/tmp/${spl[2]}" --verbose
+  docker run \
+    -v "$FANTIA_DIR:/tmp" \
+    --rm fantia.jp \
+    --key "$FANTIA_KEY" \
+    --fanclub "${spl[1]}" \
+    --output "/tmp/${spl[2]}" \
+    --verbose
 done

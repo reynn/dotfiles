@@ -22,8 +22,8 @@ function load_plugin() {
 }
 
 function import_zsh_files() {
-  print_debug "zsh files from $1"
   for d in $1; do
+    print_debug "zsh files from $d"
     for f in $(fd -I -t f -H -e zsh . $d); do
       import $f
     done
@@ -35,6 +35,8 @@ function import() {
   if test -r "$sourceable"; then
     print_debug "$sourceable"
     source "$sourceable"
+  else
+    print_debug "unable to source $sourceable"
   fi
 }
 

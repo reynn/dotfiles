@@ -264,10 +264,6 @@ set shortmess+=c " don't give |ins-completion-menu| messages.
 set nolist
 set listchars=nbsp:¬,extends:»,precedes:«,trail:•
 
-" Auto-open the NERDTree buffer
-autocmd vimenter * NERDTree
-map <C-n> :NERDTreeToggle<CR>
-
 " =============================================================================
 " # Keyboard shortcuts
 " =============================================================================
@@ -448,6 +444,6 @@ if has('nvim')
 endif
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
+map <C-n> :NERDTreeToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif

@@ -1,16 +1,25 @@
 #!/usr/bin/env zsh
 
+DEBUG='false'
 GFP="$HOME/git"
 REYNN="$GFP/github.com/reynn"
 DFP="$REYNN/dotfiles"
-HELP_JSON="$DFP/zsh/function_help.json"
 DIR_BINS="$HOME/.bins"
-DEBUG='false'
+
+fpath=($fpath ~/.zsh/completion)
+HELP_JSON="$DFP/zsh/function_help.json"
+IMPORT_DIRECTORIES=(
+  $($DIR_BINS/fd -t d --maxdepth 1 -E '5.hosts' . $DFP/zsh)
+  $DFP/zsh/5.hosts/$CURRENT_HOST
+)
 SSH_IDENTITIES=(id_rsa)
 
-export GFP
-export REYNN
-export DFP
-export HELP_JSON
-export DIR_BINS
 export DEBUG
+export DFP
+export DIR_BINS
+export fpath
+export GFP
+export HELP_JSON
+export IMPORT_DIRECTORIES
+export REYNN
+export SSH_IDENTITIES

@@ -7,9 +7,10 @@ alias L='less'
 alias N='/dev/null'
 alias S='sort'
 alias G='rg'
-alias BIN_DOWNLOADS='cat $DFP/ansible/vars/0-primary-vars.yaml | yq -r ".bin_downloads[].repository" | sort'
+alias BIN_DOWNLOADS='yq r $DFP/ansible/vars/0-primary-vars.yaml "bin_downloads[*].repository" | tr "\- " "\0" | sort'
 alias reynn='cd $REYNN'
 alias bins='cd $DIR_BINS'
+alias izf='import_zsh_files $IMPORT_DIRECTORIES'
 
 # -----------------------------------------------------------------------------
 # General aliases -------------------------------------------------------------

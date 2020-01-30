@@ -3,22 +3,13 @@ autoload -U compinit
 
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
-export DEBUG=true
-fpath=($fpath ~/.zsh/completion)
-CURRENT_HOST="$(hostname)"
+
+export CURRENT_HOST="$(hostname)"
 
 source $HOME/git/github.com/reynn/dotfiles/zsh/0.vars/general.zsh
 source $DFP/zsh/2.functions/general.zsh
 source $DFP/zsh/2.functions/text.zsh
 source $DFP/zsh/3.exports/general.zsh
-
-if test -d $DFP/zsh/5.hosts/$CURRENT_HOST; then
-  print_info "Souring files for $CURRENT_HOST"
-  files=($(fd -t f -p -e zsh . $DFP/zsh/5.hosts/$CURRENT_HOST))
-  for f in $files; do
-    source $f
-  done
-fi
 
 # zstyle :omz:plugins:ssh-agent agent-forwarding on
 zstyle :omz:plugins:ssh-agent identities $SSH_IDENTITIES
@@ -103,17 +94,9 @@ prompt_go_version() {
 }
 
 # -----------------------------------------------------------------------------
-# Imports ---------------------------------------------------------------------
+# Initialization --------------------------------------------------------------
 
-# -----------------------------------------------------------------------------
-## Imports:Function -----------------------------------------------------------
-
-export IMPORT_DIRECTORIES=($DFP/zsh)
-
-alias izf="import_zsh_files $IMPORT_DIRECTORIES"
-izf
-
-local source_paths=(
+source_paths=(
   "$HOME/.gimme/envs/latest.env"
   "$HOME/.iterm2_shell_integration.zsh"
   "$GFP/github.com/thecasualcoder/kube-fzf/kube-fzf.sh"
@@ -124,11 +107,12 @@ for sourceable in $source_paths; do
   import $sourceable
 done
 
-# -----------------------------------------------------------------------------
-# Initialization --------------------------------------------------------------
+for f in $IMPORT_DIRECTORIES; do
+  import_zsh_files $f
+done
 
 # If pyenv is installed on this machine initialize it
-if [[ -n "$(command -v pyenv)" ]]; then
+if test "$(command -v pyenv)"; then
   eval "$(pyenv init -)"
 fi
 
