@@ -1,13 +1,31 @@
 # expected data structure:
-# repository: string
-# alias: string
+#   repository: string
+#   alias: string
+#   platform: string
+
 - name: Configure basic vars
   set_fact:
     glrfg_host: "{{ item.host | default('api.github.com') }}"
     glrfg_owner: "{{ item.repository.split('/')[0] }}"
     glrfg_repository: "{{ item.repository.split('/')[-1] }}"
+
+    glrfg_platform: "{{ item.platform | default(omit)}}"
     glrfg_bins_path: "{{ bins_dir }}/{{ item.repository.split('/')[-1] }}_bin"
     glrfg_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.repository.split('/')[-1]) }}"
+  tags:
+    - binaries
+    - update
+
+- name: Display init
+  debug:
+    msg: |
+      glrfg_host={{ glrfg_host | default('') }}
+      glrfg_owner={{ glrfg_owner | default('') }}
+      glrfg_repository={{ glrfg_repository | default('') }}
+      glrfg_platform={{ glrfg_platform | default('') }}
+      glrfg_bins_path={{ glrfg_bins_path | default('') }}
+      glrfg_alias_path={{ glrfg_alias_path | default('') }}
+  when: debug_mode|default(False)|bool
   tags:
     - binaries
     - update
@@ -20,19 +38,13 @@
     - binaries
     - update
 
-- name: "Determining appropriate asset to download from GitHub for {{ item.repository }}"
-  shell: helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }}
+- name: "Determining appropriate asset to download from GitHub for {{ item.repository }} wo-Platform"
+  shell: "helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }}"
   register: glrfg_binary_shell
   tags:
     - binaries
     - update
-
-- debug:
-    var: glrfg_binary_shell
-  when: debug_mode|default(False)|bool
-  tags:
-    - binaries
-    - update
+  when: glrfg_platform is not defined
 
 - name: Configure release variables
   set_fact:
@@ -40,6 +52,37 @@
     glrfg_url: "{{ (glrfg_binary_shell.stdout | from_json)[0].url }}"
     glrfg_type: "{{ (glrfg_binary_shell.stdout | from_json)[0].type }}"
     glrfg_tag: "{{ (glrfg_binary_shell.stdout | from_json)[0].tag }}"
+  when: glrfg_platform is not defined
+  tags:
+    - binaries
+    - update
+
+- name: "Determining appropriate asset to download from GitHub for {{ item.repository }} w-Platform"
+  shell: "helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }} -p '{{ item.platform }}'"
+  register: glrfg_binary_shell
+  tags:
+    - binaries
+    - update
+  when: glrfg_platform is defined
+
+- name: Configure release variables
+  set_fact:
+    glrfg_name: "{{ (glrfg_binary_shell.stdout | from_json)[0].name }}"
+    glrfg_url: "{{ (glrfg_binary_shell.stdout | from_json)[0].url }}"
+    glrfg_type: "{{ (glrfg_binary_shell.stdout | from_json)[0].type }}"
+    glrfg_tag: "{{ (glrfg_binary_shell.stdout | from_json)[0].tag }}"
+  when: glrfg_platform is defined
+  tags:
+    - binaries
+    - update
+
+- debug:
+    msg: |
+      glrfg_name={{ glrfg_name }}
+      glrfg_url={{ glrfg_url }}
+      glrfg_type={{ glrfg_type }}
+      glrfg_tag={{ glrfg_tag }}
+  when: debug_mode|default(False)|bool
   tags:
     - binaries
     - update

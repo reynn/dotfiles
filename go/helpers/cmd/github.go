@@ -167,9 +167,10 @@ func getPlatform() string {
 	switch runtime.GOOS {
 	case "darwin":
 		return "darwin|macos|osx"
-	default:
-		return ""
+	case "linux":
+		return "linux64|linux"
 	}
+	return ""
 }
 
 func init() {

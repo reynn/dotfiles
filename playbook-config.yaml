@@ -13,8 +13,7 @@
       shell: "sh '/Applications/Python {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install Certificates.command'"
       register: cert_handler
       changed_when: '"Requirement already up-to-date" not in cert_handler.stdout'
-      when:
-        - ansible_system == 'Darwin'
+      when: ansible_system == 'Darwin'
       tags:
         - pip
 
@@ -78,6 +77,8 @@
         label: "{{ item.repo }}"
       tags:
         - update
+        - git
+        - clone
 
     - name: Run fzf install script
       shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
@@ -102,7 +103,6 @@
         label: "{{ item.name }}"
       tags:
         - docker
-        - update
 
     - name: Downloading scripts
       get_url:
@@ -120,7 +120,7 @@
         - update
 
     - name: Exec gimme
-      shell: eval "$(gimme stable)"
+      shell: 'eval "$(gimme stable)"'
       tags:
         - commands
         - scripts
