@@ -36,6 +36,7 @@ alias mkdir='mkdir -p'
 alias chownall='sudo chown -R "$(id -u):$(id -g)" ./*'
 alias chmodall='sudo chmod -R u=rwx,g=rw,o=rw ./*'
 alias chall='chownall; chmodall;'
+alias download_remote_directory='wget -c -r -np -l1 -e robots=off -R "fileicon.png*" -R "index.html*" -nd'
 
 # -----------------------------------------------------------------------------
 ## Readability aliases --------------------------------------------------------

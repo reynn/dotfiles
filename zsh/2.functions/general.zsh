@@ -22,22 +22,17 @@ function load_plugin() {
 }
 
 function import_zsh_files() {
-  for d in $1; do
+  for d in $@; do
+    test -d $d || continue
     print_debug "zsh files from $d"
     for f in $(fd -I -t f -H -e zsh . $d); do
-      import $f
+      source $f
     done
   done
 }
 
-function import() {
-  local sourceable="$1"
-  if test -r "$sourceable"; then
-    print_debug "$sourceable"
-    source "$sourceable"
-  else
-    print_debug "unable to source $sourceable"
-  fi
+function debug_call() {
+  set -x; $@; set +x;
 }
 
 # -----------------------------------------------------------------------------

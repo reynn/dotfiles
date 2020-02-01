@@ -104,7 +104,7 @@ source_paths=(
 
 print_debug 'sourcing additional files'
 for sourceable in $source_paths; do
-  import $sourceable
+  test -e $sourceable || source $sourceable
 done
 
 for f in $IMPORT_DIRECTORIES; do
