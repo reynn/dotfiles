@@ -20,6 +20,7 @@ alias izf='import_zsh_files $IMPORT_DIRECTORIES'
 # -----------------------------------------------------------------------------
 ## General aliases ------------------------------------------------------------
 alias paths='echo -e ${PATH//:/\\n}'
+alias fpaths='echo $fpath | tr '\\ ' '\\n''
 alias please='sudo'
 alias kill_ssh_agents='ps aux | grep ssh-agent | awk "{print \$2}" | xargs kill -9'
 

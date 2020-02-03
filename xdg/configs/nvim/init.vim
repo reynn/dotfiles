@@ -1,10 +1,13 @@
 " =============================================================================
 " # PLUGINS
 " =============================================================================
-" Load Plug
 set nocompatible
 filetype off
-set rtp+=~/vim_scripts/
+set rtp+="~/.vim/scripts/"
+let mapleader = ","
+let g:VM_leader = ",,"
+
+" Load Plug
 call plug#begin("~/.vim/plugged")
 
 " Load plugins
@@ -12,6 +15,7 @@ call plug#begin("~/.vim/plugged")
 Plug 'ciaranm/securemodelines'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'justinmk/vim-sneak'
+Plug 'mg979/vim-visual-multi'
 
 " GUI enhancements
 Plug 'itchyny/lightline.vim'
@@ -85,7 +89,7 @@ let g:secure_modelines_allowed_items = [
 
 " Base16
 let base16colorspace=256
-let g:base16_shell_path="~/vim_scripts/"
+let g:base16_shell_path="~/.vim/scripts/"
 
 " Lightline
 " let g:lightline = { 'colorscheme': 'wombat' }
@@ -100,11 +104,11 @@ endfunction
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 if executable('ag')
-	set grepprg=ag\ --nogroup\ --nocolor
+  set grepprg=ag\ --nogroup\ --nocolor
 endif
 if executable('rg')
-	set grepprg=rg\ --no-heading\ --vimgrep
-	set grepformat=%f:%l:%c:%m
+  set grepprg=rg\ --no-heading\ --vimgrep
+  set grepformat=%f:%l:%c:%m
 endif
 
 " Javascript
@@ -311,8 +315,8 @@ map L $
 " Neat X clipboard integration
 " ,p will paste clipboard into buffer
 " ,c will copy entire buffer into clipboard
-noremap <leader>p :read !xsel --clipboard --output<cr>
-noremap <leader>c :w !xsel -ib<cr><cr>
+noremap <leader>p :read !pbpaste<cr>
+noremap <leader>c :w !pbcopy<cr><cr>
 
 " <leader>s for Rg search
 noremap <leader>s :Rg
@@ -439,7 +443,7 @@ autocmd Filetype html,xml,xsl,php source $XDG_CONFIG_HOME/nvim/scripts/closetag.
 
 " nvim
 if has('nvim')
-	runtime! plugin/python_setup.vim
+  runtime! plugin/python_setup.vim
 endif
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif

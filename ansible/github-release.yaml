@@ -3,12 +3,11 @@
 #   alias: string
 #   platform: string
 
-- name: Configure basic vars
+- name: "Configure basic vars for {{ item.repository }}"
   set_fact:
     glrfg_host: "{{ item.host | default('api.github.com') }}"
     glrfg_owner: "{{ item.repository.split('/')[0] }}"
     glrfg_repository: "{{ item.repository.split('/')[-1] }}"
-
     glrfg_platform: "{{ item.platform | default(omit)}}"
     glrfg_bins_path: "{{ bins_dir }}/{{ item.repository.split('/')[-1] }}_bin"
     glrfg_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.repository.split('/')[-1]) }}"
@@ -46,7 +45,7 @@
     - update
   when: glrfg_platform is not defined
 
-- name: Configure release variables
+- name: "Configure release variables wo-Platform"
   set_fact:
     glrfg_name: "{{ (glrfg_binary_shell.stdout | from_json)[0].name }}"
     glrfg_url: "{{ (glrfg_binary_shell.stdout | from_json)[0].url }}"
@@ -58,14 +57,14 @@
     - update
 
 - name: "Determining appropriate asset to download from GitHub for {{ item.repository }} w-Platform"
-  shell: "helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }} -p '{{ item.platform }}'"
+  shell: "helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }} -p '{{ glrfg_platform }}'"
   register: glrfg_binary_shell
+  when: glrfg_platform is defined
   tags:
     - binaries
     - update
-  when: glrfg_platform is defined
 
-- name: Configure release variables
+- name: "Configure release variables w-Platform"
   set_fact:
     glrfg_name: "{{ (glrfg_binary_shell.stdout | from_json)[0].name }}"
     glrfg_url: "{{ (glrfg_binary_shell.stdout | from_json)[0].url }}"

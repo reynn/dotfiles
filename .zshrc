@@ -1,5 +1,4 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
-autoload -U compinit
 
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
@@ -11,15 +10,12 @@ source $DFP/zsh/2.functions/general.zsh
 source $DFP/zsh/2.functions/text.zsh
 source $DFP/zsh/3.exports/general.zsh
 
-# zstyle :omz:plugins:ssh-agent agent-forwarding on
-zstyle :omz:plugins:ssh-agent identities $SSH_IDENTITIES
-
 # -----------------------------------------------------------------------------
 # Antibody:Setup --------------------------------------------------------------
 source <(antibody init)
 
 # Setup required env var for oh-my-zsh plugins
-export ZSH="$(antibody home)/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh"
+export ZSH="$(antibody list | grep oh-my-zsh | awk '{print $2}')"
 
 antibody bundle robbyrussell/oh-my-zsh
 
@@ -40,18 +36,18 @@ local zsh_plugins=(
   pipenv
   python
   rsync
-  ssh-agent
   sudo
   tmux
-  vscode
 )
+
+antibody bundle zsh-users/zsh-autosuggestions
+antibody bundle zsh-users/zsh-syntax-highlighting
+antibody bundle zsh-users/zsh-completions
 
 for pl in $zsh_plugins; do
   antibody bundle robbyrussell/oh-my-zsh path:plugins/$pl
 done
 
-antibody bundle zsh-users/zsh-autosuggestions
-antibody bundle zsh-users/zsh-syntax-highlighting
 # Load the theme.
 antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 
@@ -63,13 +59,14 @@ antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 ## ZSH:Config -----------------------------------------------------------------
 ZSH_THEME='powerlevel9k/powerlevel9k'
 POWERLEVEL9K_PROMPT_ON_NEWLINE='true'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+  context
   dir
   go_version
   vcs
 )
-# kubecontext
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+  virtualenv
   command_execution_time
   aws
   status
@@ -93,6 +90,10 @@ prompt_go_version() {
 # -----------------------------------------------------------------------------
 # Initialization --------------------------------------------------------------
 
+for f in $IMPORT_DIRECTORIES; do
+  import_zsh_files $f
+done
+
 source_paths=(
   "$HOME/.gimme/envs/latest.env"
   "$HOME/.iterm2_shell_integration.zsh"
@@ -101,11 +102,7 @@ source_paths=(
 
 print_debug 'sourcing additional files'
 for sourceable in $source_paths; do
-  test -e $sourceable || source $sourceable
-done
-
-for f in $IMPORT_DIRECTORIES; do
-  import_zsh_files $f
+  test -f $sourceable || source $sourceable
 done
 
 # If pyenv is installed on this machine initialize it
@@ -114,7 +111,7 @@ if test "$(command -v pyenv)"; then
 fi
 
 # Initialize completions
-compinit
+autoload -U compinit && compinit
 
 # zprof # uncomment to debug performance issues with zsh startup
 

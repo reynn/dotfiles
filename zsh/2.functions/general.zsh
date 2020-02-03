@@ -24,15 +24,18 @@ function load_plugin() {
 function import_zsh_files() {
   for d in $@; do
     test -d $d || continue
-    print_debug "zsh files from $d"
+    print_debug $d 'dir'
     for f in $(fd -I -t f -H -e zsh . $d); do
+      print_debug $f 'file'
       source $f
     done
   done
 }
 
 function debug_call() {
-  set -x; $@; set +x;
+  set -x
+  $@
+  set +x
 }
 
 # -----------------------------------------------------------------------------
@@ -129,11 +132,14 @@ function bin_completion() {
 }
 
 function get_process_environment() {
-  local filter="${1}"
+  local filter="$1"
   if test -z $filter; then
     echo "Must provide a filter to ps aux | grep"
     return 1
   fi
-  local process_ids=$($(ps aux | grep $filter))
-
+  local process_ids=($(ps aux | grep $filter | grep -v grep | awk '{print $2}'))
+  for pid in $process_ids; do
+    print_info "Getting environment info for process $pid"
+    cat "/proc/$pid/environ" | tr '\0' '\n'
+  done
 }

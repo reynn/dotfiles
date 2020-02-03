@@ -35,17 +35,18 @@ packages:
     - tmux
     - zsh
     - neovim
-    - yq
 
 # ------------
 # Lists
-# TODO: Add alternate filter option for Canop/broot
 # TODO: Add ability to pull pre-releases
-# TODO: Add ability to overwrite to specific arch/prefix for linkerd2
 bin_downloads:
+  - repository: wercker/stern
+    description: K8s logging helper
   - repository: stedolan/jq
     description: CLI JSON processor
     platform: "{{ (ansible_system == 'Linux') | ternary('linux64','amd64') }}"
+  - repository: mikefarah/yq
+    description: yq is a portable command-line YAML processor
   - repository: derailed/k9s
     description: Kubernetes CLI To Manage Your Clusters In Style!
   - repository: sharkdp/bat
@@ -56,16 +57,12 @@ bin_downloads:
     description: A simple, fast and user-friendly alternative to 'find'
   - repository: goreleaser/goreleaser
     description: Deliver Go binaries as fast and easily as possible
-  - repository: derailed/k9s
-    description: Kubernetes CLI To Manage Your Clusters In Style!
   - repository: helm/helm
     description: Kubernetes Workstation Tools CLI
   - repository: kubernetes/minikube
     description: Run Kubernetes locally
   - repository: starship/starship
     description: The cross-shell prompt for astronauts
-  - repository: wercker/stern
-    description: K8s logging helper
 
 docker_images:
   - name: fantia.jp

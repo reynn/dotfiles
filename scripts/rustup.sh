@@ -51,9 +51,9 @@ main() {
 
     local _ext=""
     case "$_arch" in
-        *windows*)
-            _ext=".exe"
-            ;;
+    *windows*)
+        _ext=".exe"
+        ;;
     esac
 
     local _url="${RUSTUP_UPDATE_ROOT}/dist/${_arch}/rustup-init${_ext}"
@@ -66,8 +66,8 @@ main() {
     if [ -t 2 ]; then
         if [ "${TERM+set}" = 'set' ]; then
             case "$TERM" in
-                xterm*|rxvt*|urxvt*|linux*|vt*)
-                    _ansi_escapes_are_valid=true
+            xterm* | rxvt* | urxvt* | linux* | vt*)
+                _ansi_escapes_are_valid=true
                 ;;
             esac
         fi
@@ -77,16 +77,16 @@ main() {
     local need_tty=yes
     for arg in "$@"; do
         case "$arg" in
-            -h|--help)
-                usage
-                exit 0
-                ;;
-            -y)
-                # user wants to skip the prompt -- we don't need /dev/tty
-                need_tty=no
-                ;;
-            *)
-                ;;
+        -h | --help)
+            usage
+            exit 0
+            ;;
+        -y)
+            # user wants to skip the prompt -- we don't need /dev/tty
+            need_tty=no
+            ;;
+        *) ;;
+
         esac
     done
 
@@ -114,7 +114,7 @@ main() {
             err "Unable to run interactively. Run with -y to accept defaults, --help for additional options"
         fi
 
-        ignore "$_file" "$@" < /dev/tty
+        ignore "$_file" "$@" </dev/tty
     else
         ignore "$_file" "$@"
     fi
@@ -136,7 +136,7 @@ get_bitness() {
     # The printf builtin on some shells like dash only supports octal
     # escape sequences, so we use those.
     local _current_exe_head
-    _current_exe_head=$(head -c 5 /proc/self/exe )
+    _current_exe_head=$(head -c 5 /proc/self/exe)
     if [ "$_current_exe_head" = "$(printf '\177ELF\001')" ]; then
         echo 32
     elif [ "$_current_exe_head" = "$(printf '\177ELF\002')" ]; then
@@ -190,64 +190,127 @@ get_architecture() {
 
     case "$_ostype" in
 
-        Android)
-            _ostype=linux-android
-            ;;
+    Android)
+        _ostype=linux-android
+        ;;
 
-        Linux)
-            _ostype=unknown-linux-$_clibtype
-            _bitness=$(get_bitness)
-            ;;
+    Linux)
+        _ostype=unknown-linux-$_clibtype
+        _bitness=$(get_bitness)
+        ;;
 
-        FreeBSD)
-            _ostype=unknown-freebsd
-            ;;
+    FreeBSD)
+        _ostype=unknown-freebsd
+        ;;
 
-        NetBSD)
-            _ostype=unknown-netbsd
-            ;;
+    NetBSD)
+        _ostype=unknown-netbsd
+        ;;
 
-        DragonFly)
-            _ostype=unknown-dragonfly
-            ;;
+    DragonFly)
+        _ostype=unknown-dragonfly
+        ;;
 
-        Darwin)
-            _ostype=apple-darwin
-            ;;
+    Darwin)
+        _ostype=apple-darwin
+        ;;
 
-        MINGW* | MSYS* | CYGWIN*)
-            _ostype=pc-windows-gnu
-            ;;
+    MINGW* | MSYS* | CYGWIN*)
+        _ostype=pc-windows-gnu
+        ;;
 
-        *)
-            err "unrecognized OS type: $_ostype"
-            ;;
+    *)
+        err "unrecognized OS type: $_ostype"
+        ;;
 
     esac
 
     case "$_cputype" in
 
-        i386 | i486 | i686 | i786 | x86)
+    i386 | i486 | i686 | i786 | x86)
+        _cputype=i686
+        ;;
+
+    xscale | arm)
+        _cputype=arm
+        if [ "$_ostype" = "linux-android" ]; then
+            _ostype=linux-androideabi
+        fi
+        ;;
+
+    armv6l)
+        _cputype=arm
+        if [ "$_ostype" = "linux-android" ]; then
+            _ostype=linux-androideabi
+        else
+            _ostype="${_ostype}eabihf"
+        fi
+        ;;
+
+    armv7l | armv8l)
+        _cputype=armv7
+        if [ "$_ostype" = "linux-android" ]; then
+            _ostype=linux-androideabi
+        else
+            _ostype="${_ostype}eabihf"
+        fi
+        ;;
+
+    aarch64)
+        _cputype=aarch64
+        ;;
+
+    x86_64 | x86-64 | x64 | amd64)
+        _cputype=x86_64
+        ;;
+
+    mips)
+        _cputype=$(get_endianness mips '' el)
+        ;;
+
+    mips64)
+        if [ "$_bitness" -eq 64 ]; then
+            # only n64 ABI is supported for now
+            _ostype="${_ostype}abi64"
+            _cputype=$(get_endianness mips64 '' el)
+        fi
+        ;;
+
+    ppc)
+        _cputype=powerpc
+        ;;
+
+    ppc64)
+        _cputype=powerpc64
+        ;;
+
+    ppc64le)
+        _cputype=powerpc64le
+        ;;
+
+    s390x)
+        _cputype=s390x
+        ;;
+
+    *)
+        err "unknown CPU type: $_cputype"
+        ;;
+
+    esac
+
+    # Detect 64-bit linux with 32-bit userland
+    if [ "${_ostype}" = unknown-linux-gnu ] && [ "${_bitness}" -eq 32 ]; then
+        case $_cputype in
+        x86_64)
             _cputype=i686
             ;;
-
-        xscale | arm)
-            _cputype=arm
-            if [ "$_ostype" = "linux-android" ]; then
-                _ostype=linux-androideabi
-            fi
+        mips64)
+            _cputype=$(get_endianness mips '' el)
             ;;
-
-        armv6l)
-            _cputype=arm
-            if [ "$_ostype" = "linux-android" ]; then
-                _ostype=linux-androideabi
-            else
-                _ostype="${_ostype}eabihf"
-            fi
+        powerpc64)
+            _cputype=powerpc
             ;;
-
-        armv7l | armv8l)
+        aarch64)
             _cputype=armv7
             if [ "$_ostype" = "linux-android" ]; then
                 _ostype=linux-androideabi
@@ -255,68 +318,6 @@ get_architecture() {
                 _ostype="${_ostype}eabihf"
             fi
             ;;
-
-        aarch64)
-            _cputype=aarch64
-            ;;
-
-        x86_64 | x86-64 | x64 | amd64)
-            _cputype=x86_64
-            ;;
-
-        mips)
-            _cputype=$(get_endianness mips '' el)
-            ;;
-
-        mips64)
-            if [ "$_bitness" -eq 64 ]; then
-                # only n64 ABI is supported for now
-                _ostype="${_ostype}abi64"
-                _cputype=$(get_endianness mips64 '' el)
-            fi
-            ;;
-
-        ppc)
-            _cputype=powerpc
-            ;;
-
-        ppc64)
-            _cputype=powerpc64
-            ;;
-
-        ppc64le)
-            _cputype=powerpc64le
-            ;;
-
-        s390x)
-            _cputype=s390x
-            ;;
-
-        *)
-            err "unknown CPU type: $_cputype"
-
-    esac
-
-    # Detect 64-bit linux with 32-bit userland
-    if [ "${_ostype}" = unknown-linux-gnu ] && [ "${_bitness}" -eq 32 ]; then
-        case $_cputype in
-            x86_64)
-                _cputype=i686
-                ;;
-            mips64)
-                _cputype=$(get_endianness mips '' el)
-                ;;
-            powerpc64)
-                _cputype=powerpc
-                ;;
-            aarch64)
-                _cputype=armv7
-                if [ "$_ostype" = "linux-android" ]; then
-                    _ostype=linux-androideabi
-                else
-                    _ostype="${_ostype}eabihf"
-                fi
-                ;;
         esac
     fi
 
@@ -351,7 +352,7 @@ need_cmd() {
 }
 
 check_cmd() {
-    command -v "$1" > /dev/null 2>&1
+    command -v "$1" >/dev/null 2>&1
 }
 
 assert_nz() {
@@ -401,7 +402,7 @@ downloader() {
             wget --https-only --secure-protocol=TLSv1_2 "$1" -O "$2"
         fi
     else
-        err "Unknown downloader"   # should not reach here
+        err "Unknown downloader" # should not reach here
     fi
 }
 

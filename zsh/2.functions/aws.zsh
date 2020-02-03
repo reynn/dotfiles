@@ -9,7 +9,7 @@ function aws_ec2_ssh_to_instance_via_id() {
   local instance_data=$(aws ec2 describe-instances --instance-ids "$instance_id" | jq -r '.Reservations[0].Instances[0]')
   local ip=$(echo "$instance_data" | jq -r '.PrivateIpAddress')
   local key_name=$(echo "$instance_data" | jq -r '.KeyName')
-  local instance_name=$(echo "$instance_data" | jq -r '.Tags[] | select(.Key=="Name") | .Value')
+  local instance_name=$(echo "$instance_data" | jq -r '.Tags[] | select(.Key=="Name").Value')
 
   echo "Connecting to EC2 instance $instance_name [$ip] using $key_name"
   ssh -i ~/.ssh/${key_name}.pem ec2-user@$ip
@@ -60,33 +60,71 @@ function aws_ec2_create_run_instances_json() {
 }
 
 function aws_ec2_create_test_instance() {
-  local ami_search="${1:-golden-image-cis-centos-7.7}"
-  local ami_owner="${2:-966799970081}"
-  local ami_id=$(
-    aws \
-      ec2 \
-      describe-images \
-      --filters "Name=name,Values=${ami_search}*" \
-      --owners "$ami_owner" \
-      --query 'Images[-1].ImageId' \
-      --output text
-  )
+  local force_search='false'
+  local ami_id=''
+  local ami_owner='966799970081'
+  local ami_filter='golden-image-cis-centos-7.7'
 
-  echo "Latest Golden Image AMI is $ami_id..."
+  while getopts "a:f:ho:sv" opt; do
+    case $opt in
+    a) ami_id="$OPTARG" ;;
+    f) ami_filter="$OPTARG" ;;
+    o) ami_owner="$OPTARG" ;;
+    s) force_search='true' ;;
+    v) DEBUG='true' ;;
+    h)
+      echo "Usage: $0 -a [AMI_ID] -f [AMI_FILTER] -o [AMI_OWNER] -s -v"
+      return 1
+      ;;
+    *)
+      echo "Usage: $0 -a [AMI_ID] -f [AMI_FILTER] -o [AMI_OWNER] -s -v"
+      return 1
+      ;;
+    esac
+  done
+
+  if test "$force_search" = 'true' || test -z $ami_id; then
+    print_info "Finding latest image based on [filter: $ami_filter] and [owner: $ami_owner]"
+    ami_id=$(
+      aws \
+        ec2 \
+        describe-images \
+        --filters "Name=name,Values=${ami_filter}*" \
+        --owners "$ami_owner" \
+        --query 'Images[-1].ImageId' \
+        --output text
+    )
+    print_info "Latest AMI is $ami_id..."
+  fi
+
+  print_debug "force_search: $force_search"
+  print_debug "ami_id: $ami_id"
+  print_debug "ami_owner: $ami_owner"
+  print_debug "ami_filter: $ami_filter"
 
   local instance=$(aws ec2 run-instances --output json --cli-input-json "$(aws_ec2_create_run_instances_json $ami_id)")
 
-  echo "Instance ID: $(echo $instance | jq -r '.Instances[0].InstanceId')"
-  echo "IP Address: $(echo $instance | jq -r '.Instances[0].PrivateIpAddress')"
+  print_info "Instance ID: $(echo $instance | jq -r '.Instances[0].InstanceId')"
+  print_info "IP Address: $(echo $instance | jq -r '.Instances[0].PrivateIpAddress')"
 }
 
 function aws_ec2_cleanup_test_instances() {
-  local instance_ids=($(aws ec2 describe-instances --filters "Name=tag:Name,Values=$USER-test-instance" | jq -r '.Reservations[].Instances[].InstanceId'))
+  local instance_ids=($(aws \
+    ec2 \
+    describe-instances \
+    --filters "Name=tag:Name,Values=$USER-test-instance" \
+    "Name=instance-state-name,Values=running,shut-down" |
+    jq -r '.Reservations[].Instances[].InstanceId')
+  )
   print_info "Found ${#instance_ids} instances to delete..."
+  if test "${#instance_ids}" = '0'; then
+    print_info 'No instances to cleanup...'
+    return 1
+  fi
 
   for instance_id in $instance_ids; do
     print_info "Deleting $instance_id"
-    aws ec2 terminate-instances --instance-ids "$instance_id"
+    aws_ec2_tear_down_instance $instance_id
   done
 }
 
@@ -94,9 +132,11 @@ function aws_ec2_tear_down_instance() {
   local instance_id="$1"
   if test -z "$instance_id"; then
     echo "Please provide an AWS EC2 instance ID"
+    return 1
   fi
 
-  aws ec2 terminate-instances --instance-ids $instance_id
+  aws ec2 terminate-instances --instance-ids $instance_id |
+    jq -r '.TerminatingInstances[] | "\(.InstanceId) is currently \(.CurrentState.Name)"'
 }
 
 function aws_ec2_get_instance_pricing() {

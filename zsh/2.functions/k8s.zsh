@@ -179,26 +179,18 @@ function k8s_get_sa_config() {
 
 function new_minikube() {
   local k8s_version="1.16.0"
-  local memory="${2:-4}"
-  if [ "$1" = '-h' ]; then
-    print_usage "
-------------------------------------------------------------------
-Description | Create a new Minikube cluster with provided settings.
-------------------------------------------------------------------
-Usage       | $0 <kubernetes_version> <memory>
-------------------------------------------------------------------
-Parameters  |-----------------------------------------------------
-------------------------------------------------------------------
-k8s_version | Version of Kubernetes to use. (Default: 1.16.0)
-memory      | Amount of memory to start Minikube with, in Gb. (Default: 4Gb)
-------------------------------------------------------------------
-Example     | \`$0 1.16.0 3\` (Start Minikube with 3Gb RAM on K8S v1.16.0)"
-    return 0
-  elif test -n "$1"; then
-    echo "k8s_version $k8s_version"
-    k8s_version="$1"
-  fi
-  memory="$(($memory*1024))"
+  local memory="4"
+
+  while getopts "hvV:M:" opt; do
+    case $opt in
+      M) memory="$OPTARG" ;;
+      V) k8s_version="$OPTARG" ;;
+      h) print_usage "Usage | $0 [-V k8s version] [-M memory]"; return 0;;
+    esac
+  done
+
+  print_debug $k8s_version 'k8s_version'
+  print_debug $memory 'memory'
 
   print_info "Checking for existing minikube..."
   if test $(minikube status --format '{{.Host}}'); then
@@ -211,7 +203,7 @@ Example     | \`$0 1.16.0 3\` (Start Minikube with 3Gb RAM on K8S v1.16.0)"
 
   minikube start \
     --kubernetes-version=v$k8s_version \
-    --memory=$memory \
+    --memory="$(($memory*1024))" \
     --bootstrapper=kubeadm \
     --extra-config=kubelet.authentication-token-webhook=true \
     --extra-config=kubelet.authorization-mode=Webhook \

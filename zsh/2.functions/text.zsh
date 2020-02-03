@@ -21,24 +21,24 @@ function join_by() {
 
 function print_debug() {
   if [[ "$DEBUG" = "true" ]]; then
-    py_print --level debug --label "$2" --name "${funcstack[2]}" "$1"
+    py_print --level debug --label "$2" --name "${funcstack[2]}" "$1" 1>&2
   fi
 }
 
 function print_error() {
-  py_print --level error --label "$2" --name "${funcstack[2]}" "$1"
+  py_print --level error --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
 function print_info() {
-  py_print --level info --label "$2" --name "${funcstack[2]}" "$1"
+  py_print --level info --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
 function print_warning() {
-  py_print --level warning --label "$2" --name "${funcstack[2]}" "$1"
+  py_print --level warning --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
 function print_usage() {
-  py_print --level usage --label "$2" --name "${funcstack[2]}" "$1"
+  py_print --level usage --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
 function print_usage_json() {
@@ -54,6 +54,14 @@ function print_box() {
   local strings=($@)
   local header=$HEADER
   local length=${BOX_LENGTH:-100}
+
+  while getopts "hH:l:" opt; do
+    case $opt in
+    H) header="$OPTARG" ;;
+    l) length="$OPTARG" ;;
+    h) echo "Usage: ${0:t} [-H HEADER] [-l LENGTH]" ;;
+    esac
+  done
 
   echo -n '| '
   print_repeated "$(($length - 3))" '-'
