@@ -23,8 +23,8 @@ zle -N fzf-ssh
 # -----------------------------------------------------------------------------
 ## FZF:Docker functions -------------------------------------------------------
 function fzf-dps() {
-  local all_matches=$(docker container ls --format '{{.Names}}')
-  local selection=$(echo "$all_matches" | fzf)
+  local all_matches=$(docker container ls -a --format '{{.Names}}')
+  local selection=$(echo "$all_matches" | fzf-tmux --height 40% --layout=reverse --border)
   echo $selection
   if [ ! -z $selection ]; then
     BUFFER="docker logs -f $selection"

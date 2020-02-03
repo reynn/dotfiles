@@ -1,0 +1,66 @@
+#!/usr/bin/env zsh
+
+typeset -A styles
+
+styles[full]='Sources all zsh files to refresh aliases/exports/functions'
+styles[aliases]='Sources just the aliases from the zsh directory'
+styles[exports]='Sources just the aliases from the zsh directory'
+styles[functions]='Sources just the aliases from the zsh directory'
+
+SCRIPT_NAME="${0:t:r}"
+DEBUG='false'
+
+function __print_help() {
+  echo "Usage: $SCRIPT_NAME [ -s STYLE ]"
+  echo '----------------------------------------------------------------'
+  echo 'Available styles:'
+  for key in ${(kO)styles}; do
+    echo "$key: ${styles[$key]}"
+  done
+}
+
+function handle_aliases() {
+  echo 'Initializing aliases...'
+}
+
+function handle_exports() {
+  echo 'Initializing exports...'
+}
+
+function handle_functions() {
+  echo 'Initializing functions...'
+}
+
+function main() {
+  while getopts "hvs:" opt; do
+    case $opt in
+      s) STYLE="$OPTARG" ;;
+      v) DEBUG='true' ;;
+      h)
+        __print_help
+        exit 0
+        ;;
+    esac
+  done
+
+  case $STYLE in
+    full | all)
+      echo 'Starting full initialization sequence...'
+      handle_aliases
+      handle_exports
+      handle_functions
+      echo 'Completed!'
+    ;;
+    aliases) handle_aliases ;;
+    functions) handle_functions ;;
+    exports) handle_exports ;;
+    *)
+      __print_help
+      echo '----------------------------------------------------------------'
+      echo "Unknown style, use one from the list above"
+      exit 1
+      ;;
+  esac
+}
+
+main $@

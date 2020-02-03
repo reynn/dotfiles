@@ -31,14 +31,12 @@ local zsh_plugins=(
   encode64
   extract
   git
-  git-flow
   git-hubflow
-  gpg-agent
   httpie
   jsontools
   kubectl
-  osx
   pip
+  osx
   pipenv
   python
   rsync
@@ -46,7 +44,6 @@ local zsh_plugins=(
   sudo
   tmux
   vscode
-  web-search
 )
 
 for pl in $zsh_plugins; do
@@ -71,9 +68,9 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context
   go_version
   vcs
 )
+# kubecontext
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv
   command_execution_time
-  kubecontext
   aws
   status
   dir_writable

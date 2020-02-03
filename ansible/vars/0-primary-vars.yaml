@@ -43,29 +43,27 @@ packages:
 # TODO: Add ability to pull pre-releases
 # TODO: Add ability to overwrite to specific arch/prefix for linkerd2
 bin_downloads:
-  # - repository: stedolan/jq
-  #   description: CLI JSON processor
-  #   platform: "{{ (ansible_system == 'Linux') | ternary('linux64','amd64') }}"
-  # - repository: derailed/k9s
-  #   description: Kubernetes CLI To Manage Your Clusters In Style!
-  # - repository: sharkdp/bat
-  #   description: A cat(1) clone with wings
-  # - repository: goodwithtech/dockle
-  #   description: Container Image Linter for Security
-  # - repository: sharkdp/fd
-  #   description: A simple, fast and user-friendly alternative to 'find'
-  # - repository: goreleaser/goreleaser
-  #   description: Deliver Go binaries as fast and easily as possible
-  # - repository: derailed/k9s
-  #   description: Kubernetes CLI To Manage Your Clusters In Style!
-  # - repository: helm/helm
-  #   description: Kubernetes Workstation Tools CLI
-  # - repository: kubernetes/minikube
-  #   description: Run Kubernetes locally
-  # - repository: ryochack/peep
-  #   description: The CLI text viewer tool that works like less command on small pane within the terminal window
-  # - repository: starship/starship
-  #   description: The cross-shell prompt for astronauts
+  - repository: stedolan/jq
+    description: CLI JSON processor
+    platform: "{{ (ansible_system == 'Linux') | ternary('linux64','amd64') }}"
+  - repository: derailed/k9s
+    description: Kubernetes CLI To Manage Your Clusters In Style!
+  - repository: sharkdp/bat
+    description: A cat(1) clone with wings
+  - repository: goodwithtech/dockle
+    description: Container Image Linter for Security
+  - repository: sharkdp/fd
+    description: A simple, fast and user-friendly alternative to 'find'
+  - repository: goreleaser/goreleaser
+    description: Deliver Go binaries as fast and easily as possible
+  - repository: derailed/k9s
+    description: Kubernetes CLI To Manage Your Clusters In Style!
+  - repository: helm/helm
+    description: Kubernetes Workstation Tools CLI
+  - repository: kubernetes/minikube
+    description: Run Kubernetes locally
+  - repository: starship/starship
+    description: The cross-shell prompt for astronauts
   - repository: wercker/stern
     description: K8s logging helper
 
@@ -120,10 +118,4 @@ scripts:
     dir: /tmp
   - name: nvm
     url: https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
-    dir: "{{ bins_dir }}"
-  - name: kubectx
-    url: https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx
-    dir: "{{ bins_dir }}"
-  - name: kubens
-    url: https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens
     dir: "{{ bins_dir }}"

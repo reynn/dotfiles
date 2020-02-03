@@ -1,12 +1,13 @@
 #!/usr/bin/env zsh
 
 # Global Aliases --------------------------------------------------------------
+alias grep='rg'
 alias C='wc -l'
 alias H='head'
 alias L='less'
 alias N='/dev/null'
 alias S='sort'
-alias G='rg'
+alias G='grep'
 alias BIN_DOWNLOADS='yq r $DFP/ansible/vars/0-primary-vars.yaml "bin_downloads[*].repository" | tr "\- " "\0" | sort'
 alias reynn='cd $REYNN'
 alias bins='cd $DIR_BINS'
@@ -20,7 +21,7 @@ alias izf='import_zsh_files $IMPORT_DIRECTORIES'
 ## General aliases ------------------------------------------------------------
 alias paths='echo -e ${PATH//:/\\n}'
 alias please='sudo'
-alias kill_ssh_agents='ps aux | grep ssh-agent | grep -v grep | awk "{print \$2}" | xargs kill -9'
+alias kill_ssh_agents='ps aux | grep ssh-agent | awk "{print \$2}" | xargs kill -9'
 
 # -----------------------------------------------------------------------------
 ## Movement aliases -----------------------------------------------------------
