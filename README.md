@@ -11,9 +11,9 @@ $ curl -L https://raw.githubusercontent.com/reynn/dotfiles/master/install.sh | b
 >>installing>>ansible configuration...
 ```
 
-## TODO
+## Updates
 
-- update to source a minimal set of variables at start
-- ctrl+i to fzf import options quickly `fd -t f -e zsh '\d.+/.+' $DFP/zsh`
-- refactor functions folder to subdirs of
-- alias for updating kube{ctx,ns}
+- TODO: update to source a minimal set of variables at start
+- TODO: ctrl+i to fzf import options quickly `fd -t f -e zsh '\d.+/.+' $DFP/zsh`
+- TODO: refactor functions folder to subdirs of
+- TODO: alias for updating kube{ctx,ns}
