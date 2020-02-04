@@ -10,19 +10,17 @@ let g:VM_leader = ",,"
 " Load Plug
 call plug#begin("~/.vim/plugged")
 
-" Load plugins
 " VIM enhancements
 Plug 'ciaranm/securemodelines'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'justinmk/vim-sneak'
 Plug 'mg979/vim-visual-multi'
+Plug 'tpope/vim-fugitive'
 
 " GUI enhancements
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'andymass/vim-matchup'
-Plug 'chriskempson/base16-vim'
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 Plug 'flrnprz/candid.vim'
@@ -30,7 +28,6 @@ Plug 'frazrepo/vim-rainbow'
 
 " Snippets
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 
 " Fuzzy finder
 Plug 'airblade/vim-rooter'
@@ -43,8 +40,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Syntactic language support
 Plug 'cespare/vim-toml'
 Plug 'stephpy/vim-yaml'
-Plug 'rust-lang/rust.vim'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -52,9 +48,9 @@ Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 if has('nvim')
-    set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-    set inccommand=nosplit
-    noremap <C-q> :confirm qall<CR>
+  set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+  set inccommand=nosplit
+  noremap <C-q> :confirm qall<CR>
 end
 
 " deal with colors
@@ -75,53 +71,59 @@ syntax on
 let g:rainbow_active = 1
 " Plugin settings
 let g:secure_modelines_allowed_items = [
-                \ "textwidth",   "tw",
-                \ "softtabstop", "sts",
-                \ "tabstop",     "ts",
-                \ "shiftwidth",  "sw",
-                \ "expandtab",   "et",   "noexpandtab", "noet",
-                \ "filetype",    "ft",
-                \ "foldmethod",  "fdm",
-                \ "readonly",    "ro",   "noreadonly", "noro",
-                \ "rightleft",   "rl",   "norightleft", "norl",
-                \ "colorcolumn"
-                \ ]
+  \ "textwidth",   "tw",
+  \ "softtabstop", "sts",
+  \ "tabstop",     "ts",
+  \ "shiftwidth",  "sw",
+  \ "expandtab",   "et",   "noexpandtab", "noet",
+  \ "filetype",    "ft",
+  \ "foldmethod",  "fdm",
+  \ "readonly",    "ro",   "noreadonly", "noro",
+  \ "rightleft",   "rl",   "norightleft", "norl",
+  \ "colorcolumn"
+\ ]
 
-" Base16
-let base16colorspace=256
-let g:base16_shell_path="~/.vim/scripts/"
+" Set virtual environment for NVIM Python interpreter
+let g:python3_host_prog = expand("~/.xdg/data/virtualenvs/nvim-JqgwiobL/bin/python")
+
+" Tabularize formatting settings
+if exists(":Tabularize")
+  nmap <Leader>t| :Tabularize /|\zs<CR>
+  nmap <Leader>t= :Tabularize /=<CR>
+  vmap <Leader>t= :Tabularize /=<CR>
+  nmap <Leader>t: :Tabularize /:\zs<CR>
+  vmap <Leader>t: :Tabularize /:\zs<CR>
+endif
+
+let g:go_snippet_engine = "ultisnips"
 
 " Lightline
-" let g:lightline = { 'colorscheme': 'wombat' }
 let g:lightline = {
-      \ 'component_function': {
-      \   'filename': 'LightlineFilename',
-      \ },
+  \ 'colorscheme': 'wombat',
+  \ 'component_function': {
+  \   'filename': 'LightlineFilename',
+  \ },
+  \ 'active': {
+  \   'right': [
+  \     ['lineinfo'],
+  \     ['fileformat', 'fileencoding', 'filetype']
+  \   ]
+  \ }
 \ }
 function! LightlineFilename()
   return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
 if executable('rg')
   set grepprg=rg\ --no-heading\ --vimgrep
   set grepformat=%f:%l:%c:%m
 endif
 
-" Javascript
-let javaScript_fold=0
-
-" Latex
-let g:latex_indent_enabled = 1
-let g:latex_fold_envs = 0
-let g:latex_fold_sections = []
-
 " Open hotkeys
-map <C-p> :Files<CR>
-nmap <leader>; :Buffers<CR>
+map <leader>F :Files<CR>
+nmap <leader>B :Buffers<CR>
+nmap <leader>W :Windows<CR>
 
 " Quick-save
 nmap <leader>w :w<CR>
@@ -129,45 +131,28 @@ nmap <leader>w :w<CR>
 " Don't confirm .lvimrc
 let g:localvimrc_ask = 0
 
-" racer + rust
-" https://github.com/rust-lang/rust.vim/issues/192
-let g:rustfmt_autosave = 1
-let g:rustfmt_emit_files = 1
-let g:rustfmt_fail_silently = 0
-let g:rust_clip_command = 'xclip -selection clipboard'
-"let g:racer_cmd = "/usr/bin/racer"
-"let g:racer_experimental_completer = 1
-let $RUST_SRC_PATH = systemlist("rustc --print sysroot")[0] . "/lib/rustlib/src/rust/src"
-
-" Completion
-" Better display for messages
-set cmdheight=2
-" You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=300
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" Use <c-.> to trigger completion.
-inoremap <silent><expr> <c-.> coc#refresh()
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
 " Golang
 let g:go_play_open_browser = 0
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_command = "goimports"
-let g:go_bin_path = expand("~/dev/go/bin")
+let g:go_bin_path = expand("~/go/bin")
+
+" NERDTree Configuration
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+map <leader>n :NERDTreeFocus<CR>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" UltiSnips Trigger configuration.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsListSnippets="<c-tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+
+" Coc settings
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+map <leader>f :Prettier<CR>
 
 " =============================================================================
 " # Editor settings
@@ -181,7 +166,6 @@ set noshowmode
 set hidden
 set nowrap
 set nojoinspaces
-let g:sneak#s_next = 1
 let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_frontmatter = 1
@@ -189,7 +173,7 @@ set printfont=:h10
 set printencoding=utf-8
 set printoptions=paper:letter
 " Always draw sign column. Prevent buffer moving when adding/deleting sign.
-set signcolumn=yes
+set signcolumn=no
 
 " Settings needed for .lvimrc
 set exrc
@@ -208,11 +192,11 @@ set wildmenu
 set wildmode=list:longest
 set wildignore=.hg,.svn,*~,*.png,*.jpg,*.gif,*.settings,Thumbs.db,*.min.js,*.swp,publish/*,intermediate/*,*.o,*.hi,Zend,vendor
 
-" Use wide tabs
-set shiftwidth=8
-set softtabstop=8
-set tabstop=8
-set noexpandtab
+" Set tab widths
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set expandtab
 
 " Wrapping options
 set formatoptions=tc " wrap text and comments using textwidth
@@ -227,39 +211,27 @@ set ignorecase
 set smartcase
 set gdefault
 
-" Search results centered please
-nnoremap <silent> n nzz
-nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
-nnoremap <silent> # #zz
-nnoremap <silent> g* g*zz
-
-" Very magic by default
-nnoremap ? ?\v
-nnoremap / /\v
-cnoremap %s/ %sm/
-
 " =============================================================================
 " # GUI settings
 " =============================================================================
 set guioptions-=T " Remove toolbar
-set vb t_vb= " No more beeps
-set backspace=2 " Backspace over newlines
+set vb t_vb=      " No more beeps
+set backspace=2   " Backspace over newlines
+set ruler         " Where am I?
 set nofoldenable
-set ruler " Where am I?
 set ttyfast
 " https://github.com/vim/vim/issues/1735#issuecomment-383353563
 set lazyredraw
 set synmaxcol=500
 set laststatus=2
-set relativenumber " Relative line numbers
-set number " Also show current absolute line
+set relativenumber  " Relative line numbers
+set number          " Also show current absolute line
 set diffopt+=iwhite " No whitespace in vimdiff
-" Make diffing better: https://vimways.org/2018/the-power-of-diff/
+                    " Make diffing better: https://vimways.org/2018/the-power-of-diff/
 set diffopt+=algorithm:patience
 set diffopt+=indent-heuristic
-set showcmd " Show (partial) command in status line.
-set mouse=a " Enable mouse usage (all modes) in terminals
+set showcmd      " Show (partial) command in status line.
+set mouse=a      " Enable mouse usage (all modes) in terminals
 set shortmess+=c " don't give |ins-completion-menu| messages.
 
 " Show those damn hidden characters
@@ -303,24 +275,19 @@ tnoremap <C-c> <Esc>
 vnoremap <C-h> :nohlsearch<cr>
 nnoremap <C-h> :nohlsearch<cr>
 
-" Suspend with Ctrl+f
-inoremap <C-f> :sus<cr>
-vnoremap <C-f> :sus<cr>
-nnoremap <C-f> :sus<cr>
-
 " Jump to start and end of line using the home row keys
 map H ^
 map L $
 
 " Neat X clipboard integration
 " ,p will paste clipboard into buffer
-" ,c will copy entire buffer into clipboard
 noremap <leader>p :read !pbpaste<cr>
+" ,c will copy entire buffer into clipboard
 noremap <leader>c :w !pbcopy<cr><cr>
 
 " <leader>s for Rg search
 noremap <leader>s :Rg
-let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_layout = { 'down': '~30%' }
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
@@ -342,14 +309,12 @@ command! -bang -nargs=? -complete=dir Files
 nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
 " No arrow keys --- force yourself to use the home row
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
 " Left and right can switch buffers
+nnoremap <left> :bp<CR>
+nnoremap <right> :bn<CR>
 nnoremap <left> :bp<CR>
 nnoremap <right> :bn<CR>
 
@@ -373,34 +338,18 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
-" nmap <silent> F <Plug>(ale_lint)
-" nmap <silent> <C-l> <Plug>(ale_detail)
-" nmap <silent> <C-g> :close<cr>
-
 
 " <leader><leader> toggles between buffers
 nnoremap <leader><leader> <c-^>
 
-" <leader>= reformats current tange
-nnoremap <leader>= :'<,'>RustFmtRange<cr>
-
 " <leader>, shows/hides hidden characters
-nnoremap <leader>, :set invlist<cr>
+nnoremap <leader>i :set invlist<cr>
 
 " <leader>q shows stats
 nnoremap <leader>q g<c-g>
 
-" Keymap for replacing up to next _ or -
-noremap <leader>m ct_
-noremap <leader>n ct-
-
 " M to make
-noremap M :!make -k -j4<cr>
-
-" I can type :help on my own, thanks.
-map <F1> <Esc>
-imap <F1> <Esc>
-
+noremap M :!make -k -j8<cr>
 
 " =============================================================================
 " # Autocommands
@@ -419,20 +368,23 @@ if has("autocmd")
   au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-" Auto-make less files on save
-autocmd BufWritePost *.less if filereadable("Makefile") | make | endif
-
-" Follow Rust code style rules
-au Filetype rust source $XDG_CONFIG_HOME/nvim/scripts/spacetab.vim
-au Filetype rust set colorcolumn=100
-
 " Help filetype detection
+autocmd BufRead *.go set filetype=go
 autocmd BufRead *.plot set filetype=gnuplot
 autocmd BufRead *.md set filetype=markdown
 autocmd BufRead *.lds set filetype=ld
 autocmd BufRead *.tex set filetype=tex
 autocmd BufRead *.trm set filetype=c
 autocmd BufRead *.xlsx.axlsx set filetype=ruby
+
+" Set tabs to 4 characters when that is the suggested format style
+let fts = ['go']
+if index(fts, &filetype) == -1
+  set shiftwidth=4
+  set softtabstop=4
+  set tabstop=4
+  set noexpandtab
+endif
 
 " Script plugins
 autocmd Filetype html,xml,xsl,php source $XDG_CONFIG_HOME/nvim/scripts/closetag.vim
@@ -446,15 +398,21 @@ if has('nvim')
   runtime! plugin/python_setup.vim
 endif
 
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-map <c-n> :NERDTreeToggle<CR>
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use <c-.> to trigger completion.
+inoremap <silent><expr> <c-.> coc#refresh()
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"

@@ -102,7 +102,7 @@ source_paths=(
 
 print_debug 'sourcing additional files'
 for sourceable in $source_paths; do
-  test -f $sourceable || source $sourceable
+  test ! -e $sourceable || source $sourceable
 done
 
 # If pyenv is installed on this machine initialize it
