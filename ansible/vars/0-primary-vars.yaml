@@ -10,7 +10,7 @@ file_links:
     dest: "{{ ansible_env.HOME }}/.zshrc"
   - src: ".vimrc"
     dest: "{{ ansible_env.HOME }}/.vimrc"
-  - src: "git/gitconfig_global"
+  - src: "git/gitconfig"
     dest: "{{ ansible_env.HOME }}/.gitconfig"
 
 # ------------

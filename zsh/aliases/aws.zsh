@@ -12,7 +12,7 @@ alias aws_ssm_session='aws ssm start-session --target '
 # -----------------------------------------------------------------------------
 ## EC2 aliases ----------------------------------------------------------------
 
-alias aws_ec2_untagged='aws ec2 describe-instances --query "Reservations[].Instances[?!not_null(Tags[?Key == \`Name\`].Value)] | []"'
+alias aws_ec2_untagged='aws ec2 describe-instances --output text --query "Reservations[].Instances[?!not_null(Tags[?Key == \`Name\`].Value)] | [].InstanceId" | tr "\t" "\n"'
 
 # -----------------------------------------------------------------------------
 ## aliases ---------------------------------------------------------

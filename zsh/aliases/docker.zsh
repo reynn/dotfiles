@@ -1,20 +1,13 @@
 #!/usr/bin/env zsh
 
 # -----------------------------------------------------------------------------
-# Docker aliases --------------------------------------------------------------
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------------------------------------
 ## Docker:build aliases -------------------------------------------------------
+
 alias dok_bui_rel="DOCKER_CONTENT_TRUST=1 docker build"
 
 # -----------------------------------------------------------------------------
-## Docker:funcs aliases -------------------------------------------------------
-alias dok_retag="docker_retag_and_push"
-alias dok_gen_version='_dok_run_base quay.io/reynn/docker-versioner:0.9.0'
-
-# -----------------------------------------------------------------------------
 ## Docker:run aliases ---------------------------------------------------------
+
 alias _dok_run_base='docker run --rm -it -v $PWD:/app -w /app'
 alias dok_run_bash='_dok_run_base --entrypoint=/bin/bash'
 alias dok_run_ash='_dok_run_base --entrypoint=/bin/ash'
@@ -31,12 +24,20 @@ alias dok_run_ubuntu='dok_run_bash ubuntu:19.10'
 alias dok_run_redis='docker run --name redis -d -p 6379:6379 redis:alpine3.10'
 
 # -----------------------------------------------------------------------------
+## Docker:funcs aliases -------------------------------------------------------
+
+alias dok_retag="docker_retag_and_push"
+alias dok_gen_version='_dok_run_base quay.io/reynn/docker-versioner:0.9.0'
+
+# -----------------------------------------------------------------------------
 ## Docker:list aliases --------------------------------------------------------
+
 alias dok_ls_im='docker image ls -a'
 alias dok_ls_co='docker container ls -a'
 
 # -----------------------------------------------------------------------------
 ## Docker:clean aliases -------------------------------------------------------
+
 alias dok_cln_con='docker container rm $(docker container ls -qa)'
 alias dok_cln_all_con='docker container rm -f $(docker container ls -qa)'
 alias dok_cln_img='docker image rm $(docker image ls -q)'
