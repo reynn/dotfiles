@@ -10,8 +10,8 @@ file_links:
     dest: "{{ ansible_env.HOME }}/.zshrc"
   - src: ".vimrc"
     dest: "{{ ansible_env.HOME }}/.vimrc"
-  - src: "xdg/configs/nvim"
-    dest: "{{ ansible_env.XDG_CONFIG_HOME }}/nvim"
+  - src: "git/gitconfig_global"
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
 
 # ------------
 # Maps
@@ -40,29 +40,29 @@ packages:
 # Lists
 # TODO:           Add ability to pull pre-releases
 bin_downloads:
-  - repository:   wercker/stern
-    description:  K8s logging helper
-  - repository:   stedolan/jq
-    description:  CLI JSON processor
-    platform:     "{{ (ansible_system == 'Linux') | ternary('linux64','amd64') }}"
-  - repository:   mikefarah/yq
-    description:  yq is a portable command-line YAML processor
-  - repository:   derailed/k9s
-    description:  Kubernetes CLI To Manage Your Clusters In Style!
-  - repository:   sharkdp/bat
-    description:  A cat(1) clone with wings
-  - repository:   goodwithtech/dockle
-    description:  Container Image Linter for Security
-  - repository:   sharkdp/fd
-    description:  A simple, fast and user-friendly alternative to 'find'
-  - repository:   goreleaser/goreleaser
-    description:  Deliver Go binaries as fast and easily as possible
-  - repository:   helm/helm
-    description:  Kubernetes Workstation Tools CLI
-  - repository:   kubernetes/minikube
-    description:  Run Kubernetes locally
-  - repository:   starship/starship
-    description:  The cross-shell prompt for astronauts
+  - repository: wercker/stern
+    description: K8s logging helper
+  - repository: stedolan/jq
+    description: CLI JSON processor
+    platform: "{{ (ansible_system == 'Linux') | ternary('linux64','amd64') }}"
+  - repository: mikefarah/yq
+    description: yq is a portable command-line YAML processor
+  - repository: derailed/k9s
+    description: Kubernetes CLI To Manage Your Clusters In Style!
+  - repository: sharkdp/bat
+    description: A cat(1) clone with wings
+  - repository: goodwithtech/dockle
+    description: Container Image Linter for Security
+  - repository: sharkdp/fd
+    description: A simple, fast and user-friendly alternative to 'find'
+  - repository: goreleaser/goreleaser
+    description: Deliver Go binaries as fast and easily as possible
+  - repository: helm/helm
+    description: Kubernetes Workstation Tools CLI
+  - repository: kubernetes/minikube
+    description: Run Kubernetes locally
+  - repository: starship/starship
+    description: The cross-shell prompt for astronauts
 
 docker_images:
   - name: fantia.jp
