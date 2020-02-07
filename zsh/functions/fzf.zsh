@@ -8,7 +8,7 @@ stty stop undef
 # -----------------------------------------------------------------------------
 ## FZF:Unix functions ---------------------------------------------------------
 function fzf-ssh() {
-  local all_matches=$(rg "Host\s+\w+" ~/.ssh/config.d/* | rg -v '\*' | awk '{print $NF}')
+  local all_matches=$(rg "Host\s+\w+" ~/.ssh/config ~/.ssh/config.d/* | rg -v '\*' | awk '{print $NF}')
   local selection=$(echo "$all_matches" | fzf --height=10 --ansi --reverse --select-1)
   echo $selection
   if [ ! -z $selection ]; then

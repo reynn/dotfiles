@@ -5,7 +5,7 @@
 
 export CURRENT_HOST="$(hostname)"
 
-source $HOME/git/github.com/reynn/dotfiles/zsh/0.vars/general.zsh
+source $HOME/git/github.com/reynn/dotfiles/zsh/.vars/general.zsh
 source $DFP/zsh/2.functions/general.zsh
 source $DFP/zsh/2.functions/text.zsh
 source $DFP/zsh/3.exports/general.zsh

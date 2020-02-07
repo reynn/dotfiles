@@ -1,0 +1,110 @@
+#!/usr/bin/env zsh
+
+# -----------------------------------------------------------------------------
+# General ---------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+fpath=($DFP/zsh/6.completions $fpath)
+DEBUG="${DEBUG:-false}"
+GFP="$HOME/git"
+REYNN="$GFP/github.com/reynn"
+DFP="$REYNN/dotfiles"
+DIR_BINS="$HOME/.bins"
+HELP_JSON="$DFP/zsh/function_help.json"
+XDG_CONFIG_HOME="$DFP/xdg/config"
+
+export fpath
+export DEBUG
+export GFP
+export REYNN
+export DFP
+export DIR_BINS
+export HELP_JSON
+export XDG_CONFIG_HOME
+
+# -----------------------------------------------------------------------------
+# Arrays ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+IMPORT_DIRECTORIES=(
+  $($DIR_BINS/fd -t d -d1 -E '5.hosts' -E '6.completions' . $DFP/zsh)
+  $DFP/zsh/5.hosts/$CURRENT_HOST
+)
+
+SSH_IDENTITIES=(id_rsa)
+
+POSSIBLE_PATHS=(
+  "$PYENV_ROOT/bin"
+  "$HOME/.bins"
+  "$HOME/.cargo/bin"
+  "$DFP/scripts"
+  "$HOME/.npm-global/bin"
+  "$HOME/.local/bin"
+  "$HOME/go/bin"
+  "$GFP/bin"
+  "$GFP/github.com/thecasualcoder/kube-fzf"
+  "$GFP/github.com/junegunn/fzf/bin"
+  "/usr/local/go/bin"
+  # Mac paths
+  "/usr/local/MacGPG2/bin"
+  # "$HOME/Library/Python/3.8/bin"
+  "/Users/reynn/Library/Python/3.8/bin"
+  "/Library/Frameworks/Python.framework/Versions/3.8/bin"
+  # Unix paths
+  "/usr/local/bin"
+  "/snap/bin"
+  "/usr/sbin"
+  "/usr/bin"
+  "/sbin"
+  "/bin"
+)
+
+export IMPORT_DIRECTORIES
+export SSH_IDENTITIES
+export POSSIBLE_PATHS
+
+# -----------------------------------------------------------------------------
+# XDG Config ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+XDG_BASE_PATH="$HOME/.xdg"
+XDG_CACHE_HOME="$XDG_BASE_PATH/cache"
+XDG_DATA_HOME="$XDG_BASE_PATH/data"
+
+export XDG_BASE_PATH
+export XDG_CACHE_HOME
+export XDG_DATA_HOME
+
+# -----------------------------------------------------------------------------
+# Unix (Paths/ENV overrides) --------------------------------------------------
+# -----------------------------------------------------------------------------
+
+PATH=""
+
+EDITOR='nvim'
+PYENV_ROOT="$GFP/github.com/pyenv/pyenv"
+SSH_KEY_PATH='~/.ssh/rsa_id'
+UPDATE_ZSH_DAYS='3'
+
+export EDITOR
+export PYENV_ROOT
+export SSH_KEY_PATH
+export UPDATE_ZSH_DAYS
+
+# -----------------------------------------------------------------------------
+# Unix (Special modifications) ------------------------------------------------
+# -----------------------------------------------------------------------------
+
+for p in $POSSIBLE_PATHS; do
+  # Test if the directory exists
+  if test -d $p; then
+    # Test if the existing PATH variable is set to anything
+    if test -z $PATH; then
+      PATH="$p"
+    else
+      PATH="$PATH:$p"
+    fi
+  fi
+done
+
+export PATH
