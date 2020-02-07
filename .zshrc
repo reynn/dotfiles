@@ -4,6 +4,7 @@
 # Start -----------------------------------------------------------------------
 
 export CURRENT_HOST="$(hostname)"
+export TERM=xterm-256color
 
 source $HOME/git/github.com/reynn/dotfiles/zsh/.vars/.reynn
 source $DFP/zsh/.hosts/.$CURRENT_HOST
