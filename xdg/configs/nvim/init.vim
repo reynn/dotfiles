@@ -41,7 +41,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'cespare/vim-toml'
 Plug 'stephpy/vim-yaml'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
@@ -84,15 +83,14 @@ let g:secure_modelines_allowed_items = [
 \ ]
 
 " Set virtual environment for NVIM Python interpreter
-let g:python3_host_prog = expand("~/.xdg/data/virtualenvs/nvim-JqgwiobL/bin/python")
+let g:python3_host_prog = expand("~/.xdg/data/virtualenvs/nvim-*/bin/python")
 
 " Tabularize formatting settings
 if exists(":Tabularize")
-  nmap <Leader>t| :Tabularize /|\zs<CR>
-  nmap <Leader>t= :Tabularize /=<CR>
-  vmap <Leader>t= :Tabularize /=<CR>
-  nmap <Leader>t: :Tabularize /:\zs<CR>
-  vmap <Leader>t: :Tabularize /:\zs<CR>
+  nmap <leader>t= :Tabularize /=<CR>
+  vmap <leader>t= :Tabularize /=<CR>
+  nmap <leader>t: :Tabularize /:\zs<CR>
+  vmap <leader>t: :Tabularize /:\zs<CR>
 endif
 
 let g:go_snippet_engine = "ultisnips"
@@ -111,7 +109,7 @@ let g:lightline = {
   \ }
 \ }
 function! LightlineFilename()
-  return expand('%:t') !=# '' ? @% : '[No Name]'
+  return expand('%:t:r') !=# '' ? @% : '[No Name]'
 endfunction
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
@@ -169,7 +167,7 @@ set nojoinspaces
 let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_frontmatter = 1
-set printfont=:h10
+set printfont=Lucida_Console:h10
 set printencoding=utf-8
 set printoptions=paper:letter
 " Always draw sign column. Prevent buffer moving when adding/deleting sign.
@@ -377,6 +375,10 @@ autocmd BufRead *.tex set filetype=tex
 autocmd BufRead *.trm set filetype=c
 autocmd BufRead *.xlsx.axlsx set filetype=ruby
 
+" Actions on save
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+autocmd BufWritePre * :w
+
 " Set tabs to 4 characters when that is the suggested format style
 let fts = ['go']
 if index(fts, &filetype) == -1
@@ -397,22 +399,3 @@ autocmd Filetype html,xml,xsl,php source $XDG_CONFIG_HOME/nvim/scripts/closetag.
 if has('nvim')
   runtime! plugin/python_setup.vim
 endif
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" Use <c-.> to trigger completion.
-inoremap <silent><expr> <c-.> coc#refresh()
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"

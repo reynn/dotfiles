@@ -1,17 +1,14 @@
-snippet v "shorthand variable declaration"
-	${1} := ${2}
+snippet start "Base Go File"
+	package ${1}
+
+	func main() {
+		${2}
+	}
+	${0}
 endsnippet
 
 snippet v "shorthand variable declaration"
 	${1} := ${2}
-endsnippet
-
-snippet vr "variable initialization"
-	var ${1:t} ${0:string}
-endsnippet
-
-snippet var "variable declaration"
-	var ${1} ${2} = ${3}
 endsnippet
 
 snippet vars "variables declaration"
@@ -21,23 +18,7 @@ snippet vars "variables declaration"
 endsnippet
 
 snippet ap "append"
-	${1:slice} = append(${1:slice}, ${0:value})
-endsnippet
-
-snippet bl "bool"
-	bool
-endsnippet
-
-snippet bt "byte"
-	byte
-endsnippet
-
-snippet br "break"
-	break
-endsnippet
-
-snippet ch "channel"
-	chan ${0:int}
+	${1:slice} = append(${2:slice}, ${0:value})
 endsnippet
 
 snippet cs "case"
@@ -50,14 +31,6 @@ snippet co "constants with iota"
 		${1:NAME1} = iota
 		${0:NAME2}
 	)
-endsnippet
-
-snippet cn "continue"
-	continue
-endsnippet
-
-snippet df "defer"
-	defer ${0:func}()
 endsnippet
 
 snippet dfr "defer recover"

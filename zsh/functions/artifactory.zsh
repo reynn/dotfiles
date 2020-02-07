@@ -10,18 +10,20 @@ function artifactory_upload() {
   local repo="ext-util-sandbox-local"
   local flat='false'
   local dry_run='false'
+  local build_name=""
+  local build_number=$(date '+%Y.%m.%d')
 
-  while getopts "dfhm:s:r:" opt; do
+  while getopts "dfhm:N:n:s:r:" opt; do
     case $opt in
     d) dry_run='true' ;;
     f) flat='true' ;;
     m) glob_match="$OPTARG" ;;
+    n) build_name="$OPTARG" ;;
+    N) build_number="$OPTARG" ;;
     s) subfolder="$OPTARG" ;;
     r) repo="$OPTARG" ;;
     h)
-      echo "Usage: ${0:t} [-df] [-m glob_match] [-s SUBFOLDER] [-r REPO]"
-      echo "-d: Dry Run"
-      echo "-f: Flat upload"
+      echo "Usage: ${0:t} [-df] [-n BUILD_NAME] [-N BUILD_NUMBER] [-m GLOB_MATCH] [-s SUBFOLDER] [-r REPO]"
       return 0
       ;;
     esac
@@ -32,6 +34,7 @@ function artifactory_upload() {
   fi
   local pattern="$glob_match"
   local spec_file=$(mktemp -t upload-spec.json)
+  local env_excludes='*ansible*;*artifactory*;*gfp*;*git*;*aws*;*jenkins*;*k8s*;*khalani*;*languages*;*fzf*;*go*;*helm*;*help*;*hist*;*home*;*iterm*;*creds*;*pager*;*debug*;*dfp*;*dir_bins*;*launchinstanceid*;*oldpwd*;*path*;*pipenv*;*pwd*;*pyenv*;*reynn*;*user*;*xdg*;*zsh*;'
 
   jarg \
     "files[0][target]=$repo" \
@@ -41,9 +44,15 @@ function artifactory_upload() {
     tee $spec_file
 
   if test $dry_run = 'true'; then
-    jfrog rt upload --dry-run --spec $spec_file
+    jfrog rt upload --threads="$(sysctl -n hw.logicalcpu)" --dry-run --spec $spec_file --build-name="$build_name" --build-number="$build_number"
+    jfrog rt build-collect-env "$build_name" "$build_number"
+    jfrog rt build-add-git "$build_name" "$build_number"
+    jfrog rt build-publish --dry-run --env-exclude $env_excludes "$build_name" "$build_number"
   else
-    jfrog rt upload --spec $spec_file
+    jfrog rt upload --threads="$(sysctl -n hw.logicalcpu)" --spec $spec_file --build-name="$build_name" --build-number="$build_number"
+    jfrog rt build-collect-env "$build_name" "$build_number"
+    jfrog rt build-add-git "$build_name" "$build_number"
+    jfrog rt build-publish --env-exclude $env_excludes "$build_name" "$build_number"
   fi
 }
 
@@ -66,6 +75,18 @@ function artifactory_search() {
   local glob_match="*"
   local repo="util-release"
   local pattern="$repo/*$glob_match*"
+
+  while getopts "hr:p:" opt; do
+    case $opt in
+    r) repo=$OPTARG ;;
+    p) pattern=$OPTARG ;;
+    h)
+      echo "Usage: ${0:t} [-h] [-r REPO] [-p PATTERN]"
+      return 0
+      ;;
+    esac
+  done
+
   local spec_file=$(mktemp -t search-spec.json)
 
   jarg \
@@ -88,7 +109,7 @@ function artifactory_get_my_uploads() {
     t) time_frame=$OPTARG ;;
     h)
       echo "Usage: ${0:t} [-h] -r [ARTIFACTORY_REPO] -t [TIME_FRAME]"
-      exit 1
+      return 1
       ;;
     esac
   done

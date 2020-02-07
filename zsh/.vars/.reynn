@@ -4,15 +4,26 @@
 # General ---------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-fpath=($DFP/zsh/6.completions $fpath)
+fpath=($DFP/zsh/.completions $fpath)
 DEBUG="${DEBUG:-false}"
+
+# Special directories
 GFP="$HOME/git"
 REYNN="$GFP/github.com/reynn"
 DFP="$REYNN/dotfiles"
 DIR_BINS="$HOME/.bins"
-HELP_JSON="$DFP/zsh/function_help.json"
-XDG_CONFIG_HOME="$DFP/xdg/config"
 
+HELP_JSON="$DFP/zsh/function_help.json"
+XDG_CONFIG_HOME="$DFP/xdg/configs"
+# Increase Bash history size. Allow 32³ entries; the default is 500.
+HISTSIZE='32768'
+HISTFILESIZE="$HISTSIZE"
+# Omit duplicates and commands that begin with a space from history.
+HISTCONTROL='ignoreboth'
+
+export HISTSIZE
+export HISTFILESIZE
+export HISTCONTROL
 export fpath
 export DEBUG
 export GFP
@@ -26,12 +37,14 @@ export XDG_CONFIG_HOME
 # Arrays ----------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-IMPORT_DIRECTORIES=(
-  $($DIR_BINS/fd -t d -d1 -E '5.hosts' -E '6.completions' . $DFP/zsh)
-  $DFP/zsh/5.hosts/$CURRENT_HOST
-)
-
 SSH_IDENTITIES=(id_rsa)
+
+IMPORT_DIRECTORIES=(
+  # Gather all of the directories in the zsh folder
+  # Include hidden (-H) and gitignored (-I) dirs
+  # Exclude .hosts and .completions
+  $($DIR_BINS/fd -H -I -t d -d1 -E '.hosts' -E '.completions' . $DFP/zsh)
+)
 
 POSSIBLE_PATHS=(
   "$PYENV_ROOT/bin"
@@ -67,6 +80,8 @@ export POSSIBLE_PATHS
 # XDG Config ------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
+# Config home is defined in General section
+# as it is within the dotfiles repo for now
 XDG_BASE_PATH="$HOME/.xdg"
 XDG_CACHE_HOME="$XDG_BASE_PATH/cache"
 XDG_DATA_HOME="$XDG_BASE_PATH/data"
@@ -80,7 +95,6 @@ export XDG_DATA_HOME
 # -----------------------------------------------------------------------------
 
 PATH=""
-
 EDITOR='nvim'
 PYENV_ROOT="$GFP/github.com/pyenv/pyenv"
 SSH_KEY_PATH='~/.ssh/rsa_id'

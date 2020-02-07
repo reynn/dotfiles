@@ -11,7 +11,7 @@ function go_ch() {
     eval "$(GIMME_SILENT_ENV=true gimme $1)"
   else
     print_info "Sourcing latest Gimme env..." 'latest'
-    import "$HOME/.gimme/envs/latest.env"
+    test ! -L "$HOME/.gimme/envs/latest.env" || source "$HOME/.gimme/envs/latest.env"
   fi
 }
 

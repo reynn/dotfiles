@@ -9,7 +9,7 @@ augroup filetypedetect
   autocmd BufRead,BufNewFile *.nft setfiletype nftables
   " Go shortcuts
   au FileType go nmap <leader>t <Plug>(go-test)
-  au FileType go nmap <Leader>r <Plug>(go-rename)
+  au FileType go nmap <leader>r <Plug>(go-rename)
   au FileType go nmap <leader>c <Plug>(go-coverage)
   au FileType go nmap <leader>f <Plug>(go-fmt)
   " Rust language server

@@ -10,6 +10,8 @@
 	<true/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
+	<key>ApplePressAndHoldEnabled</key>
+	<false/>
 	<key>AppleScrollAnimationEnabled</key>
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
@@ -46991,7 +46993,13 @@
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSNavLastRootDirectory</key>
+<<<<<<< Updated upstream
 	<string>~/git/github.com/reynn/dotfiles/iterm-profiles</string>
+=======
+	<string>~/Documents</string>
+	<key>NSNavLastUserSetHideExtensionButtonState</key>
+	<false/>
+>>>>>>> Stashed changes
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{799, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -47036,7 +47044,13 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
+<<<<<<< Updated upstream
 	<string>440 434 799 448 0 0 1680 1027 </string>
+=======
+	<string>666 634 347 181 0 0 1680 1027 </string>
+	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
+	<string>1412 932 616 174 0 0 3440 1417 </string>
+>>>>>>> Stashed changes
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 476 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame SharedPreferences</key>
@@ -47044,7 +47058,13 @@
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>127 443 592 584 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
+<<<<<<< Updated upstream
 	<string>83 117 1450 693 0 0 1680 1027 </string>
+=======
+	<string>1131 440 1450 693 0 0 3440 1440 </string>
+	<key>NSWindow Frame iTerm Window 1</key>
+	<string>394 169 1465 783 0 0 3440 1417 </string>
+>>>>>>> Stashed changes
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -47925,6 +47945,11 @@
 	<array>
 		<string>3.3.6</string>
 		<string>3.3.0beta6</string>
+<<<<<<< Updated upstream
+=======
+		<string>3.3.2</string>
+		<string>3.3.8</string>
+>>>>>>> Stashed changes
 		<string>3.3.1</string>
 		<string>3.3.3</string>
 		<string>3.3.7</string>
@@ -47964,7 +47989,11 @@
 	<key>NoSyncLastTipTime</key>
 	<real>577592083.29767001</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
+<<<<<<< Updated upstream
 	<integer>41</integer>
+=======
+	<integer>43</integer>
+>>>>>>> Stashed changes
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -48761,6 +48790,7 @@
 			</dict>
 		</array>
 	</dict>
+<<<<<<< Updated upstream
 	<key>NoSyncSearchHistory</key>
 	<array>
 		<string>pvc-37391cf4-7b7e-11e9-97cb-ce16</string>
@@ -48771,6 +48801,15 @@
 		<string>21847373999d4bbe8f2f20e227445958b767877b</string>
 		<string>a03cc09f9b2ad835991837ce2179056a9dbdb6bc</string>
 	</array>
+=======
+	<key>NoSyncSaveDocumentAsPathSet_saveDocumentAs:</key>
+	<true/>
+	<key>NoSyncSavePanelSavedSettings_SaveProfile</key>
+	<dict>
+		<key>Initial Directory</key>
+		<string>/Users/i854273</string>
+	</dict>
+>>>>>>> Stashed changes
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>577324108.83853602</real>
 	<key>NoSyncTipsDisabled</key>
@@ -48841,7 +48880,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
+<<<<<<< Updated upstream
 	<date>2020-02-01T21:28:39Z</date>
+=======
+	<date>2020-02-04T15:23:14Z</date>
+>>>>>>> Stashed changes
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>
@@ -48863,6 +48906,6 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.3.7</string>
+	<string>3.3.8</string>
 </dict>
 </plist>
