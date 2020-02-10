@@ -49,6 +49,8 @@ set printencoding=utf-8
 set printoptions=paper:letter
 set signcolumn=no
 set shell=zsh
+set showtabline=2
+set guioptions-=e
 
 " Settings needed for .lvimrc
 set exrc
@@ -147,8 +149,7 @@ Plug 'frazrepo/vim-rainbow'           " Colorize tabs, parens to make them easie
 
 " Plugins: Themes/Color Schemes
 
-Plug 'flrnprz/candid.vim'             " Additional dark color scheme
-Plug 'rafi/awesome-vim-colorschemes'  " Large pack of colorschemes
+Plug 'morhetz/gruvbox'				  " Customizable Dark theme
 
 " Plugins: Snippets
 
@@ -173,6 +174,11 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
+" Plugin Config: morhetz/gruvbox
+
+let g:gruvbox_contrast_dark = 'medium'
+
+
 " Plugin Config: ciaranm/securemodelines
 
 let g:secure_modelines_allowed_items = [
@@ -188,9 +194,6 @@ let g:secure_modelines_allowed_items = [
   \ "colorcolumn"
 \ ]
 
-" Plugin Config: editorconfig/editorconfig-vim
-
-
 " Plugin Config: mg979/vim-visual-multi
 
 let g:VM_leader = ",,"
@@ -202,31 +205,43 @@ nmap <M-S-LeftMouse> <Plug>(VM-Mouse-Column)
 
 " Plugin Config: godlygeek/tabular
 
-if exists(":Tabularize")
-  nmap <leader>t= :Tabularize /=<CR>
-  vmap <leader>t= :Tabularize /=<CR>
-  nmap <leader>t: :Tabularize /:\zs<CR>
-  vmap <leader>t: :Tabularize /:\zs<CR>
-endif
+nmap <leader>t= :Tabularize /=<CR>
+vmap <leader>t= :Tabularize /=<CR>
+nmap <leader>t: :Tabularize /:\zs<CR>
+vmap <leader>t: :Tabularize /:\zs<CR>
+
+" Plugin Config: editorconfig/editorconfig-vim
+
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Plugin Config: itchyny/lightline.vim
 
 let g:lightline = {
-  \ 'colorscheme': 'seoul256',
+  \ 'colorscheme': 'Dracula',
   \ 'component_function': {
   \   'filename': 'LightlineFilename',
-  \   'gitbranch': 'FugitiveHead'
+  \   'gitbranch': 'FugitiveHead',
+  \   'currentfunction': 'CocCurrentFunction',
+  \   'gostatus': 'go#statusline#Show',
+  \   'cocstatus': 'coc#status'
   \ },
   \ 'active': {
   \   'left': [
   \     ['mode'],
-  \     ['filename', 'modified']
+  \     ['filename', 'modified', 'gostatus', 'cocstatus', 'currentfunction']
   \   ],
   \   'right': [
   \     ['lineinfo'],
   \     ['gitbranch', 'fileencoding', 'filetype']
   \   ]
   \ }
+\ }
+let g:lightline.subseparator = {
+	\ 'left': '', 'right': ''
+\ }
+
+let g:lightline.separator = {
+	\ 'left': '', 'right': ''
 \ }
 
 " Plugin Config: machakann/vim-highlightedyank
@@ -240,8 +255,11 @@ let g:matchup_surround_enabled = 1
 
 " Plugin Config: preservim/nerdtree
 
+" If nerdtree is the last buffer, quit vim completely
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" use leader+n as the way to trigger nerdtree
 map <leader>n :NERDTreeFocus<CR>
+" Open nerdtree at startup if no file specified
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
@@ -282,8 +300,6 @@ let g:fzf_layout = { 'down': '~40%' }
 
 " Plugin Config: neoclide/coc.nvim
 
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
 map <leader>f :Prettier<CR>
 nmap <silent> E <Plug>(coc-diagnostic-prev)
 nmap <silent> W <Plug>(coc-diagnostic-next)
@@ -292,6 +308,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " Plugin Config: plasticboy/vim-markdown
@@ -331,7 +348,7 @@ let g:go_fmt_options = {
 " # Color scheme settings
 " =============================================================================
 
-colorscheme parsec
+colorscheme gruvbox
 
 " =============================================================================
 " # Custom Functions
@@ -486,7 +503,7 @@ nnoremap <leader>i :set invlist<cr>
 nnoremap <leader>q g<c-g>
 
 " M to make
-noremap M :!make -k -j8<cr>
+noremap M :!mage<cr>
 
 map <leader>F :Files<CR>
 nmap <leader>B :Buffers<CR>
@@ -505,8 +522,6 @@ autocmd BufRead *.pacnew set readonly
 
 " Leave paste mode when leaving insert mode
 autocmd InsertLeave * set nopaste
-" Leaving insert mode will save the file as well
-autocmd InsertLeave * :w
 
 " Jump to last edit position on opening file
 if has("autocmd")
