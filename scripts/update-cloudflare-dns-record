@@ -1,0 +1,60 @@
+#!/usr/bin/env zsh
+
+set -e
+
+SCRIPT_NAME="$0"
+
+function _usage() {
+  echo "Usage: $SCRIPT_NAME "
+}
+
+function _checks() {
+  if test -z "$CLOUDFLARE_API_TOKEN"; then
+    _usage
+    exit 1
+  fi
+  if test -z "$CLOUDFLARE_EMAIL_ADDRESS"; then
+    _usage
+    exit 1
+  fi
+}
+
+function update_record() {
+  local name="$1"
+  local ip="$2"
+  local record_type="$3"
+
+  echo "Updating record for ${name}.reynn.net"
+
+  http -j PUT https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records/$id \
+    "X-Auth-Key:$CLOUDFLARE_API_TOKEN" \
+    "X-Auth-Email:$CLOUDFLARE_EMAIL_ADDRESS" \
+    "type=$record_type" \
+    "name=$name" \
+    "content=$ip" \
+    proxied:=false
+}
+
+function get_ip() {
+  echo "$(dig +short myip.opendns.com @resolver1.opendns.com)"
+}
+
+function main() {
+  _checks
+  local zone_id="79eab02d4940fc3da86c030c15030990"
+  local dns_records=(
+  	"399d6157a177c375763bef2f13c1306f|mimikyu"
+  	"c4ad42c9a2145a893ae5d2399f1a62aa|traefik"
+  )
+  local current_ip=$(get_ip)
+
+  echo "Current IP is $current_ip..."
+
+  for record in $dns_records; do
+    local split=($(helpers text split -d '|' $record))
+    update_record "${split[2]}" "${split[1]}" 'A'
+  done
+}
+
+main
+

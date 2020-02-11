@@ -115,19 +115,6 @@ set listchars=nbsp:¬,extends:»,precedes:«,trail:•
 " Don't confirm .lvimrc
 let g:localvimrc_ask = 0
 
-" =============================================================================
-" # Plugins
-" =============================================================================
-
-execute 'source' fnamemodify(expand('<sfile>'), ':h').'/.vim/plugins.vim'
-
-runtime! /.vim/plugins/*.vim
-
-" =============================================================================
-" # Color scheme settings
-" =============================================================================
-
-colorscheme gruvbox
 
 " =============================================================================
 " # Custom Functions
@@ -140,12 +127,6 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h').'/.vim/functions.vim'
 " =============================================================================
 
 execute 'source' fnamemodify(expand('<sfile>'), ':h').'/.vim/key_mappings.vim'
-
-" =============================================================================
-" # Autocommands
-" =============================================================================
-
-execute 'source' fnamemodify(expand('<sfile>'), ':h').'/.vim/autocommands.vim'
 
 " =============================================================================
 " # Special language handling

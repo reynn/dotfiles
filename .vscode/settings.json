@@ -1,7 +1,0 @@
-{
-  "go.formatTool": "goimports",
-  "python.linting.pylintEnabled": false,
-  "python.linting.pycodestyleEnabled": true,
-  "python.linting.enabled": true,
-  "python.pythonPath": "/Users/i854273/.xdg/data/virtualenvs/dotfiles-ZXDqRlfa/bin/python"
-}

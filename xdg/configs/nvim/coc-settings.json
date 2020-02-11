@@ -1,4 +1,6 @@
 {
+  "snippets.ultisnips.enable": true,
+  "codeLens.enable": true,
   "languageserver": {
     "golang": {
       "command": "gopls",

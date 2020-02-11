@@ -44,7 +44,7 @@
 " | <bar>         | the '|' character, which otherwise needs to be escaped '\ | ' |
 
 " ; as :
-"nnoremap ; :
+nnoremap ; :
 
 " Ctrl+c and Ctrl+j as Esc
 " Ctrl-j is a little awkward unfortunately:
@@ -135,3 +135,4 @@ nmap <leader>W :Windows<CR>
 
 " Quick-save
 nmap <leader>w :w<CR>
+
