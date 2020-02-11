@@ -4,7 +4,7 @@
 
 set nocompatible
 filetype off
-set rtp+="~/.vim/scripts/"
+set rtp+="~/scripts/"
 let mapleader = ","
 
 if has('nvim')
@@ -115,22 +115,27 @@ set listchars=nbsp:¬,extends:»,precedes:«,trail:•
 " Don't confirm .lvimrc
 let g:localvimrc_ask = 0
 
+" =============================================================================
+" # Plugins
+" =============================================================================
+
+execute 'source' fnamemodify(expand('<sfile>'), ':h').'/plugin/_list.vim'
 
 " =============================================================================
 " # Custom Functions
 " =============================================================================
 
-execute 'source' fnamemodify(expand('<sfile>'), ':h').'/.vim/functions.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h').'/functions.vim'
 
 " =============================================================================
 " # Key mappings
 " =============================================================================
 
-execute 'source' fnamemodify(expand('<sfile>'), ':h').'/.vim/key_mappings.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h').'/mappings.vim'
 
 " =============================================================================
 " # Special language handling
 " =============================================================================
 
-execute 'source' fnamemodify(expand('<sfile>'), ':h').'/.vim/language_specific.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h').'/languages.vim'
 
