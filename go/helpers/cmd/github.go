@@ -169,6 +169,8 @@ func getPlatform() string {
 		return "darwin|macos|osx"
 	case "linux":
 		return "linux64|linux"
+	case "windows":
+		return "windows|windows64|win64"
 	}
 	return ""
 }

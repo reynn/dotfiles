@@ -18,9 +18,4 @@ augroup filetypedetect
   autocmd Filetype tex setlocal spell
   autocmd Filetype text setlocal spell
   autocmd Filetype markdown setlocal spell
-  " No autocomplete in text
-  autocmd BufRead,BufNewFile /tmp/mutt* let g:deoplete#enable_at_startup = 0
-  autocmd Filetype tex let g:deoplete#enable_at_startup = 0
-  autocmd Filetype text let g:deoplete#enable_at_startup = 0
-  autocmd Filetype markdown let g:deoplete#enable_at_startup = 0
 augroup END
