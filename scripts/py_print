@@ -1,8 +1,4 @@
 #!/usr/bin/env python3.8
-
-import sys
-import os
-
 from argparse import ArgumentParser
 
 FMT_ERROR = "38;5;m"

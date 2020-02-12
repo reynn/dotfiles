@@ -1,7 +1,7 @@
 " Plugin Config: fatih/vim-go
 
 let g:go_addtags_transform = 'snakecase'
-let g:go_auto_sameids = 1     " highlight the variable throughout code
+let g:go_auto_sameids = 0     " highlight the variable throughout code
 let g:go_auto_type_info = 1
 let g:go_bin_path = expand("~/go/bin")
 let g:go_def_mode='gopls'

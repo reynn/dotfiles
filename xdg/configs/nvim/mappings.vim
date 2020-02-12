@@ -46,22 +46,7 @@
 " ; as :
 nnoremap ; :
 
-" Ctrl+c and Ctrl+j as Esc
-" Ctrl-j is a little awkward unfortunately:
-" https://github.com/neovim/neovim/issues/5916
-" So we also map Ctrl+k
-inoremap <C-j> <Esc>
-
-nnoremap <C-k> <Esc>
-inoremap <C-k> <Esc>
-vnoremap <C-k> <Esc>
-snoremap <C-k> <Esc>
-xnoremap <C-k> <Esc>
-cnoremap <C-k> <Esc>
-onoremap <C-k> <Esc>
-lnoremap <C-k> <Esc>
-tnoremap <C-k> <Esc>
-
+" Ctrl+c as Esc
 nnoremap <C-c> <Esc>
 inoremap <C-c> <Esc>
 vnoremap <C-c> <Esc>
@@ -129,10 +114,7 @@ nnoremap <leader>q g<c-g>
 " M to make
 noremap M :!mage<cr>
 
-map <leader>F :Files<CR>
-nmap <leader>B :Buffers<CR>
-nmap <leader>W :Windows<CR>
-
-" Quick-save
-nmap <leader>w :w<CR>
+map <leader>lf :Files<CR>
+nmap <leader>lb :Buffers<CR>
+nmap <leader>lw :Windows<CR>
 

@@ -7,6 +7,7 @@ augroup filetypedetect
   autocmd Filetype gitcommit                         setlocal spell
   " nftables
   autocmd BufRead,BufNewFile *.nft setfiletype nftables
+  autocmd BufRead zsh.snippets setfiletype snippets
   " Go shortcuts
   au FileType go nmap <leader>t <Plug>(go-test)
   au FileType go nmap <leader>r <Plug>(go-rename)

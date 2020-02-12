@@ -1,5 +1,5 @@
 " =============================================================================
-" # Plugins
+" Plugins
 " =============================================================================
 
 call plug#begin("~/.vim/plugged")
@@ -49,10 +49,3 @@ Plug 'https://github.com/fatih/vim-go', { 'for': 'go','do': ':GoUpdateBinaries' 
 Plug 'https://github.com/python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 
 call plug#end()
-
-" =============================================================================
-" # Color scheme settings
-" =============================================================================
-
-colorscheme gruvbox
-

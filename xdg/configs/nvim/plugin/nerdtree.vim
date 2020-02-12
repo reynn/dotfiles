@@ -1,7 +1,7 @@
 " Plugin Config: preservim/nerdtree
 
 " If nerdtree is the last buffer, quit vim completely
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " use leader+n as the way to trigger nerdtree
 map <leader>n :NERDTreeFocus<CR>
 " Open nerdtree at startup if no file specified

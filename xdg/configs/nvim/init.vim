@@ -17,6 +17,7 @@ end
 if !has('gui_running')
   set t_Co=256
 endif
+
 if (match($TERM, "-256color") != -1) && (match($TERM, "screen-256color") == -1)
   " screen does not (yet) support truecolor
   set termguicolors
@@ -40,6 +41,7 @@ set autoindent
 set timeoutlen=500 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
 set scrolloff=2
+set fixendofline
 set noshowmode
 set hidden
 set nowrap
@@ -61,7 +63,7 @@ set splitright
 set splitbelow
 
 " Permanent undo
-set undodir=~/.vimdid
+set undodir=~/.vim/did
 set undofile
 
 " Set tab widths
@@ -75,7 +77,7 @@ set formatoptions=tc " wrap text and comments using textwidth
 set formatoptions+=r " continue comments when pressing ENTER in I mode
 set formatoptions+=q " enable formatting of comments with gq
 set formatoptions+=n " detect lists for formatting
-set formatoptions+=b " auto-wrap in insert mode, and do not wrap old long lines
+" set formatoptions+=b " auto-wrap in insert mode, and do not wrap old long lines
 
 " Proper search
 set incsearch
@@ -91,6 +93,7 @@ set guioptions-=T " Remove toolbar
 set vb t_vb=      " No more beeps
 set backspace=2   " Backspace over newlines
 set ruler         " Where am I?
+set fixendofline
 set nofoldenable
 set ttyfast
 " https://github.com/vim/vim/issues/1735#issuecomment-383353563
@@ -138,4 +141,3 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h').'/mappings.vim'
 " =============================================================================
 
 execute 'source' fnamemodify(expand('<sfile>'), ':h').'/languages.vim'
-
