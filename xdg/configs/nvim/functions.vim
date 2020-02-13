@@ -10,11 +10,14 @@ function! s:show_documentation()
   endif
 endfunction
 
-function! LightlineFilename()
-  return &filetype ==# 'vimfiler' ? vimfiler#get_status_string() :
-        \ &filetype ==# 'unite' ? unite#get_status_string() :
-        \ &filetype ==# 'vimshell' ? vimshell#get_status_string() :
-        \ expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
+function! LightlineMode()
+  return expand('%:t') =~# '^__Tagbar__' ? 'Tagbar' :
+        \ expand('%:t') ==# 'ControlP' ? 'CtrlP'    :
+        \ &filetype ==# 'unite'     ? 'Unite'       :
+        \ &filetype ==# 'vimfiler'  ? 'VimFiler'    :
+        \ &filetype ==# 'nerdtree'  ? 'NERDTree'    :
+        \ &filetype ==# 'vimshell'  ? 'VimShell'    :
+        \ lightline#mode()
 endfunction
 
 function! s:list_cmd()

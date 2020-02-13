@@ -187,3 +187,5 @@ default = upstream
 # Make `git push` push relevant annotated tags when pushing branches out.
 followTags = true
 rebase = "true"
+[init]
+	templateDir = /Users/i854273/.git-template

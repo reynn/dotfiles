@@ -3,7 +3,7 @@
 let g:lightline = {
   \ 'colorscheme': 'jellybeans',
   \ 'component_function': {
-  \   'filename': 'LightlineFilename',
+  \   'filename': 'LightlineMode',
   \   'gitbranch': 'FugitiveHead',
   \   'cocstatus': 'coc#status'
   \ },

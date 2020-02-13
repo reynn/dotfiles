@@ -1,4 +1,9 @@
 {
+  "snippets.ultisnips.enable": true,
+  "snippets.ultisnips.directories": [
+    "snippets/ultisnips"
+  ],
+  "snippets.priority": 99,
   "codeLens.enable": false,
   "languageserver": {
     "golang": {

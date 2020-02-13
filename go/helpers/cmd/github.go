@@ -25,54 +25,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type assetReturn struct {
-	Name        string `json:"name"`
-	URL         string `json:"url"`
-	ContentType string `json:"type"`
-	Tag         string `json:"tag"`
-}
-
-type filterFunc func(asset assetReturn) bool
-
-func filterPlatform(asset assetReturn) bool {
-	debugPrint("Filter: %s | Name: %s\n", assetPlatform, asset.Name)
-	matched, err := regexp.MatchString(assetPlatform, strings.ToLower(asset.Name))
-	if err != nil {
-		return false
+type (
+	assetReturn struct {
+		Name        string `json:"name"`
+		URL         string `json:"url"`
+		ContentType string `json:"type"`
+		Tag         string `json:"tag"`
 	}
-	return matched
-}
 
-func filterShaFiles(asset assetReturn) bool {
-	f := strings.HasSuffix(asset.URL, ".sha256")
-	debugPrint("Filter: %s | Name: %s | Result: %v\n", "sha256", asset.Name, f)
-	return !f
-}
-
-func filterArchitecture(asset assetReturn) bool {
-	var arch string
-	switch runtime.GOARCH {
-	case "amd64":
-		arch = "amd64|x86_64|x8664|64bit"
-	}
-	debugPrint("Filter: %s | Name: %s\n", arch, asset.Name)
-	matched, err := regexp.MatchString(arch, strings.ToLower(asset.Name))
-	if err != nil {
-		return false
-	}
-	return matched
-}
-
-func filterAssets(assets []assetReturn, filter filterFunc) []assetReturn {
-	debugPrint("Filtering results\n")
-	var ret []assetReturn
-	for _, a := range assets {
-		if filter(a) {
-			ret = append(ret, a)
-		}
-	}
-	return ret
-}
+	filterFunc func(asset assetReturn) bool
+)
 
 var (
 	// Vars
@@ -123,6 +85,46 @@ var (
 		},
 	}
 )
+
+func filterPlatform(asset assetReturn) bool {
+	debugPrint("Filter: %s | Name: %s\n", assetPlatform, asset.Name)
+	matched, err := regexp.MatchString(assetPlatform, strings.ToLower(asset.Name))
+	if err != nil {
+		return false
+	}
+	return matched
+}
+
+func filterShaFiles(asset assetReturn) bool {
+	f := strings.HasSuffix(asset.URL, ".sha256")
+	debugPrint("Filter: %s | Name: %s | Result: %v\n", "sha256", asset.Name, f)
+	return !f
+}
+
+func filterArchitecture(asset assetReturn) bool {
+	var arch string
+	switch runtime.GOARCH {
+	case "amd64":
+		arch = "amd64|x86_64|x8664|64bit"
+	}
+	debugPrint("Filter: %s | Name: %s\n", arch, asset.Name)
+	matched, err := regexp.MatchString(arch, strings.ToLower(asset.Name))
+	if err != nil {
+		return false
+	}
+	return matched
+}
+
+func filterAssets(assets []assetReturn, filter filterFunc) []assetReturn {
+	debugPrint("Filtering results\n")
+	var ret []assetReturn
+	for _, a := range assets {
+		if filter(a) {
+			ret = append(ret, a)
+		}
+	}
+	return ret
+}
 
 func getLatestAssetContent() []assetReturn {
 	ret := []assetReturn{}

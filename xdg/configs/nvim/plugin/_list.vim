@@ -31,8 +31,8 @@ Plug 'https://github.com/frazrepo/vim-rainbow'                                  
 Plug 'https://github.com/morhetz/gruvbox'                                                " Customizable Dark theme
 
 " Plugins: Snippets
-
-Plug 'https://github.com/SirVer/ultisnips'                                               " Language agnostic snippets
+" Replaced by a CoC extension
+"Plug 'https://github.com/SirVer/ultisnips'                                              " Language agnostic snippets
 
 " Plugins: Fuzzy finder
 
@@ -41,7 +41,7 @@ Plug 'https://github.com/junegunn/fzf.vim'                                      
 
 " Plugins: Semantic language support
 
-Plug 'https://github.com/neoclide/coc.nvim', { 'branch': 'release' }                     " Intellisense for Vim, uses language servers like VSCode
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}                       " Intellisense for Vim, uses language servers like VSCode
 
 " Plugins: Syntactic language support
 
