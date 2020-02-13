@@ -150,9 +150,20 @@ nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<C
 " CoC.Extension Setup: https://github.com/weirongxu/coc-calc
 " =============================================================================
 
+" append result on current expression
+nmap <leader>ca <Plug>(coc-calc-result-append)
+" replace result on current expression
+nmap <leader>cr <Plug>(coc-calc-result-replace)
+
 " =============================================================================
 " CoC.Extension Setup: https://github.com/iamcco/coc-spell-checker
 " =============================================================================
+
+" <leader>aap for current paragraph
+" <leader>aw for current word
+
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
 " =============================================================================
 " CoC.Extension Setup: https://github.com/neoclide/coc-json
@@ -177,14 +188,10 @@ nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<C
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " =============================================================================
-" CoC.Extension Setup: https://github.com/iamcco/coc-spell-checker
-" =============================================================================
-
-" =============================================================================
 " CoC.Extension Setup: https://github.com/weirongxu/coc-explorer
 " =============================================================================
 
-nmap <leader>ce :CocCommand explorer<CR>
+nmap <space>e :CocCommand explorer<CR>
 
 " =============================================================================
 " CoC.Extension Setup: https://github.com/fannheyward/coc-markdownlint
@@ -197,6 +204,27 @@ nmap <leader>ce :CocCommand explorer<CR>
 " =============================================================================
 " CoC.Extension Setup: https://github.com/neoclide/coc-yank
 " =============================================================================
+
+nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+
+function! LightlineGitBlame() abort
+  let blame = get(b:, 'coc_git_blame', '')
+  " return blame
+  return winwidth(0) > 120 ? blame : ''
+endfunction
+
+" navigate chunks of current buffer
+nmap [g <Plug>(coc-git-prevchunk)
+nmap ]g <Plug>(coc-git-nextchunk)
+" show chunk diff at current position
+nmap gs <Plug>(coc-git-chunkinfo)
+" show commit contains current position
+nmap gc <Plug>(coc-git-commit)
+" create text object for git chunks
+omap ig <Plug>(coc-git-chunk-inner)
+xmap ig <Plug>(coc-git-chunk-inner)
+omap ag <Plug>(coc-git-chunk-outer)
+xmap ag <Plug>(coc-git-chunk-outer)
 
 " =============================================================================
 " CoC.Extension Setup: https://github.com/neoclide/coc-git

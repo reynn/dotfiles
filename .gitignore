@@ -7,3 +7,4 @@ images/
 configs/nvim/plugged/
 neovim.log
 xdg/configs/coc/extensions/node_modules
+.DS_Store

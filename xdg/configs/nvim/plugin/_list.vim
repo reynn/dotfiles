@@ -21,7 +21,7 @@ Plug 'https://github.com/godlygeek/tabular'                                     
 Plug 'https://github.com/itchyny/lightline.vim'                                          " Adds a powerline like status bar at the bottom
 Plug 'https://github.com/machakann/vim-highlightedyank'                                  " Highlights line after y is pressed
 Plug 'https://github.com/andymass/vim-matchup'                                           " Highlight, navigate and operate on sets of matching text
-Plug 'https://github.com/preservim/nerdtree'                                             " File Explorer tab
+"Plug 'https://github.com/preservim/nerdtree'                                             " File Explorer tab
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin'                                    " Add git information to NerdTree
 Plug 'https://github.com/airblade/vim-gitgutter'                                         " Show git changes in margin of file buffer
 Plug 'https://github.com/frazrepo/vim-rainbow'                                           " Colorize tabs, parens to make them easier to see
@@ -41,10 +41,7 @@ Plug 'https://github.com/junegunn/fzf.vim'                                      
 
 " Plugins: Semantic language support
 
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}                       " Intellisense for Vim, uses language servers like VSCode
-
-" Plugins: Syntactic language support
-
+Plug 'neoclide/coc.nvim'                                                                  " Intellisense for Vim, uses language servers like VSCode
 Plug 'https://github.com/fatih/vim-go', { 'for': 'go','do': ':GoUpdateBinaries' }
 Plug 'https://github.com/python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 

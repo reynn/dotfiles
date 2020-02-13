@@ -5,12 +5,13 @@ let g:lightline = {
   \ 'component_function': {
   \   'filename': 'LightlineMode',
   \   'gitbranch': 'FugitiveHead',
-  \   'cocstatus': 'coc#status'
+  \   'cocstatus': 'coc#status',
+  \   'blame': 'LightlineGitBlame',
   \ },
   \ 'active': {
   \   'left': [
-  \     ['mode'],
-  \     ['filename', 'modified', 'cocstatus']
+  \     ['mode', 'blame'],
+  \     ['filename', 'modified']
   \   ],
   \   'right': [
   \     ['cocstatus','lineinfo'],

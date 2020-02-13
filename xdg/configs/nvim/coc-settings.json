@@ -3,6 +3,11 @@
     "rust",
     "go"
   ],
+  "explorer.width": 40,
+  "explorer.openAction.strategy": "previousWindow",
+  "explorer.position": "left",
+  "explorer.file.autoReveal": true,
+  "explorer.file.showHiddenFiles": true,
   "codeLens.enable": false,
   "json.enable": true,
   "languageserver": {
@@ -27,6 +32,9 @@
   "snippets.ultisnips.directories": [
     "snippets/ultisnips"
   ],
+  "snippets.extends": {
+    "sh": ["zsh"]
+  },
   "snippets.ultisnips.enable": true,
   "yaml.completion": true,
   "yaml.format.enable": true,
