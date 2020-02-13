@@ -1,25 +1,35 @@
 {
-  "snippets.ultisnips.enable": true,
-  "snippets.ultisnips.directories": [
-    "snippets/ultisnips"
+  "coc.preferences.formatOnSaveFiletypes": [
+    "rust",
+    "go"
   ],
-  "snippets.priority": 99,
   "codeLens.enable": false,
+  "json.enable": true,
   "languageserver": {
     "golang": {
       "command": "gopls",
-      "rootPatterns": [
-        "go.mod",
-        ".vim/",
-        ".git/",
-        ".hg/"
-      ],
       "filetypes": [
         "go"
       ],
       "initializationOptions": {
         "usePlaceholders": true
-      }
+      },
+      "rootPatterns": [
+        "go.mod",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ]
     }
-  }
+  },
+  "rust-client.updateOnStartup": true,
+  "snippets.priority": 99,
+  "snippets.ultisnips.directories": [
+    "snippets/ultisnips"
+  ],
+  "snippets.ultisnips.enable": true,
+  "yaml.completion": true,
+  "yaml.format.enable": true,
+  "yaml.format.proseWrap": "Always",
+  "yaml.format.singleQuote": false
 }

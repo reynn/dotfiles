@@ -13,11 +13,13 @@ let g:lightline = {
   \     ['filename', 'modified', 'cocstatus']
   \   ],
   \   'right': [
-  \     ['lineinfo'],
+  \     ['cocstatus','lineinfo'],
   \     ['gitbranch', 'fileencoding', 'filetype']
   \   ]
   \ }
 \ }
+
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 let g:lightline.subseparator = {
   \ 'left': '', 'right': ''

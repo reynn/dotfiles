@@ -41,7 +41,7 @@
   },
   "update-dotfiles": {
     "description": "Update dotfiles, can provide a comma separate list of tags",
-    "usage": "update-dotfiles <tag>", 
+    "usage": "update-dotfiles <tag>",
     "parameters": [
       {
         "name": "tags",
@@ -61,7 +61,7 @@
   },
   "aws_get_instance_pricing": {
     "description": "Get pricing information for AWS Instances",
-    "usage": "aws_get_instance_pricing <instance_type>", 
+    "usage": "aws_get_instance_pricing <instance_type>",
     "parameters": [
       {
         "name": "instance_type",
@@ -77,7 +77,7 @@
   },
   "docker_retag_and_push": {
     "description": "Retag a Docker image with the provided tag and registry.",
-    "usage": "docker_retag_and_push <image> <tag> <registry>", 
+    "usage": "docker_retag_and_push <image> <tag> <registry>",
     "parameters": [
       {
         "name": "image",
@@ -105,7 +105,7 @@
   },
   "aws_get_matching_stacks": {
     "description": "Get AWS CloudFormation stacks matching a certain criteria",
-    "usage": "aws_get_matching_stacks <matcher>", 
+    "usage": "aws_get_matching_stacks <matcher>",
     "parameters": [
       {
         "name": "matcher",

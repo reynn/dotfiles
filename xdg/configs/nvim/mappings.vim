@@ -148,4 +148,3 @@ noremap M :!mage<cr>
 map <leader>lf :Files<CR>
 nmap <leader>lb :Buffers<CR>
 nmap <leader>lw :Windows<CR>
-

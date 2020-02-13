@@ -13,4 +13,3 @@ endif
 
 " Script plugins
 autocmd Filetype html,xml,xsl,php source expand('$XDG_CONFIG_HOME/nvim/scripts/closetag.vim')
-

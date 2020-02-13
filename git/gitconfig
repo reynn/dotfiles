@@ -179,7 +179,8 @@ autocorrect = 1
 log = true
 
 [user]
-email = "224374+reynn@users.noreply.github.com"
+	email = 224374+reynn@users.noreply.github.com
+	name = reynn
 
 [push]
 # https://git-scm.com/docs/git-config#git-config-pushdefault

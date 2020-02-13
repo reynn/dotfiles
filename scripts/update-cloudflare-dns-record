@@ -43,8 +43,8 @@ function main() {
   _checks
   local zone_id="79eab02d4940fc3da86c030c15030990"
   local dns_records=(
-  	"399d6157a177c375763bef2f13c1306f|mimikyu"
-  	"c4ad42c9a2145a893ae5d2399f1a62aa|traefik"
+    "399d6157a177c375763bef2f13c1306f|mimikyu"
+    "c4ad42c9a2145a893ae5d2399f1a62aa|traefik"
   )
   local current_ip=$(get_ip)
 
@@ -57,4 +57,3 @@ function main() {
 }
 
 main
-
