@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-source $DFP/.zshrc.min
+source $DFP/.zshenv
 
 FANTIA_KEY="${1:-21829b4c93dd362174b9f827e4607e69}"
 FANTIA_DIR="$HOME/Pictures/fantia"
