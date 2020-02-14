@@ -6,15 +6,16 @@ call plug#begin("~/.vim/plugged")
 
 " Plugins: General Enhancements
 
-Plug 'https://github.com/ciaranm/securemodelines'                                        " Secure, user-configurable modeline support for Vim
-Plug 'https://github.com/editorconfig/editorconfig-vim'                                  " Have VIM adhere to .editorconfig files
-Plug 'https://github.com/mg979/vim-visual-multi'                                         " Multi line select, easily find recurring text
-Plug 'https://github.com/tpope/vim-fugitive'                                             " Extensive Git integration added to Vim
-Plug 'https://github.com/victorhge/iedit'                                                " Multi cursor editing.
+Plug 'https://github.com/ciaranm/securemodelines'       " Secure, user-configurable modeline support for Vim
+Plug 'https://github.com/editorconfig/editorconfig-vim' " Have VIM adhere to .editorconfig files
+Plug 'https://github.com/mg979/vim-visual-multi'        " Multi line select, easily find recurring text
+Plug 'https://github.com/tpope/vim-fugitive'            " Extensive Git integration added to Vim
+Plug 'https://github.com/victorhge/iedit'               " Multi cursor editing.
+Plug 'https://github.com/easymotion/vim-easymotion'     " Simplify movement in vim
 
 " Plugins: Formatters
 
-Plug 'https://github.com/godlygeek/tabular'                                              " Formatter that allows alignment by any character
+Plug 'https://github.com/godlygeek/tabular' " Formatter that allows alignment by any character
 
 " Plugins: GUI enhancements
 
@@ -33,15 +34,16 @@ Plug 'https://github.com/morhetz/gruvbox'                                       
 " Plugins: Snippets
 " Replaced by a CoC extension
 "Plug 'https://github.com/SirVer/ultisnips'                                              " Language agnostic snippets
+Plug 'https://github.com/honza/vim-snippets'
 
 " Plugins: Fuzzy finder
 
-Plug 'https://github.com/junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }     " Fuzzy finding inside Vim/NVim
-Plug 'https://github.com/junegunn/fzf.vim'                                               " Additional Vim setup for FZF
+Plug 'https://github.com/junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }     "  Fuzzy finding inside Vim/NVim
+Plug 'https://github.com/junegunn/fzf.vim'                                               "  Additional Vim setup for FZF
 
 " Plugins: Semantic language support
 
-Plug 'neoclide/coc.nvim'                                                                  " Intellisense for Vim, uses language servers like VSCode
+Plug 'https://github.com/neoclide/coc.nvim'                                              " Intellisense for Vim, uses language servers like VSCode
 Plug 'https://github.com/fatih/vim-go', { 'for': 'go','do': ':GoUpdateBinaries' }
 Plug 'https://github.com/python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 

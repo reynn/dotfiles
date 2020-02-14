@@ -11,12 +11,13 @@ function! s:show_documentation()
 endfunction
 
 function! LightlineMode()
-  return expand('%:t') =~# '^__Tagbar__' ? 'Tagbar' :
-        \ expand('%:t') ==# 'ControlP' ? 'CtrlP'    :
-        \ &filetype ==# 'unite'     ? 'Unite'       :
-        \ &filetype ==# 'vimfiler'  ? 'VimFiler'    :
-        \ &filetype ==# 'nerdtree'  ? 'NERDTree'    :
-        \ &filetype ==# 'vimshell'  ? 'VimShell'    :
+  return expand('%:t') =~# '^__Tagbar__' ? 'Tagbar'       :
+        \ expand('%:t') ==# 'ControlP'   ? 'CtrlP'        :
+        \ &filetype ==# 'unite'          ? 'Unite'        :
+        \ &filetype ==# 'vimfiler'       ? 'VimFiler'     :
+        \ &filetype ==# 'coc-explorer'   ? 'CoC Explorer' :
+        \ &filetype ==# 'nerdtree'       ? 'NERDTree'     :
+        \ &filetype ==# 'vimshell'       ? 'VimShell'     :
         \ lightline#mode()
 endfunction
 

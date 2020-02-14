@@ -4,7 +4,7 @@
     "go"
   ],
   "explorer.width": 40,
-  "explorer.openAction.strategy": "previousWindow",
+  "explorer.openAction.strategy": "previousBuffer",
   "explorer.position": "left",
   "explorer.file.autoReveal": true,
   "explorer.file.showHiddenFiles": true,
@@ -27,13 +27,14 @@
       ]
     }
   },
+  "snippets.autoTrigger": true,
   "rust-client.updateOnStartup": true,
   "snippets.priority": 99,
   "snippets.ultisnips.directories": [
     "snippets/ultisnips"
   ],
   "snippets.extends": {
-    "sh": ["zsh"]
+    "zsh": ["sh"]
   },
   "snippets.ultisnips.enable": true,
   "yaml.completion": true,
