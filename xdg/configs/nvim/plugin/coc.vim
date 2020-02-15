@@ -117,7 +117,6 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:coc_global_extensions = [
   \ 'coc-actions',
   \ 'coc-calc',
-  \ 'coc-explorer',
   \ 'coc-git',
   \ 'coc-highlight',
   \ 'coc-json',
@@ -126,7 +125,6 @@ let g:coc_global_extensions = [
   \ 'coc-python',
   \ 'coc-rls',
   \ 'coc-snippets',
-  \ 'coc-spell-checker',
   \ 'coc-spell-checker',
   \ 'coc-tabnine',
   \ 'coc-yaml',
@@ -188,12 +186,6 @@ nmap <leader>a <Plug>(coc-codeaction-selected)
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " =============================================================================
-" CoC.Extension Setup: https://github.com/weirongxu/coc-explorer
-" =============================================================================
-
-nmap <space>e :CocCommand explorer<CR>
-
-" =============================================================================
 " CoC.Extension Setup: https://github.com/fannheyward/coc-markdownlint
 " =============================================================================
 
@@ -212,19 +204,6 @@ function! LightlineGitBlame() abort
   " return blame
   return winwidth(0) > 120 ? blame : ''
 endfunction
-
-" navigate chunks of current buffer
-nmap [g <Plug>(coc-git-prevchunk)
-nmap ]g <Plug>(coc-git-nextchunk)
-" show chunk diff at current position
-nmap gs <Plug>(coc-git-chunkinfo)
-" show commit contains current position
-nmap gc <Plug>(coc-git-commit)
-" create text object for git chunks
-omap ig <Plug>(coc-git-chunk-inner)
-xmap ig <Plug>(coc-git-chunk-inner)
-omap ag <Plug>(coc-git-chunk-outer)
-xmap ag <Plug>(coc-git-chunk-outer)
 
 " =============================================================================
 " CoC.Extension Setup: https://github.com/neoclide/coc-git

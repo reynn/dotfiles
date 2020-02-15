@@ -2,4 +2,3 @@
 
 let g:gruvbox_contrast_dark = 'dark'
 
-colorscheme gruvbox

@@ -1,7 +1,7 @@
 " Plugin Config: itchyny/lightline.vim
 
 let g:lightline = {
-  \ 'colorscheme': 'jellybeans',
+  \ 'colorscheme': 'PaperColor',
   \ 'component_function': {
   \   'filename': 'LightlineMode',
   \   'gitbranch': 'FugitiveHead',

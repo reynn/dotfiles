@@ -40,5 +40,13 @@
   "yaml.completion": true,
   "yaml.format.enable": true,
   "yaml.format.proseWrap": "Always",
-  "yaml.format.singleQuote": false
+  "yaml.format.singleQuote": false,
+  "yaml.schemas": {
+    "https://s3-us-west-2.amazonaws.com/concur-jenkins-schemas/latest.json": "pipelines.y(a)?ml"
+  },
+  "cSpell.userWords": [
+    "awscli",
+    "buildhub",
+    "mkdocs"
+  ]
 }

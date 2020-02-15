@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# Initialize this dotfile repo as well as run updates when necessary
+
 typeset -A styles
 
 styles[full]='Sources all zsh files to refresh aliases/exports/functions'

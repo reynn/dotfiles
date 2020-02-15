@@ -22,9 +22,11 @@ if (match($TERM, "-256color") != -1) && (match($TERM, "screen-256color") == -1)
   " screen does not (yet) support truecolor
   set termguicolors
 endif
+
 " Colors
 set background=dark
 hi Normal ctermbg=NONE
+
 " Get syntax
 syntax on
 
@@ -40,7 +42,7 @@ filetype plugin indent on
 set autoindent
 set timeoutlen=500 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
-set scrolloff=2
+set scrolloff=5
 set fixendofline
 set noshowmode
 set hidden
@@ -80,6 +82,7 @@ set formatoptions+=n " detect lists for formatting
 " set formatoptions+=b " auto-wrap in insert mode, and do not wrap old long lines
 
 " Proper search
+set hlsearch
 set incsearch
 set ignorecase
 set smartcase
@@ -97,7 +100,7 @@ set fixendofline
 set nofoldenable
 set ttyfast
 " https://github.com/vim/vim/issues/1735#issuecomment-383353563
-set lazyredraw
+" set lazyredraw
 set synmaxcol=500
 set laststatus=2
 set relativenumber  " Relative line numbers
@@ -141,3 +144,5 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h').'/mappings.vim'
 " =============================================================================
 
 execute 'source' fnamemodify(expand('<sfile>'), ':h').'/languages.vim'
+
+colorscheme gruvbox
