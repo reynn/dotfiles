@@ -4,12 +4,14 @@
 # Global Aliases --------------------------------------------------------------
 
 alias grep='rg -i'
-alias C='wc -l'
-alias H='head'
-alias L='less'
-alias N='/dev/null'
-alias S='sort'
-alias G='grep'
+alias C='| wc -l'
+alias H='| head'
+alias L='| less'
+alias LL='2>&1 | less'
+alias NE='2 > /dev/null'
+alias NUL='> /dev/null 2>&1'
+alias S='| sort'
+alias G='| grep'
 
 alias BIN_DOWNLOADS='yq r $DFP/ansible/vars/0-primary-vars.yaml "bin_downloads[*].repository" | tr "\- " "\0" | sort'
 alias reynn='cd $REYNN'
@@ -36,11 +38,16 @@ alias cls='clear;ls'
 # -----------------------------------------------------------------------------
 ## Directory aliases ----------------------------------------------------------
 
+alias mv='mv -i'
+alias cp='cp -i'
+alias rm='rm -i'
 alias mkdir='mkdir -p'
 alias chownall='sudo chown -R "$(id -u):$(id -g)" ./*'
 alias chmodall='sudo chmod -R u=rwx,g=rw,o=rw ./*'
 alias chall='chownall; chmodall;'
 alias download_remote_directory='wget -c -r -np -l1 -e robots=off -R "fileicon.png*" -R "index.html*" -nd'
+
+alias wd='wd -c $DFP/.warprc'
 
 # -----------------------------------------------------------------------------
 ## Readability aliases --------------------------------------------------------

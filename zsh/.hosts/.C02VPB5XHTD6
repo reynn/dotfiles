@@ -2,3 +2,7 @@
 
 USER='npatterson'
 SSH_IDENTITES=(id_rsa)
+
+zsh_plugins+=(
+  jira
+)

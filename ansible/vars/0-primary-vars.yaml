@@ -63,6 +63,8 @@ bin_downloads:
     description: Run Kubernetes locally
   - repository: starship/starship
     description: The cross-shell prompt for astronauts
+  - repository: github/hub
+    description: A command-line tool that makes git easier to use with GitHub
 
 docker_images:
   - name: fantia.jp

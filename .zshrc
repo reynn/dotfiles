@@ -6,6 +6,31 @@
 export CURRENT_HOST="$(hostname)"
 export TERM=xterm-256color
 
+# Moved list here so we can overwrite or add by host
+zsh_plugins=(
+  aws
+  cargo
+  dircycle
+  docker
+  docker-compose
+  encode64
+  extract
+  fancy-ctrl-z
+  httpie
+  kubectl
+  pip
+  pipenv
+  python
+  ripgrep
+  rsync
+  sudo
+  themes
+  tmux
+  wd
+  zsh-interactive-cd
+  zsh_reload
+)
+
 source $HOME/git/github.com/reynn/dotfiles/zsh/.vars/.reynn
 source $DFP/zsh/.hosts/.$CURRENT_HOST
 source $DFP/zsh/functions/.reynn
@@ -19,28 +44,6 @@ source <(antibody init)
 export ZSH="$(antibody list | grep oh-my-zsh | awk '{print $2}')"
 
 antibody bundle robbyrussell/oh-my-zsh
-
-local zsh_plugins=(
-  aws
-  dircycle
-  docker
-  docker-compose
-  encode64
-  extract
-  git
-  git-hubflow
-  httpie
-  jsontools
-  kubectl
-  pip
-  osx
-  pipenv
-  python
-  rsync
-  sudo
-  tmux
-)
-
 antibody bundle zsh-users/zsh-autosuggestions
 antibody bundle zsh-users/zsh-syntax-highlighting
 antibody bundle zsh-users/zsh-completions
@@ -75,6 +78,7 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
 )
 HYPHEN_INSENSITIVE='true'
 COMPLETION_WAITING_DOTS='true'
+
 
 # -----------------------------------------------------------------------------
 ## ZSH:Functions --------------------------------------------------------------
