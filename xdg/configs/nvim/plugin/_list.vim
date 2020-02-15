@@ -10,14 +10,13 @@ Plug 'https://github.com/ciaranm/securemodelines'       " Secure, user-configura
 Plug 'https://github.com/editorconfig/editorconfig-vim' " Have VIM adhere to .editorconfig files
 Plug 'https://github.com/mg979/vim-visual-multi'        " Multi line select, easily find recurring text
 Plug 'https://github.com/tpope/vim-fugitive'            " Extensive Git integration added to Vim
-Plug 'https://github.com/victorhge/iedit'               " Multi cursor editing.
 Plug 'https://github.com/easymotion/vim-easymotion'     " Simplify movement in vim
 Plug 'https://github.com/tpope/vim-surround'            " Surround text with characters
 Plug 'https://github.com/tpope/vim-commentary'
 
 " Plugins: Formatters
 
-Plug 'https://github.com/godlygeek/tabular' " Formatter that allows alignment by any character
+Plug 'https://github.com/godlygeek/tabular'             " Formatter that allows alignment by any character
 
 " Plugins: GUI enhancements
 
@@ -49,7 +48,10 @@ Plug 'https://github.com/junegunn/fzf.vim'                                      
 Plug 'https://github.com/hashivim/vim-packer'
 Plug 'https://github.com/hashivim/vim-terraform'
 Plug 'https://github.com/neoclide/coc.nvim'                                              " Intellisense for Vim, uses language servers like VSCode
-Plug 'https://github.com/fatih/vim-go', { 'for': 'go','do': ':GoUpdateBinaries' }
+Plug 'https://github.com/fatih/vim-go', {
+  \'for': 'go',
+  \'do': ':GoUpdateBinaries'
+\}
 Plug 'https://github.com/python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 
 call plug#end()
