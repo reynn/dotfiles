@@ -17,6 +17,22 @@ function k8s_dar() {
   kubectl delete $(kubectl get $resources -o name)
 }
 
+function _k8s_get_latest_stable() {
+  curl -q -s https://storage.googleapis.com/kubernetes-release/release/stable.txt
+}
+
+function k8s_get_kubectl() {
+  local version="${1:-$(_k8s_get_latest_stable)}"
+  local bin_path="$DIR_BINS/kubectl_bin/$version/kubectl"
+  echo "Downloading kubectl $version to $bin_path"
+  mkdir -p ${bin_path:h}
+  wget -O "$bin_path" -c "https://storage.googleapis.com/kubernetes-release/release/$version/bin/darwin/amd64/kubectl"
+  print_debug "Setting $bin_path as executable"
+  chmod +x $bin_path
+  print_debug "Creating symlink to $DIR_BINS/kubectl"
+  ln -s $bin_path $DIR_BINS/kubectl
+}
+
 function install_helm_chart() {
   if [ "$1" = '-h' ]; then
     print_usage_json "$0"
