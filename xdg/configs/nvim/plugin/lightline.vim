@@ -1,4 +1,4 @@
-" Plugin Config: itchyny/lightline.vim
+" plugin config: itchyny/lightline.vim
 
 let g:lightline = {
   \ 'colorscheme': 'PaperColor',

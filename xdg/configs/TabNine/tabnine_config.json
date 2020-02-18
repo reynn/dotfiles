@@ -1,7 +1,7 @@
 {
   "version": "2.2.2",
   "hide_promotional_message": false,
-  "beta_enabled": "No",
+  "beta_enabled": "Yes",
   "ignore_all_lsp": false,
   "creation_time": "2020-02-13T05:04:35.130173300Z",
   "semantic_status": {},
@@ -12,7 +12,7 @@
   "tabnine_cloud_certificate_domain": null,
   "tabnine_cloud_port": null,
   "cloud_whitelist": [],
-  "api_key": null,
+  "api_key": "",
   "api_key_service_level": null,
   "api_base_url": null,
   "local_enabled": "Unset",

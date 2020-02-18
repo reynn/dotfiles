@@ -1,6 +1,6 @@
-au FileType markdown nmap <leader>x :call ToggleTodo()<cr>
-au FileType markdown nmap <leader>n :call NewTodo()<cr>
-au FileType markdown nmap <leader>a :call ArchiveDone()<cr>
+au FileType markdown nmap <leader>tt :call ToggleTodo()<cr>
+au FileType markdown nmap <leader>tn :call NewTodo()<cr>
+au FileType markdown nmap <leader>ta :call ArchiveDone()<cr>
 
 function! ToggleTodo()
   normal! mz^

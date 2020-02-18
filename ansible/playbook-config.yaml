@@ -4,7 +4,7 @@
   tasks:
     - name: Include vars from ansible directory
       include_vars:
-        dir: "{{ playbook_dir }}/ansible/vars"
+        dir: "{{ playbook_dir }}/vars"
         ignore_unknown_extensions: yes
       tags:
         - always
@@ -58,7 +58,7 @@
 
     - name: "Create Symlinks"
       file:
-        src: "{{ playbook_dir }}/{{ item.src }}"
+        src: "{{ item.src }}"
         dest: "{{ item.dest }}"
         force: yes
         state: "{{ item.state | default('link') }}"
@@ -135,7 +135,7 @@
       tags:
         - commands
 
-    - include_tasks: "{{ ansible_env.PWD }}/ansible/github-release.yaml"
+    - include_tasks: "{{ ansible_env.PWD }}/github-release.yaml"
       loop: "{{ bin_downloads | sort(attribute='repository') }}"
       tags:
         - binaries

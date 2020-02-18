@@ -5,16 +5,32 @@
 # -----------------------------------------------------------------------------
 
 function update_dotfiles() {
-  local tags="$1"
-  if [ "$tags" = '-h' ]; then
-    print_usage_json "$0"
-    return 0
+  local tags=""
+  local verbosity=''
+  while getopts "ht:v" opt; do
+    case $opt in
+      t) if test $tags; then tags+=",$OPTARG"; else tags+="$OPTARG"; fi ;;
+      v) verbosity+='v' ;;
+      h)
+        echo "Usage: ${0:t} [-t TAG] [-v]"
+        return 0 ;;
+    esac
+  done
+  local args=(
+    $DFP/ansible/playbook-config.yaml
+  )
+  if test $verbosity; then
+    args+=("-$verbosity")
   fi
-  if test -z $tags; then
-    ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
-  else
-    ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml --tags $tags
+
+  if test $tags; then
+    args+=(
+      '--tags'
+      $tags
+    )
   fi
+  echo "args: $args"
+  ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook ${args[@]}
 }
 
 function load_plugin() {

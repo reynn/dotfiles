@@ -2,35 +2,27 @@
 " General Vim Configuration
 " =============================================================================
 
-set nocompatible
 filetype off
+
+set background=dark
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+set inccommand=nosplit
+set nocompatible
 set rtp+="~/scripts/"
-let mapleader = ","
+set t_Co=256
+set termguicolors
 
-if has('nvim')
-  set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-  set inccommand=nosplit
-  noremap <C-q> :confirm qall<CR>
-end
+let mapleader=","
 
-" deal with colors
-if !has('gui_running')
-  set t_Co=256
-endif
-
-if (match($TERM, "-256color") != -1) && (match($TERM, "screen-256color") == -1)
-  " screen does not (yet) support truecolor
-  set termguicolors
-endif
+noremap <C-q> :confirm qall<CR>
 
 " Colors
-set background=dark
 hi Normal ctermbg=NONE
 
 " Get syntax
 syntax on
 
-let g:python3_host_prog = expand("$XDG_DATA_HOME/virtualenvs/nvim-*/bin/python")
+let g:python3_host_prog=expand("$XDG_DATA_HOME/virtualenvs/nvim-*/bin/python")
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 if executable('rg')
@@ -40,24 +32,24 @@ endif
 
 filetype plugin indent on
 set autoindent
-set timeoutlen=500 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
-set scrolloff=5
-set fixendofline
-set noshowmode
+set guioptions-=e
 set hidden
-set nowrap
+set noendofline
 set nojoinspaces
-set printfont=:h10
+set noshowmode
+set nowrap
 set printencoding=utf-8
+set printfont=:h10
 set printoptions=paper:letter
-set signcolumn=no
+set scrolloff=5
 set shell=zsh
 set showtabline=2
-set guioptions-=e
+set signcolumn=yes
+set timeoutlen=350 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 
 " Settings needed for .lvimrc
-set exrc
+set noexrc
 set secure
 
 " Sane splits
@@ -96,12 +88,11 @@ set guioptions-=T " Remove toolbar
 set vb t_vb=      " No more beeps
 set backspace=2   " Backspace over newlines
 set ruler         " Where am I?
-set fixendofline
-set nofoldenable
+set foldenable
 set ttyfast
 " https://github.com/vim/vim/issues/1735#issuecomment-383353563
-" set lazyredraw
-set synmaxcol=500
+set nolazyredraw
+set synmaxcol=200   " Syntax highlight the first n characters
 set laststatus=2
 set relativenumber  " Relative line numbers
 set number          " Also show current absolute line
@@ -115,11 +106,11 @@ set shortmess+=c " don't give |ins-completion-menu| messages.
 
 " Show those damn hidden characters
 " Verbose: set listchars=nbsp:¬,eol:¶,extends:»,precedes:«,trail:•
-set nolist
-set listchars=nbsp:¬,extends:»,precedes:«,trail:•
+set list
+set listchars=nbsp:¬,extends:»,precedes:«,trail:•,tab:>-
 
 " Don't confirm .lvimrc
-let g:localvimrc_ask = 0
+let g:localvimrc_ask=0
 
 " =============================================================================
 " # Plugins
