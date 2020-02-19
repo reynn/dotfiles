@@ -4,8 +4,8 @@
 map <leader>n :NERDTreeFocus<CR>
 
 " Open nerdtree at startup if no file specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " When a file is deleted in NERDTree automatically delete the buffer
 let NERDTreeAutoDeleteBuffer=1

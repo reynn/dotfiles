@@ -5,7 +5,7 @@
 # -----------------------------------------------------------------------------
 
 # Change go versions
-function go_ch() {
+function go_ch {
   if test -n "$1"; then
     print_debug "Running Gimme with $1" 'version'
     eval "$(GIMME_SILENT_ENV=true gimme $1)"
@@ -16,7 +16,7 @@ function go_ch() {
 }
 
 # Get coverage report for testing go projects
-function go_cover() {
+function go_cover {
   local t=$(mktemp -t cover)
   go test $COVERFLAGS -coverprofile=$t $@ &&
     go tool cover -func=$t &&

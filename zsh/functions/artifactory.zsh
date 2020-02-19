@@ -4,7 +4,7 @@
 # Artifactory functions -------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function artifactory_upload() {
+function artifactory_upload {
   local glob_match="*"
   local subfolder=""
   local repo="ext-util-sandbox-local"
@@ -56,7 +56,7 @@ function artifactory_upload() {
   fi
 }
 
-function artifactory_download() {
+function artifactory_download {
   local glob_match="${1:-*}"
   local repo="${2:-util-release}"
   local pattern="$repo/*$glob_match*"
@@ -71,7 +71,7 @@ function artifactory_download() {
   jfrog rt download --spec $spec_file
 }
 
-function artifactory_search() {
+function artifactory_search {
   local glob_match="*"
   local repo="util-release"
   local pattern="$repo/*$glob_match*"
@@ -98,7 +98,7 @@ function artifactory_search() {
   jfrog rt search --spec $spec_file
 }
 
-function artifactory_get_my_uploads() {
+function artifactory_get_my_uploads {
   local repo='ext-yum-selfserve-local-v2'
   local time_frame='2d'
   local spec_file=$(mktemp -t my-uploads-spec.json)

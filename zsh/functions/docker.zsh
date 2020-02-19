@@ -4,7 +4,7 @@
 # Docker functions ------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function docker_retag_and_push() {
+function docker_retag_and_push {
   local image=$1
   if test -z $image; then
     print_usage_json "$0"

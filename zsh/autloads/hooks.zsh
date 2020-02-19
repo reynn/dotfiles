@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 
-_initializePreCommitHooks() {
+function _initializePreCommitHooks {
+  if test ! -x "$(command -v pre-commit)"; then
+    return 0
+  fi
   if test -d "$PWD/.git"; then
     local git_pre_commit_file="$PWD/.git/hooks/pre-commit"
     local pre_commit_config="$PWD/.pre-commit-config.yaml"

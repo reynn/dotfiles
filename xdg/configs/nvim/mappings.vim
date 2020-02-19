@@ -43,6 +43,9 @@
 " | <PageDown>    | Page-Down                                                     |
 " | <bar>         | the '|' character, which otherwise needs to be escaped '\ | ' |
 
+" Quit NeoVim completely
+noremap <C-q> :confirm qall<CR>
+
 " ; as :
 nnoremap ; :
 
@@ -100,9 +103,9 @@ nnoremap <A-l> <C-w>l
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -115,16 +118,6 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Open new file adjacent to current file
 nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-
-" t+left/right to switch between VIM tabs
-nnoremap t<left> :tabprevious<CR>
-nnoremap t<right> :tabnext<CR>
-" b+left/right to switch between VIM buffers
-nnoremap b<left> :bp<CR>
-nnoremap b<right> :bn<CR>
-" w+left/right to switch between VIM windows
-nnoremap w<left> :wprevious<CR>
-nnoremap w<right> :wNext<CR>
 
 " Quick mapping to edit init.vim file
 nnoremap <leader>ev :split $MYVIMRC<CR>

@@ -5,6 +5,7 @@
 
 alias bfg='java -jar $BINS_DIR/bfg.jar'
 alias vim='nvim'
+alias xargs='xargs -I"{}"'
 
 # -----------------------------------------------------------------------------
 # Antibody (zsh package manager) ----------------------------------------------

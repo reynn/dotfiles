@@ -4,24 +4,24 @@
 # Kubernetes functions --------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function k8s_list_images() {
+function k8s_list_images {
   kubectl get pods --all-namespaces -o jsonpath="{..image}" |\
     tr -s '[[:space:]]' '\n' |\
     sort |\
     uniq -c
 }
 
-function k8s_dar() {
+function k8s_dar {
   local resources=$1
   echo "Deleting all $resources resources"
   kubectl delete $(kubectl get $resources -o name)
 }
 
-function _k8s_get_latest_stable() {
+function _k8s_get_latest_stable {
   curl -q -s https://storage.googleapis.com/kubernetes-release/release/stable.txt
 }
 
-function k8s_get_kubectl() {
+function k8s_get_kubectl {
   local version="${1:-$(_k8s_get_latest_stable)}"
   local bin_path="$DIR_BINS/kubectl_bin/$version/kubectl"
   echo "Downloading kubectl $version to $bin_path"
@@ -33,7 +33,7 @@ function k8s_get_kubectl() {
   ln -s $bin_path $DIR_BINS/kubectl
 }
 
-function install_helm_chart() {
+function install_helm_chart {
   if [ "$1" = '-h' ]; then
     print_usage_json "$0"
     return 0
@@ -69,7 +69,7 @@ function install_helm_chart() {
   helm upgrade -i --namespace $namespace -f $relative_values_file $release_name $chart_repository/$chart_name
 }
 
-function install_helm_app() {
+function install_helm_app {
   local charts_folder=${1:-"$GFP/github.com/helm/charts"}
   local values_folder=${1:-"$GFP/github.com/reynn/k8s/helm/values"}
   local selected_chart=$(_get_charts $charts_folder)
@@ -90,7 +90,7 @@ function install_helm_app() {
   echo $args #| xargs helm template # | kapp -y deploy -a $rel_name -f -
 }
 
-function _get_charts() {
+function _get_charts {
   local f=${1:-"$GFP/github.com/helm/charts"}
   print_debug "$f" 'folder'
   local s_c=$(fd -t f -d 3 Chart.yaml $f | \
@@ -99,7 +99,7 @@ function _get_charts() {
   echo "$f/$(echo $s_c | tr ' ' '/')"
 }
 
-function _get_value_files() {
+function _get_value_files {
   local f=${1:-"$GFP/github.com/reynn/k8s/helm/values"}
   print_debug "$f" 'folder'
   local s_c=$(fd -t f -d 3 -e yaml . $f | \
@@ -109,7 +109,7 @@ function _get_value_files() {
   echo "$f/$(echo $s_c | tr ' ' '/')"
 }
 
-function k8s_get_sa_config() {
+function k8s_get_sa_config {
   # Add user to k8s using service account, no RBAC (must create RBAC after this script)
   if [[ -z "$1" ]] || [[ -z "$2" ]]; then
     print_usage_json "$0"
@@ -193,7 +193,7 @@ function k8s_get_sa_config() {
 # -----------------------------------------------------------------------------
 # Minikube functions ----------------------------------------------------------
 
-function new_minikube() {
+function new_minikube {
   local k8s_version="1.16.0"
   local memory="4"
 

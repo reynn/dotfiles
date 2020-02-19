@@ -4,17 +4,15 @@
 
 filetype off
 
+set nocompatible
 set background=dark
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 set inccommand=nosplit
-set nocompatible
 set rtp+="~/scripts/"
 set t_Co=256
 set termguicolors
 
 let mapleader=","
-
-noremap <C-q> :confirm qall<CR>
 
 " Colors
 hi Normal ctermbg=NONE
@@ -35,7 +33,7 @@ set autoindent
 set encoding=utf-8
 set guioptions-=e
 set hidden
-set noendofline
+set endofline
 set nojoinspaces
 set noshowmode
 set nowrap
@@ -49,7 +47,7 @@ set signcolumn=yes
 set timeoutlen=350 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 
 " Settings needed for .lvimrc
-set noexrc
+set exrc
 set secure
 
 " Sane splits
@@ -107,7 +105,7 @@ set shortmess+=c " don't give |ins-completion-menu| messages.
 " Show those damn hidden characters
 " Verbose: set listchars=nbsp:¬,eol:¶,extends:»,precedes:«,trail:•
 set list
-set listchars=nbsp:¬,extends:»,precedes:«,trail:•,tab:>-
+set listchars=nbsp:¬,extends:»,precedes:«,trail:•,tab:>-,eol:¬
 
 " Don't confirm .lvimrc
 let g:localvimrc_ask=0

@@ -4,7 +4,7 @@
 # AWS functions ---------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function aws_ec2_ssh_to_instance_via_id() {
+function aws_ec2_ssh_to_instance_via_id {
   local instance_id=$1
   local instance_data=$(aws ec2 describe-instances --instance-ids "$instance_id" | jq -r '.Reservations[0].Instances[0]')
   local ip=$(echo "$instance_data" | jq -r '.PrivateIpAddress')
@@ -15,7 +15,7 @@ function aws_ec2_ssh_to_instance_via_id() {
   ssh -i ~/.ssh/${key_name}.pem ec2-user@$ip
 }
 
-function aws_ec2_connect_to_test_instance() {
+function aws_ec2_connect_to_test_instance {
   local instance_id=$(aws \
     ec2 \
     describe-instances \
@@ -28,7 +28,7 @@ function aws_ec2_connect_to_test_instance() {
   fi
 }
 
-function aws_ec2_create_run_instances_json() {
+function aws_ec2_create_run_instances_json {
   local ami_id="$1"
   if test -z $ami_id; then
     echo "Must provide an AMI ID to generate JSON"
@@ -59,7 +59,7 @@ function aws_ec2_create_run_instances_json() {
     'CreditSpecification[CpuCredits]=Unlimited'
 }
 
-function aws_ec2_create_test_instance() {
+function aws_ec2_create_test_instance {
   local force_search='false'
   local ami_id=''
   local ami_owner='966799970081'
@@ -108,7 +108,7 @@ function aws_ec2_create_test_instance() {
   print_info "IP Address: $(echo $instance | jq -r '.Instances[0].PrivateIpAddress')"
 }
 
-function aws_ec2_cleanup_test_instances() {
+function aws_ec2_cleanup_test_instances {
   local instance_ids=($(aws \
     ec2 \
     describe-instances \
@@ -128,7 +128,7 @@ function aws_ec2_cleanup_test_instances() {
   done
 }
 
-function aws_ec2_tear_down_instance() {
+function aws_ec2_tear_down_instance {
   local instance_id="$1"
   if test -z "$instance_id"; then
     echo "Please provide an AWS EC2 instance ID"
@@ -139,7 +139,7 @@ function aws_ec2_tear_down_instance() {
     jq -r '.TerminatingInstances[] | "\(.InstanceId) is currently \(.CurrentState.Name)"'
 }
 
-function aws_ec2_get_instance_pricing() {
+function aws_ec2_get_instance_pricing {
   local type=$1
   if [ "$type" = '-h' ]; then
     print_usage_json "$0"
@@ -197,7 +197,7 @@ function aws_ec2_get_instance_pricing() {
   echo $table_data | tabulate -1 -f pipe -s ,
 }
 
-function aws_cfn_get_matching_stacks() {
+function aws_cfn_get_matching_stacks {
   local matcher=$1
   if [ "$1" = '-h' ]; then
     print_usage_json "$0"

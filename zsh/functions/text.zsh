@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-function join() {
+function join {
   if [ "$1" = '-h' ]; then
     print_usage_json "$0"
     return 0
@@ -10,7 +10,7 @@ function join() {
   printf -v "$var" "%s" "$ret${@/#/$sep}"
 }
 
-function join_by() {
+function join_by {
   local IFS="$1"
   shift
   echo "$@"
@@ -19,29 +19,29 @@ function join_by() {
 # -----------------------------------------------------------------------------
 ## Unix:Echo functions --------------------------------------------------------
 
-function print_debug() {
+function print_debug {
   if [[ "$DEBUG" = "true" ]]; then
     py_print --level debug --label "$2" --name "${funcstack[2]}" "$1" 1>&2
   fi
 }
 
-function print_error() {
+function print_error {
   py_print --level error --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
-function print_info() {
+function print_info {
   py_print --level info --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
-function print_warning() {
+function print_warning {
   py_print --level warning --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
-function print_usage() {
+function print_usage {
   py_print --level usage --label "$2" --name "${funcstack[2]}" "$1" 1>&2
 }
 
-function print_usage_json() {
+function print_usage_json {
   local func_name="$1"
   if test -z "$func_name"; then func_name="${funcstack[2]}"; fi
   print_table_from_json "$HELP_JSON" --function "$func_name"
@@ -50,7 +50,7 @@ function print_usage_json() {
 # -----------------------------------------------------------------------------
 # String/Printing functions ---------------------------------------------------
 
-function print_box() {
+function print_box {
   local strings=($@)
   local header=$HEADER
   local length=${BOX_LENGTH:-100}
@@ -84,7 +84,7 @@ function print_box() {
   echo ' |'
 }
 
-function print_padded() {
+function print_padded {
   local length=$1
   local string1=$2
   local pad_char=${3:-' '}
@@ -94,7 +94,7 @@ function print_padded() {
   printf '%s%*.*s' "$string1" 0 $(($length - ${#string1})) "$pad"
 }
 
-function print_padded_two() {
+function print_padded_two {
   local length=$1
   local string1=$2
   local string2=$3
@@ -105,7 +105,7 @@ function print_padded_two() {
   printf '%s%*.*s%s' "$string1" 0 $(($length - ${#string1} - ${#string2})) "$pad" "$string2"
 }
 
-function longest_line_length() {
+function longest_line_length {
   local length=0
 
   for line in $@; do
@@ -118,11 +118,11 @@ function longest_line_length() {
   echo $length
 }
 
-function str_length() {
+function str_length {
   echo "$(echo "$1" | wc -c | tr -d '[:space:]')"
 }
 
-function print_repeated() {
+function print_repeated {
   local repeat_count=${1:-100}
   local repeat_char=${2:-=}
   printf "%${repeat_count}s" | tr " " "$repeat_char"

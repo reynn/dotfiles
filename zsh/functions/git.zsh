@@ -4,7 +4,7 @@
 # GitHub functions ------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function gh_get_assets() {
+function gh_get_assets {
   local owner=$1
   local repo=$2
   local host=${3:-api.github.com}
@@ -19,7 +19,7 @@ function gh_get_assets() {
 # -----------------------------------------------------------------------------
 # Git functions ---------------------------------------------------------------
 
-function git_checkout_branch() {
+function git_checkout_branch {
   local tags branches target
   branches=$(
     git --no-pager branch --all \

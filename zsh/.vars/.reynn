@@ -1,25 +1,23 @@
 #!/usr/bin/env zsh
 
-# -----------------------------------------------------------------------------
-# General ---------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-if test -z "$(echo "${fpath//\ /\\n}" | grep -i $DFP/zsh/.completions)"; then
+#+============================================================================+
+# General
+#+============================================================================+
+
+if test -z "$(echo "${fpath//\ /\\n}" | /usr/local/bin/grep -i $DFP/zsh/.completions)"; then
   fpath+=($DFP/zsh/.completions)
 fi
-DEBUG="${DEBUG:-false}"
 
-# Special directories
+DEBUG="${DEBUG:-false}"
 GFP="$HOME/git"
 REYNN="$GFP/github.com/reynn"
 DFP="$REYNN/dotfiles"
 DIR_BINS="$HOME/.bins"
 HELP_JSON="$DFP/zsh/function_help.json"
 XDG_CONFIG_HOME="$DFP/xdg/configs"
-# Increase Bash history size. Allow 32³ entries; the default is 500.
-HISTSIZE='32768'
+HISTSIZE='32768'         # Increase Bash history size. Allow 32³ entries; the default is 500.
 HISTFILESIZE="$HISTSIZE"
-# Omit duplicates and commands that begin with a space from history.
-HISTCONTROL='ignoreboth'
+HISTCONTROL='ignoreboth' # Omit duplicates and commands that begin with a space from history.
 
 export HISTSIZE
 export HISTFILESIZE
@@ -33,9 +31,9 @@ export DIR_BINS
 export HELP_JSON
 export XDG_CONFIG_HOME
 
-# -----------------------------------------------------------------------------
-# Arrays ----------------------------------------------------------------------
-# -----------------------------------------------------------------------------
+#+============================================================================+
+# Arrays
+#+============================================================================+
 
 SSH_IDENTITIES=(id_rsa)
 
@@ -76,9 +74,9 @@ export IMPORT_DIRECTORIES
 export SSH_IDENTITIES
 export POSSIBLE_PATHS
 
-# -----------------------------------------------------------------------------
-# XDG Config ------------------------------------------------------------------
-# -----------------------------------------------------------------------------
+#+============================================================================+
+# XDG
+#+============================================================================+
 
 # Config home is defined in General section
 # as it is within the dotfiles repo for now
@@ -90,9 +88,9 @@ export XDG_BASE_PATH
 export XDG_CACHE_HOME
 export XDG_DATA_HOME
 
-# -----------------------------------------------------------------------------
-# Unix (Paths/ENV overrides) --------------------------------------------------
-# -----------------------------------------------------------------------------
+#+============================================================================+
+# Unix (Paths/ENV overrides)
+#+============================================================================+
 
 PATH=""
 EDITOR='nvim'
@@ -105,9 +103,9 @@ export PYENV_ROOT
 export SSH_KEY_PATH
 export UPDATE_ZSH_DAYS
 
-# -----------------------------------------------------------------------------
-# Unix (Special modifications) ------------------------------------------------
-# -----------------------------------------------------------------------------
+#+============================================================================+
+# Unix (Special modifications)
+#+============================================================================+
 
 for p in $POSSIBLE_PATHS; do
   # Test if the directory exists

@@ -1,0 +1,167 @@
+
+o  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 59
+s  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 56
+x  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 57
+n  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 53
+n  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 65
+v  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 64
+x  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 84
+n  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 83
+v  <NL>          <Plug>(coc-snippets-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 224
+   <C-Q>       * :confirm qall<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 47
+n  <Space>y    * :<C-U>CocList -A --normal yank<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 200
+n  <Space>p    * :<C-U>CocListResume<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 114
+n  <Space>k    * :<C-U>CocPrev<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 112
+n  <Space>j    * :<C-U>CocNext<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 110
+n  <Space>s    * :<C-U>CocList -I symbols<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 108
+n  <Space>o    * :<C-U>CocList outline<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 106
+n  <Space>c    * :<C-U>CocList commands<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 104
+n  <Space>e    * :<C-U>CocList extensions<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 102
+Error detected while processing /Users/i854273/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/zz_out_map.vim:
+line    2:
+Interrupted
+
+o  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 59
+s  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 56
+x  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 57
+n  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 53
+n  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 65
+v  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 64
+x  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 84
+n  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 83
+v  <NL>          <Plug>(coc-snippets-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 224
+   <C-Q>       * :confirm qall<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 47
+n  <Space>y    * :<C-U>CocList -A --normal yank<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 200
+n  <Space>p    * :<C-U>CocListResume<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 114
+n  <Space>k    * :<C-U>CocPrev<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 112
+n  <Space>j    * :<C-U>CocNext<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 110
+n  <Space>s    * :<C-U>CocList -I symbols<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 108
+n  <Space>o    * :<C-U>CocList outline<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 106
+n  <Space>c    * :<C-U>CocList commands<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 104
+
+Error detected while processing /Users/i854273/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/zz_out_map.vim:
+line    2:
+Interrupted
+
+E492: Not an editor command: NERDTreeFocus
+
+E492: Not an editor command: NERDTreeFocus
+
+E492: Not an editor command: CocList extensions
+
+o  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 59
+s  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 56
+x  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 57
+n  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 53
+n  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 65
+v  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 64
+x  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 84
+n  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 83
+v  <NL>          <Plug>(coc-snippets-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 224
+   <C-Q>       * :confirm qall<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 47
+n  <Space>y    * :<C-U>CocList -A --normal yank<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 200
+n  <Space>p    * :<C-U>CocListResume<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 114
+n  <Space>k    * :<C-U>CocPrev<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 112
+n  <Space>j    * :<C-U>CocNext<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 110
+n  <Space>s    * :<C-U>CocList -I symbols<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 108
+n  <Space>o    * :<C-U>CocList outline<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 106
+n  <Space>c    * :<C-U>CocList commands<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 104
+
+Error detected while processing /Users/i854273/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/zz_out_map.vim:
+line    2:
+Interrupted
+
+E492: Not an editor command: CocList outline
+
+o  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 59
+s  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 56
+x  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 57
+n  <C-C>       * <Esc>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 53
+n  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 65
+v  <C-H>       * :nohlsearch<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 64
+x  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 84
+n  <Tab>         <Plug>(coc-range-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 83
+v  <NL>          <Plug>(coc-snippets-select)
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 224
+   <C-Q>       * :confirm qall<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim line 47
+n  <Space>y    * :<C-U>CocList -A --normal yank<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 200
+n  <Space>p    * :<C-U>CocListResume<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 114
+n  <Space>k    * :<C-U>CocPrev<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 112
+n  <Space>j    * :<C-U>CocNext<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 110
+n  <Space>s    * :<C-U>CocList -I symbols<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 108
+n  <Space>o    * :<C-U>CocList outline<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 106
+n  <Space>c    * :<C-U>CocList commands<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 104
+n  <Space>e    * :<C-U>CocList extensions<CR>
+	Last set from ~/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim line 102
+Error detected while processing /Users/i854273/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/zz_out_map.vim:
+line    2:
+Interrupted
+W10: Warning: Changing a readonly file

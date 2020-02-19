@@ -21,9 +21,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -87,36 +87,28 @@ xmap <silent> <TAB> <Plug>(coc-range-select)
 command! -nargs=0 Format :call CocAction('format')
 
 " Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold   :call CocAction('fold', <f-args>)
 
 " use `:OR` for organize import of current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR     :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Using CocList
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr> " Show all diagnostics
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>  " Manage extensions
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>    " Show commands
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>     " Find symbol of current document
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>  " Search workspace symbols
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>             " Do default action for next item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>             " Do default action for previous item.
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>       " Resume latest coc list
 
 " Extension management
 let g:coc_global_extensions = [
   \ 'coc-actions',
-  \ 'coc-calc',
   \ 'coc-git',
   \ 'coc-highlight',
   \ 'coc-json',
@@ -235,7 +227,7 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? coc#_select_confirm() :
       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ <SID>check_back_space()    ? "\<TAB>" :
       \ coc#refresh()
 
 function! s:check_back_space() abort

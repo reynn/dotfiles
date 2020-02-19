@@ -98,7 +98,7 @@ git_repos:
     dest: "{{ github_path }}/powerline/fonts"
   - repo: git@github.com:junegunn/fzf.git
     dest: "{{ github_path }}/junegunn/fzf"
-  - repo: https://github.com/pyenv/pyenv.git
+  - repo: git@github.com:pyenv/pyenv.git
     dest: "{{ github_path }}/pyenv/pyenv"
   - repo: git@github.com:VundleVim/Vundle.vim.git
     dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"

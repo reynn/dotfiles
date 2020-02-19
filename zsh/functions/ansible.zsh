@@ -4,7 +4,7 @@
 # Ansible functions -----------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function generate_ssh_config_from_ansible_inventory() {
+function generate_ssh_config_from_ansible_inventory {
   local INVENTORY_FILE="$1"
   local CONFIG_DIRECTORY="${2:-$HOME/.ssh/configs}"
   local ENTRIES=($(ansible-inventory -i $INVENTORY_FILE --list | jq -c '._meta.hostvars | to_entries[] | {"name": .key, "ip": .value.ansible_host, "user": .value.ansible_user, "ident": .value.ansible_private_key_file}'))

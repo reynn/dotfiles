@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 
-# -----------------------------------------------------------------------------
-# Dotfiles functions ----------------------------------------------------------
-# -----------------------------------------------------------------------------
+#+============================================================================+
+# Dotfiles specials
+#+============================================================================+
 
-function update_dotfiles() {
+function update_dotfiles {
   local tags=""
   local verbosity=''
   while getopts "ht:v" opt; do
@@ -33,11 +33,11 @@ function update_dotfiles() {
   ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook ${args[@]}
 }
 
-function load_plugin() {
+function load_plugin {
   antibody bundle robbyrussell/oh-my-zsh path:plugins/$1
 }
 
-function import_zsh_files() {
+function import_zsh_files {
   for d in $@; do
     test -d $d || continue
     print_debug $d 'dir'
@@ -48,7 +48,7 @@ function import_zsh_files() {
   done
 }
 
-function debug_call() {
+function debug_call {
   set -x
   $@
   set +x
@@ -58,30 +58,30 @@ function debug_call() {
 # UNIX functions --------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function zsudo() {
+function zsudo {
   sudo -E zsh -c "$functions[$1]" "$@"
 }
 
-function mkcd() {
+function mkcd {
   mkdir -p "$@" && cd "$_"
 }
 
-function slice_arr() {
+function slice_arr {
   local i=$1
   local arr=($@)
   echo ${arr[@]:${i}}
 }
 
-function tmux_connect() {
+function tmux_connect {
   ssh $1 -t "TERM=xterm-256color tmux new-session -s ssh-sess || tmux attach-session -t ssh-sess"
 }
 
-function listen_port() {
+function listen_port {
   local port=$1
   lsof -nP -i4TCP:$port | grep LISTEN | awk '{ print $2 }'
 }
 
-function kill_listening() {
+function kill_listening {
   local port=$1
   if test -z $port; then
     print_usage_json "$0"
@@ -93,22 +93,22 @@ function kill_listening() {
   sudo kill -9 $process
 }
 
-function check_cmd() {
+function check_cmd {
   test -x "$(command -v $1)"
 }
 
-function dig_ip() {
+function dig_ip {
   dig +nocmd "$1" A +noall +answer | grep -v 'CNAME' | awk '{print $5}' | head -n 1
 }
 
 # Run `dig` and display the most useful info
-function digga() {
+function digga {
   dig +nocmd "$1" any +multiline +noall +answer
 }
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
-function o() {
+function o {
   if [ $# -eq 0 ]; then
     open .
   else
@@ -116,7 +116,7 @@ function o() {
   fi
 }
 
-function auto_retry() {
+function auto_retry {
   false
   while [ $? -ne 0 ]; do
     "$@" || (
@@ -126,15 +126,15 @@ function auto_retry() {
   done
 }
 
-function ssh_auto_retry() {
+function ssh_auto_retry {
   auto_retry ssh "$@"
 }
 
-function length() {
+function length {
   echo "$#"
 }
 
-function bin_completion() {
+function bin_completion {
   local bins=(minikube kubectl helm)
   local in=($@)
   if [ "$(length $in)" -gt "0" ]; then
@@ -147,7 +147,7 @@ function bin_completion() {
   done
 }
 
-function get_process_environment() {
+function get_process_environment {
   local filter="$1"
   if test -z $filter; then
     echo "Must provide a filter to ps aux | grep"

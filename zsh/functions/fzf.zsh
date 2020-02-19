@@ -7,7 +7,7 @@
 stty stop undef
 # -----------------------------------------------------------------------------
 ## FZF:Unix functions ---------------------------------------------------------
-function fzf-ssh() {
+function fzf-ssh {
   local all_matches=$(rg "Host\s+\w+" ~/.ssh/config ~/.ssh/config.d/* | rg -v '\*' | awk '{print $NF}')
   local selection=$(echo "$all_matches" | fzf --height=10 --ansi --reverse --select-1)
   echo $selection
@@ -20,7 +20,7 @@ function fzf-ssh() {
 zle -N fzf-ssh
 
 # CTRL+F - show a list of functions and insert
-function fzf-funcs() {
+function fzf-funcs {
   LBUFFER="$(functions | rg -e "^[A-Za-z].+\(\) \{$" | awk '{print $1}' | fzf-tmux -d 15)"
   local ret=$?
   zle reset-prompt
@@ -30,7 +30,7 @@ zle -N fzf-funcs
 
 # -----------------------------------------------------------------------------
 ## FZF:Docker functions -------------------------------------------------------
-function fzf-dps() {
+function fzf-dps {
   local all_matches=$(docker container ls -a --format '{{.Names}}')
   local selection=$(echo "$all_matches" | fzf-tmux --height 40% --layout=reverse --border)
   echo $selection
@@ -44,7 +44,7 @@ zle -N fzf-dps
 
 # -----------------------------------------------------------------------------
 ## FZF:K8S functions ----------------------------------------------------------
-function fzf-k8s-logs() {
+function fzf-k8s-logs {
   if test -z $K8S_DEFAULT_NAMESPACE; then
     print_debug 'Getting pods from all namespaces'
     local all_matches=$(kubectl get pods --all-namespaces -o custom-columns=name:.metadata.name,namespace:.metadata.namespace)
@@ -67,7 +67,7 @@ function fzf-k8s-logs() {
 }
 zle -N fzf-k8s-logs
 
-function fzf-k8s-port-forward() {
+function fzf-k8s-port-forward {
   # Get all the available services
   local all_matches=$(kubectl get services --all-namespaces -o custom-columns=name:.metadata.name,namespace:.metadata.namespace)
   # User selects a service by it's name
