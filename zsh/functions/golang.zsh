@@ -7,10 +7,10 @@
 # Change go versions
 function go_ch() {
   if test -n "$1"; then
-    print_info "Running Gimme with $1" 'version'
+    print_debug "Running Gimme with $1" 'version'
     eval "$(GIMME_SILENT_ENV=true gimme $1)"
   else
-    print_info "Sourcing latest Gimme env..." 'latest'
+    print_debug "Sourcing latest Gimme env..." 'latest'
     test ! -L "$HOME/.gimme/envs/latest.env" || source "$HOME/.gimme/envs/latest.env"
   fi
 }

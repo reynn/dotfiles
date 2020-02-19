@@ -1,6 +1,16 @@
+/Users/reynn/git/github.com/reynn/dotfiles/zsh/.vars/.reynn
+/Users/reynn/git/github.com/reynn/dotfiles/.zshenv
+/Users/reynn/git/github.com/reynn/dotfiles/zsh/aliases/.reynn
+/Users/reynn/git/github.com/reynn/dotfiles/zsh/.hosts/.LIFELINE
+/Users/reynn/git/github.com/reynn/dotfiles/zsh/.hosts/.C02VPB5XHTD6
+/Users/reynn/git/github.com/reynn/dotfiles/xdg/configs/nvim/init.vim
+/Users/reynn/git/github.com/reynn/dotfiles/zsh/.hosts/.mimikyu.lan
+/Users/reynn/git/github.com/reynn/dotfiles/zsh/.hosts/.minito.lan
+/Users/reynn/.gimme/envs/go1.13.8.darwin.amd64.env
+/Users/reynn/.gimme/envs/go1.13.8.env
+/Users/reynn/git/github.com/reynn/dotfiles/zsh/functions/golang.zsh
 /Users/reynn/git/github.com/reynn/dotfiles/zsh/functions/k8s.zsh
 /private/etc/ansible/facts.d/commands.fact
-/Users/reynn/git/github.com/reynn/dotfiles/.zshenv
 /Users/reynn/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/_list.vim
 /Users/reynn/git/github.com/reynn/dotfiles/xdg/configs/nvim/mappings.vim
 /Users/reynn/git/github.com/reynn/dotfiles/xdg/configs/nvim/plugin/coc.vim

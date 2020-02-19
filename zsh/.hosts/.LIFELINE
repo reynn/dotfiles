@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-USER='reynn'
-SSH_IDENTITES=(id_rsa)
-
 zsh_plugins+=(
   ubuntu
 )

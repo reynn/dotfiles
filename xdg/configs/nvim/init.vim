@@ -64,7 +64,7 @@ set undofile
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
-set expandtab
+set noexpandtab
 
 " Wrapping options
 set formatoptions=tc " wrap text and comments using textwidth

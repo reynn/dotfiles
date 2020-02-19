@@ -1,8 +1,10 @@
 #!/usr/bin/env zsh
 
 USER='npatterson'
-SSH_IDENTITES=(id_rsa)
+SSH_IDENTITES+=(
+	id_github
+)
 
 zsh_plugins+=(
-  jira
+	jira
 )

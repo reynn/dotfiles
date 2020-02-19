@@ -3,8 +3,9 @@
 # -----------------------------------------------------------------------------
 # General ---------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-
-fpath=($DFP/zsh/.completions $fpath)
+if test -z "$(echo "${fpath//\ /\\n}" | grep -i $DFP/zsh/.completions)"; then
+  fpath+=($DFP/zsh/.completions)
+fi
 DEBUG="${DEBUG:-false}"
 
 # Special directories
@@ -12,7 +13,6 @@ GFP="$HOME/git"
 REYNN="$GFP/github.com/reynn"
 DFP="$REYNN/dotfiles"
 DIR_BINS="$HOME/.bins"
-
 HELP_JSON="$DFP/zsh/function_help.json"
 XDG_CONFIG_HOME="$DFP/xdg/configs"
 # Increase Bash history size. Allow 32³ entries; the default is 500.
