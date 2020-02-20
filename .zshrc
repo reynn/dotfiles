@@ -56,7 +56,7 @@ export ZSH="$(antibody list | grep oh-my-zsh | awk '{print $2}')"
 
 print_debug 'loading bundles' 'antibody'
 for bundle in $antibody_bundles; do
-  local sp=($(echo $bundle | cut -d',' --output-delimiter=$'\n' -f1-))
+  local sp=($(echo $bundle | tr ',' '\n'))
   print_debug "$sp" 'antibody.bundle'
   antibody bundle $sp
 done
