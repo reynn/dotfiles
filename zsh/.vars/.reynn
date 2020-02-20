@@ -4,38 +4,43 @@
 # General
 #+============================================================================+
 
-if test -z "$(echo "${fpath//\ /\\n}" | /usr/local/bin/grep -i $DFP/zsh/.completions)"; then
-  fpath+=($DFP/zsh/.completions)
-fi
-
+CURRENT_HOST="$(hostname)"
 DEBUG="${DEBUG:-false}"
 GFP="$HOME/git"
 REYNN="$GFP/github.com/reynn"
 DFP="$REYNN/dotfiles"
 DIR_BINS="$HOME/.bins"
 HELP_JSON="$DFP/zsh/function_help.json"
-XDG_CONFIG_HOME="$DFP/xdg/configs"
-HISTSIZE='32768'         # Increase Bash history size. Allow 32³ entries; the default is 500.
-HISTFILESIZE="$HISTSIZE"
 HISTCONTROL='ignoreboth' # Omit duplicates and commands that begin with a space from history.
+HISTFILESIZE="$HISTSIZE"
+HISTSIZE='32768'         # Increase Bash history size. Allow 32³ entries; the default is 500.
+TERM='xterm-256color'
+XDG_CONFIG_HOME="$DFP/xdg/configs"
 
-export HISTSIZE
-export HISTFILESIZE
-export HISTCONTROL
-export fpath
+# zsh magic to see if the string on the right is in the array on the left.
+# I means it returns the index of the item in the array, or 0 if not found
+# r means the output is the full string if found, or empty string
+if test -z ${$(fpaths)[(I)$DFP/zsh/.completions]}; then
+  fpath+=($DFP/zsh/.completions)
+fi
+
+export CURRENT_HOST
 export DEBUG
-export GFP
-export REYNN
 export DFP
 export DIR_BINS
+export GFP
 export HELP_JSON
+export HISTCONTROL
+export HISTFILESIZE
+export HISTSIZE
+export REYNN
+export TERM
 export XDG_CONFIG_HOME
+export fpath
 
 #+============================================================================+
 # Arrays
 #+============================================================================+
-
-SSH_IDENTITIES=(id_rsa)
 
 IMPORT_DIRECTORIES=(
   # Gather all of the directories in the zsh folder
@@ -43,7 +48,6 @@ IMPORT_DIRECTORIES=(
   # Exclude .hosts and .completions
   $($DIR_BINS/fd -H -I -t d -d1 -E '.hosts' -E '.completions' . $DFP/zsh)
 )
-
 POSSIBLE_PATHS=(
   "$PYENV_ROOT/bin"
   "$HOME/.bins"
@@ -69,10 +73,11 @@ POSSIBLE_PATHS=(
   "/sbin"
   "/bin"
 )
+SSH_IDENTITIES=(id_rsa)
 
 export IMPORT_DIRECTORIES
-export SSH_IDENTITIES
 export POSSIBLE_PATHS
+export SSH_IDENTITIES
 
 #+============================================================================+
 # XDG

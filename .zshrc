@@ -3,9 +3,6 @@
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
 
-CURRENT_HOST="$(hostname)"
-TERM=xterm-256color
-
 antibody_bundles=(
   robbyrussell/oh-my-zsh
   robbyrussell/oh-my-zsh,path:plugins/aws
@@ -35,20 +32,13 @@ antibody_bundles=(
   bhilburn/powerlevel9k,path:powerlevel9k.zsh-theme
 )
 
-export CURRENT_HOST
-export TERM
 export antibody_bundles
-
-source $HOME/git/github.com/reynn/dotfiles/zsh/aliases/.reynn
-source $HOME/git/github.com/reynn/dotfiles/zsh/.vars/.reynn
 test -f $DFP/zsh/.hosts/.$CURRENT_HOST || source $DFP/zsh/.hosts/.$CURRENT_HOST
-source $DFP/zsh/functions/.reynn
-source $DFP/zsh/functions/text.zsh
 
-export DEBUG='true'
+#+============================================================================+
+# Antibody: Initialize
+#+============================================================================+
 
-# -----------------------------------------------------------------------------
-# Antibody:Setup --------------------------------------------------------------
 source <(antibody init)
 
 # Setup required env var for oh-my-zsh plugins
