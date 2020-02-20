@@ -16,6 +16,6 @@ SSH_IDENTITES+=(
   workflow-image-builder.pem
 )
 
-+=(
-  jira
+antibody_bundles+=(
+  robbyrussell/oh-my-zsh,path:plugins/jira
 )

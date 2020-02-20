@@ -23,7 +23,6 @@ antibody_bundles=(
   robbyrussell/oh-my-zsh,path:plugins/sudo
   robbyrussell/oh-my-zsh,path:plugins/themes
   robbyrussell/oh-my-zsh,path:plugins/tmux
-  robbyrussell/oh-my-zsh,path:plugins/wd
   robbyrussell/oh-my-zsh,path:plugins/zsh-interactive-cd
   robbyrussell/oh-my-zsh,path:plugins/zsh_reload
   zsh-users/zsh-autosuggestions
@@ -33,7 +32,7 @@ antibody_bundles=(
 )
 
 export antibody_bundles
-test -f $DFP/zsh/.hosts/.$CURRENT_HOST || source $DFP/zsh/.hosts/.$CURRENT_HOST
+test ! -r $DFP/zsh/.hosts/.$CURRENT_HOST || source $DFP/zsh/.hosts/.$CURRENT_HOST
 
 #+============================================================================+
 # Antibody: Initialize
@@ -95,7 +94,6 @@ for f in $IMPORT_DIRECTORIES; do
 done
 
 source_paths=(
-  "$HOME/.iterm2_shell_integration.zsh"
   "$GFP/github.com/thecasualcoder/kube-fzf/kube-fzf.sh"
 )
 
@@ -115,5 +113,3 @@ fi
 autoload -U compinit && compinit
 
 # zprof # uncomment to debug performance issues with zsh startup
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

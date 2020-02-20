@@ -49,9 +49,7 @@ function import_zsh_files {
 }
 
 function debug_call {
-  set -x
-  $@
-  set +x
+  set -x; $@; set +x;
 }
 
 # -----------------------------------------------------------------------------
