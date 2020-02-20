@@ -16,10 +16,10 @@ Plug 'https://github.com/junegunn/vim-easy-align'       " Handle aligning text
 Plug 'https://github.com/dhruvasagar/vim-table-mode'    " Convert text block to a table
 Plug 'https://github.com/mg979/vim-visual-multi'        " Multi line select, easily find recurring text
 Plug 'https://github.com/mhinz/vim-sayonara'            " Deletes the buffer and handles windows more intelligently
-Plug 'https://github.com/tpope/vim-commentary'          " Quickly comment out lines (gcc, gcap, v:gc)
+Plug 'https://github.com/tpope/vim-commentary'          " Quickly comment out lines (gcc, gcap, vis:gc)
 Plug 'https://github.com/tpope/vim-fugitive'            " Extensive Git integration added to Vim
 Plug 'https://github.com/tpope/vim-rhubarb'             " Add fancy extras for GitHub to the vim-fugitive plugin
-Plug 'https://github.com/tpope/vim-surround'            " Surround text with characters
+Plug 'https://github.com/tpope/vim-surround'            " Surround text with characters (ysiw], vis:ys, yssb)
 Plug 'https://github.com/ctrlpvim/ctrlp.vim'            " Fuzzy finding of files, buffers and more
 Plug 'https://github.com/mbbill/undotree'               " Show a branching history of undo/redo
 
@@ -51,7 +51,7 @@ Plug 'https://github.com/junegunn/fzf.vim'              " Additional Vim setup f
 " Plugins: Language support
 
 Plug 'https://github.com/pearofducks/ansible-vim'       " Ansible goodies
-Plug 'https://github.com/fatih/vim-go', { 
+Plug 'https://github.com/fatih/vim-go', {
   \'for': 'go',
   \'do': ':GoUpdateBinaries'
 \}                                                      " Lots of goodies for writing Golang code
