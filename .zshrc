@@ -3,38 +3,49 @@
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
 
-export CURRENT_HOST="$(hostname)"
-export TERM=xterm-256color
+CURRENT_HOST="$(hostname)"
+TERM=xterm-256color
 
-# Moved list here so we can overwrite or add by host
-zsh_plugins=(
-  aws
-  cargo
-  dircycle
-  docker
-  docker-compose
-  encode64
-  extract
-  fancy-ctrl-z
-  httpie
-  kubectl
-  pip
-  pipenv
-  python
-  ripgrep
-  rsync
-  sudo
-  themes
-  tmux
-  wd
-  zsh-interactive-cd
-  zsh_reload
+antibody_bundles=(
+  robbyrussell/oh-my-zsh
+  robbyrussell/oh-my-zsh,path:plugins/aws
+  robbyrussell/oh-my-zsh,path:plugins/cargo
+  robbyrussell/oh-my-zsh,path:plugins/dircycle
+  robbyrussell/oh-my-zsh,path:plugins/docker
+  robbyrussell/oh-my-zsh,path:plugins/docker-compose
+  robbyrussell/oh-my-zsh,path:plugins/encode64
+  robbyrussell/oh-my-zsh,path:plugins/extract
+  robbyrussell/oh-my-zsh,path:plugins/fancy-ctrl-z
+  robbyrussell/oh-my-zsh,path:plugins/httpie
+  robbyrussell/oh-my-zsh,path:plugins/kubectl
+  robbyrussell/oh-my-zsh,path:plugins/pip
+  robbyrussell/oh-my-zsh,path:plugins/pipenv
+  robbyrussell/oh-my-zsh,path:plugins/python
+  robbyrussell/oh-my-zsh,path:plugins/ripgrep
+  robbyrussell/oh-my-zsh,path:plugins/rsync
+  robbyrussell/oh-my-zsh,path:plugins/sudo
+  robbyrussell/oh-my-zsh,path:plugins/themes
+  robbyrussell/oh-my-zsh,path:plugins/tmux
+  robbyrussell/oh-my-zsh,path:plugins/wd
+  robbyrussell/oh-my-zsh,path:plugins/zsh-interactive-cd
+  robbyrussell/oh-my-zsh,path:plugins/zsh_reload
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-syntax-highlighting
+  zsh-users/zsh-completions
+  bhilburn/powerlevel9k,path:powerlevel9k.zsh-theme
 )
 
+export CURRENT_HOST
+export TERM
+export antibody_bundles
+
+source $HOME/git/github.com/reynn/dotfiles/zsh/aliases/.reynn
 source $HOME/git/github.com/reynn/dotfiles/zsh/.vars/.reynn
-source $DFP/zsh/.hosts/.$CURRENT_HOST
+test -f $DFP/zsh/.hosts/.$CURRENT_HOST || source $DFP/zsh/.hosts/.$CURRENT_HOST
 source $DFP/zsh/functions/.reynn
 source $DFP/zsh/functions/text.zsh
+
+export DEBUG='true'
 
 # -----------------------------------------------------------------------------
 # Antibody:Setup --------------------------------------------------------------
@@ -43,17 +54,12 @@ source <(antibody init)
 # Setup required env var for oh-my-zsh plugins
 export ZSH="$(antibody list | grep oh-my-zsh | awk '{print $2}')"
 
-antibody bundle robbyrussell/oh-my-zsh
-antibody bundle zsh-users/zsh-autosuggestions
-antibody bundle zsh-users/zsh-syntax-highlighting
-antibody bundle zsh-users/zsh-completions
-
-for pl in $zsh_plugins; do
-  antibody bundle robbyrussell/oh-my-zsh path:plugins/$pl
+print_debug 'loading bundles' 'antibody'
+for bundle in $antibody_bundles; do
+  local sp=($(echo $bundle | cut -d',' --output-delimiter=$'\n' -f1-))
+  print_debug "$sp" 'antibody.bundle'
+  antibody bundle $sp
 done
-
-# Load the theme.
-antibody bundle bhilburn/powerlevel9k path:powerlevel9k.zsh-theme
 
 # -----------------------------------------------------------------------------
 # ZSH -------------------------------------------------------------------------
@@ -78,7 +84,6 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
 )
 HYPHEN_INSENSITIVE='true'
 COMPLETION_WAITING_DOTS='true'
-
 
 # -----------------------------------------------------------------------------
 ## ZSH:Functions --------------------------------------------------------------

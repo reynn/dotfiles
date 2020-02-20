@@ -81,7 +81,7 @@ function main() {
     print_installing "ansible configuration..."
     mkdir -p "$HOME/.bins"
     export PATH="$HOME/.bins:$PATH"
-    ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/playbook-config.yaml
+    ANSIBLE_CONFIG=$DFP/ansible.cfg ansible-playbook $DFP/config.yaml
     ln -sfn $DFP/.zshrc $HOME/.zshrc
   else
     print_installing "re-linking .zshrc..."

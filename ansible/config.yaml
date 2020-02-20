@@ -12,7 +12,7 @@
     - name: Install certificate handling for darwin
       shell: "sh '/Applications/Python {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install Certificates.command'"
       register: cert_handler
-      changed_when: '"Requirement already up-to-date" not in cert_handler.stdout'
+      changed_when: 'not "Requirement already up-to-date" not in cert_handler.stdout'
       when: ansible_system == 'Darwin'
       tags:
         - pip
@@ -75,16 +75,13 @@
       loop: "{{ git_repos }}"
       loop_control:
         label: "{{ item.repo }}"
+      register: git_clone_results
+      notify:
+        - Run fzf install script
       tags:
         - update
         - git
-        - clone
-
-    - name: Run fzf install script
-      shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
-      tags:
-        - commands
-        - update
+        - repos
 
     - name: Ensure binary dirs exist
       file:

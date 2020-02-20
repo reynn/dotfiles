@@ -16,6 +16,6 @@ SSH_IDENTITES+=(
   workflow-image-builder.pem
 )
 
-zsh_plugins+=(
++=(
   jira
 )

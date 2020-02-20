@@ -13,6 +13,7 @@ click = "*"
 requests = "*"
 bs4 = "*"
 pynvim = "*"
+ansible-lint = "*"
 
 [requires]
 python_version = "3.8"

@@ -17,7 +17,7 @@ function update_dotfiles {
     esac
   done
   local args=(
-    $DFP/ansible/playbook-config.yaml
+    $DFP/ansible/config.yaml
   )
   if test $verbosity; then
     args+=("-$verbosity")

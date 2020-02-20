@@ -1,0 +1,4 @@
+---
+handlers:
+  - name: Run fzf install script
+    shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
