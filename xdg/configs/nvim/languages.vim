@@ -12,4 +12,4 @@ if index(fts, &filetype) == -1
 endif
 
 " Script plugins
-autocmd Filetype html,xml,xsl,php source expand('$XDG_CONFIG_HOME/nvim/scripts/closetag.vim')
+autocmd Filetype html,xml,xsl,php source $XDG_CONFIG_HOME/nvim/scripts/closetag.vim

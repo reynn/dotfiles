@@ -13,7 +13,7 @@ alias -g NE='2 > /dev/null'
 alias -g NUL='> /dev/null 2>&1'
 alias -g S='| sort'
 alias -g bins='cd $DIR_BINS'
-alias -g grep='rg -i'
+#alias -g grep='rg -i'
 alias -g izf='import_zsh_files $IMPORT_DIRECTORIES'
 alias -g reynn='cd $REYNN'
 

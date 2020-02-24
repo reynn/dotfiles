@@ -10,7 +10,6 @@ Plug 'https://github.com/AndrewRadev/splitjoin.vim'     " Switch between a singl
 Plug 'https://github.com/Raimondi/delimitMate'          " automatic closing of quotes, parenthesis, brackets, etc.
 Plug 'https://github.com/ciaranm/securemodelines'       " Secure, user-configurable modeline support for Vim
 Plug 'https://github.com/easymotion/vim-easymotion'     " Simplify movement in vim
-Plug 'https://github.com/godlygeek/tabular'             " Formatter that allows alignment by any character
 Plug 'https://github.com/honza/vim-snippets'            " Contains a bunch of pre-configured snippets
 Plug 'https://github.com/junegunn/vim-easy-align'       " Handle aligning text
 Plug 'https://github.com/dhruvasagar/vim-table-mode'    " Convert text block to a table
@@ -58,7 +57,9 @@ Plug 'https://github.com/fatih/vim-go', {
 Plug 'https://github.com/hashivim/vim-packer'           " Add support for Hashicorp Packer
 Plug 'https://github.com/hashivim/vim-terraform'        " Add support for Hashicorp Terraform
 Plug 'https://github.com/mzlogin/vim-markdown-toc'      " Manage ToC sections for Markdown files
-Plug 'https://github.com/neoclide/coc.nvim'             " Intellisense for Vim, uses language servers like VSCode
+Plug 'https://github.com/neoclide/coc.nvim', {
+  \'do': 'yarn install --frozen-lockfile'
+\}                                                      " Intellisense for Vim, uses language servers like VSCode
 Plug 'https://github.com/python-mode/python-mode', {
   \'for':    'python',
   \'branch': 'develop'

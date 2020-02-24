@@ -8,3 +8,4 @@ configs/nvim/plugged/
 neovim.log
 xdg/configs/coc/**
 .DS_Store
+xdg/configs/configstore/update-notifier-npm.json

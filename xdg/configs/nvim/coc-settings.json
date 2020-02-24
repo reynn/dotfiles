@@ -1,14 +1,12 @@
 {
   "coc.preferences.formatOnSaveFiletypes": [
     "rust",
-    "go"
+    "go",
+    "yaml",
+    "json",
+    "vim"
   ],
-  "explorer.width": 40,
-  "explorer.openAction.strategy": "previousBuffer",
-  "explorer.position": "left",
-  "explorer.file.autoReveal": true,
-  "explorer.file.showHiddenFiles": true,
-  "codeLens.enable": false,
+  "codeLens.enable": true,
   "json.enable": true,
   "languageserver": {
     "golang": {
