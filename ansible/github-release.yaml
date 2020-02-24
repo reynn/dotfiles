@@ -11,9 +11,6 @@
     glrfg_platform: "{{ item.platform | default(omit)}}"
     glrfg_bins_path: "{{ bins_dir }}/{{ item.repository.split('/')[-1] }}_bin"
     glrfg_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.repository.split('/')[-1]) }}"
-  tags:
-    - binaries
-    - update
 
 - name: Display init
   debug:
@@ -25,24 +22,15 @@
       glrfg_bins_path={{ glrfg_bins_path | default('') }}
       glrfg_alias_path={{ glrfg_alias_path | default('') }}
   when: debug_mode|default(False)|bool
-  tags:
-    - binaries
-    - update
 
 - name: Create Binary subdirectory
   file:
     path: "{{ glrfg_bins_path }}"
     state: directory
-  tags:
-    - binaries
-    - update
 
 - name: "Determining appropriate asset to download from GitHub for {{ item.repository }} wo-Platform"
   shell: "helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }}"
   register: glrfg_binary_shell
-  tags:
-    - binaries
-    - update
   when: glrfg_platform is not defined
 
 - name: "Configure release variables wo-Platform"
@@ -52,17 +40,11 @@
     glrfg_type: "{{ (glrfg_binary_shell.stdout | from_json)[0].type }}"
     glrfg_tag: "{{ (glrfg_binary_shell.stdout | from_json)[0].tag }}"
   when: glrfg_platform is not defined
-  tags:
-    - binaries
-    - update
 
 - name: "Determining appropriate asset to download from GitHub for {{ item.repository }} w-Platform"
   shell: "helpers gh get asset --host {{ glrfg_host }} --owner {{ glrfg_owner }} --repo {{ glrfg_repository }} -p '{{ glrfg_platform }}'"
   register: glrfg_binary_shell
   when: glrfg_platform is defined
-  tags:
-    - binaries
-    - update
 
 - name: "Configure release variables w-Platform"
   set_fact:
@@ -71,9 +53,6 @@
     glrfg_type: "{{ (glrfg_binary_shell.stdout | from_json)[0].type }}"
     glrfg_tag: "{{ (glrfg_binary_shell.stdout | from_json)[0].tag }}"
   when: glrfg_platform is defined
-  tags:
-    - binaries
-    - update
 
 - debug:
     msg: |
@@ -82,9 +61,6 @@
       glrfg_type={{ glrfg_type }}
       glrfg_tag={{ glrfg_tag }}
   when: debug_mode|default(False)|bool
-  tags:
-    - binaries
-    - update
 
 - name: Handle download and recovery
   block:
@@ -93,17 +69,11 @@
       register: glrfg_out_exists
       changed_when: glrfg_out_exists.stderr != ""
       failed_when: glrfg_out_exists.stderr != ""
-      tags:
-        - binaries
-        - update
 
     - name: Creating version subdirectory
       file:
         path: "{{ glrfg_bins_path }}/{{ glrfg_tag }}"
         state: directory
-      tags:
-        - binaries
-        - update
 
     - name: Downloading binary
       get_url:
@@ -111,9 +81,13 @@
         dest: "{{ glrfg_bins_path }}/{{ glrfg_tag }}/{{ glrfg_name }}"
       register: glrfg_get_url
       when: "glrfg_out_exists.rc == 1"
-      tags:
-        - binaries
-        - update
+
+    - name: Extract archive file
+      shell: |
+        #!/usr/bin/env bash
+        set -eou setpipefail
+
+        {{ dotfiles_path }}/scripts/extract -i {{ glrfg_get_url.dest }} -o {{ glrfg_bins_path }}/{{ glrfg_tag }}
 
     - name: Extracting gzip file
       shell: |
@@ -124,9 +98,6 @@
       when:
         - 'glrfg_type == "application/gzip" or glrfg_name.find(".tar.gz") >= 1'
         - "glrfg_get_url.changed"
-      tags:
-        - binaries
-        - update
 
     - name: Extracting zip file
       shell: |
@@ -137,18 +108,12 @@
       when:
         - 'glrfg_type == "application/zip"'
         - "glrfg_get_url.changed"
-      tags:
-        - binaries
-        - update
 
     - name: Remove alias before linking
       file:
         path: "{{ glrfg_alias_path }}"
         state: absent
       when: "glrfg_get_url.changed"
-      tags:
-        - binaries
-        - update
 
     - name: Register symlink after extracting gzip
       file:
@@ -156,9 +121,6 @@
         path: "{{ glrfg_alias_path }}"
         state: link
       when: "glrfg_extract_gzip.changed"
-      tags:
-        - binaries
-        - update
 
     - name: Register symlink after extracting zip
       file:
@@ -166,9 +128,6 @@
         path: "{{ glrfg_alias_path }}"
         state: link
       when: "glrfg_extract_zip.changed"
-      tags:
-        - binaries
-        - update
 
     - name: Mark binary as executable
       file:
@@ -180,9 +139,6 @@
         - '".deb" not in glrfg_name'
         - '".tar.gz" not in glrfg_name'
         - "glrfg_get_url.changed"
-      tags:
-        - binaries
-        - update
 
     - name: Install deb package
       apt:
@@ -192,9 +148,6 @@
         - 'glrfg_type == "application/octet-stream"'
         - '".deb" in glrfg_name'
         - "glrfg_get_url.changed"
-      tags:
-        - binaries
-        - update
 
     - name: "Register symlink after binary + exec"
       file:
@@ -203,9 +156,6 @@
         state: link
       when:
         - "glrfg_executable.changed"
-      tags:
-        - binaries
-        - update
   ignore_errors: yes
   rescue:
     - name: Cleanup failed download

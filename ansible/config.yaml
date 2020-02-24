@@ -1,5 +1,10 @@
 ---
 - hosts: localhost
+  force_handlers: yes
+
+  handlers:
+    - name: "Run fzf install script"
+      shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
 
   tasks:
     - name: Include vars from ansible directory
@@ -72,12 +77,12 @@
         repo: "{{ item.repo }}"
         dest: "{{ item.dest }}"
         depth: 1
+      ignore_errors: "{{ item.ignore_errors | default('no') }}"
       loop: "{{ git_repos }}"
       loop_control:
         label: "{{ item.repo }}"
       register: git_clone_results
-      notify:
-        - Run fzf install script
+      notify: "{{ item.handler | default(omit) }}"
       tags:
         - update
         - git
@@ -132,7 +137,12 @@
       tags:
         - commands
 
-    - include_tasks: "{{ ansible_env.PWD }}/github-release.yaml"
+    - include_tasks:
+        file: "{{ ansible_env.PWD }}/github-release.yaml"
+        apply:
+          tags:
+            - binaries
+            - update
       loop: "{{ bin_downloads | sort(attribute='repository') }}"
       tags:
         - binaries

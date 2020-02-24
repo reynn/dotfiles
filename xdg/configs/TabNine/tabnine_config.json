@@ -4,7 +4,9 @@
   "beta_enabled": "Yes",
   "ignore_all_lsp": false,
   "creation_time": "2020-02-13T05:04:35.130173300Z",
-  "semantic_status": {},
+  "semantic_status": {
+    "javascript": "Enabled"
+  },
   "disable_auto_update": false,
   "user_understands_that_enabling_tabnine_cloud_sends_code_to_tabnine_servers": false,
   "hosted_deep_completions_enabled": "Disabled",

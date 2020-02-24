@@ -83,13 +83,17 @@ docker_images:
       pull: yes
       path: "{{ dotfiles_path }}/docker/yiff.party"
 
+# Ignoring errors on personal repos so we can proceed when there are local changes
 git_repos:
   - repo: git@github.com:reynn/dotfiles.git
     dest: "{{ dotfiles_path }}"
+    ignore_errors: yes
   - repo: git@github.com:reynn/k8s.git
     dest: "{{ github_path }}/reynn/k8s"
+    ignore_errors: yes
   - repo: git@github.com:reynn/k8s-ops.git
     dest: "{{ github_path }}/reynn/k8s-ops"
+    ignore_errors: yes
   - repo: git@github.com:thecasualcoder/kube-fzf.git
     dest: "{{ github_path }}/thecasualcoder/kube-fzf"
   - repo: git@github.com:mbadolato/iTerm2-Color-Schemes.git
@@ -98,6 +102,7 @@ git_repos:
     dest: "{{ github_path }}/powerline/fonts"
   - repo: git@github.com:junegunn/fzf.git
     dest: "{{ github_path }}/junegunn/fzf"
+    handler: "Run fzf install script"
   - repo: git@github.com:pyenv/pyenv.git
     dest: "{{ github_path }}/pyenv/pyenv"
   - repo: git@github.com:VundleVim/Vundle.vim.git

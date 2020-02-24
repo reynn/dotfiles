@@ -16,9 +16,11 @@ function update_dotfiles {
         return 0 ;;
     esac
   done
+
   local args=(
     $DFP/ansible/config.yaml
   )
+
   if test $verbosity; then
     args+=("-$verbosity")
   fi
@@ -29,6 +31,7 @@ function update_dotfiles {
       $tags
     )
   fi
+
   echo "args: $args"
   ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook ${args[@]}
 }
