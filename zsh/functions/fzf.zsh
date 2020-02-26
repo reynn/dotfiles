@@ -21,7 +21,8 @@ zle -N fzf-ssh
 
 # CTRL+F - show a list of functions and insert
 function fzf-funcs {
-  LBUFFER="$(functions | rg -e "^[A-Za-z].+\(\) \{$" | awk '{print $1}' | fzf-tmux -d 15)"
+  # (Ok) Ordered, keys_only
+  LBUFFER="$(printf '%s\n' ${(ok)functions} | rg -v '^(\+|__?)' | fzf-tmux -d 15)"
   local ret=$?
   zle reset-prompt
   return $ret

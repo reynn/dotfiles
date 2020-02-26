@@ -70,7 +70,7 @@ map L $
 
 " Neat X clipboard integration
 " ,p will paste clipboard into buffer
-noremap <leader>p :read !pbpaste<cr>
+noremap <leader>p :r !pbpaste<cr><cr>
 " ,c will copy entire buffer into clipboard
 noremap <leader>c :w !pbcopy<cr><cr>
 

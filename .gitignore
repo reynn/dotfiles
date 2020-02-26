@@ -9,3 +9,7 @@ neovim.log
 xdg/configs/coc/**
 .DS_Store
 xdg/configs/configstore/update-notifier-npm.json
+xdg/configs/coc/**
+!xdg/configs/coc/ultisnips/**
+!xdg/configs/coc/lists
+!xdg/configs/coc/commands
