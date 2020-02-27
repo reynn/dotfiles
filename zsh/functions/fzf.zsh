@@ -8,14 +8,11 @@ stty stop undef
 # -----------------------------------------------------------------------------
 ## FZF:Unix functions ---------------------------------------------------------
 function fzf-ssh {
-  local all_matches=$(rg "Host\s+\w+" ~/.ssh/config ~/.ssh/config.d/* | rg -v '\*' | awk '{print $NF}')
-  local selection=$(echo "$all_matches" | fzf --height=10 --ansi --reverse --select-1)
-  echo $selection
-  if [ ! -z $selection ]; then
-    BUFFER="ssh $selection"
-    zle accept-line
-  fi
+  local hosts=$(rg "Host\s+\w+" ~/.ssh/config* | rg -v '\*' | awk '{print $NF}')
+  LBUFFER="ssh $(echo "$hosts" | fzf-tmux -d 15)"
+  local ret=$?
   zle reset-prompt
+  return $ret
 }
 zle -N fzf-ssh
 
@@ -32,14 +29,11 @@ zle -N fzf-funcs
 # -----------------------------------------------------------------------------
 ## FZF:Docker functions -------------------------------------------------------
 function fzf-dps {
-  local all_matches=$(docker container ls -a --format '{{.Names}}')
-  local selection=$(echo "$all_matches" | fzf-tmux --height 40% --layout=reverse --border)
-  echo $selection
-  if [ ! -z $selection ]; then
-    BUFFER="docker logs -f $selection"
-    zle accept-line
-  fi
+  local containers=$(docker container ls -a --format '{{.Names}}')
+  LBUFFER="docker logs -f $(echo "$containers" | fzf-tmux --height 40% --layout=reverse --border)"
+  local ret=$?
   zle reset-prompt
+  return $ret
 }
 zle -N fzf-dps
 
@@ -58,13 +52,13 @@ function fzf-k8s-logs {
   print_debug "$pod" "pod"
   local namespace=$(echo "$all_matches" | grep $pod | awk '{print $2}')
   local container="$(kubectl get pod -n $namespace $pod -o jsonpath='{.spec.containers[].name}' | fzf --select-1)"
+  local ret=$?
   print_debug "$namespace" "namespace"
   if [ ! -z $pod ]; then
-    BUFFER="kubectl logs -n $namespace -f $pod -c $container"
-    echo $BUFFER
-    zle accept-line
+    LBUFFER="kubectl logs -n $namespace -f $pod -c $container"
   fi
   zle reset-prompt
+  return $ret
 }
 zle -N fzf-k8s-logs
 
