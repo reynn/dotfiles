@@ -55,8 +55,8 @@ EOF
     *.rpm) mkdir -p "$extract_dir" && cd "$extract_dir" && rpm2cpio "../$1" | cpio --quiet -id && cd .. ;;
     *.7z) 7za x "$1" ;;
     *.deb)
-      mkdir -p -p "$extract_dir/control"
-      mkdir -p -p "$extract_dir/data"
+      mkdir -p "$extract_dir/control"
+      mkdir -p "$extract_dir/data"
       cd "$extract_dir"
       ar vx "../${1}" >/dev/null
       cd control

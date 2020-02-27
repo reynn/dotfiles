@@ -2,17 +2,17 @@
 
 # Initialize this dotfile repo as well as run updates when necessary
 
-typeset -A styles
-
-styles[full]='Sources all zsh files to refresh aliases/exports/functions'
-styles[aliases]='Sources just the aliases from the zsh directory'
-styles[exports]='Sources just the aliases from the zsh directory'
-styles[functions]='Sources just the aliases from the zsh directory'
+typeset -A styles=(
+  [full]='Sources all zsh files to refresh aliases/exports/functions'
+  [aliases]='Sources just the aliases from the zsh directory'
+  [exports]='Sources just the aliases from the zsh directory'
+  [functions]='Sources just the aliases from the zsh directory'
+)
 
 SCRIPT_NAME="${0:t:r}"
 DEBUG='false'
 
-function __print_help() {
+function __print_help {
   echo "Usage: $SCRIPT_NAME [ -s STYLE ]"
   echo '----------------------------------------------------------------'
   echo 'Available styles:'
@@ -21,19 +21,40 @@ function __print_help() {
   done
 }
 
-function handle_aliases() {
+function __get_files {
+  local filter="$1"
+  local path="$2"
+  $DIR_BINS/fd -t f $filter $path
+}
+
+function __import {
+  local f="$1"
+  print_debug $f '__import'
+  source $f
+}
+
+function handle_aliases {
   echo 'Initializing aliases...'
+  for alias in $(__get_files '.+\.zsh' $DFP/zsh/aliases/); do
+    __import "$alias"
+  done
 }
 
-function handle_exports() {
+function handle_exports {
   echo 'Initializing exports...'
+  for exportable in $(__get_files '.+\.zsh' $DFP/zsh/.vars/); do
+    __import "$exportable"
+  done
 }
 
-function handle_functions() {
+function handle_functions {
   echo 'Initializing functions...'
+  for func in $(__get_files '.+\.zsh' $DFP/zsh/functions/); do
+    __import "$func"
+  done
 }
 
-function main() {
+function main {
   while getopts "hvs:" opt; do
     case $opt in
       s) STYLE="$OPTARG" ;;
