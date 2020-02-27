@@ -179,8 +179,8 @@ autocorrect = 1
 log = true
 
 [user]
-	email = you@example.com
-	name = arasureynn@gmail.com
+	email = nic.patterson@sap.com
+	name = Nic Patterson
 	signingKey = 2FC3D185926DD8FFAFA6822E1B2F6C5355BB1CFB
 
 [push]

@@ -68,11 +68,10 @@ nnoremap <C-h> :nohlsearch<cr>
 map H ^
 map L $
 
-" Neat X clipboard integration
-" ,p will paste clipboard into buffer
-noremap <leader>p :r !pbpaste<cr><cr>
-" ,c will copy entire buffer into clipboard
-noremap <leader>c :w !pbcopy<cr><cr>
+" ,p will paste clipboard into current buffer
+noremap <leader>p "*p
+" ,c will copy selected (visual mode) contents to clipboard
+noremap <leader>c "*y
 
 " <leader>s for Rg search
 noremap <leader>s :Rg

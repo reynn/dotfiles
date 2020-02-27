@@ -6,3 +6,5 @@ augroup matchup_matchparen_highlight
   autocmd!
   autocmd ColorScheme * hi MatchParen guifg=red
 augroup END
+
+hi MatchWord cterm=underline gui=underline,bold

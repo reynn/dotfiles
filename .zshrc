@@ -59,17 +59,17 @@ done
 ZSH_THEME='powerlevel9k/powerlevel9k'
 POWERLEVEL9K_PROMPT_ON_NEWLINE='true'
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-  context
-  dir
-  go_version
-  vcs
+	context
+	dir
+	go_version
+	vcs
 )
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-  virtualenv
-  command_execution_time
-  aws
-  status
-  dir_writable
+	virtualenv
+	command_execution_time
+	aws
+	status
+	dir_writable
 )
 HYPHEN_INSENSITIVE='true'
 COMPLETION_WAITING_DOTS='true'
@@ -113,3 +113,5 @@ fi
 autoload -U compinit && compinit
 
 # zprof # uncomment to debug performance issues with zsh startup
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
