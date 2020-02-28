@@ -38,8 +38,10 @@ packages:
 
 # ------------
 # Lists
-# TODO:           Add ability to pull pre-releases
+# TODO: Add ability to pull pre-releases
 bin_downloads:
+  - repository: PowerShell/PowerShell
+    description: PowerShell for every system!
   - repository: wercker/stern
     description: K8s logging helper
   - repository: stedolan/jq

@@ -50,6 +50,7 @@ IMPORT_DIRECTORIES=(
 )
 POSSIBLE_PATHS=(
   "$PYENV_ROOT/bin"
+  "$HOME/.yarn/bin"
   "$HOME/.bins"
   "$HOME/.cargo/bin"
   "$DFP/scripts"
