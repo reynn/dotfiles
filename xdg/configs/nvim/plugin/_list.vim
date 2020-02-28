@@ -21,6 +21,7 @@ Plug 'https://github.com/mhinz/vim-sayonara'              " Deletes the buffer a
 Plug 'https://github.com/tpope/vim-fugitive'              " Extensive Git integration added to Vim
 Plug 'https://github.com/tpope/vim-repeat'                " Beef up the default . repeater
 Plug 'https://github.com/tpope/vim-rhubarb'               " Add fancy extras for GitHub to the vim-fugitive plugin
+Plug 'https://github.com/editorconfig/editorconfig-vim'   " Use of .editorconfig files to set indentation etc
 
 " Plugins: Text Objects/Motions/Editing
 
