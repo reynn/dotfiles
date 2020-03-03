@@ -20,6 +20,7 @@ antibody_bundles=(
   robbyrussell/oh-my-zsh,path:plugins/python
   robbyrussell/oh-my-zsh,path:plugins/ripgrep
   robbyrussell/oh-my-zsh,path:plugins/rsync
+  robbyrussell/oh-my-zsh,path:plugins/rust
   robbyrussell/oh-my-zsh,path:plugins/sudo
   robbyrussell/oh-my-zsh,path:plugins/themes
   robbyrussell/oh-my-zsh,path:plugins/tmux
@@ -104,16 +105,9 @@ done
 
 go_ch
 
-# If pyenv is installed on this machine initialize it
-if test "$(command -v pyenv)"; then
-  eval "$(pyenv init -)"
-fi
-
 # Initialize completions
 autoload -U compinit && compinit
 
 # zprof # uncomment to debug performance issues with zsh startup
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

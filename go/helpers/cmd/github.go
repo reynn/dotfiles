@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
@@ -72,6 +73,7 @@ var (
 			} else {
 				assets := filterAssets(ret, filterPlatform)
 				assets = filterAssets(assets, filterShaFiles)
+				assets = filterAssets(assets, filterExtensions)
 				if len(assets) > 1 {
 					assets = filterAssets(assets, filterArchitecture)
 				}
@@ -95,6 +97,18 @@ func filterPlatform(asset assetReturn) bool {
 	return matched
 }
 
+func filterExtensions(asset assetReturn) bool {
+	disallowedExts := []string{".pkg"}
+	ext := filepath.Ext(asset.Name)
+	for _, ignored := range disallowedExts {
+		debugPrint("Ignored: %s | asset: %s\n", ignored, ext)
+		if ignored == ext {
+			return false
+		}
+	}
+	return true
+}
+
 func filterShaFiles(asset assetReturn) bool {
 	f := strings.HasSuffix(asset.URL, ".sha256")
 	debugPrint("Filter: %s | Name: %s | Result: %v\n", "sha256", asset.Name, f)
@@ -105,7 +119,7 @@ func filterArchitecture(asset assetReturn) bool {
 	var arch string
 	switch runtime.GOARCH {
 	case "amd64":
-		arch = "amd64|x86_64|x8664|64bit"
+		arch = "amd64|x86_64|x8664|64bit|x64"
 	}
 	debugPrint("Filter: %s | Name: %s\n", arch, asset.Name)
 	matched, err := regexp.MatchString(arch, strings.ToLower(asset.Name))

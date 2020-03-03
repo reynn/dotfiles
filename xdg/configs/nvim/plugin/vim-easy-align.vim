@@ -5,3 +5,5 @@ xmap ga <Plug>(LiveEasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(LiveEasyAlign)
+
+let g:easy_align_ignore_groups = ['Comment', 'String']

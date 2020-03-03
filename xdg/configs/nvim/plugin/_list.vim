@@ -16,20 +16,27 @@ Plug 'https://github.com/honza/vim-snippets'              " Contains a bunch of 
 Plug 'https://github.com/junegunn/vim-easy-align'         " Handle aligning text
 Plug 'https://github.com/mbbill/undotree'                 " Show a branching history of undo/redo
 Plug 'https://github.com/mg979/vim-visual-multi'          " Multi line select, easily find recurring text
-"Plug 'https://github.com/terryma/vim-multiple-cursors'    " Multi line select
+Plug 'https://github.com/terryma/vim-multiple-cursors'    " Multi line select
 Plug 'https://github.com/mhinz/vim-sayonara'              " Deletes the buffer and handles windows more intelligently
 Plug 'https://github.com/tpope/vim-fugitive'              " Extensive Git integration added to Vim
 Plug 'https://github.com/tpope/vim-repeat'                " Beef up the default . repeater
 Plug 'https://github.com/tpope/vim-rhubarb'               " Add fancy extras for GitHub to the vim-fugitive plugin
 Plug 'https://github.com/editorconfig/editorconfig-vim'   " Use of .editorconfig files to set indentation etc
+Plug 'https://github.com/chrisbra/Recover.vim'            " Show a diff of the swap file before loading
+
+" Plugins: Session Enhancements
+
+Plug 'https://github.com/xolox/vim-session'               " Extended session management for Vim
+Plug 'https://github.com/xolox/vim-misc'                  " Miscellaneous auto-load Vim scripts
 
 " Plugins: Text Objects/Motions/Editing
 
 Plug 'https://github.com/bkad/CamelCaseMotion'            " Move through camel case words (<leader>w, <leader>b)
-Plug 'https://github.com/tpope/vim-surround'              " Surround text with characters (ysiw], vis:ys, yssb)
-Plug 'https://github.com/tpope/vim-commentary'            " Quickly comment out lines (gcc, gcap, vis:gc)
-Plug 'https://github.com/vim-scripts/argtextobj.vim'      " Adds function argument text object (daa, via, cia)
+Plug 'https://github.com/kana/vim-textobj-user'           " Allow users to define their own text objects
 Plug 'https://github.com/michaeljsmith/vim-indent-object' " Select text object based on indentation level (ii, ai, 3ai)
+Plug 'https://github.com/tpope/vim-commentary'            " Quickly comment out lines (gcc, gcap, vis:gc)
+Plug 'https://github.com/tpope/vim-surround'              " Surround text with characters (ysiw], vis:ys, yssb)
+Plug 'https://github.com/vim-scripts/argtextobj.vim'      " Adds function argument text object (daa, via, cia)
 
 " Plugins: GUI enhancements
 
@@ -58,6 +65,7 @@ Plug 'https://github.com/junegunn/fzf.vim'                " Additional Vim setup
 
 " Plugins: Language support
 
+Plug 'OmniSharp/omnisharp-vim'                            " dotnet support
 Plug 'https://github.com/pearofducks/ansible-vim'         " Ansible goodies
 Plug 'https://github.com/fatih/vim-go', {
   \'for': 'go',

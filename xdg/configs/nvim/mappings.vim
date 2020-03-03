@@ -137,6 +137,9 @@ nnoremap <leader>q g<c-g>
 " M to make
 noremap M :!mage<cr>
 
-map <leader>lf :Files<CR>
+"nmap <leader>ra :EasyAlign "_ { 'ig': ['Comment'] }
+
+" Show lis
+nmap <leader>lf :Files<CR>
 nmap <leader>lb :Buffers<CR>
 nmap <leader>lw :Windows<CR>

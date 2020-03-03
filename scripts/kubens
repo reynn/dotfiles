@@ -24,7 +24,7 @@ SELF_CMD="$0"
 
 KUBENS_DIR="${XDG_CACHE_HOME:-$HOME/.kube}/kubens"
 
-usage() {
+function usage {
   local SELF
   SELF="kubens"
   if [[ "$(basename "$0")" == kubectl-* ]]; then # invoked as plugin
@@ -41,12 +41,12 @@ USAGE:
 EOF
 }
 
-exit_err() {
+function exit_err {
   echo >&2 "${1}"
   exit 1
 }
 
-current_namespace() {
+function current_namespace {
   local cur_ctx
 
   cur_ctx="$(current_context)" || exit_err "error getting current context"
@@ -60,33 +60,33 @@ current_namespace() {
   fi
 }
 
-current_context() {
+function current_context {
   $KUBECTL config current-context
 }
 
-get_namespaces() {
+function get_namespaces {
   $KUBECTL get namespaces -o=jsonpath='{range .items[*].metadata.name}{@}{"\n"}{end}'
 }
 
-escape_context_name() {
+function escape_context_name {
   echo "${1//\//-}"
 }
 
-namespace_file() {
+function namespace_file {
   local ctx
 
   ctx="$(escape_context_name "${1}")"
   echo "${KUBENS_DIR}/${ctx}"
 }
 
-read_namespace() {
+function read_namespace {
   local f
   f="$(namespace_file "${1}")"
   [[ -f "${f}" ]] && cat "${f}"
   return 0
 }
 
-save_namespace() {
+function save_namespace {
   mkdir -p "${KUBENS_DIR}"
   local f saved
   f="$(namespace_file "${1}")"
@@ -97,13 +97,13 @@ save_namespace() {
   fi
 }
 
-switch_namespace() {
+function switch_namespace {
   local ctx="${1}"
   $KUBECTL config set-context "${ctx}" --namespace="${2}"
   echo "Active namespace is \"${2}\"." >&2
 }
 
-choose_namespace_interactive() {
+function choose_namespace_interactive {
   # directly calling kubens via fzf might fail with a cryptic error like
   # "$FZF_DEFAULT_COMMAND failed", so try to see if we can list namespaces
   # locally first
@@ -124,7 +124,7 @@ choose_namespace_interactive() {
   fi
 }
 
-set_namespace() {
+function set_namespace {
   local ctx prev
   ctx="$(current_context)" || exit_err "error getting current context"
   prev="$(current_namespace)" || exit_error "error getting current namespace"
@@ -141,7 +141,7 @@ set_namespace() {
   fi
 }
 
-list_namespaces() {
+function list_namespaces {
   local yellow darkbg normal
   yellow=$(tput setaf 3 || true)
   darkbg=$(tput setab 0 || true)
@@ -170,7 +170,7 @@ list_namespaces() {
   done
 }
 
-swap_namespace() {
+function swap_namespace {
   local ctx ns
   ctx="$(current_context)" || exit_err "error getting current context"
   ns="$(read_namespace "${ctx}")"
@@ -181,7 +181,7 @@ swap_namespace() {
   set_namespace "${ns}"
 }
 
-main() {
+function main {
   if [[ -z "${KUBECTL:-}" ]]; then
     if hash kubectl 2>/dev/null; then
       KUBECTL=kubectl

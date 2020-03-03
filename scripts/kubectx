@@ -22,7 +22,7 @@ SELF_CMD="$0"
 
 KUBECTX="${XDG_CACHE_HOME:-$HOME/.kube}/kubectx"
 
-usage() {
+function usage {
   local SELF
   SELF="kubectx"
   if [[ "$(basename "$0")" == kubectl-* ]]; then # invoked as plugin
@@ -45,20 +45,20 @@ USAGE:
 EOF
 }
 
-exit_err() {
+function exit_err {
   echo >&2 "${1}"
   exit 1
 }
 
-current_context() {
+function current_context {
   $KUBECTL config view -o=jsonpath='{.current-context}'
 }
 
-get_contexts() {
+function get_contexts {
   $KUBECTL config get-contexts -o=name | sort -n
 }
 
-list_contexts() {
+function list_contexts {
   set -u pipefail
   local cur ctx_list
   cur="$(current_context)" || exit_err "error getting current context"
@@ -88,13 +88,13 @@ list_contexts() {
   done
 }
 
-read_context() {
+function read_context {
   if [[ -f "${KUBECTX}" ]]; then
     cat "${KUBECTX}"
   fi
 }
 
-save_context() {
+function save_context {
   local saved
   saved="$(read_context)"
 
@@ -103,11 +103,11 @@ save_context() {
   fi
 }
 
-switch_context() {
+function switch_context {
   $KUBECTL config use-context "${1}"
 }
 
-choose_context_interactive() {
+function choose_context_interactive {
   local choice
   choice="$(_KUBECTX_FORCE_COLOR=1 \
     FZF_DEFAULT_COMMAND="${SELF_CMD}" \
@@ -120,7 +120,7 @@ choose_context_interactive() {
   fi
 }
 
-set_context() {
+function set_context {
   local prev
   prev="$(current_context)" || exit_err "error getting current context"
 
@@ -131,7 +131,7 @@ set_context() {
   fi
 }
 
-swap_context() {
+function swap_context {
   local ctx
   ctx="$(read_context)"
   if [[ -z "${ctx}" ]]; then
@@ -141,11 +141,11 @@ swap_context() {
   set_context "${ctx}"
 }
 
-context_exists() {
+function context_exists {
   grep -q ^"${1}"\$ <($KUBECTL config get-contexts -o=name)
 }
 
-rename_context() {
+function rename_context {
   local old_name="${1}"
   local new_name="${2}"
 
@@ -166,13 +166,13 @@ rename_context() {
   $KUBECTL config rename-context "${old_name}" "${new_name}"
 }
 
-delete_contexts() {
+function delete_contexts {
   for i in "${@}"; do
     delete_context "${i}"
   done
 }
 
-delete_context() {
+function delete_context {
   local ctx
   ctx="${1}"
   if [[ "${ctx}" == "." ]]; then
@@ -182,7 +182,7 @@ delete_context() {
   $KUBECTL config delete-context "${ctx}"
 }
 
-main() {
+function main {
   if hash kubectl 2>/dev/null; then
     KUBECTL=kubectl
   elif hash kubectl.exe 2>/dev/null; then
