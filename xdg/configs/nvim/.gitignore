@@ -1,3 +1,5 @@
 .netrwhist
 spell/
 plugged/
+xdg/configs/
+!xdg/configs/nvim/

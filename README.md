@@ -16,4 +16,7 @@ $ curl -L https://raw.githubusercontent.com/reynn/dotfiles/master/install.sh | b
 - TODO: update to source a minimal set of variables at start
 - TODO: ctrl+i to fzf import options quickly `fd -t f -e zsh '\d.+/.+' $DFP/zsh`
 - TODO: refactor functions folder to subdirs of
+- TODO: nvim ,c change to y *+
+- change lightline to show filename in bottom leftt
+- see about moving xdg config home back to a normal place and having nvim config linked
 - TODO: alias for updating kube{ctx,ns}

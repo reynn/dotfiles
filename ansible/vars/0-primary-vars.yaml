@@ -42,6 +42,8 @@ packages:
 bin_downloads:
   - repository: PowerShell/PowerShell
     description: PowerShell for every system!
+  - repository: weaveworks/eksctl
+    description: The official CLI for Amazon EKS
   - repository: wercker/stern
     description: K8s logging helper
   - repository: stedolan/jq

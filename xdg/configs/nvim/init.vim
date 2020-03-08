@@ -104,11 +104,13 @@ set shortmess+=c " don't give |ins-completion-menu| messages.
 
 " Show those damn hidden characters
 " Verbose: set listchars=nbsp:¬,eol:¶,extends:»,precedes:«,trail:•
-set list
 set listchars=nbsp:¬,extends:»,precedes:«,trail:•,tab:>-,eol:¬
 
 " Don't confirm .lvimrc
 let g:localvimrc_ask=0
+
+" Automatically close vim if only NERDTree left
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " =============================================================================
 " # Plugins
@@ -127,6 +129,12 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h').'/functions.vim'
 " =============================================================================
 
 execute 'source' fnamemodify(expand('<sfile>'), ':h').'/mappings.vim'
+
+" =============================================================================
+" # Autocommands
+" =============================================================================
+
+execute 'source' fnamemodify(expand('<sfile>'), ':h').'/autocmds.vim'
 
 " =============================================================================
 " # Special language handling

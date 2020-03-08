@@ -6,9 +6,9 @@
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -100,14 +100,14 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Using CocList
 
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr> " Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr> " show all diagnostics
 nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>  " Manage extensions
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>    " Show commands
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>     " Find symbol of current document
 nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>  " Search workspace symbols
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>             " Do default action for next item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>             " Do default action for previous item.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>       " Resume latest coc list
+nnoremap <silent> <space>j  :<C-u>CocNext<cr>             " Do default action for next item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<cr>             " Do default action for previous item.
+nnoremap <silent> <space>p  :<C-u>CocListResume<cr>       " Resume latest coc list
 
 " Extension management
 let g:coc_global_extensions = [
@@ -125,6 +125,11 @@ let g:coc_global_extensions = [
   \ 'coc-yaml',
   \ 'coc-yank',
 \ ]
+
+nmap <leader>rn <Plug>(coc-rename)
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
 " Extension Configuration
 
@@ -151,12 +156,6 @@ nmap <leader>cr <Plug>(coc-calc-result-replace)
 " =============================================================================
 " CoC.Extension Setup: https://github.com/iamcco/coc-spell-checker
 " =============================================================================
-
-" <leader>aap for current paragraph
-" <leader>aw for current word
-
-vmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
 
 " =============================================================================
 " CoC.Extension Setup: https://github.com/neoclide/coc-json
