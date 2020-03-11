@@ -70,6 +70,7 @@ Plug 'https://github.com/fatih/vim-go', {
   \'for': 'go',
   \'do': ':GoUpdateBinaries'
 \}                                                        " Lots of goodies for writing Golang code
+Plug 'https://github.com/cespare/vim-toml'                " Add support for TOML files
 Plug 'https://github.com/hashivim/vim-packer'             " Add support for Hashicorp Packer
 Plug 'https://github.com/hashivim/vim-terraform'          " Add support for Hashicorp Terraform
 Plug 'https://github.com/mzlogin/vim-markdown-toc'        " Manage ToC sections for Markdown files
