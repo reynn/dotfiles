@@ -20,7 +20,7 @@ endfunction
 " autocmd BufEnter * call s:syncTreeIf()
 
 " Focus on opened view after starting (instead of NERDTree)
-autocmd VimEnter * call s:syncTree()
+" autocmd VimEnter * call s:syncTree()
 
 " Open nerdtree at startup if no file specified
 autocmd StdinReadPre * let s:std_in=1

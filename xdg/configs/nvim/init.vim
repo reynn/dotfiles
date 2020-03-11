@@ -30,14 +30,14 @@ endif
 
 filetype plugin indent on
 set autoindent
-set encoding=utf-8
+set encoding=utf8
 set guioptions-=e
 set hidden
 set endofline
 set nojoinspaces
 set noshowmode
 set nowrap
-set printencoding=utf-8
+set printencoding=utf8
 set printfont=:h10
 set printoptions=paper:letter
 set scrolloff=5
@@ -141,5 +141,7 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h').'/autocmds.vim'
 " =============================================================================
 
 execute 'source' fnamemodify(expand('<sfile>'), ':h').'/languages.vim'
+
+execute 'source' fnamemodify(expand('<sfile>'), ':h').'/after.vim'
 
 colorscheme gruvbox
