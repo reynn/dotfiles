@@ -1,4 +1,4 @@
-" plugin config: itchyny/lightline.vim
+" Plugin Config: itchyny/lightline.vim
 
 let g:lightline = {
   \ 'colorscheme': 'PaperColor',
@@ -8,17 +8,8 @@ let g:lightline = {
   \     ['fugitive', 'filename']
   \   ],
   \   'right': [
-  \     ['column', 'cocstatus'],
+  \     ['lineinfo', 'cocstatus'],
   \     ['filetype']
-  \   ]
-  \ },
-  \ 'inactive': {
-  \   'left': [
-  \     ['filename']
-  \   ],
-  \   'right': [
-  \     ['lineinfo'],
-  \     ['percent']
   \   ]
   \ },
   \ 'component': {

@@ -107,6 +107,8 @@ git_repos:
   - repo: git@github.com:junegunn/fzf.git
     dest: "{{ github_path }}/junegunn/fzf"
     handler: "Run fzf install script"
+  - repo: git@github.com:ryanoasis/nerd-fonts.git
+    dest: "{{ github_path }}/ryanoasis/nerd-fonts"
   - repo: git@github.com:pyenv/pyenv.git
     dest: "{{ github_path }}/pyenv/pyenv"
   - repo: git@github.com:VundleVim/Vundle.vim.git
