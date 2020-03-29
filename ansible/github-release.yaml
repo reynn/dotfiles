@@ -12,7 +12,7 @@
     glrfg_bins_path: "{{ bins_dir }}/{{ item.repository.split('/')[-1] }}_bin"
     glrfg_alias_path: "{{ bins_dir }}/{{ item.alias | default(item.repository.split('/')[-1]) }}"
 
-- name: Display init
+- name: "Display init"
   debug:
     msg: |
       glrfg_host={{ glrfg_host | default('') }}
@@ -23,7 +23,7 @@
       glrfg_alias_path={{ glrfg_alias_path | default('') }}
   when: debug_mode|default(False)|bool
 
-- name: Create Binary subdirectory
+- name: "Create Binary subdirectory"
   file:
     path: "{{ glrfg_bins_path }}"
     state: directory
@@ -62,39 +62,34 @@
       glrfg_tag={{ glrfg_tag }}
   when: debug_mode|default(False)|bool
 
-- name: Handle download and recovery
+- name: "Handle download and recovery"
   block:
-    - name: Checking if destination download already exists exists
-      shell: test -r {{ glrfg_bins_path }}/{{ glrfg_tag }}/{{ glrfg_name }}
-      register: glrfg_out_exists
-      changed_when: glrfg_out_exists.stderr != ""
-      failed_when: glrfg_out_exists.stderr != ""
-
-    - name: Creating version subdirectory
+    - name: "Creating version subdirectory"
       file:
         path: "{{ glrfg_bins_path }}/{{ glrfg_tag }}"
         state: directory
 
-    - name: Downloading binary
+    - name: "Downloading binary"
       get_url:
         url: "{{ glrfg_url }}"
         dest: "{{ glrfg_bins_path }}/{{ glrfg_tag }}/{{ glrfg_name }}"
+        follow: yes
       register: glrfg_get_url
-      when: "glrfg_out_exists.rc == 1"
 
-    - name: debug output
+    - name: "debug (glrfg_get_url) output"
       debug:
         var: glrfg_get_url
+      when: debug_mode|default(False)|bool
 
-    - name: Extract archive file
+    - name: "Extract archive file"
       shell: |
         #!/usr/bin/env bash
         set -eou setpipefail
 
-        {{ dotfiles_path }}/scripts/extract -i {{ glrfg_get_url.dest }} -o {{ glrfg_bins_path }}/{{ glrfg_tag }}
+        {{ dotfiles_path }}/scripts/extract -i {{ glrfg_get_url.dest }}
       when: "glrfg_get_url.changed"
 
-    - name: Extracting gzip file
+    - name: "Extracting gzip file"
       shell: |
         #!/bin/bash -e
         tar xf {{ glrfg_get_url.dest }} -C {{ glrfg_bins_path }}/{{ glrfg_tag }}
@@ -104,7 +99,7 @@
         - 'glrfg_type == "application/gzip" or glrfg_name.find(".tar.gz") >= 1'
         - "glrfg_get_url.changed"
 
-    - name: Extracting zip file
+    - name: "Extracting zip file"
       shell: |
         #!/bin/bash -e
         unzip -qq {{ glrfg_get_url.dest }} -d {{ glrfg_bins_path }}/{{ glrfg_tag }}
@@ -114,27 +109,27 @@
         - 'glrfg_type == "application/zip"'
         - "glrfg_get_url.changed"
 
-    - name: Remove alias before linking
+    - name: "Remove alias before linking"
       file:
         path: "{{ glrfg_alias_path }}"
         state: absent
       when: "glrfg_get_url.changed"
 
-    - name: Register symlink after extracting gzip
+    - name: "Register symlink after extracting gzip"
       file:
         src: "{{ glrfg_extract_gzip.stdout | replace('./', '') }}"
         path: "{{ glrfg_alias_path }}"
         state: link
       when: "glrfg_extract_gzip.changed"
 
-    - name: Register symlink after extracting zip
+    - name: "Register symlink after extracting zip"
       file:
         src: "{{ glrfg_extract_zip.stdout | replace('./', '') }}"
         path: "{{ glrfg_alias_path }}"
         state: link
       when: "glrfg_extract_zip.changed"
 
-    - name: Mark binary as executable
+    - name: "Mark binary as executable"
       file:
         path: "{{ glrfg_get_url.dest }}"
         mode: "u=rwx,g=rwx,o=rwx"
@@ -145,7 +140,7 @@
         - '".tar.gz" not in glrfg_name'
         - "glrfg_get_url.changed"
 
-    - name: Install deb package
+    - name: "Install deb package"
       apt:
         deb: "{{ glrfg_get_url.dest }}"
       register: glrfg_deb_install
@@ -163,7 +158,7 @@
         - "glrfg_executable.changed"
   ignore_errors: yes
   rescue:
-    - name: Cleanup failed download
+    - name: "Cleanup failed download"
       file:
         path: "{{ glrfg_bins_path }}/{{ glrfg_tag }}"
         state: absent

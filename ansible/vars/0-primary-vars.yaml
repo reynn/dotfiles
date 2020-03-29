@@ -24,6 +24,7 @@ packages:
     - tmux
     - neovim
   pip:
+    - ansible
     - certifi
     - httpie
     - pipenv
@@ -40,35 +41,42 @@ packages:
 # Lists
 # TODO: Add ability to pull pre-releases
 bin_downloads:
-  - repository: PowerShell/PowerShell
-    description: PowerShell for every system!
-  - repository: weaveworks/eksctl
-    description: The official CLI for Amazon EKS
-  - repository: wercker/stern
-    description: K8s logging helper
-  - repository: stedolan/jq
-    description: CLI JSON processor
+  # # Kubernetes Apps ------------------------------------------------
+  # - repository: "weaveworks/eksctl"
+  #   description: "The official CLI for Amazon EKS"
+  # - repository: "wercker/stern"
+  #   description: "K8s logging helper"
+  # - repository: "derailed/k9s"
+  #   description: "Kubernetes CLI To Manage Your Clusters In Style!"
+  # - repository: "helm/helm"
+  #   description: "Kubernetes Workstation Tools CLI"
+  # - repository: "kubernetes/minikube"
+  #   description: "Run Kubernetes locally"
+  # - repository: "goodwithtech/dockle"
+  #   description: "Container Image Linter for Security"
+  # # Standard Unix binaries -----------------------------------------
+  - repository: "stedolan/jq"
+    description: "CLI JSON processor"
     platform: "{{ (ansible_system == 'Linux') | ternary('linux64','amd64') }}"
-  - repository: mikefarah/yq
-    description: yq is a portable command-line YAML processor
-  - repository: derailed/k9s
-    description: Kubernetes CLI To Manage Your Clusters In Style!
-  - repository: sharkdp/bat
-    description: A cat(1) clone with wings
-  - repository: goodwithtech/dockle
-    description: Container Image Linter for Security
-  - repository: sharkdp/fd
-    description: A simple, fast and user-friendly alternative to 'find'
-  - repository: goreleaser/goreleaser
-    description: Deliver Go binaries as fast and easily as possible
-  - repository: helm/helm
-    description: Kubernetes Workstation Tools CLI
-  - repository: kubernetes/minikube
-    description: Run Kubernetes locally
-  - repository: starship/starship
-    description: The cross-shell prompt for astronauts
-  - repository: github/hub
-    description: A command-line tool that makes git easier to use with GitHub
+  - repository: "mikefarah/yq"
+    description: "yq is a portable command-line YAML processor"
+  - repository: "PowerShell/PowerShell"
+    description: "PowerShell for every system!"
+  - repository: "sharkdp/fd"
+    description: "A simple, fast and user-friendly alternative to 'find'"
+  - repository: "starship/starship"
+    description: "The cross-shell prompt for astronauts"
+  # - repository: "sharkdp/bat"
+  #   description: "A cat(1) clone with wings"
+  # # Cloud native tool binaries -------------------------------------
+  - repository: "digitalocean/doctl"
+    description: "The official command line interface for the DigitalOcean API"
+  # # Dev tool binaries ----------------------------------------------
+  - repository: "github/hub"
+    description: "A command-line tool that makes git easier to use with GitHub"
+  # # Standard Unix binaries -----------------------------------------
+  # - repository: "goreleaser/goreleaser"
+  #   description: "Deliver Go binaries as fast and easily as possible"
 
 docker_images:
   - name: fantia.jp
@@ -89,29 +97,29 @@ docker_images:
 
 # Ignoring errors on personal repos so we can proceed when there are local changes
 git_repos:
-  - repo: git@github.com:reynn/dotfiles.git
+  - repo: "git@github.com:reynn/dotfiles.git"
     dest: "{{ dotfiles_path }}"
     ignore_errors: yes
-  - repo: git@github.com:reynn/k8s.git
+  - repo: "git@github.com:reynn/k8s.git"
     dest: "{{ github_path }}/reynn/k8s"
     ignore_errors: yes
-  - repo: git@github.com:reynn/k8s-ops.git
+  - repo: "git@github.com:reynn/k8s-ops.git"
     dest: "{{ github_path }}/reynn/k8s-ops"
     ignore_errors: yes
-  - repo: git@github.com:thecasualcoder/kube-fzf.git
+  - repo: "git@github.com:thecasualcoder/kube-fzf.git"
     dest: "{{ github_path }}/thecasualcoder/kube-fzf"
-  - repo: git@github.com:mbadolato/iTerm2-Color-Schemes.git
+  - repo: "git@github.com:mbadolato/iTerm2-Color-Schemes.git"
     dest: "{{ github_path }}/mbadolato/iterm2-color"
-  - repo: git@github.com:powerline/fonts.git
+  - repo: "git@github.com:powerline/fonts.git"
     dest: "{{ github_path }}/powerline/fonts"
-  - repo: git@github.com:junegunn/fzf.git
+  - repo: "git@github.com:junegunn/fzf.git"
     dest: "{{ github_path }}/junegunn/fzf"
     handler: "Run fzf install script"
-  - repo: git@github.com:ryanoasis/nerd-fonts.git
+  - repo: "git@github.com:ryanoasis/nerd-fonts.git"
     dest: "{{ github_path }}/ryanoasis/nerd-fonts"
-  - repo: git@github.com:pyenv/pyenv.git
+  - repo: "git@github.com:pyenv/pyenv.git"
     dest: "{{ github_path }}/pyenv/pyenv"
-  - repo: git@github.com:VundleVim/Vundle.vim.git
+  - repo: "git@github.com:VundleVim/Vundle.vim.git"
     dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
 
 commands:
@@ -120,12 +128,12 @@ commands:
   - cmd: "sh /tmp/antibody -b {{ bins_dir }}"
 
 scripts:
-  - name: gimme
-    url: https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
+  - name: "gimme"
+    url: "https://raw.githubusercontent.com/travis-ci/gimme/master/gimme"
     dir: "{{ bins_dir }}"
-  - name: antibody
-    url: https://git.io/antibody
-    dir: /tmp
-  - name: nvm
-    url: https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
+  - name: "antibody"
+    url: "https://git.io/antibody"
+    dir: "/tmp"
+  - name: "nvm"
+    url: "https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh"
     dir: "{{ bins_dir }}"

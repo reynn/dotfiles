@@ -7,14 +7,14 @@
       shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
 
   tasks:
-    - name: Include vars from ansible directory
+    - name: "Include vars from ansible directory"
       include_vars:
         dir: "{{ playbook_dir }}/vars"
         ignore_unknown_extensions: yes
       tags:
         - always
 
-    - name: Install certificate handling for darwin
+    - name: "Install certificate handling for darwin"
       shell: "sh '/Applications/Python {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install Certificates.command'"
       register: cert_handler
       changed_when: 'not "Requirement already up-to-date" not in cert_handler.stdout'
@@ -22,7 +22,7 @@
       tags:
         - pip
 
-    - name: Install packages
+    - name: "Install packages"
       package:
         name: "{{ packages.system }}"
         state: present
@@ -30,7 +30,7 @@
         - ansible_system == 'Linux'
       become: yes
 
-    - name: Installing brew packages
+    - name: "Installing brew packages"
       homebrew:
         name: "{{ packages.brew }}"
         state: latest
@@ -40,7 +40,7 @@
         - brew
         - update
 
-    - name: Installing pip packages
+    - name: "Installing pip packages"
       pip:
         name: "{{ packages.pip }}"
         state: latest
@@ -49,7 +49,7 @@
         - pip
         - update
 
-    - name: Installing cargo packages
+    - name: "Installing cargo packages"
       command:
         argv:
           - cargo
@@ -72,7 +72,7 @@
         - update
         - links
 
-    - name: Clone git repos
+    - name: "Clone git repos"
       git:
         repo: "{{ item.repo }}"
         dest: "{{ item.dest }}"
@@ -88,7 +88,7 @@
         - git
         - repos
 
-    - name: Ensure binary dirs exist
+    - name: "Ensure binary dirs exist"
       file:
         path: "{{ binary_dir | default(ansible_env.HOME + '/.bins') }}"
         state: directory
@@ -98,7 +98,7 @@
         - scripts
         - update
 
-    - name: Build Docker images
+    - name: "Build Docker images"
       docker_image: "{{ item }}"
       loop: "{{ docker_images }}"
       loop_control:
@@ -106,7 +106,7 @@
       tags:
         - docker
 
-    - name: Downloading scripts
+    - name: "Downloading scripts"
       get_url:
         url: "{{ item.url }}"
         dest: "{{ item.dir }}/{{ item.name }}"
@@ -121,7 +121,7 @@
         - commands
         - update
 
-    - name: Exec gimme
+    - name: "Exec gimme"
       shell: 'eval "$(gimme stable)"'
       tags:
         - commands
@@ -129,12 +129,13 @@
         - binaries
         - updates
 
-    - name: Exec commands
+    - name: "Exec commands"
       command: "{{ item.cmd }}"
       args:
         chdir: "{{ item.dir | default('.') }}"
       loop: "{{ commands }}"
       tags:
+        - binaries
         - commands
 
     - include_tasks:
@@ -148,7 +149,7 @@
         - binaries
         - update
 
-    - name: Set the default shell to zsh
+    - name: "Set the default shell to zsh"
       user:
         name: "{{ ansible_user_id }}"
         shell: /bin/zsh
