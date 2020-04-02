@@ -20,6 +20,7 @@ hi Normal ctermbg=NONE
 " Get syntax
 syntax on
 
+" is the " why this is failing sometimes?
 let g:python3_host_prog=expand("$XDG_DATA_HOME/virtualenvs/nvim-*/bin/python")
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
@@ -40,7 +41,7 @@ set nowrap
 set printencoding=utf8
 set printfont=:h10
 set printoptions=paper:letter
-set scrolloff=5
+set scrolloff=20
 set shell=zsh
 set showtabline=2
 set signcolumn=yes

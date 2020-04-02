@@ -98,6 +98,15 @@ source_paths=(
   "$GFP/github.com/thecasualcoder/kube-fzf/kube-fzf.sh"
 )
 
+# zsh magic to see if the string on the right is in the array on the left.
+# I means it returns the index of the item in the array, or 0 if not found
+# r means the output is the full string if found, or empty string
+if test -z "${$(fpaths)[(r)$DFP/zsh/.completions]}"; then
+  fpath+=($DFP/zsh/.completions)
+fi
+
+export fpath
+
 print_debug 'sourcing additional files'
 for sourceable in $source_paths; do
   test ! -r $sourceable || source $sourceable
@@ -109,5 +118,3 @@ go_ch
 autoload -U compinit && compinit
 
 # zprof # uncomment to debug performance issues with zsh startup
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -44,7 +44,8 @@ alias cp='cp -i'
 alias download_remote_directory='wget -c -r -np -l1 -e robots=off -R "fileicon.png*" -R "index.html*" -nd'
 alias mkdir='mkdir -p'
 alias mv='mv -i'
-alias rm='rm -i'
+alias rmd='rm -fI'
+alias rm='rm -iv'
 
 # -----------------------------------------------------------------------------
 ## Readability aliases --------------------------------------------------------

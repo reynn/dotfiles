@@ -12,17 +12,9 @@ DFP="$REYNN/dotfiles"
 DIR_BINS="$HOME/.bins"
 HELP_JSON="$DFP/zsh/function_help.json"
 HISTCONTROL='ignoreboth' # Omit duplicates and commands that begin with a space from history.
+HISTSIZE='32768'         # Increase history size. Allow 32³ entries; the default is 500.
 HISTFILESIZE="$HISTSIZE"
-HISTSIZE='32768'         # Increase Bash history size. Allow 32³ entries; the default is 500.
 TERM='xterm-256color'
-XDG_CONFIG_HOME="$DFP/xdg/configs"
-
-# zsh magic to see if the string on the right is in the array on the left.
-# I means it returns the index of the item in the array, or 0 if not found
-# r means the output is the full string if found, or empty string
-if test -z "${$(fpaths)[(r)$DFP/zsh/.completions]}"; then
-  fpath+=($DFP/zsh/.completions)
-fi
 
 export CURRENT_HOST
 export DEBUG
@@ -35,8 +27,6 @@ export HISTFILESIZE
 export HISTSIZE
 export REYNN
 export TERM
-export XDG_CONFIG_HOME
-export fpath
 
 #+============================================================================+
 # Arrays
@@ -60,19 +50,19 @@ POSSIBLE_PATHS=(
   "$GFP/bin"
   "$GFP/github.com/thecasualcoder/kube-fzf"
   "$GFP/github.com/junegunn/fzf/bin"
-  "/usr/local/go/bin"
+  '/usr/local/go/bin'
   # Mac paths
-  "/usr/local/MacGPG2/bin"
+  '/usr/local/MacGPG2/bin'
   # "$HOME/Library/Python/3.8/bin"
-  "/Users/reynn/Library/Python/3.8/bin"
-  "/Library/Frameworks/Python.framework/Versions/3.8/bin"
+  '/Users/reynn/Library/Python/3.8/bin'
+  '/Library/Frameworks/Python.framework/Versions/3.8/bin'
   # Unix paths
-  "/usr/local/bin"
-  "/snap/bin"
-  "/usr/sbin"
-  "/usr/bin"
-  "/sbin"
-  "/bin"
+  '/usr/local/bin'
+  '/snap/bin'
+  '/usr/sbin'
+  '/usr/bin'
+  '/sbin'
+  '/bin'
 )
 SSH_IDENTITIES=(id_rsa)
 
@@ -89,16 +79,18 @@ export SSH_IDENTITIES
 XDG_BASE_PATH="$HOME/.xdg"
 XDG_CACHE_HOME="$XDG_BASE_PATH/cache"
 XDG_DATA_HOME="$XDG_BASE_PATH/data"
+XDG_CONFIG_HOME="$XDG_BASE_PATH/configs"
 
 export XDG_BASE_PATH
 export XDG_CACHE_HOME
 export XDG_DATA_HOME
+export XDG_CONFIG_HOME
 
 #+============================================================================+
 # Unix (Paths/ENV overrides)
 #+============================================================================+
 
-PATH=""
+PATH=''
 EDITOR='nvim'
 PYENV_ROOT="$GFP/github.com/pyenv/pyenv"
 SSH_KEY_PATH='~/.ssh/rsa_id'

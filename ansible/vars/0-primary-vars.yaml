@@ -8,6 +8,8 @@ dotfiles_path: "{{ github_path }}/reynn/dotfiles"
 file_links:
   - src: "{{ dotfiles_path }}/.zshrc"
     dest: "{{ ansible_env.HOME }}/.zshrc"
+  - src: "{{ dotfiles_path }}/configs/nvim"
+    dest: "{{ ansible_env.HOME }}/.xdg/configs/nvim"
   - src: "{{ dotfiles_path }}/git/gitconfig"
     dest: "{{ ansible_env.HOME }}/.gitconfig"
   - src: "{{ dotfiles_path }}/.zshenv"
