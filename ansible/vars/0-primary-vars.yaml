@@ -57,6 +57,8 @@ bin_downloads:
   # - repository: "goodwithtech/dockle"
   #   description: "Container Image Linter for Security"
   # # Standard Unix binaries -----------------------------------------
+  - repository: "sharkdp/fd"
+    description: "A simple, fast and user-friendly alternative to 'find'"
   - repository: "stedolan/jq"
     description: "CLI JSON processor"
     platform: "{{ (ansible_system == 'Linux') | ternary('linux64','amd64') }}"
@@ -64,8 +66,6 @@ bin_downloads:
     description: "yq is a portable command-line YAML processor"
   - repository: "PowerShell/PowerShell"
     description: "PowerShell for every system!"
-  - repository: "sharkdp/fd"
-    description: "A simple, fast and user-friendly alternative to 'find'"
   - repository: "starship/starship"
     description: "The cross-shell prompt for astronauts"
   # - repository: "sharkdp/bat"
@@ -73,12 +73,6 @@ bin_downloads:
   # # Cloud native tool binaries -------------------------------------
   - repository: "digitalocean/doctl"
     description: "The official command line interface for the DigitalOcean API"
-  # # Dev tool binaries ----------------------------------------------
-  - repository: "github/hub"
-    description: "A command-line tool that makes git easier to use with GitHub"
-  # # Standard Unix binaries -----------------------------------------
-  # - repository: "goreleaser/goreleaser"
-  #   description: "Deliver Go binaries as fast and easily as possible"
 
 docker_images:
   - name: fantia.jp

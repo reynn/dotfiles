@@ -82,32 +82,30 @@
       when: debug_mode|default(False)|bool
 
     - name: "Extract archive file"
-      shell: |
-        #!/usr/bin/env bash
-        set -eou setpipefail
-
-        {{ dotfiles_path }}/scripts/extract -i {{ glrfg_get_url.dest }}
-      when: "glrfg_get_url.changed"
-
-    - name: "Extracting gzip file"
-      shell: |
-        #!/bin/bash -e
-        tar xf {{ glrfg_get_url.dest }} -C {{ glrfg_bins_path }}/{{ glrfg_tag }}
-        find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm -111 | grep -v .tar.gz
-      register: glrfg_extract_gzip
+      unarchive:
+        src: "{{ glrfg_get_url.dest }}"
+        dest: "{{ glrfg_bins_path }}/{{ glrfg_tag }}/"
+        remote_src: yes
+      register: glrfg_extract_archive
       when:
-        - 'glrfg_type == "application/gzip" or glrfg_name.find(".tar.gz") >= 1'
         - "glrfg_get_url.changed"
 
-    - name: "Extracting zip file"
+    - name: "debug (glrfg_extract_archive) output"
+      debug:
+        var: glrfg_extract_archive
+      when: debug_mode|default(False)|bool
+
+    - name: "Find exec file after extraction"
       shell: |
         #!/bin/bash -e
-        unzip -qq {{ glrfg_get_url.dest }} -d {{ glrfg_bins_path }}/{{ glrfg_tag }}
-        find {{ glrfg_bins_path }}/{{ glrfg_tag }} -type f -perm -111
-      register: glrfg_extract_zip
-      when:
-        - 'glrfg_type == "application/zip"'
-        - "glrfg_get_url.changed"
+        find {{ glrfg_extract_archive.dest[0:-1] }} -type f -perm -111
+      register: glrfg_bin_finder
+      when: "glrfg_extract_archive.changed"
+
+    - name: "debug (glrfg_bin_finder) output"
+      debug:
+        var: glrfg_bin_finder
+      when: debug_mode|default(False)|bool
 
     - name: "Remove alias before linking"
       file:
@@ -115,19 +113,12 @@
         state: absent
       when: "glrfg_get_url.changed"
 
-    - name: "Register symlink after extracting gzip"
+    - name: "Register symlink after extracting"
       file:
-        src: "{{ glrfg_extract_gzip.stdout | replace('./', '') }}"
+        src: "{{ glrfg_bin_finder.stdout | replace('./', '') }}"
         path: "{{ glrfg_alias_path }}"
         state: link
-      when: "glrfg_extract_gzip.changed"
-
-    - name: "Register symlink after extracting zip"
-      file:
-        src: "{{ glrfg_extract_zip.stdout | replace('./', '') }}"
-        path: "{{ glrfg_alias_path }}"
-        state: link
-      when: "glrfg_extract_zip.changed"
+      when: "glrfg_extract_archive.changed"
 
     - name: "Mark binary as executable"
       file:

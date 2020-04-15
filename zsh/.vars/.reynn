@@ -32,12 +32,16 @@ export TERM
 # Arrays
 #+============================================================================+
 
-IMPORT_DIRECTORIES=(
+IMPORT_DIRECTORIES=()
   # Gather all of the directories in the zsh folder
   # Include hidden (-H) and gitignored (-I) dirs
   # Exclude .hosts and .completions
-  $($DIR_BINS/fd -H -I -t d -d1 -E '.hosts' -E '.completions' . $DFP/zsh)
-)
+if test -r $DIR_BINS/fd; then
+  IMPORT_DIRECTORIES+=($($DIR_BINS/fd -H -I -t d -d1 -E '.hosts' -E '.completions' . $DFP/zsh))
+else
+  IMPORT_DIRECTORIES+=($(find $DFP/zsh -type d -depth 1 | grep -v '.hosts' |grep -v '.completions'))
+fi
+
 POSSIBLE_PATHS=(
   "$PYENV_ROOT/bin"
   "$HOME/.yarn/bin"

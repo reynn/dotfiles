@@ -7,8 +7,10 @@
 function update_dotfiles {
   local tags=""
   local verbosity=''
-  while getopts "ht:v" opt; do
+  local debug_mode='no'
+  while getopts "dht:v" opt; do
     case $opt in
+      d) debug_mode='yes' ;;
       t) if test $tags; then tags+=",$OPTARG"; else tags+="$OPTARG"; fi ;;
       v) verbosity+='v' ;;
       h)
@@ -20,6 +22,10 @@ function update_dotfiles {
   local args=(
     $DFP/ansible/config.yaml
   )
+
+  if test $debug_mode = 'yes'; then
+    args+=("-e debug_mode=yes")
+  fi
 
   if test $verbosity; then
     args+=("-$verbosity")
@@ -44,7 +50,15 @@ function import_zsh_files {
   for d in $@; do
     test -d $d || continue
     print_debug $d 'dir'
-    for f in $(fd -I -H -t f . $d); do
+    local importable=()
+
+    if test -r $DIR_BINS/fd; then
+      importable+=($(fd -I -H -t f -e 'zsh' . $d))
+    else
+      importable+=($(find "$d" -type f -name '*.zsh'))
+    fi
+
+    for f in $importable; do
       print_debug $f 'file'
       source $f
     done
