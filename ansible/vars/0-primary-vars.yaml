@@ -43,19 +43,6 @@ packages:
 # Lists
 # TODO: Add ability to pull pre-releases
 bin_downloads:
-  # # Kubernetes Apps ------------------------------------------------
-  # - repository: "weaveworks/eksctl"
-  #   description: "The official CLI for Amazon EKS"
-  # - repository: "wercker/stern"
-  #   description: "K8s logging helper"
-  # - repository: "derailed/k9s"
-  #   description: "Kubernetes CLI To Manage Your Clusters In Style!"
-  # - repository: "helm/helm"
-  #   description: "Kubernetes Workstation Tools CLI"
-  # - repository: "kubernetes/minikube"
-  #   description: "Run Kubernetes locally"
-  # - repository: "goodwithtech/dockle"
-  #   description: "Container Image Linter for Security"
   # # Standard Unix binaries -----------------------------------------
   - repository: "sharkdp/fd"
     description: "A simple, fast and user-friendly alternative to 'find'"
@@ -70,6 +57,21 @@ bin_downloads:
     description: "The cross-shell prompt for astronauts"
   # - repository: "sharkdp/bat"
   #   description: "A cat(1) clone with wings"
+  # # Kubernetes Apps ------------------------------------------------
+  # - repository: "weaveworks/eksctl"
+  #   description: "The official CLI for Amazon EKS"
+  # - repository: "wercker/stern"
+  #   description: "K8s logging helper"
+  - repository: "derailed/k9s"
+    description: "Kubernetes CLI To Manage Your Clusters In Style!"
+  # - repository: "helm/helm"
+  #   description: "Kubernetes Workstation Tools CLI"
+  # - repository: "kubernetes/minikube"
+  #   description: "Run Kubernetes locally"
+  # - repository: "goodwithtech/dockle"
+  #   description: "Container Image Linter for Security"
+  - repository: "operator-framework/operator-sdk"
+    description: "SDK for building Kubernetes applications"
   # # Cloud native tool binaries -------------------------------------
   - repository: "digitalocean/doctl"
     description: "The official command line interface for the DigitalOcean API"
