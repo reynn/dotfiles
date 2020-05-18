@@ -114,8 +114,8 @@ whitespace = fix
 
 [core]
 # Use custom `.gitignore` and `.gitattributes`
-excludesfile = ~/git/reynn/dotfiles/git/gitignore
-attributesfile = ~/git/reynn/dotfiles/git/gitattributes
+excludesfile = ~/git/reynn/dotfiles/configs/git/gitignore
+attributesfile = ~/git/reynn/dotfiles/configs/git/gitattributes
 
 # Treat spaces before tabs and all kinds of trailing whitespace as an error
 # [default] trailing-space: looks for spaces at the end of a line
@@ -157,7 +157,7 @@ untracked = cyan
 
 [commit]
 # https://help.github.com/articles/signing-commits-using-gpg/
-	gpgSign = false
+gpgSign = true
 
 [diff]
 # Detect copies as well as renames
@@ -179,9 +179,9 @@ autocorrect = 1
 log = true
 
 [user]
-	email = 224374+reynn@users.noreply.github.com
-	name = Nic Patterson
-	signingKey = 2FC3D185926DD8FFAFA6822E1B2F6C5355BB1CFB
+email = nic@reynn.dev
+name = Nic Patterson
+	signingKey = D240749BD7BD582D452D4F8B01C5E2D97CC55809
 
 [push]
 # https://git-scm.com/docs/git-config#git-config-pushdefault
@@ -189,9 +189,8 @@ default = upstream
 # Make `git push` push relevant annotated tags when pushing branches out.
 followTags = true
 rebase = "true"
-[init]
-	templateDir = /Users/reynn/.git-template
 [gpg]
-	program = gpg
+program = gpg
+signCommits = true
 [tag]
-	forceSignAnnotated = false
+forceSignAnnotated = true

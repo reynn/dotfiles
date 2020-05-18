@@ -21,7 +21,7 @@ hi Normal ctermbg=NONE
 syntax on
 
 " is the " why this is failing sometimes?
-let g:python3_host_prog=expand("$XDG_DATA_HOME/virtualenvs/nvim-*/bin/python")
+let g:python3_host_prog=expand("/usr/local/bin/python3")
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 if executable('rg')

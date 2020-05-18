@@ -14,13 +14,24 @@
       tags:
         - always
 
-    - name: "Install certificate handling for darwin"
-      shell: "sh '/Applications/Python {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install Certificates.command'"
-      register: cert_handler
-      changed_when: 'not "Requirement already up-to-date" not in cert_handler.stdout'
-      when: ansible_system == 'Darwin'
+    - name: "Create necessary files, folders and links"
+      file:
+        src: "{{ item.src | default(omit) }}"
+        dest: "{{ item.path }}"
+        force: yes
+        state: "{{ item.state | default('link') }}"
+      loop: "{{ to_create }}"
       tags:
-        - pip
+        - always
+
+    # - name: "Install certificate handling for darwin"
+    #   shell: "sh '/Applications/Python {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install\ Certificates.command'"
+    #   register: cert_handler
+    #   changed_when: 'not "Requirement already up-to-date" not in cert_handler.stdout'
+    #   when: ansible_system == 'Darwin'
+    #   tags:
+    #     - never
+    #     - pip
 
     - name: "Install packages"
       package:
@@ -28,17 +39,10 @@
         state: present
       when:
         - ansible_system == 'Linux'
-      become: yes
-
-    - name: "Installing brew packages"
-      homebrew:
-        name: "{{ packages.brew }}"
-        state: latest
-      when:
-        - ansible_system == 'Darwin'
       tags:
-        - brew
+        - packages
         - update
+      become: yes
 
     - name: "Installing pip packages"
       pip:
@@ -47,6 +51,7 @@
         extra_args: --user
       tags:
         - pip
+        - packages
         - update
 
     - name: "Installing cargo packages"
@@ -54,39 +59,38 @@
         argv:
           - cargo
           - install
-          - -f
           - "{{ item }}"
       loop: "{{ packages.cargo }}"
       tags:
+        - never
+        - packages
         - cargo
-        - update
 
-    - name: "Create Symlinks"
-      file:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        force: yes
-        state: "{{ item.state | default('link') }}"
-      loop: "{{ file_links }}"
+    - name: "Installing brew packages"
+      homebrew:
+        name: "{{ packages.brew }}"
+        state: latest
+      when:
+        - ansible_system == 'Darwin'
       tags:
-        - update
-        - links
+        - packages
+        - brew
 
-    - name: "Clone git repos"
-      git:
-        repo: "{{ item.repo }}"
-        dest: "{{ item.dest }}"
-        depth: 1
-      ignore_errors: "{{ item.ignore_errors | default('no') }}"
-      loop: "{{ git_repos }}"
-      loop_control:
-        label: "{{ item.repo }}"
-      register: git_clone_results
-      notify: "{{ item.handler | default(omit) }}"
-      tags:
-        - update
-        - git
-        - repos
+    # - name: "Clone git repos"
+    #   git:
+    #     repo: "{{ item.repo }}"
+    #     dest: "{{ item.dest }}"
+    #     depth: 1
+    #   ignore_errors: "{{ item.ignore_errors | default('no') }}"
+    #   loop: "{{ git_repos }}"
+    #   loop_control:
+    #     label: "{{ item.repo }}"
+    #   register: git_clone_results
+    #   notify: "{{ item.handler | default(omit) }}"
+    #   tags:
+    #     - update
+    #     - git
+    #     - repos
 
     - name: "Ensure binary dirs exist"
       file:
@@ -97,14 +101,6 @@
         - binaries
         - scripts
         - update
-
-    - name: "Build Docker images"
-      docker_image: "{{ item }}"
-      loop: "{{ docker_images }}"
-      loop_control:
-        label: "{{ item.name }}"
-      tags:
-        - docker
 
     - name: "Downloading scripts"
       get_url:
@@ -144,7 +140,7 @@
           tags:
             - binaries
             - update
-      loop: "{{ bin_downloads | sort(attribute='repository') }}"
+      loop: "{{ bin_downloads }}"
       tags:
         - binaries
         - update
@@ -153,3 +149,12 @@
       user:
         name: "{{ ansible_user_id }}"
         shell: /bin/zsh
+
+    - name: "Build Docker images"
+      docker_image: "{{ item }}"
+      loop: "{{ docker_images }}"
+      loop_control:
+        label: "{{ item.name }}"
+      tags:
+        - never
+        - docker

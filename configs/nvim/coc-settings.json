@@ -26,7 +26,8 @@
     }
   },
   "snippets.autoTrigger": true,
-  "rust-client.updateOnStartup": true,
+  "rust-analyzer.updates.channel": "stable",
+  "rust-analyzer.notifications.cargoTomlNotFound": false,
   "snippets.priority": 99,
   "snippets.ultisnips.directories": [
     "snippets/ultisnips"

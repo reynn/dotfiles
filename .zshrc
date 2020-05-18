@@ -1,11 +1,12 @@
 # zmodload zsh/zprof # uncomment to debug performance issues with zsh startup
 
+# export DEBUG=true
 # -----------------------------------------------------------------------------
 # Start -----------------------------------------------------------------------
 
 antibody_bundles=(
   robbyrussell/oh-my-zsh
-  robbyrussell/oh-my-zsh,path:plugins/aws
+  # robbyrussell/oh-my-zsh,path:plugins/aws
   robbyrussell/oh-my-zsh,path:plugins/cargo
   robbyrussell/oh-my-zsh,path:plugins/dircycle
   robbyrussell/oh-my-zsh,path:plugins/docker

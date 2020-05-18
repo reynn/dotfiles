@@ -15,7 +15,10 @@ HISTCONTROL='ignoreboth' # Omit duplicates and commands that begin with a space 
 HISTSIZE='32768'         # Increase history size. Allow 32³ entries; the default is 500.
 HISTFILESIZE="$HISTSIZE"
 TERM='xterm-256color'
+# Idealy this would be in .vars/python but right now this makes more sense
+PYTHON_HOME="$(python3 -m site | grep USER_BASE | awk '{print $2}' | tr -d "\'")"
 
+export PYTHON_HOME
 export CURRENT_HOST
 export DEBUG
 export DFP
@@ -43,23 +46,18 @@ else
 fi
 
 POSSIBLE_PATHS=(
-  "$PYENV_ROOT/bin"
-  "$HOME/.yarn/bin"
+  "$DFP/scripts"
+  "$GFP/bin"
+  "$GFP/github.com/junegunn/fzf/bin"
+  "$GFP/github.com/thecasualcoder/kube-fzf"
   "$HOME/.bins"
   "$HOME/.cargo/bin"
-  "$DFP/scripts"
-  "$HOME/.npm-global/bin"
-  "$HOME/.local/bin"
+  "$PYTHON_HOME/bin"
+  "$HOME/.yarn/bin"
   "$HOME/go/bin"
-  "$GFP/bin"
-  "$GFP/github.com/thecasualcoder/kube-fzf"
-  "$GFP/github.com/junegunn/fzf/bin"
-  '/usr/local/go/bin'
+  "$PYENV_ROOT/bin"
   # Mac paths
   '/usr/local/MacGPG2/bin'
-  # "$HOME/Library/Python/3.8/bin"
-  '/Users/reynn/Library/Python/3.8/bin'
-  '/Library/Frameworks/Python.framework/Versions/3.8/bin'
   # Unix paths
   '/usr/local/bin'
   '/snap/bin'
@@ -109,16 +107,19 @@ export UPDATE_ZSH_DAYS
 # Unix (Special modifications)
 #+============================================================================+
 
-for p in $POSSIBLE_PATHS; do
-  # Test if the directory exists
-  if test -d $p; then
-    # Test if the existing PATH variable is set to anything
-    if test -z $PATH; then
-      PATH="$p"
-    else
-      PATH="$PATH:$p"
+function load_paths {
+  for p in $POSSIBLE_PATHS; do
+    # Test if the directory exists
+    if test -d $p; then
+      # Test if the existing PATH variable is set to anything
+      if test -z $PATH; then
+        PATH="$p"
+      else
+        PATH="$PATH:$p"
+      fi
     fi
-  fi
-done
+  done
 
-export PATH
+  export PATH
+}
+load_paths

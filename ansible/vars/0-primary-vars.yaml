@@ -5,15 +5,25 @@ git_path: "{{ ansible_env.HOME }}/git"
 github_path: "{{ git_path }}/github.com"
 dotfiles_path: "{{ github_path }}/reynn/dotfiles"
 
-file_links:
-  - src: "{{ dotfiles_path }}/.zshrc"
-    dest: "{{ ansible_env.HOME }}/.zshrc"
-  - src: "{{ dotfiles_path }}/configs/nvim"
-    dest: "{{ ansible_env.HOME }}/.xdg/configs/nvim"
-  - src: "{{ dotfiles_path }}/git/gitconfig"
-    dest: "{{ ansible_env.HOME }}/.gitconfig"
-  - src: "{{ dotfiles_path }}/.zshenv"
-    dest: "{{ ansible_env.HOME }}/.zshenv"
+to_create:
+  - path: "{{ ansible_env.XDG_CACHE_HOME }}"
+    state: directory
+  - path: "{{ ansible_env.XDG_DATA_HOME }}"
+    state: directory
+  - path: "{{ ansible_env.XDG_CONFIG_HOME }}"
+    state: directory
+  - path: "{{ ansible_env.HOME }}/.zshrc"
+    src: "{{ dotfiles_path }}/.zshrc"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.xdg/configs/nvim"
+    src: "{{ dotfiles_path }}/configs/nvim"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.gitconfig"
+    src: "{{ dotfiles_path }}/configs/git/gitconfig"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.zshenv"
+    src: "{{ dotfiles_path }}/.zshenv"
+    state: link
 
 # ------------
 # Maps
@@ -29,14 +39,13 @@ packages:
     - ansible
     - certifi
     - httpie
-    - pipenv
     - docker
+    - neovim
   cargo:
     - exa
     - ripgrep
   brew:
     - tmux
-    - zsh
     - neovim
 
 # ------------
@@ -44,6 +53,8 @@ packages:
 # TODO: Add ability to pull pre-releases
 bin_downloads:
   # # Standard Unix binaries -----------------------------------------
+  - repository: "neovim/neovim"
+    description: "Vim-fork focused on extensibility and usability"
   - repository: "sharkdp/fd"
     description: "A simple, fast and user-friendly alternative to 'find'"
   - repository: "stedolan/jq"
@@ -55,23 +66,21 @@ bin_downloads:
     description: "PowerShell for every system!"
   - repository: "starship/starship"
     description: "The cross-shell prompt for astronauts"
-  # - repository: "sharkdp/bat"
-  #   description: "A cat(1) clone with wings"
   # # Kubernetes Apps ------------------------------------------------
   # - repository: "weaveworks/eksctl"
   #   description: "The official CLI for Amazon EKS"
-  # - repository: "wercker/stern"
-  #   description: "K8s logging helper"
+  - repository: "wercker/stern"
+    description: "K8s logging helper"
   - repository: "derailed/k9s"
     description: "Kubernetes CLI To Manage Your Clusters In Style!"
   # - repository: "helm/helm"
   #   description: "Kubernetes Workstation Tools CLI"
-  # - repository: "kubernetes/minikube"
-  #   description: "Run Kubernetes locally"
+  - repository: "kubernetes/minikube"
+    description: "Run Kubernetes locally"
   # - repository: "goodwithtech/dockle"
   #   description: "Container Image Linter for Security"
-  - repository: "operator-framework/operator-sdk"
-    description: "SDK for building Kubernetes applications"
+  # - repository: "operator-framework/operator-sdk"
+  #   description: "SDK for building Kubernetes applications"
   # # Cloud native tool binaries -------------------------------------
   - repository: "digitalocean/doctl"
     description: "The official command line interface for the DigitalOcean API"

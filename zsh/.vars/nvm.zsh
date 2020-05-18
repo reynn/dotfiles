@@ -4,10 +4,6 @@
 # Set language versions commonly used
 #+============================================================================+
 
-LANGUAGES_PYTHON_VERSION='3.8.1'
-LANGUAGES_GO_VERSION='1.14.1'
-LANGUAGES_RUST_VERSION='1.43.1'
-
-export LANGUAGES_PYTHON_VERSION
-export LANGUAGES_GO_VERSION
-export LANGUAGES_RUST_VERSION
+export NVM_DIR="$HOME/.xdg/configs/nvm"
+. "$NVM_DIR/nvm.sh"
+# nvm use --silent stable
