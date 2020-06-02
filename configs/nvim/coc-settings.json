@@ -26,23 +26,25 @@
     }
   },
   "snippets.autoTrigger": true,
-  "rust-analyzer.updates.channel": "stable",
+  "rust-analyzer.updates.channel": "nightly",
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "rust-analyzer.procMacro.enable": true,
   "rust-analyzer.notifications.cargoTomlNotFound": false,
   "snippets.priority": 99,
   "snippets.ultisnips.directories": [
     "snippets/ultisnips"
   ],
   "snippets.extends": {
-    "zsh": ["sh"]
+    "zsh": [
+      "sh"
+    ]
   },
   "snippets.ultisnips.enable": true,
   "yaml.completion": true,
   "yaml.format.enable": true,
-  "yaml.format.proseWrap": "Always",
+  "yaml.format.proseWrap": "always",
   "yaml.format.singleQuote": false,
-  "yaml.schemas": {
-    "https://s3-us-west-2.amazonaws.com/concur-jenkins-schemas/latest.json": "pipelines.y(a)?ml"
-  },
+  "yaml.schemas": {},
   "cSpell.enabled": false,
   "cSpell.userWords": [
     "awscli",

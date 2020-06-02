@@ -15,9 +15,12 @@ to_create:
   - path: "{{ ansible_env.HOME }}/.zshrc"
     src: "{{ dotfiles_path }}/.zshrc"
     state: link
-  - path: "{{ ansible_env.HOME }}/.xdg/configs/nvim"
-    src: "{{ dotfiles_path }}/configs/nvim"
+  - path: "{{ ansible_env.HOME }}/.SpaceVim.d"
+    src: "{{ dotfiles_path }}/configs/spacevim"
     state: link
+  # - path: "{{ ansible_env.HOME }}/.xdg/configs/nvim"
+    # src: "{{ dotfiles_path }}/configs/nvim"
+    # state: link
   - path: "{{ ansible_env.HOME }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"
     state: link
