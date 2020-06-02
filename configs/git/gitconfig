@@ -155,10 +155,6 @@ added = yellow
 changed = green
 untracked = cyan
 
-[commit]
-# https://help.github.com/articles/signing-commits-using-gpg/
-gpgSign = true
-
 [diff]
 # Detect copies as well as renames
 renames = copies
@@ -181,7 +177,6 @@ log = true
 [user]
 email = nic@reynn.dev
 name = Nic Patterson
-	signingKey = D240749BD7BD582D452D4F8B01C5E2D97CC55809
 
 [push]
 # https://git-scm.com/docs/git-config#git-config-pushdefault
@@ -189,8 +184,5 @@ default = upstream
 # Make `git push` push relevant annotated tags when pushing branches out.
 followTags = true
 rebase = "true"
-[gpg]
-program = gpg
-signCommits = true
 [tag]
 forceSignAnnotated = true
