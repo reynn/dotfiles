@@ -5,4 +5,5 @@
 \.vscode/
 images/
 .DS_Store
+rust-tools/target/
 configs/oh-my-fish/weather
