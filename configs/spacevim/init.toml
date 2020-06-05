@@ -8,6 +8,8 @@
 
 # All SpaceVim option below [option] section
 [options]
+    automatic_update = true
+    # autocomplete_method = "coc"
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
@@ -28,7 +30,7 @@
 # Enable autocomplete layer
 [[layers]]
 name = 'autocomplete'
-auto_completion_return_key_behavior = "complete"
+auto_completion_return_key_behavior = "smart"
 auto_completion_tab_key_behavior = "smart"
 
 [[layers]]
@@ -37,7 +39,7 @@ default_position = 'top'
 default_height = 30
 
 [[layers]]
-  name = "lang#rust"
+  name = "ctrlp"
 
 [[layers]]
   name = "lsp"
@@ -48,10 +50,25 @@ default_height = 30
     rust = ["rust-analyzer"]
 
 [[layers]]
-  name = "ctrlp"
+  name = "lang#csharp"
+
+[[layers]]
+  name = "lang#dockerfile"
+
+[[layers]]
+  name = "lang#extra"
 
 [[layers]]
   name = "lang#go"
 
 [[layers]]
+  name = "lang#groovy"
+
+[[layers]]
+  name = "lang#markdown"
+
+[[layers]]
   name = "lang#python"
+
+[[layers]]
+  name = "lang#rust"
