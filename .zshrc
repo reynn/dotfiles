@@ -24,7 +24,6 @@ antibody_bundles=(
   robbyrussell/oh-my-zsh,path:plugins/rust
   robbyrussell/oh-my-zsh,path:plugins/sudo
   robbyrussell/oh-my-zsh,path:plugins/themes
-  robbyrussell/oh-my-zsh,path:plugins/tmux
   robbyrussell/oh-my-zsh,path:plugins/zsh-interactive-cd
   robbyrussell/oh-my-zsh,path:plugins/zsh_reload
   zsh-users/zsh-autosuggestions

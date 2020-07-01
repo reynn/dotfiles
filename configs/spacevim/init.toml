@@ -8,67 +8,65 @@
 
 # All SpaceVim option below [option] section
 [options]
-    automatic_update = true
-    # autocomplete_method = "coc"
-    # set spacevim theme. by default colorscheme layer is not loaded,
-    # if you want to use more colorscheme, please load the colorscheme
-    # layer
-    colorscheme = "gruvbox"
-    colorscheme_bg = "dark"
-    # Disable guicolors in basic mode, many terminal do not support 24bit
-    # true colors
-    enable_guicolors = true
-    filemanager = "nerdtree"
-    # Disable statusline separator, if you want to use other value, please
-    # install nerd fonts
-    statusline_separator = "arrow"
-    statusline_inactive_separator = "arrow"
-    buffer_index_type = 4
-    enable_tabline_filetype_icon = true
-    enable_statusline_mode = false
+automatic_update = true
+# autocomplete_method = "coc"
+# set spacevim theme. by default colorscheme layer is not loaded,
+# if you want to use more colorscheme, please load the colorscheme
+# layer
+colorscheme    = "gruvbox"
+colorscheme_bg = "dark"
+# Disable guicolors in basic mode, many terminal do not support 24bit
+# true colors
+enable_guicolors = true
+filemanager      = "nerdtree"
+# Disable statusline separator, if you want to use other value, please
+# install nerd fonts
+buffer_index_type             = 4
+enable_statusline_mode        = false
+enable_tabline_filetype_icon  = true
+statusline_inactive_separator = "arrow"
+statusline_separator          = "arrow"
 
 # Enable autocomplete layer
 [[layers]]
-name = 'autocomplete'
 auto_completion_return_key_behavior = "smart"
-auto_completion_tab_key_behavior = "smart"
+auto_completion_tab_key_behavior    = "smart"
+name                                = 'autocomplete'
 
 [[layers]]
-name = 'shell'
+default_height   = 30
 default_position = 'top'
-default_height = 30
+name             = 'shell'
 
 [[layers]]
-  name = "ctrlp"
+name = "ctrlp"
 
 [[layers]]
-  name = "lsp"
-  filetypes = [
-    "rust"
-  ]
+filetypes = ["rust"]
+name      = "lsp"
   [layers.override_cmd]
-    rust = ["rust-analyzer"]
+  rust = ["rust-analyzer"]
 
 [[layers]]
-  name = "lang#csharp"
+name = "lang#csharp"
 
 [[layers]]
-  name = "lang#dockerfile"
+name = "lang#dockerfile"
 
 [[layers]]
-  name = "lang#extra"
+name = "lang#extra"
 
 [[layers]]
-  name = "lang#go"
+name = "lang#go"
 
 [[layers]]
-  name = "lang#groovy"
+name = "lang#groovy"
 
 [[layers]]
-  name = "lang#markdown"
+name = "lang#markdown"
 
 [[layers]]
-  name = "lang#python"
+name = "lang#python"
 
 [[layers]]
-  name = "lang#rust"
+name = "lang#rust"

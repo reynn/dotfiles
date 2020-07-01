@@ -6,7 +6,7 @@
 
 function generate_ssh_config_from_ansible_inventory {
   local INVENTORY_FILE="$1"
-  local CONFIG_DIRECTORY="${2:-$HOME/.ssh/configs}"
+  local CONFIG_DIRECTORY="${2:-$HOME/.ssh/config.d}"
   local ENTRIES=($(ansible-inventory -i $INVENTORY_FILE --list | jq -c '._meta.hostvars | to_entries[] | {"name": .key, "ip": .value.ansible_host, "user": .value.ansible_user, "ident": .value.ansible_private_key_file}'))
 
   mkdir -p $CONFIG_DIRECTORY
@@ -19,7 +19,7 @@ function generate_ssh_config_from_ansible_inventory {
       local ip="$(echo $entry | jq -r '.ip')"
       local user="$(echo $entry | jq -r '.user')"
       local identFile="$(echo $entry | jq -r '.ident')"
-      print_info "host" "$name@$ip"
+      print_info "$name@$ip" "host"
 
       echo "Host $name" >> $CONFIG_DIRECTORY/$dc
       echo "  HostName $ip" >> $CONFIG_DIRECTORY/$dc

@@ -4,7 +4,7 @@
 # Artifactory functions -------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-function artifactory_upload {
+function artifactory_upload() {
   local glob_match="*"
   local subfolder=""
   local repo="ext-util-sandbox-local"
@@ -56,22 +56,43 @@ function artifactory_upload {
   fi
 }
 
-function artifactory_download {
-  local glob_match="${1:-*}"
-  local repo="${2:-util-release}"
-  local pattern="$repo/*$glob_match*"
+function artifactory_download() {
+  local glob_match="*"
+  local repo="ext-util-sandbox-local"
+  local flat='false'
+  local dry_run='false'
+  local target="$PWD/"
+
+  while getopts "dfhm:s:r:t:" opt; do
+    case $opt in
+    d) dry_run='true' ;;
+    f) flat='true' ;;
+    m) glob_match="$OPTARG" ;;
+    r) repo="$OPTARG" ;;
+    t) target="$OPTARG" ;;
+    h)
+      echo "Usage: ${0:t} [-df] [-m GLOB_MATCH] [-r REPO] [-t TARGET]"
+      return 0
+      ;;
+    esac
+  done
   local spec_file=$(mktemp -t download-spec.json)
 
   jarg \
-    "files[0][target]=$PWD" \
+    "files[0][target]=$target" \
     "files[0][repo]=$repo" \
-    "files[0][pattern]=$pattern" |
+    "files[0][flat]=$flat" \
+    "files[0][pattern]=$repo/$glob_match" |
     tee $spec_file
 
-  jfrog rt download --spec $spec_file
+  if test $dry_run = 'true'; then
+    jfrog rt download --dry-run --spec $spec_file
+  else
+    jfrog rt download --spec $spec_file
+  fi
 }
 
-function artifactory_search {
+function artifactory_search() {
   local glob_match="*"
   local repo="util-release"
   local pattern="$repo/*$glob_match*"
@@ -98,7 +119,7 @@ function artifactory_search {
   jfrog rt search --spec $spec_file
 }
 
-function artifactory_get_my_uploads {
+function artifactory_get_my_uploads() {
   local repo='ext-yum-selfserve-local-v2'
   local time_frame='2d'
   local spec_file=$(mktemp -t my-uploads-spec.json)

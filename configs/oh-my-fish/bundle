@@ -1,0 +1,12 @@
+package ansible
+package aws
+package battery
+package cd
+package config
+package extract
+package osx
+package rustup
+package spark
+package weather
+theme default
+theme zish
