@@ -29,9 +29,9 @@ statusline_separator          = "arrow"
 
 # Enable autocomplete layer
 [[layers]]
-auto_completion_return_key_behavior = "smart"
-auto_completion_tab_key_behavior    = "smart"
-name                                = 'autocomplete'
+name = 'autocomplete'
+auto_completion_return_key_behavior = "complete"
+auto_completion_tab_key_behavior = "cycle"
 
 [[layers]]
 default_height   = 30
@@ -48,7 +48,10 @@ name      = "lsp"
   rust = ["rust-analyzer"]
 
 [[layers]]
-name = "lang#csharp"
+  name = "unite"
+
+[[layers]]
+  name = "lang#csharp"
 
 [[layers]]
 name = "lang#dockerfile"
@@ -70,3 +73,6 @@ name = "lang#python"
 
 [[layers]]
 name = "lang#rust"
+
+[[custom_plugins]]
+  name = "ipedrazas/kubernetes-snippets"
