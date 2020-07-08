@@ -6,7 +6,6 @@ package config
 package extract
 package osx
 package rustup
-package spark
 package weather
 theme default
 theme zish

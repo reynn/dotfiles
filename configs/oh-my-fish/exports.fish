@@ -22,3 +22,9 @@ set -xg GO111MODULE on
 set -xg PATH $HOME/.bins $PATH
 set -xg PATH $PYTHON_HOME/bin $PATH
 set -xg PATH $HOME/go/bin $PATH
+set -xg PATH $GFP/github.com/junegunn/fzf/bin $PATH
+
+# FZF
+set -xg FZF_DEFAULT_OPTS "--height 50% --layout=reverse --border"
+set -xg FZF_DEFAULT_COMMAND 'fd -t f'
+set -xg FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"

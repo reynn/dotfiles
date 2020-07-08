@@ -1,8 +1,9 @@
-set sourceables exports aliases functions
+set sourceables exports aliases ".host/"(hostname) ".secrets/"(hostname)
 
 for sourceable in $sourceables
-    if test -e $OMF_CONFIG/$sourceable.fish
-        source $OMF_CONFIG/$sourceable.fish
+    set path "$OMF_CONFIG/$sourceable.fish"
+    if test -e $path
+        source $path
     end
 end
 

@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-
-antibody_bundles+=(
-  robbyrussell/oh-my-zsh,path:plugins/osx
-)

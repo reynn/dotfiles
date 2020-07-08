@@ -6,26 +6,29 @@ github_path: "{{ git_path }}/github.com"
 dotfiles_path: "{{ github_path }}/reynn/dotfiles"
 
 to_create:
-  - path: "{{ ansible_env.XDG_CACHE_HOME }}"
-    state: directory
-  - path: "{{ ansible_env.XDG_DATA_HOME }}"
-    state: directory
-  - path: "{{ ansible_env.XDG_CONFIG_HOME }}"
-    state: directory
-  - path: "{{ ansible_env.HOME }}/.zshrc"
-    src: "{{ dotfiles_path }}/.zshrc"
+  # - path: "{{ ansible_env.XDG_CACHE_HOME }}"
+  #   state: directory
+  # - path: "{{ ansible_env.XDG_DATA_HOME }}"
+  #   state: directory
+  # - path: "{{ ansible_env.XDG_CONFIG_HOME }}"
+  #   state: directory
+  - path: "{{ ansible_env.HOME }}/.config/fish/functions"
+    src: "{{ dotfiles_path }}/config/fish/functions"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.config/fish/completions"
+    src: "{{ dotfiles_path }}/config/fish/completions"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.config/oh-my-fish"
+    src: "{{ dotfiles_path }}/config/omf"
     state: link
   - path: "{{ ansible_env.HOME }}/.SpaceVim.d"
     src: "{{ dotfiles_path }}/configs/spacevim"
     state: link
-  # - path: "{{ ansible_env.HOME }}/.xdg/configs/nvim"
-    # src: "{{ dotfiles_path }}/configs/nvim"
-    # state: link
+  - path: "{{ ansible_env.HOME }}/.configs/nvim"
+    src: "{{ dotfiles_path }}/configs/nvim"
+    state: link
   - path: "{{ ansible_env.HOME }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"
-    state: link
-  - path: "{{ ansible_env.HOME }}/.zshenv"
-    src: "{{ dotfiles_path }}/.zshenv"
     state: link
 
 # ------------

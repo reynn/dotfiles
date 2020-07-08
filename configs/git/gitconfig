@@ -177,6 +177,7 @@ log = true
 [user]
 	email = nic.patterson@sap.com
 name = Nic Patterson
+	signingKey = 21F7F827468043C09B385D35A5C96CFCB81A3E0E
 
 [push]
 # https://git-scm.com/docs/git-config#git-config-pushdefault
@@ -186,3 +187,7 @@ followTags = true
 rebase = "true"
 [tag]
 forceSignAnnotated = true
+[gpg]
+	program = gpg
+[commit]
+	gpgSign = true
