@@ -13,19 +13,19 @@ to_create:
   # - path: "{{ ansible_env.XDG_CONFIG_HOME }}"
   #   state: directory
   - path: "{{ ansible_env.HOME }}/.config/fish/functions"
-    src: "{{ dotfiles_path }}/config/fish/functions"
+    src: "{{ dotfiles_path }}/configs/fish/functions"
     state: link
   - path: "{{ ansible_env.HOME }}/.config/fish/completions"
-    src: "{{ dotfiles_path }}/config/fish/completions"
+    src: "{{ dotfiles_path }}/configs/fish/completions"
     state: link
-  - path: "{{ ansible_env.HOME }}/.config/oh-my-fish"
-    src: "{{ dotfiles_path }}/config/omf"
+  - path: "{{ ansible_env.HOME }}/.config/omf"
+    src: "{{ dotfiles_path }}/configs/oh-my-fish"
     state: link
   - path: "{{ ansible_env.HOME }}/.SpaceVim.d"
     src: "{{ dotfiles_path }}/configs/spacevim"
     state: link
-  - path: "{{ ansible_env.HOME }}/.configs/nvim"
-    src: "{{ dotfiles_path }}/configs/nvim"
+  - path: "{{ ansible_env.HOME }}/.config/nvim"
+    src: "{{ ansible_env.HOME }}/.SpaceVim"
     state: link
   - path: "{{ ansible_env.HOME }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"

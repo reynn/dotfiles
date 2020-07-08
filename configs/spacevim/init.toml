@@ -74,5 +74,8 @@ name = "lang#python"
 [[layers]]
 name = "lang#rust"
 
+[[layers]]
+name = "lang#toml"
+
 [[custom_plugins]]
   name = "ipedrazas/kubernetes-snippets"
