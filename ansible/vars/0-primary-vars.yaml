@@ -1,58 +1,5 @@
 # ------------
 # Strings
-bins_dir: "{{ ansible_env.HOME }}/.bins"
-git_path: "{{ ansible_env.HOME }}/git"
-github_path: "{{ git_path }}/github.com"
-dotfiles_path: "{{ github_path }}/reynn/dotfiles"
-
-to_create:
-  # - path: "{{ ansible_env.XDG_CACHE_HOME }}"
-  #   state: directory
-  # - path: "{{ ansible_env.XDG_DATA_HOME }}"
-  #   state: directory
-  # - path: "{{ ansible_env.XDG_CONFIG_HOME }}"
-  #   state: directory
-  - path: "{{ ansible_env.HOME }}/.config/fish/functions"
-    src: "{{ dotfiles_path }}/configs/fish/functions"
-    state: link
-  - path: "{{ ansible_env.HOME }}/.config/fish/completions"
-    src: "{{ dotfiles_path }}/configs/fish/completions"
-    state: link
-  - path: "{{ ansible_env.HOME }}/.config/omf"
-    src: "{{ dotfiles_path }}/configs/oh-my-fish"
-    state: link
-  - path: "{{ ansible_env.HOME }}/.SpaceVim.d"
-    src: "{{ dotfiles_path }}/configs/spacevim"
-    state: link
-  - path: "{{ ansible_env.HOME }}/.config/nvim"
-    src: "{{ ansible_env.HOME }}/.SpaceVim"
-    state: link
-  - path: "{{ ansible_env.HOME }}/.gitconfig"
-    src: "{{ dotfiles_path }}/configs/git/gitconfig"
-    state: link
-
-# ------------
-# Maps
-packages:
-  system:
-    - zsh
-    - git
-    - curl
-    - wget
-    - tmux
-    - neovim
-  pip:
-    - ansible
-    - certifi
-    - httpie
-    - docker
-    - neovim
-  cargo:
-    - exa
-    - ripgrep
-  brew:
-    - tmux
-    - neovim
 
 # ------------
 # Lists
@@ -90,6 +37,16 @@ bin_downloads:
   # # Cloud native tool binaries -------------------------------------
   - repository: "digitalocean/doctl"
     description: "The official command line interface for the DigitalOcean API"
+
+bins_dir: "{{ ansible_env.HOME }}/.bins"
+git_path: "{{ ansible_env.HOME }}/git"
+github_path: "{{ git_path }}/github.com"
+dotfiles_path: "{{ github_path }}/reynn/dotfiles"
+
+commands:
+  - cmd: "go build -o {{ bins_dir }}/helpers main.go"
+    dir: "{{ dotfiles_path }}/go/helpers"
+  - cmd: "sh /tmp/antibody -b {{ bins_dir }}"
 
 docker_images:
   - name: fantia.jp
@@ -135,10 +92,28 @@ git_repos:
   - repo: "git@github.com:VundleVim/Vundle.vim.git"
     dest: "{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim"
 
-commands:
-  - cmd: "go build -o {{ bins_dir }}/helpers main.go"
-    dir: "{{ dotfiles_path }}/go/helpers"
-  - cmd: "sh /tmp/antibody -b {{ bins_dir }}"
+# ------------
+# Maps
+packages:
+  system:
+    - zsh
+    - git
+    - curl
+    - wget
+    - tmux
+    - neovim
+  pip:
+    - ansible
+    - certifi
+    - httpie
+    - docker
+    - neovim
+  cargo:
+    - exa
+    - ripgrep
+  brew:
+    - tmux
+    - neovim
 
 scripts:
   - name: "gimme"
@@ -150,3 +125,29 @@ scripts:
   - name: "nvm"
     url: "https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh"
     dir: "{{ bins_dir }}"
+
+to_create:
+  # - path: "{{ ansible_env.XDG_CACHE_HOME }}"
+  #   state: directory
+  # - path: "{{ ansible_env.XDG_DATA_HOME }}"
+  #   state: directory
+  # - path: "{{ ansible_env.XDG_CONFIG_HOME }}"
+  #   state: directory
+  - path: "{{ ansible_env.HOME }}/.config/fish/functions"
+    src: "{{ dotfiles_path }}/configs/fish/functions"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.config/fish/completions"
+    src: "{{ dotfiles_path }}/configs/fish/completions"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.config/omf"
+    src: "{{ dotfiles_path }}/configs/oh-my-fish"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.SpaceVim.d"
+    src: "{{ dotfiles_path }}/configs/spacevim"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.config/nvim"
+    src: "{{ ansible_env.HOME }}/.SpaceVim"
+    state: link
+  - path: "{{ ansible_env.HOME }}/.gitconfig"
+    src: "{{ dotfiles_path }}/configs/git/gitconfig"
+    state: link
