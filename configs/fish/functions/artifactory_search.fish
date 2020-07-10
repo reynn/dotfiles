@@ -1,17 +1,21 @@
-function artifactory_search -d "Search Artifactory for files"
+function artifactory_search -d "Search Artifactory for files" -a glob_match repo pattern
     set -l glob_match "*"
     set -l repo "util-release"
-    set -l pattern "$repo/*$glob_match*"
+    set -l pattern
 
     getopts $argv | while read -l key value
         switch $key
             case glob_match
                 set glob_match "$value"
             case repo
-                set repo $value
+                set repo "$value"
             case pattern
                 set pattern "$value"
         end
+    end
+
+    if test -z $pattern
+      set pattern "$repo/*$glob_match*"
     end
 
     set -l spec_file (mktemp -t search-spec.json)

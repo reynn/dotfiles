@@ -10,13 +10,13 @@ function artifactory_upload -d "Upload files to Artifactory" -a glob_match subfo
     getopts $argv | while read -l key value
         switch $key
             case dry_run
-                set dry_run $value
+                set dry_run 'true'
             case repo
                 set repo $value
             case flat
-                set flat = 'true'
+                set flat 'true'
             case build_name
-                set build_name = "$value"
+                set build_name "$value"
             case build_number
                 set build_number "$value"
             case glob_match

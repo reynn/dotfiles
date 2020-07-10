@@ -7,5 +7,5 @@ function __fish_complete_pip
     set -lx PIP_AUTO_COMPLETE 1
     string split \  -- (eval $COMP_WORDS[1])
 end
-complete -fa "(__fish_complete_pip)" -c /usr/local/bin/python3 -m pip
+complete -fa "(__fish_complete_pip)" -c pip
 # pip fish completion end

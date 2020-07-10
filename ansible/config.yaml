@@ -76,21 +76,21 @@
         - packages
         - brew
 
-    # - name: "Clone git repos"
-    #   git:
-    #     repo: "{{ item.repo }}"
-    #     dest: "{{ item.dest }}"
-    #     depth: 1
-    #   ignore_errors: "{{ item.ignore_errors | default('no') }}"
-    #   loop: "{{ git_repos }}"
-    #   loop_control:
-    #     label: "{{ item.repo }}"
-    #   register: git_clone_results
-    #   notify: "{{ item.handler | default(omit) }}"
-    #   tags:
-    #     - update
-    #     - git
-    #     - repos
+    - name: "Clone git repos"
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+        depth: 1
+      ignore_errors: "{{ item.ignore_errors | default('no') }}"
+      loop: "{{ git_repos }}"
+      loop_control:
+        label: "{{ item.repo }}"
+      register: git_clone_results
+      notify: "{{ item.handler | default(omit) }}"
+      tags:
+        - update
+        - git
+        - repos
 
     - name: "Ensure binary dirs exist"
       file:
@@ -145,10 +145,10 @@
         - binaries
         - update
 
-    - name: "Set the default shell to zsh"
-      user:
-        name: "{{ ansible_user_id }}"
-        shell: /bin/zsh
+    # - name: "Set the default shell to zsh"
+    #   user:
+    #     name: "{{ ansible_user_id }}"
+    #     shell: /bin/zsh
 
     - name: "Build Docker images"
       docker_image: "{{ item }}"

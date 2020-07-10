@@ -175,7 +175,7 @@ autocorrect = 1
 log = true
 
 [user]
-	email = nic.patterson@sap.com
+	email = nic@reynn.dev
 name = Nic Patterson
 	signingKey = 21F7F827468043C09B385D35A5C96CFCB81A3E0E
 
