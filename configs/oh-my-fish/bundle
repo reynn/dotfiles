@@ -4,6 +4,8 @@ package battery
 package cd
 package config
 package extract
+package foreign-env
+package nvm
 package osx
 package rustup
 package weather

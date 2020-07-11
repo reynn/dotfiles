@@ -1,7 +1,7 @@
 # All SpaceVim option below [option] section
 [options]
-automatic_update = true
 # autocomplete_method = "coc"
+automatic_update = true
 # set spacevim theme. by default colorscheme layer is not loaded,
 # if you want to use more colorscheme, please load the colorscheme
 # layer
@@ -19,6 +19,13 @@ enable_tabline_filetype_icon  = true
 statusline_inactive_separator = "arrow"
 statusline_separator          = "arrow"
 
+[[layers]]
+name = "colorscheme"
+
+[[layers]]
+filetree_show_hidden = true
+name                 = 'core'
+
 # Enable autocomplete layer
 [[layers]]
 auto_completion_return_key_behavior = "complete"
@@ -30,12 +37,13 @@ default_height   = 30
 default_position = "top"
 name             = "shell"
 
-[[layers]]
-name = "ctrlp"
+# [[layers]]
+# name = "ctrlp"
 
 [[layers]]
 filetypes = ["rust"]
 name      = "lsp"
+
   [layers.override_cmd]
   rust = ["rust-analyzer"]
 

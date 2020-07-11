@@ -4,8 +4,8 @@
 alias l "exa -la --group-directories-first"
 alias "rm" "rm -v"
 ## Program rename -----------------------------------------------------------------------
-alias vim nvim
-alias "vi" vim
+alias vim 'command nvim'
+alias "vi" 'command vim'
 alias sterns 'stern'
 alias stern 'stern -E linkerd-proxy'
 ## AWS ----------------------------------------------------------------------------------
