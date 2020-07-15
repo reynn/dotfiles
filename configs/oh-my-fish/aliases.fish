@@ -1,8 +1,5 @@
 # Aliases
 
-## General ------------------------------------------------------------------------------
-alias l "exa -la --group-directories-first"
-alias "rm" "rm -v"
 ## Program rename -----------------------------------------------------------------------
 alias vim 'command nvim'
 alias "vi" 'command vim'
@@ -20,7 +17,6 @@ alias L 'less'
 alias S 'sort'
 alias bins 'cd $DIR_BINS'
 alias grep 'rg -i'
-alias izf 'import_zsh_files $IMPORT_DIRECTORIES'
 alias reynn 'cd $REYNN'
 ## General ------------------------------------------------------------------------------
 alias kill_ssh_agents 'ps aux | grep ssh-agent | awk "{print \$2}" | xargs kill -9'

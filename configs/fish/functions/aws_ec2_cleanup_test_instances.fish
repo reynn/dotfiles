@@ -1,4 +1,3 @@
-
 function aws_ec2_cleanup_test_instances -d ""
     set -l instance_ids (aws \
     ec2 \
@@ -17,10 +16,11 @@ function aws_ec2_cleanup_test_instances -d ""
     end
 
     echo "Found "(count $instance_ids)" instances to delete..."
-    return 0
 
     for instance_id in $instance_ids
         echo "Deleting $instance_id"
-        aws_ec2_tear_down_instance $instance_id
+
+        aws ec2 terminate-instances --instance-ids $instance_id |
+        jq -r '.TerminatingInstances[] | "\(.InstanceId) is currently \(.CurrentState.Name)"'
     end
 end
