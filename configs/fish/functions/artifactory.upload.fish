@@ -1,4 +1,4 @@
-function artifactory_upload -d "Upload files to Artifactory" -a glob_match subfolder repo flat dry_run build_name build_number
+function artifactory.upload -d "Upload files to Artifactory" -a glob_match subfolder repo flat dry_run build_name build_number
     set -l glob_match "*"
     set -l subfolder ""
     set -l repo "ext-util-sandbox-local"

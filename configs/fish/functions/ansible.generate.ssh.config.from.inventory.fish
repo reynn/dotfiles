@@ -1,4 +1,4 @@
-function ansible_generate_ssh_config_from_inventory -d "Generate valid SSH config from an Ansible inventory"
+function ansible.generate.ssh.config.from.inventory -d "Generate valid SSH config from an Ansible inventory"
     set -l INVENTORY_FILE "$argv[1]"
     set -l CONFIG_DIRECTORY "$HOME/.ssh/config.d"
 

@@ -1,0 +1,14 @@
+function go.change.version -d "Get a version of Go or source the latest environment from Gimme"
+    set -l go_version "$argv[1]"
+    set -l script_url 'https://raw.githubusercontent.com/travis-ci/gimme/master/gimme'
+
+    if test -n "$go_version"
+        echo "[Debug] Running Gimme with version $go_version"
+        curl -sL $script_url | GIMME_SILENT_ENV=true GIMME_GO_VERSION=$go_version bash
+    else
+        set -l go_version (fd -td -d1 . ~/.gimme/versions/ -x echo '{/}' \; | sort -r -u | fzf --select-1 --prompt 'Go Version> ' --height 40%)
+        set -l go_path "$HOME/.gimme/versions/$go_version"
+        set -xU GOROOT $go_path
+        set -p PATH $go_path/bin
+    end
+end

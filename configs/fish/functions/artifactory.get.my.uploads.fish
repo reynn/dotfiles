@@ -1,4 +1,4 @@
-function artifactory_get_my_uploads -d "Search for files that you have uploaded"
+function artifactory.get.my.uploads -d "Search for files that you have uploaded"
     set -l repo 'ext-yum-selfserve-local-v2'
     set -l time_frame '2d'
     set -l spec_file (mktemp -t my-uploads-spec.json)

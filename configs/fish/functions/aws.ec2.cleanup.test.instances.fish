@@ -1,4 +1,4 @@
-function aws_ec2_cleanup_test_instances -d ""
+function aws.ec2.cleanup.test.instances -d "Cleanup any instances that were created to test with"
     set -l instance_ids (aws \
     ec2 \
     describe-instances \

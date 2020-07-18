@@ -1,4 +1,4 @@
-function artifactory_download -d "Download files from Artifactory based on a given pattern"
+function artifactory.download -d "Download files from Artifactory based on a given pattern"
     set -l dry_run 'false'
     set -l flat 'false'
     set -l repo "ext-util-sandbox-local"

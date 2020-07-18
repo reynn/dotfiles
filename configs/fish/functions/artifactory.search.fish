@@ -1,4 +1,4 @@
-function artifactory_search -d "Search Artifactory for files" -a glob_match repo pattern
+function artifactory.search -d "Search Artifactory for files" -a glob_match repo pattern
     set -l glob_match "*"
     set -l repo "util-release"
     set -l pattern

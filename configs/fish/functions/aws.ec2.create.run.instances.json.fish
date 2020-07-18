@@ -1,4 +1,4 @@
-function aws_ec2_create_run_instances_json -d "Create the necessary JSON data to send to AWS via the CLI" -a "AMIID"
+function aws.ec2.create.run.instances.json -d "Create the necessary JSON data to send to AWS via the CLI" -a "AMIID"
     set -l ami_id ""
     set -l instance_type "t3.large"
     getopts $argv | while read -l key value

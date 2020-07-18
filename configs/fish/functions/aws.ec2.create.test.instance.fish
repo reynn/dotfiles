@@ -1,9 +1,8 @@
-
-function aws_ec2_create_test_instance -d "Create a test instance in AWS" -a force_search ami_id ami_owner ami_filter
+function aws.ec2.create.test.instance -d "Create a test instance in AWS" --argument-names force_search ami_id ami_owner ami_filter
     set -l force_search 'false'
     set -l ami_id ''
     set -l ami_owner '966799970081'
-    set -l ami_filter 'golden-image-cis-centos-7.8'
+    set -l ami_filter 'golden-ami-rhel-7.8.*-cis-2-fips'
 
     getopts $argv | while read -l key value
         switch $key
@@ -23,9 +22,7 @@ function aws_ec2_create_test_instance -d "Create a test instance in AWS" -a forc
         ec2 \
         describe-images \
         --filters "Name=name,Values=$ami_filter*" \
-        --owners "$ami_owner" \
-        --query 'Images[-1].ImageId' \
-        --output text
+        --owners "$ami_owner" | jq -r '.Images[].ImageId' | fzf
     )
         if test ! $status -eq 0
             echo "Unable to find a valid AMI to use"
@@ -34,7 +31,7 @@ function aws_ec2_create_test_instance -d "Create a test instance in AWS" -a forc
         echo "Latest AMI is $ami_id..."
     end
 
-    set -l instance_json (aws_ec2_create_run_instances_json --amiid $ami_id)
+    set -l instance_json (aws.ec2.create.run.instances.json --amiid $ami_id)
 
     # echo "DEBUG: force_search: $force_search"
     # echo "DEBUG: ami_id: $ami_id"

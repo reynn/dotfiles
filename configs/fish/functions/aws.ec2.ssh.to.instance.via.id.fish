@@ -1,4 +1,4 @@
-function aws_ec2_ssh_to_instance_via_id -d "SSH to an AWS instance via it's ID instead of IP"
+function aws.ec2.ssh.to.instance.via.id -d "SSH to an AWS instance via it's ID instead of IP"
     set -l instance_id $argv[1]
     set -l instance_data (aws ec2 describe-instances --instance-ids "$instance_id" | jq -r '.Reservations[0].Instances[0]')
     set -l ip (echo "$instance_data" | jq -r '.PrivateIpAddress')
