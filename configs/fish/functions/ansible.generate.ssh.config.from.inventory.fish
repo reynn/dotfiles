@@ -6,6 +6,7 @@ function ansible.generate.ssh.config.from.inventory -d "Generate valid SSH confi
 
     if test -d "$CONFIG_DIRECTORY"
         echo "Cleaning SSH Config directory [$CONFIG_DIRECTORY]"
+        # Only remove the files that start with a letter, to preserve any . prefixed files
         fd -tf '^[a-zA-Z].+' "$CONFIG_DIRECTORY" -X rm -fv {} \;
     else
         mkdir -p $CONFIG_DIRECTORY

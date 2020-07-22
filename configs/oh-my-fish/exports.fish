@@ -19,12 +19,11 @@ set -xg GOPATH $HOME/go
 set -xg GO111MODULE on
 
 # Path Exports
-set -xg PATH $HOME/.bins $PATH
-set -xg PATH $PYTHON_HOME/bin $PATH
-set -xg PATH $HOME/go/bin $PATH
-set -xg PATH $GFP/github.com/junegunn/fzf/bin $PATH
+set -p PATH $HOME/.bins
+set -p PATH $PYTHON_HOME/bin
+set -p PATH $HOME/go/bin
+set -p PATH $GFP/github.com/junegunn/fzf/bin
 
 # FZF
 set -xg FZF_DEFAULT_OPTS "--height 50% --layout=reverse --border"
-set -xg FZF_DEFAULT_COMMAND 'fd -t f'
-set -xg FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
+set -xg FZF_DEFAULT_COMMAND 'fd --type f --hidden --exclude .git'

@@ -9,6 +9,7 @@ function go.change.version -d "Get a version of Go or source the latest environm
         set -l go_version (fd -td -d1 . ~/.gimme/versions/ -x echo '{/}' \; | sort -r -u | fzf --select-1 --prompt 'Go Version> ' --height 40%)
         set -l go_path "$HOME/.gimme/versions/$go_version"
         set -xU GOROOT $go_path
-        set -p PATH $go_path/bin
+        # this will prevent it from readding the same version to the path
+        contains $fish_user_paths $go_path/bin; or set -Up fish_user_paths $go_path/bin
     end
 end
