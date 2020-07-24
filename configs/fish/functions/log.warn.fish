@@ -1,8 +1,4 @@
-function log.debug -d "Log a debug message"
-    set -q DEBUG
-    if test $status -gt 0
-        return 0
-    end
+function log.warn -d "Log a warning message"
     set -l label ''
     set -l msg ''
 
@@ -20,8 +16,8 @@ function log.debug -d "Log a debug message"
     end
 
     if test -n $label
-        echo -e "\e[32m[DEBUG]($label): $msg\e[0m" 1>&2
+        echo -e "\e[35m[WARN]($label): $msg\e[0m" 1>&2
     else
-        echo -e "\e[32m[DEBUG]: $msg\e[0m" 1>&2
+        echo -e "\e[35m[WARN]: $msg\e[0m" 1>&2
     end
 end

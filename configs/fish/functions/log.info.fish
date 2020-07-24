@@ -16,8 +16,8 @@ function log.info -d "Log a special information message"
     end
 
     if test -n $label
-        echo -e "\e[36m[INFO]($label) $msg\e[0m" 1>&2
+        echo -e "\e[36m[INFO]($label): $msg\e[0m" 1>&2
     else
-        echo -e "\e[36m[INFO] $msg\e[0m" 1>&2
+        echo -e "\e[36m[INFO]: $msg\e[0m" 1>&2
     end
 end

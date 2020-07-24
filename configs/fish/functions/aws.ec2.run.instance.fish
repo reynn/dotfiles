@@ -4,6 +4,8 @@ function aws.ec2.run.instance -d "Create an instance in AWS" --argument-names fo
     set -l ami_owner '966799970081'
     set -l instance_type 't3.large'
     set -l ami_filter 'golden-ami-rhel-7.8.*-cis-2-fips'
+    set -l i_count '1'
+    set -l name "$USER-test-instance"
 
     getopts $argv | while read -l key value
         switch $key
@@ -15,6 +17,10 @@ function aws.ec2.run.instance -d "Create an instance in AWS" --argument-names fo
                 set instance_type $value
             case s force_search
                 set force_search 'true'
+            case c i_count
+                set i_count $value
+            case n name
+                set name $value
         end
     end
 
@@ -36,9 +42,10 @@ function aws.ec2.run.instance -d "Create an instance in AWS" --argument-names fo
         echo "Latest AMI is $ami_id..."
     end
 
-    set -l instance_json (aws.utils.json.run.instances --ami_id $ami_id --instance_type $instance_type)
-    set -l instance (aws ec2 run-instances --output json --cli-input-json $instance_json)
+    set -l instance_json (aws.utils.json.run.instances --ami_id $ami_id --name $name --launch_count $i_count --instance_type $instance_type)
+    set -l instances (aws ec2 run-instances --output json --cli-input-json $instance_json)
+    log.debug -l 'run.instance.result' -m $instances
 
-    echo "Instance ID: "(echo $instance | jq -r '.Instances[0].InstanceId')
-    echo "IP Address: "(echo $instance | jq -r '.Instances[0].PrivateIpAddress')
+    log.info -l "Instance ID(s)" -m (echo $instances | jq -r '.Instances[].InstanceId')
+    log.info -l "IP Address(es)" -m (echo $instances | jq -r '.Instances[].PrivateIpAddress')
 end

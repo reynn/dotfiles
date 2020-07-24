@@ -2,12 +2,18 @@ function ansible.generate.ssh.config.from.inventory -d "Generate valid SSH confi
     set -l INVENTORY_FILE "$argv[1]"
     set -l CONFIG_DIRECTORY "$HOME/.ssh/config.d"
 
-    set -l ENTRIES (ansible-inventory -i $INVENTORY_FILE --list | jq -c '._meta.hostvars | to_entries[] | {"name": .key, "ip": .value.ansible_host, "user": .value.ansible_user, "ident": .value.ansible_private_key_file}')
+    if test -z $INVENTORY_FILE
+        log.info -m 'No inventory file provided'
+        return 0
+    end
+
+    set -l ENTRIES (ansible-inventory -i $INVENTORY_FILE --list |\
+      jq -c '._meta.hostvars | to_entries[] | {"name": .key, "ip": .value.ansible_host, "user": .value.ansible_user, "ident": .value.ansible_private_key_file}')
 
     if test -d "$CONFIG_DIRECTORY"
-        echo "Cleaning SSH Config directory [$CONFIG_DIRECTORY]"
+        log.debug -m "Cleaning SSH Config directory [$CONFIG_DIRECTORY]"
         # Only remove the files that start with a letter, to preserve any . prefixed files
-        fd -tf '^[a-zA-Z].+' "$CONFIG_DIRECTORY" -X rm -fv {} \;
+        fd -tf '^[a-zA-Z].+' "$CONFIG_DIRECTORY" -X rm -f {} \;
     else
         mkdir -p $CONFIG_DIRECTORY
     end
@@ -20,14 +26,14 @@ function ansible.generate.ssh.config.from.inventory -d "Generate valid SSH confi
             set -l ip (echo $entry | jq -r '.ip')
             set -l user (echo $entry | jq -r '.user')
             set -l identFile (echo $entry | jq -r '.ident')
-            # echo "name      [$name]"
-            # echo "splitName [$splitName]"
-            # echo "dc        [$dc]"
-            # echo "ip        [$ip]"
-            # echo "user      [$user]"
-            # echo "identFile [$identFile]"
+            log.debug -l "name" -m "[$name]"
+            log.debug -l "splitName" -m "[$splitName]"
+            log.debug -l "dc" -m "[$dc]"
+            log.debug -l "ip" -m "[$ip]"
+            log.debug -l "user" -m "[$user]"
+            log.debug -l "identFile" -m "[$identFile]"
 
-            echo "HOST: [$name] ssh: $user@$ip"
+            log.info -l "HOST" -m "[$name] ssh: $user@$ip"
             echo "Host $name" >>$CONFIG_DIRECTORY/$dc
             echo "  HostName $ip" >>$CONFIG_DIRECTORY/$dc
             if test "$identFile" != "null"
