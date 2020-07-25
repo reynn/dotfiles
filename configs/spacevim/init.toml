@@ -1,26 +1,19 @@
 # All SpaceVim option below [option] section
 [options]
-# autocomplete_method = "coc"
-automatic_update = true
-# set spacevim theme. by default colorscheme layer is not loaded,
-# if you want to use more colorscheme, please load the colorscheme
-# layer
-colorscheme    = "gruvbox"
-colorscheme_bg = "dark"
-# Disable guicolors in basic mode, many terminal do not support 24bit
-# true colors
-enable_guicolors = true
-filemanager      = "nerdtree"
-# Disable statusline separator, if you want to use other value, please
-# install nerd fonts
-buffer_index_type             = 4
+# autocomplete_method = 'coc'
+automatic_update              = true
+colorscheme                   = 'gruvbox'
+colorscheme_bg                = 'dark'
+enable_guicolors              = true
 enable_statusline_mode        = false
 enable_tabline_filetype_icon  = true
-statusline_inactive_separator = "arrow"
-statusline_separator          = "arrow"
+filemanager                   = 'nerdtree'
+guifont                       = 'SourceCodePro Nerd Font Mono:h11'
+statusline_inactive_separator = 'arrow'
+statusline_separator          = 'arrow'
 
 [[layers]]
-name = "colorscheme"
+name = 'colorscheme'
 
 [[layers]]
 filetree_show_hidden = true
@@ -28,30 +21,30 @@ name                 = 'core'
 
 # Enable autocomplete layer
 [[layers]]
-auto_completion_return_key_behavior = "complete"
-auto_completion_tab_key_behavior    = "cycle"
+auto_completion_return_key_behavior = 'smart'
+auto_completion_tab_key_behavior    = 'smart'
 name                                = 'autocomplete'
 
 [[layers]]
 default_height   = 30
-default_position = "top"
-name             = "shell"
-
-# [[layers]]
-# name = "ctrlp"
+default_position = 'top'
+name             = 'shell'
 
 [[layers]]
-filetypes = ["rust"]
-name      = "lsp"
+name = "ctrlp"
+
+[[layers]]
+filetypes = ['rust']
+name      = 'lsp'
 
   [layers.override_cmd]
-  rust = ["rust-analyzer"]
+  rust = ['rust-analyzer']
 
 [[layers]]
 name = "lang#csharp"
 
 [[layers]]
-name = "lang#dockerfile"
+name = 'lang#dockerfile'
 
 [[layers]]
 name = "lang#extra"
@@ -69,7 +62,7 @@ name = "lang#markdown"
 name = "lang#python"
 
 [[layers]]
-name = "lang#rust"
+name = 'lang#rust'
 
 [[layers]]
-name = "lang#toml"
+name = 'lang#toml'
