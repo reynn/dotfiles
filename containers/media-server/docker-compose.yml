@@ -1,0 +1,297 @@
+##########################################
+# Docker full media server configuration #
+##########################################
+version: "3.3"
+
+services:
+  traefik:
+    image: traefik:v2.2
+    container_name: traefik
+    command:
+      - --api.insecure=true
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --certificatesResolvers.reynn-net.acme.email=nic@reynn.dev
+      - --certificatesResolvers.reynn-net.acme.storage=acme.json
+      - --certificatesResolvers.reynn-net.acme.dnsChallenge=true
+      - --certificatesResolvers.reynn-net.acme.dnsChallenge.provider=cloudflare
+      - --certificatesResolvers.reynn-net.acme.dnsChallenge.delayBeforeCheck=0
+    environment:
+      CF_API_EMAIL: "${CLOUDFLARE_API_EMAIL}"
+      CF_API_KEY: "${CLOUDFLARE_API_KEY}"
+    labels:
+      - "traefik.http.routers.api.rule=Host(`traefik.reynn.net`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_BASIC_USER_AUTH}"
+    ports:
+      - "8800:80"
+      - "8443:443"
+      - "8080:8080"
+    volumes:
+      - "/etc/certs/traefik-acme.json:/acme.json:rw"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  torguard:
+    build: torguard/
+    image: torguard
+    container_name: torguard
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    dns:
+      - 209.222.18.222
+      - 209.222.18.218
+    environment:
+      REGION: Denmark
+      USERNAME: arasureynn@gmail.com
+      PASSWORD: "$CREDS_TORGUARD"
+      LAN_NETWORK: 172.18.0.0/24
+    restart: unless-stopped
+  # File shares
+  samba:
+    image: dperson/samba
+    container_name: samba
+    # -s - define a share
+    # -s "<name;/path>;browse;readonly;guest;users;admins;writelist;comment"
+    # Configure a share
+    #     required arg: "<name>;</path>"
+    #     <name> display name for clients/file browsers
+    #     <path> path in the container to expose for this share
+    #     NOTE: for the default values, just leave blank
+    #     NOTE: for user lists below, usernames are separated by ','
+    #     [browsable] default:'yes' or 'no'
+    #     [readonly] default:'yes' or 'no'
+    #     [guest] allowed default:'yes' or 'no'
+    #     [users] allowed default:'all' or list of allowed users
+    #     [admins] allowed default:'none' or list of admin users
+    #     [writelist] list of users that can write to a RO share
+    #     [comment] description of share
+    environment:
+      TZ: PST8PDT
+      SHARE_POOL: "deadpool;/media/deadpool;yes;no;;;reynn,dizkaimo;;"
+      WORKGROUP: "WORKGROUP"
+      USER_REYNN: "reynn;${DEFAULT_PASSWORD:-default-pass}"
+      USER_DIZKAIMO: "dizkaimo;${DEFAULT_PASSWORD:-default-pass}"
+      USERID: "1000"
+      GROUPID: "1000"
+      PERMISSIONS: "yes"
+    volumes:
+      - /media:/media:rw
+    network_mode: host
+    restart: unless-stopped
+  # Movie Downloader
+  radarr:
+    image: linuxserver/radarr:preview
+    container_name: radarr
+    volumes:
+      - "/media/deadpool/docker/media-server/radarr:/config"
+      - "/media:/media:rw"
+      - "/media/deadpool/downloads/incomplete:/incomplete-downloads:rw"
+      - "/media/deadpool/downloads/complete/radarr:/downloads:rw"
+    environment:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Los Angeles"
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.rule=Host(`mimikyu.reynn.net`) && PathPrefix(`/radarr`)"
+      - "traefik.http.routers.radarr.entrypoints=websecure"
+      - "traefik.http.routers.radarr.tls=true"
+      - "traefik.http.routers.radarr.tls.certResolver=reynn-net"
+  # Media Server
+  jellyfin: &jellyfin_config
+    image: jellyfin:dev
+    container_name: jellyfin
+    volumes:
+      - "/media/deadpool/docker/media-server/jellyfin-stable:/config"
+      - "/media:/media:ro"
+    devices:
+      # VAAPI Devices
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=022
+      - TZ=America/Los Angeles
+    ports:
+      - 8096:8096
+      - 1900:1900/udp
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.reynn.net`)"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin.tls=true"
+      - "traefik.http.routers.jellyfin.tls.certResolver=reynn-net"
+      - "traefik.http.routers.jellyfin.middlewares=jellyfin-headers@docker"
+      - "traefik.http.services.jellyfin-docker-server.loadbalancer.passHostHeader=true"
+      - "traefik.http.services.jellyfin-docker-server.loadbalancer.server.port=8096"
+      - "traefik.http.middlewares.jellyfin-headers.headers.sslRedirect=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.sslHost=jellyfin.reynn.net"
+      - "traefik.http.middlewares.jellyfin-headers.headers.sslForceHost=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.stsSeconds=315360000"
+      - "traefik.http.middlewares.jellyfin-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.stsPreload=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.frameDeny=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.jellyfin-headers.headers.customResponseHeaders.X-Robots-Tag=noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex"
+      - "traefik.http.middlewares.jellyfin-headers.headers.customFrameOptionsValue=allow-from https://reynn.net"
+  # Index scraping
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    volumes:
+      - "/media/deadpool/docker/media-server/jackett:/config"
+      - "/media:/media:rw"
+    environment:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Los Angeles"
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.rule=Host(`mimikyu.reynn.net`) && PathPrefix(`/jackett`)"
+      - "traefik.http.routers.jackett.entrypoints=websecure"
+      - "traefik.http.routers.jackett.tls=true"
+      - "traefik.http.routers.jackett.tls.certResolver=reynn-net"
+  # Music Downloader
+  # lidarr:
+  #   image: linuxserver/lidarr
+  #   container_name: lidarr
+  #   environment:
+  #     PGID: "1000"
+  #     PUID: "1000"
+  #     TZ: "America/Los Angeles"
+  #   volumes:
+  #     - "/media/deadpool/docker/media-server/lidarr:/config"
+  #     - "/media:/media:rw"
+  #     - "/media/deadpool/downloads/incomplete:/incomplete-downloads:rw"
+  #     - "/media/deadpool/downloads/complete/lidarr:/downloads:rw"
+  #   restart: unless-stopped
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.lidarr.rule=Host(`mimikyu.reynn.net`) && PathPrefix(`/lidarr`)"
+  #     - "traefik.http.routers.lidarr.entrypoints=websecure"
+  #     - "traefik.http.routers.lidarr.tls=true"
+  #     - "traefik.http.routers.lidarr.tls.certResolver=reynn-net"
+  # TV Show downloads
+  sonarr:
+    image: linuxserver/sonarr:preview
+    container_name: sonarr
+    volumes:
+      - /media/deadpool/downloads:/downloads
+      - /media/deadpool/docker/media-server/sonarr:/config
+      - /media:/media:rw
+      - /dev/rtc:/dev/rtc:ro
+    environment:
+      - PGID=1000
+      - PUID=1000
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.rule=Host(`mimikyu.reynn.net`) && PathPrefix(`/sonarr`)"
+      - "traefik.http.routers.sonarr.entrypoints=websecure"
+      - "traefik.http.routers.sonarr.tls=true"
+      - "traefik.http.routers.sonarr.tls.certResolver=reynn-net"
+  # NZB Client
+  nzbget:
+    image: linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ="Americas\Los Angeles"
+    volumes:
+      - /media/deadpool/docker/media-server/nzbget:/config:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /media/deadpool/downloads:/downloads
+      - /media:/media
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.nzbget-stripprefix.stripprefix.prefixes=/nzbget"
+      - "traefik.http.routers.nzbget.rule=Host(`mimikyu.reynn.net`) && PathPrefix(`/nzbget`)"
+      - "traefik.http.routers.nzbget.entrypoints=websecure"
+      - "traefik.http.routers.nzbget.tls=true"
+      - "traefik.http.routers.nzbget.tls.certResolver=reynn-net"
+      - "traefik.http.routers.nzbget.middlewares=nzbget-stripprefix@docker"
+  # Torrent downloader
+  deluge:
+    build: deluge-custom/
+    image: deluge-custom
+    container_name: deluge
+    volumes:
+      - /media/deadpool/docker/media-server/deluge:/config
+      - /media:/media
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - PGID=1000
+      - PUID=1000
+    ports:
+      - 8112:8112
+      - 58846:58846
+      - 58946:58946
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.deluge.rule=Host(`deluge.mimikyu.reynn.net`)"
+      - "traefik.http.routers.deluge.entrypoints=websecure"
+      - "traefik.http.routers.deluge.tls=true"
+      - "traefik.http.routers.deluge.tls.certResolver=reynn-net"
+    restart: unless-stopped
+  # Ebook management
+  calibre:
+    image: linuxserver/calibre-web
+    container_name: calibre
+    volumes:
+      - /media/deadpool/docker/media-server/calibre:/config
+      - /media:/media
+    environment:
+      - PGID=1000
+      - PUID=1000
+    ports:
+      - 8083:8083
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.calibre.rule=Host(`calibre.mimikyu.reynn.net`)"
+      - "traefik.http.routers.calibre.entrypoints=websecure"
+      - "traefik.http.routers.calibre.tls=true"
+      - "traefik.http.routers.calibre.tls.certResolver=reynn-net"
+      - "traefik.http.routers.calibre.service=calibre"
+      - "traefik.http.services.calibre.loadbalancer.passhostheader=true"
+  # Comic downloader
+  # mylar:
+  #   image: linuxserver/mylar
+  #   container_name: mylar
+  #   volumes:
+  #     - /media/deadpool/docker/media-server/mylar:/config
+  #     - /media:/media
+  #     - /etc/localtime:/etc/localtime:ro
+  #   environment:
+  #     - PGID=1000
+  #     - PUID=1000
+  #   ports:
+  #     - 8090:8090
+  #   restart: unless-stopped
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.middlewares.mylar-replacepath.replacepath.path=/mylar"
+  #     - "traefik.http.routers.mylar.rule=Host(`mimikyu.reynn.net`) && Path(`/mylar`)"
+  #     - "traefik.http.routers.mylar.entrypoints=websecure"
+  #     - "traefik.http.routers.mylar.tls=true"
+  #     - "traefik.http.routers.mylar.tls.certResolver=reynn-net"
+  #     - "traefik.http.routers.mylar.middlewares=mylar-replacepath@docker"

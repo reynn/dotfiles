@@ -1,6 +1,5 @@
 package ansible
 package aws
-package battery
 package cd
 package config
 package extract
