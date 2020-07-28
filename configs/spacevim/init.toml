@@ -1,50 +1,50 @@
 # All SpaceVim option below [option] section
 [options]
-# autocomplete_method = 'coc'
+autocomplete_method           = "coc"
 automatic_update              = true
-colorscheme                   = 'gruvbox'
-colorscheme_bg                = 'dark'
+colorscheme                   = "gruvbox"
+colorscheme_bg                = "dark"
 enable_guicolors              = true
 enable_statusline_mode        = false
 enable_tabline_filetype_icon  = true
-filemanager                   = 'nerdtree'
-guifont                       = 'SourceCodePro Nerd Font Mono:h11'
-statusline_inactive_separator = 'arrow'
-statusline_separator          = 'arrow'
+filemanager                   = "nerdtree"
+guifont                       = "SourceCodePro Nerd Font Mono:h11"
+statusline_inactive_separator = "arrow"
+statusline_separator          = "arrow"
 
 [[layers]]
-name = 'colorscheme'
+name = "colorscheme"
 
 [[layers]]
 filetree_show_hidden = true
-name                 = 'core'
+name                 = "core"
 
 # Enable autocomplete layer
 [[layers]]
-auto_completion_return_key_behavior = 'smart'
-auto_completion_tab_key_behavior    = 'smart'
-name                                = 'autocomplete'
+auto_completion_return_key_behavior = "smart"
+auto_completion_tab_key_behavior    = "smart"
+name                                = "autocomplete"
 
 [[layers]]
 default_height   = 30
-default_position = 'top'
-name             = 'shell'
+default_position = "top"
+name             = "shell"
 
-[[layers]]
-name = "ctrlp"
+# [[layers]]
+# name = "ctrlp"
 
-[[layers]]
-filetypes = ['rust']
-name      = 'lsp'
+# [[layers]]
+# filetypes = ["rust"]
+# name      = "lsp"
 
-  [layers.override_cmd]
-  rust = ['rust-analyzer']
+# [layers.override_cmd]
+# rust = ["rust-analyzer"]
 
 [[layers]]
 name = "lang#csharp"
 
 [[layers]]
-name = 'lang#dockerfile'
+name = "lang#dockerfile"
 
 [[layers]]
 name = "lang#extra"
@@ -62,7 +62,4 @@ name = "lang#markdown"
 name = "lang#python"
 
 [[layers]]
-name = 'lang#rust'
-
-[[layers]]
-name = 'lang#toml'
+name = "lang#toml"

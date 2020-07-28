@@ -9,10 +9,10 @@ set -xg DFP $REYNN/dotfiles
 # Language versions
 set -xg LANGUAGES_PYTHON_VERSION '3.8'
 set -xg LANGUAGES_GO_VERSION '1.14'
-set -xg LANGUAGES_RUST_VERSION '1.43'
+set -xg LANGUAGES_RUST_VERSION '1.45'
 
 # Python exports
-set -xg PYTHON_HOME (python3 -m site | grep USER_BASE | awk '{print $2}' | tr -d "\'")
+set -xg PYTHON_HOME (python3 -m site | string replace --filter -r 'USER_BASE\: \'(.+?)\'( \(exists\))?' \$1)
 
 # Go Exports
 set -xg GOPATH $HOME/go
@@ -23,6 +23,7 @@ set -p PATH $HOME/.bins
 set -p PATH $PYTHON_HOME/bin
 set -p PATH $HOME/go/bin
 set -p PATH $GFP/github.com/junegunn/fzf/bin
+set -p PATH $DFP/scripts
 
 # FZF
 set -xg FZF_DEFAULT_OPTS "--height 50% --layout=reverse --border"

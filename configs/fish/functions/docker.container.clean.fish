@@ -8,9 +8,11 @@ function docker.container.clean -d "Clean up containers"
         end
     end
 
-    if test "$all" = "true"
-        echo "Removing all existing containers"
+    if test "$all" = 'true'
+        log.info -m 'Removing all existing containers'
+        docker container rm -f (docker container ls -qa)
     else
-        echo "Removing exited and stopped containers"
+        log.info -m 'Removing exited and stopped containers'
+        docker container rm -f (docker container ls -q)
     end
 end
