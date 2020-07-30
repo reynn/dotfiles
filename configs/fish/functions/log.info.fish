@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function log.info -d "Log a special information message"
     set -l label ''
     set -l msg ''

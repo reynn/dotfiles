@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function git.checkout.branch -d "Show a list of branches to select for checkout"
     set -l branches (
       git --no-pager branch --all --format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" | sed '/^$/d'

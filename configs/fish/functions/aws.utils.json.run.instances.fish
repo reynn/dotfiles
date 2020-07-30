@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function aws.utils.json.run.instances -d "Create the necessary JSON data to send to AWS via the CLI" -a "AMIID"
     set -l ami_id ""
     set -l instance_type 't3.large'

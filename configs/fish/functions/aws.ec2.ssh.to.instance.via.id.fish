@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function aws.ec2.ssh.to.instance.via.id -d "SSH to an AWS instance via it's ID instead of IP"
     set -l instance_id $argv[1]
     if test -z $instance_id

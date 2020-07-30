@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function log.warn -d "Log a warning message"
     set -l label ''
     set -l msg ''

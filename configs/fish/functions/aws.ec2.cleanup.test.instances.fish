@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function aws.ec2.cleanup.test.instances -d "Cleanup any instances that were created to test with"
     set -l instance_ids (aws \
     ec2 \

@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
   force_handlers: yes
+  strategy: free
 
   handlers:
     - name: "Run fzf install script"

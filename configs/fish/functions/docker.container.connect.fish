@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function docker.container.connect -d "Select a container to attach too"
     set -l container ""
 

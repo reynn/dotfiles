@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function log.debug -d "Log a debug message"
     set -q DEBUG
     if test $status -gt 0

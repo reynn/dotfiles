@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function aws.ec2.run.instance -d "Create an instance in AWS" --argument-names force_search ami_id ami_owner ami_filter
     set -l force_search 'false'
     set -l ami_id ''

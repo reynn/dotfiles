@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function ansible.generate.ssh.config.from.inventory -d "Generate valid SSH config from an Ansible inventory"
     set -l INVENTORY_FILE "$argv[1]"
     set -l CONFIG_DIRECTORY "$HOME/.ssh/config.d"

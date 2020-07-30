@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function docker.container.run -d "Run a basic container"
     set -l entrypoint "/bin/bash"
     set -l image "alpine:latest"

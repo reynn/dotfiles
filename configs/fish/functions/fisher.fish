@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 set -g fisher_version 3.2.11
 
 function fisher -a cmd -d "fish package manager"

@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 set -g getopts_version 1.0.0
 
 function getopts -d "CLI options parser"

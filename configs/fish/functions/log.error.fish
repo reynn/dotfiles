@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function log.error -d "Log a error message"
     set -l label ''
     set -l msg ''

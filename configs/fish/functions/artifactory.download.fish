@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function artifactory.download -d "Download files from Artifactory based on a given pattern"
     set -l dry_run 'false'
     set -l flat 'false'

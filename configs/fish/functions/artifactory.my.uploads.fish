@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function artifactory.my.uploads -d "Search for files that you have uploaded"
     set -l repo 'ext-yum-selfserve-local-v2'
     set -l time_frame '2d'

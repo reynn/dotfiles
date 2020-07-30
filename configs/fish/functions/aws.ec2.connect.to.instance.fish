@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function aws.ec2.connect.to.instance -d "Interactively connect to a created instance"
     set -l tmp_file (mktemp)
     set -l filters "Name=tag:Owner,Values=$EMAIL" "Name=instance-state-name,Values=running"

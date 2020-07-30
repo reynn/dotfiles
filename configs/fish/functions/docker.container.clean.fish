@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function docker.container.clean -d "Clean up containers"
     set -l all 'false'
 
