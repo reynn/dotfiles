@@ -9,3 +9,4 @@ end
 
 ## Source additional files
 source "$GFP/github.com/junegunn/fzf/shell/key-bindings.fish"
+starship init fish | source

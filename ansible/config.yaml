@@ -18,17 +18,18 @@
     - name: "Create necessary files, folders and links"
       file:
         src: "{{ item.src | default(omit) }}"
-        dest: "{{ item.path }}"
+        dest: "{{ item.dest }}"
         force: yes
         state: "{{ item.state | default('link') }}"
       loop: "{{ to_create }}"
       tags:
         - always
+        - links
 
     # - name: "Install certificate handling for darwin"
     #   shell: "sh '/Applications/Python {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install\ Certificates.command'"
     #   register: cert_handler
-    #   changed_when: 'not "Requirement already up-to-date" not in cert_handler.stdout'
+    #   changed_when: '"Requirement already up-to-date" not in cert_handler.stdout'
     #   when: ansible_system == 'Darwin'
     #   tags:
     #     - never
@@ -74,6 +75,7 @@
       when:
         - ansible_system == 'Darwin'
       tags:
+        - never
         - packages
         - brew
 
@@ -135,7 +137,8 @@
         - binaries
         - commands
 
-    - include_tasks:
+    - name: "Setup binaries from GitHub"
+      include_tasks:
         file: "{{ ansible_env.PWD }}/github-release.yaml"
         apply:
           tags:
@@ -145,11 +148,6 @@
       tags:
         - binaries
         - update
-
-    # - name: "Set the default shell to zsh"
-    #   user:
-    #     name: "{{ ansible_user_id }}"
-    #     shell: /bin/zsh
 
     - name: "Build Docker images"
       docker_image: "{{ item }}"
