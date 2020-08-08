@@ -9,4 +9,6 @@ end
 
 ## Source additional files
 source "$GFP/github.com/junegunn/fzf/shell/key-bindings.fish"
-starship init fish | source
+if test -n (command -v starship)
+    starship init fish | source
+end
