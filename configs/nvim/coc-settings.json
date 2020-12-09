@@ -1,0 +1,34 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "rust",
+    "go",
+    "yaml",
+    "json",
+    "vim"
+  ],
+  "codeLens.enable": true,
+  "json.enable": true,
+  "rust-analyzer.updates.channel": "nightly",
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.notifications.cargoTomlNotFound": false,
+  "yaml.completion": true,
+  "yaml.format.enable": true,
+  "yaml.format.proseWrap": "always",
+  "yaml.format.singleQuote": false,
+  "yaml.schemas": {},
+  "go.goplsUseDaemon": true,
+  "go.goplsOptions": {
+    "buildFlags": [
+      "fips"
+    ],
+    "hoverKind": "SynopsisDocumentation",
+    "usePlaceholders": true,
+    "codelens": {
+      "upgrade_dependency": true,
+      "tidy": true,
+      "generate": true
+    }
+  },
+  "go.checkForUpdates": "install"
+}

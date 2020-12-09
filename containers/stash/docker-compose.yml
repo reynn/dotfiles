@@ -1,0 +1,30 @@
+# APPNICENAME=Stash
+# APPDESCRIPTION=An organizer for your porn, written in Go
+version: "3.4"
+services:
+  stash:
+    image: stashapp/stash:development-x86_64
+    restart: unless-stopped
+    ports:
+      - "9999:9999"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "10"
+        max-size: "2m"
+    environment:
+      - STASH_STASH=/data/
+      - STASH_GENERATED=/data/generated/
+      - STASH_METADATA=/data/metadata/
+      - STASH_CACHE=/data/cache/
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      ## Adjust below paths (the left part) to your liking.
+      ## E.g. you can change ./config:/root/.stash to ./stash:/root/.stash
+
+      ## Keep configs here.
+      - ./stash/config:/root/.stash
+      ## Point this at your data directory.
+      - ./stash/data:/data
+      ## Media
+      - ./stash/media:/porn

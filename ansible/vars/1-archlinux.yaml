@@ -1,0 +1,15 @@
+---
+extra_to_create:
+  - dest: "{{ ansible_env.HOME }}/.config/alacritty"
+    src: "{{ dotfiles_path }}/configs/alacritty"
+    state: "link"
+  - dest: "{{ ansible_env.HOME }}/.config/spotifyd"
+    state: "directory"
+  - dest: "{{ ansible_env.HOME }}/.config/spotifyd/spotifyd.conf"
+    src: "{{ dotfiles_path }}/configs/spotifyd/{{ ansible_system | lower }}.conf"
+    state: "link"
+  - dest: "{{ ansible_env.HOME }}/.config/systemd"
+    state: "directory"
+  - src: "{{ dotfiles_path }}/configs/systemd"
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user"
+    state: "link"
