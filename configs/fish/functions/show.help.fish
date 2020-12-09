@@ -10,8 +10,8 @@ function show.help -d 'Specially formatted help messages'
 
     test -f (command -v tput); and set -lx max_width (tput cols); or set -lx max_width 120
     if test $max_width -lt 80
-      # Overall size should not be less than 80, though ideally it should be >100-120
-      set max_width 80
+        # Overall size should not be less than 80, though ideally it should be >100-120
+        set max_width 80
     end
     set -lx last_trace (status stack-trace)[-1]
 
@@ -51,9 +51,11 @@ function show.help -d 'Specially formatted help messages'
 
     set -lx desc_col_width (math "round($max_width - (4*$single_col_width))+10-"(string length $table_row_format))
     set -lx default_col_width (math "round($max_width-($desc_col_width+(2*$single_col_width))-13)")
+
     log.debug -m "Description Column (w-(4*col)) : $desc_col_width"
     log.debug -m "Default Column (w-(desc_w+2*s_col_w)) : $default_col_width"
-    set -q HELP_COLOR; and set_color $HELP_COLOR; or set_color $fish_color_hg_added
+
+    set -q HELP_COLOR; and set_color $HELP_COLOR; or set_color $fish_color_operator
     printf '# Usage: %s on %s\n\n' "$function_name" "$system_platform"
 
     if test -n "$about"
@@ -80,7 +82,8 @@ function show.help -d 'Specially formatted help messages'
         set -l header '## Examples '
         printf $header(string repeat -n (math $max_width-(string length $header)) '-')'\n\n'
         for example in $examples
-            echo -e "$function_name $example"
+            # set -l trimmed_example
+            echo -e "$function_name "(string trim -l $example)
         end
         echo ''
     end

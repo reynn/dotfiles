@@ -8,15 +8,16 @@ function github.clone.repo -d "Clone repository to the layout used"
     ###########################################################
     # Variables
     ###########################################################
-    set -q REYNN_GITHUB_BASE; and set -lx base_directory $REYNN_GITHUB_BASE; or set -lx base_directory "$HOME/git"
+    set -lx base_directory "$HOME/git"
     set -lx git_host 'github.com'
     set -lx repo ''
     set -lx repo_name ''
     set -lx repo_owner ''
 
     function ___usage
-        set -l help_args '-f' 'r|repo|The owner/name of the repository to clone'
-        set -a help_args '-f' 'H|host|GitHub host name, for using against enterprise GitHub|github.com'
+        set -l help_args '-a' "Clone repository to the layout used [format:'$base_directory/$git_host/{owner}/{repo}']"
+        set -a help_args '-f' 'r|repo|The owner/name of the repository to clone'
+        set -a help_args '-f' "H|host|GitHub host name, for using against enterprise GitHub|$git_host"
         set -a help_args '-f' 'v|verbose|Additional verbose output|false'
         show.help $help_args
     end
@@ -45,5 +46,5 @@ function github.clone.repo -d "Clone repository to the layout used"
     ###########################################################
     # Main logic
     ###########################################################
-    gh repo clone "$repo" "$base_directory/$git_host/$repo" -- --depth 1
+    env GH_HOST=$git_host gh repo clone "$repo" "$base_directory/$git_host/$repo" -- --depth 1
 end

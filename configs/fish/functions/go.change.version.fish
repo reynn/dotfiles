@@ -11,9 +11,9 @@ function go.change.version -d "Get a version of Go or source the latest environm
 
     function __execute_gimme
         if test -z "$argv"
-            echo "curl -sL $script_url | bash"
+            curl -sL $script_url | bash
         else
-            echo "curl -sL $script_url | bash -- $argv"
+            curl -sL $script_url | $argv bash
         end
     end
 
@@ -30,7 +30,6 @@ function go.change.version -d "Get a version of Go or source the latest environm
                 set -x DEBUG 'true'
         end
     end
-    return 0
 
     function __go_change_version_set_env
         set -l new_version $argv[1]

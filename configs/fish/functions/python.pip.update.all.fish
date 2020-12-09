@@ -4,6 +4,7 @@ function python.pip.update.all -d "Update all outdated Python packages using PIP
     set -l packages (python3 -m pip list --disable-pip-version-check --not-required --user --outdated --format json | jq -r '.[].name')
 
     function ___usage
+        set -l help_args '-a' 'Update all outdated Python packages using pip [updatable_packages:'(count $packages)']'
         show.help $help_args
     end
 

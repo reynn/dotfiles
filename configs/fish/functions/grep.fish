@@ -4,6 +4,7 @@ function grep -d "grep wrapper to use RipGrep if available or builtin when not"
     set -l ripgrep_command (command -s rg)
 
     function ___usage
+        set -l help_args '-a' 'grep wrapper to use RipGrep if available or builtin when not'
         show.help $help_args
     end
 

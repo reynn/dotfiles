@@ -8,6 +8,7 @@ function vim.setup -d 'Cleanup files and reinstall Spacevim'
     set -lx rm_command (command -s rm)
 
     function ___usage
+        set -l help_args '-a' 'Cleanup files and reinstall Spacevim [**UNSTABLE**]'
         show.help $help_args
     end
 
@@ -39,7 +40,7 @@ function vim.setup -d 'Cleanup files and reinstall Spacevim'
     __vim_clean_files_delete "$HOME/.vim"
 
     log.info -m 'Deleting NeoVim files'
-    
+
     __vim_clean_files_delete "$NEOVIM_HOME"
     __vim_clean_files_delete "$HOME/.local/share/nvim"
 

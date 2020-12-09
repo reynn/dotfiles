@@ -8,6 +8,13 @@ set -l interactive_shell $status
 if test $interactive_shell -ne 0
     exit 0
 end
+
+set -gx reynn_fish_home "$HOME/git/github.com/reynn/dotfiles/configs/fish"
+set -gx TERM 'screen-256color'
+set -gx EDITOR 'nvim'
+set -gp fish_function_path "$reynn_fish_home/functions"
+set -gp fish_complete_path "$reynn_fish_home/completions"
+
 ## Load any secrets
 utils.source "$DFP/.host/$hostname.fish"
 utils.source "$DFP/.secrets/$hostname.fish"
@@ -42,6 +49,6 @@ alias mv 'mv -i'
 alias rm 'rm -iv'
 
 ## Initialize starship if available
-if test -e (command -s starship)
+if test -e (command -s starship; or command -v starship)
     starship init fish | source
 end

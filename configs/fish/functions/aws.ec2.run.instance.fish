@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-function aws.ec2.run.instance -d "Create an instance in AWS" --argument-names force_search ami_id ami_owner ami_filter
+function aws.ec2.run.instance -d "Create an instance in AWS"
 
     set -lx function_name (status current-function)
     set -lx force_search 'false'
@@ -11,18 +11,17 @@ function aws.ec2.run.instance -d "Create an instance in AWS" --argument-names fo
     set -lx i_count '1'
     set -lx name "$USER-test-instance"
 
-    function __aws_ec2_run_instance_usage
-        set -l help_args '-f' "a|ami-id|Ami to use, if not specified will provide a list to choose from|$ami_id"
+    function ___usage
+        set -l help_args '-a' "Create an instance in AWS"
+        set -a help_args '-f' "a|ami-id|Ami to use, if not specified will provide a list to choose from|$ami_id"
         set -a help_args '-f' "f|ami-filter|Used to filter the search results if the `ami_id` flag is empty|$ami_filter"
         set -a help_args '-f' "i|instance-type|The size of the instance|$instance_type"
         set -a help_args '-f' "s|force-search|Will search for AMIs even if one is provided|false"
         set -a help_args '-f' "c|i-count|Number of instances to launch|$i_count"
         set -a help_args '-f' "n|name|Name of the instance to launch, number is appended for multiple instances|$name"
-        set -a help_args '-e' "$function_name"
-        set -a help_args '-e' "$function_name --ami_id "
-        set -a help_args '-e' "$function_name -f 'ubuntu-*' -n 'ami-tester'"
-
-        set -a help_args 'n' "$function_name"
+        set -a help_args '-e' ""
+        set -a help_args '-e' " --ami_id "
+        set -a help_args '-e' " -f 'ubuntu-*' -n 'ami-tester'"
 
         show.help $help_args
     end
@@ -32,7 +31,7 @@ function aws.ec2.run.instance -d "Create an instance in AWS" --argument-names fo
     getopts $argv | while read -l key value
         switch $key
             case h help
-                __aws_ec2_run_instance_usage
+                ___usage
                 return 0
             case a "ami-id"
                 set ami_id $value

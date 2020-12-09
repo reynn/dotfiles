@@ -23,11 +23,9 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     # Exports
     ## General ENV vars
-    set -gx GFP "$HOME/git"
-    set -gx DFP "$GFP/github.com/reynn/dotfiles"
-    set -gx REYNN "$GFP/github.com/reynn"
-    set TERM 'screen-256color'
-    set EDITOR 'nvim'
+    set -Ux GFP "$HOME/git"
+    set -Ux DFP "$GFP/github.com/reynn/dotfiles"
+    set -Ux REYNN "$GFP/github.com/reynn"
 
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.9'
@@ -35,7 +33,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     set -Ux LANGUAGES_RUST_VERSION '1.48'
 
     ## Python exports
-    set -Ux PYTHON_HOME (python3 -m site | string replace --filter -r 'USER_BASE\: \'(.+?)\'( \(exists\))?' \$1)
+    set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
 
     # These will add to the fish_user_paths only if necessary
     utils.path.add "$GFP/github.com/junegunn/fzf/bin"
@@ -43,7 +41,11 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     utils.path.add "$HOME/.bins"
     utils.path.add "$HOME/.bins/envs"
     utils.path.add "$HOME/.cargo/bin"
-    utils.path.add "$GFP/github.com/junegunn/fzf/bin"
+    utils.path.add "$PYTHON_HOME/bin"
+    if functions -q nvm
+        set -l latest_node_version (nvm list | grep 'latest' | awk '{print $1}')
+        utils.path.add "$HOME/.local/share/nvm/$latest_node_version/bin"
+    end
 
     for extra_path in $paths_to_add
         utils.path.add "extra_path"

@@ -132,7 +132,7 @@ main() {
 
   if test -z "$PYTHON_BINARY"; then
     log 'Setting PYTHON_BINARY again'
-    PYTHON_BINARY=$(command -s python3)
+    PYTHON_BINARY=$(command -s python3 || command -v python3)
   fi
 
   log 'warn' "$(pad $(($terminal_cols - 30)) 'This is a work in progress')"
@@ -140,6 +140,9 @@ main() {
   python_packages
   clone
   ansible_run
+
+  fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher; and fisher update'
+  fish -c "set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.env.update"
 
   log 'Completed!'
 }

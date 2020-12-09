@@ -1,12 +1,11 @@
 #!/usr/bin/env fish
 
 function aws.ec2.connect.to.instance -d "Interactively connect to a created instance"
-    set -lx function_name (status current-function)
     set -l tmp_file (mktemp)
     set -lx filters "Name=tag:Owner,Values=$EMAIL" "Name=instance-state-name,Values=running"
 
-    function __aws_ec2_connect_to_instance_usage
-        set -l help_args '-n' "$function_name"
+    function ___usage
+        set -l help_args '-a' "Interactively connect to a created instance"
         set -a help_args '-f' "f|filter|Set of filters to narrow down list of instances|$filters"
         set -a help_args '-f' "|no-filters|Removes all filters (Will grab all running instances)|false"
         set -a help_args '-u' "Used to connect to an instance created by another function or the Web UI"
@@ -16,7 +15,7 @@ function aws.ec2.connect.to.instance -d "Interactively connect to a created inst
     getopts $argv | while read -l key value
         switch $key
             case h help
-                __aws_ec2_connect_to_instance_usage
+                ___usage
                 return 0
             case f filter
                 set -a filters $value

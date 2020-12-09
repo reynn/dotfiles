@@ -3,6 +3,7 @@
 function go.generate.coverage -d "Generate a coverage report for Golang"
 
     function ___usage
+        set -l help_args '-a' 'Generate a coverage report for Golang'
         show.help $help_args
     end
 

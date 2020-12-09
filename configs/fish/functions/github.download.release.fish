@@ -168,9 +168,8 @@ function github.download.release -d "Download a release from GitHub in the expec
         return 2
     end
 
-    function __versm_download_release_usage
+    function ___usage
         set -l system_platform (uname | string lower)
-        set -l help_args '-n' "$function_name"
         set -a help_args '-f' 'h|help|Print this help message'
         set -a help_args '-f' 'e|env|Set path if necessary'
         set -a help_args '-f' 'r|repo|The name of the repo to get release from [repo-owner/repo-name]'
@@ -184,40 +183,40 @@ function github.download.release -d "Download a release from GitHub in the expec
         switch "$system_platform"
             case 'linux'
                 log.debug -m 'Adding examples for Linux'
-                set -a help_args '-e' "$function_name -r 'argoproj/argo-cd'             -p '*linux-amd64'                     -a 'argocd'"
-                set -a help_args '-e' "$function_name -r 'denisidoro/navi'              -p '*x86_64-unknown-linux-musl.tar.gz'"
-                set -a help_args '-e' "$function_name -r 'derailed/k9s'                 -p '*Linux_x86_64.tar.gz'"
-                set -a help_args '-e' "$function_name -r 'digitalocean/doctl'           -p '*linux-amd64.tar.gz'"
-                set -a help_args '-e' "$function_name -r 'extrawurst/gitui'"
-                set -a help_args '-e' "$function_name -r 'jesseduffield/lazygit'        -p '*Linux_x86_64.tar.gz'             -a 'lg'"
-                set -a help_args '-e' "$function_name -r 'mikefarah/yq'                 -p 'yq_linux_amd64'"
-                set -a help_args '-e' "$function_name -r 'neovim/neovim'                -p '*linux64.tar.gz'                  -a 'nvim'         -P"
-                set -a help_args '-e' "$function_name -r 'ogham/exa'"
-                set -a help_args '-e' "$function_name -r 'ovh/cds'                      -p 'cds-engine-linux-amd64'           -a 'cds-engine'   -f 'cds-engine-linux-amd64'"
-                set -a help_args '-e' "$function_name -r 'ovh/cds'                      -p 'cdsctl-linux-amd64-nokeychain'    -a 'cdsctl'       -f 'cdsctl-linux-amd64-nokeychain'"
-                set -a help_args '-e' "$function_name -r 'Powershell/Powershell'        -p '*linux-x64.tar.gz'                -a 'pwsh'         -f '/pwsh\$'"
-                set -a help_args '-e' "$function_name -r 'rust-analyzer/rust-analyzer'  -p '*-linux'                          -P"
-                set -a help_args '-e' "$function_name -r 'sharkdp/fd'                   -p '*x86_64-unknown-linux-gnu.tar.gz'"
-                set -a help_args '-e' "$function_name -r 'starship/starship'            -p '*linux-gnu.tar.gz'"
-                set -a help_args '-e' "$function_name -r 'stedolan/jq'                  -p 'jq-linux64'                       -a 'jq'"
+                set -a help_args '-e' " -r 'argoproj/argo-cd'             -p '*linux-amd64'                     -a 'argocd'"
+                set -a help_args '-e' " -r 'denisidoro/navi'              -p '*x86_64-unknown-linux-musl.tar.gz'"
+                set -a help_args '-e' " -r 'derailed/k9s'                 -p '*Linux_x86_64.tar.gz'"
+                set -a help_args '-e' " -r 'digitalocean/doctl'           -p '*linux-amd64.tar.gz'"
+                set -a help_args '-e' " -r 'extrawurst/gitui'"
+                set -a help_args '-e' " -r 'jesseduffield/lazygit'        -p '*Linux_x86_64.tar.gz'             -a 'lg'"
+                set -a help_args '-e' " -r 'mikefarah/yq'                 -p 'yq_linux_amd64'"
+                set -a help_args '-e' " -r 'neovim/neovim'                -p '*linux64.tar.gz'                  -a 'nvim'         -P"
+                set -a help_args '-e' " -r 'ogham/exa'"
+                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cds-engine-linux-amd64'           -a 'cds-engine'   -f 'cds-engine-linux-amd64'"
+                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cdsctl-linux-amd64-nokeychain'    -a 'cdsctl'       -f 'cdsctl-linux-amd64-nokeychain'"
+                set -a help_args '-e' " -r 'Powershell/Powershell'        -p '*linux-x64.tar.gz'                -a 'pwsh'         -f '/pwsh\$'"
+                set -a help_args '-e' " -r 'rust-analyzer/rust-analyzer'  -p '*-linux'                          -P"
+                set -a help_args '-e' " -r 'sharkdp/fd'                   -p '*x86_64-unknown-linux-gnu.tar.gz'"
+                set -a help_args '-e' " -r 'starship/starship'            -p '*linux-gnu.tar.gz'"
+                set -a help_args '-e' " -r 'stedolan/jq'                  -p 'jq-linux64'                       -a 'jq'"
             case 'darwin'
                 log.debug -m 'Adding examples for Darwin'
-                set -a help_args '-e' "$function_name -r 'argoproj/argo-cd'             -p '*darwin*'                 -a 'argocd'"
-                set -a help_args '-e' "$function_name -r 'denisidoro/navi'              -p '*osx*'"
-                set -a help_args '-e' "$function_name -r 'derailed/k9s'                 -p '*Darwin*'"
-                set -a help_args '-e' "$function_name -r 'digitalocean/doctl'           -p '*darwin*'"
-                set -a help_args '-e' "$function_name -r 'extrawurst/gitui'"
-                set -a help_args '-e' "$function_name -r 'jesseduffield/lazygit'        -p '*Darwin*'                 -a 'lg'"
-                set -a help_args '-e' "$function_name -r 'mikefarah/yq'                 -p '*darwin*'"
-                set -a help_args '-e' "$function_name -r 'neovim/neovim'                -p '*macos.tar.gz'            -a 'nvim'         -P"
-                set -a help_args '-e' "$function_name -r 'ogham/exa'                    -p '*macos*'"
-                set -a help_args '-e' "$function_name -r 'ovh/cds'                      -p 'cds-engine-darwin-amd64'  -a 'cds-engine'   -f 'cds-engine-darwin-amd64'"
-                set -a help_args '-e' "$function_name -r 'ovh/cds'                      -p 'cdsctl-darwin-amd64'      -a 'cdsctl'       -f 'cdsctl-darwin-amd64'"
-                set -a help_args '-e' "$function_name -r 'Powershell/Powershell'        -p '*-osx-x64.tar.gz'         -a 'pwsh'         -f '/pwsh\$'"
-                set -a help_args '-e' "$function_name -r 'rust-analyzer/rust-analyzer'  -p 'rust-analyzer-mac'        -P"
-                set -a help_args '-e' "$function_name -r 'sharkdp/fd'                   -p '*-x86_64-apple*'"
-                set -a help_args '-e' "$function_name -r 'starship/starship'            -p '*-x86_64-apple*'"
-                set -a help_args '-e' "$function_name -r 'stedolan/jq'                  -p '*-osx-amd64'              -a 'jq'"
+                set -a help_args '-e' " -r 'argoproj/argo-cd'             -p '*darwin*'                 -a 'argocd'"
+                set -a help_args '-e' " -r 'denisidoro/navi'              -p '*osx*'"
+                set -a help_args '-e' " -r 'derailed/k9s'                 -p '*Darwin*'"
+                set -a help_args '-e' " -r 'digitalocean/doctl'           -p '*darwin*'"
+                set -a help_args '-e' " -r 'extrawurst/gitui'"
+                set -a help_args '-e' " -r 'jesseduffield/lazygit'        -p '*Darwin*'                 -a 'lg'"
+                set -a help_args '-e' " -r 'mikefarah/yq'                 -p '*darwin*'"
+                set -a help_args '-e' " -r 'neovim/neovim'                -p '*macos.tar.gz'            -a 'nvim'         -P"
+                set -a help_args '-e' " -r 'ogham/exa'                    -p '*macos*'"
+                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cds-engine-darwin-amd64'  -a 'cds-engine'   -f 'cds-engine-darwin-amd64'"
+                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cdsctl-darwin-amd64'      -a 'cdsctl'       -f 'cdsctl-darwin-amd64'"
+                set -a help_args '-e' " -r 'Powershell/Powershell'        -p '*-osx-x64.tar.gz'         -a 'pwsh'         -f '/pwsh\$'"
+                set -a help_args '-e' " -r 'rust-analyzer/rust-analyzer'  -p 'rust-analyzer-mac'        -P"
+                set -a help_args '-e' " -r 'sharkdp/fd'                   -p '*-x86_64-apple*'"
+                set -a help_args '-e' " -r 'starship/starship'            -p '*-x86_64-apple*'"
+                set -a help_args '-e' " -r 'stedolan/jq'                  -p '*-osx-amd64'              -a 'jq'"
             case '*'
                 log.error -m "Platform [$system_platform] doesn't have available examples"
         end
@@ -247,7 +246,7 @@ function github.download.release -d "Download a release from GitHub in the expec
     getopts $argv | while read -l key value
         switch $key
             case h help
-                __versm_download_release_usage
+                ___usage
                 return 0
             case e env
                 set set_env_only 'true'

@@ -1,7 +1,10 @@
-PatrickF1/fzf.fish
-paysonwallach/fish-you-should-use
-jethrokuan/z
 jorgebucaran/fisher
+fishpkg/fish-git-util
+jethrokuan/z
 jorgebucaran/getopts.fish
-FabioAntunes/fish-nvm
-edc/bass
+jorgebucaran/nvm.fish
+PatrickF1/colored_man_pages.fish
+PatrickF1/fzf.fish
+sijad/gitignore
+xxh/xxh
+demartini/emc.fish

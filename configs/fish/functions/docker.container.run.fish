@@ -9,8 +9,9 @@ function docker.container.run -d "Run a basic container"
     set -lx volume_paths
     set -lx env_vars
 
-    function __docker_container_run_usage -d 'Show usage'
-        set -l help_args '-f' '|entrypoint|The Entrypoint for the docker container'
+    function ___usage -d 'Show usage'
+        set -l help_args '-a' 'Run a Docker container with the current directory mounted'
+        set -a help_args '-f' '|entrypoint|The Entrypoint for the docker container'
         set -a help_args '-f' 'e|env|Add environment variables to the running container'
         set -a help_args '-f' 'i|image|The image to use for the container'
         set -a help_args '-f' 'p|preset|Use a preset for launching the container'
@@ -28,7 +29,7 @@ function docker.container.run -d "Run a basic container"
     getopts $argv | while read -l key value
         switch $key
             case h help
-                __docker_container_run_usage
+                ___usage
                 return 0
             case entrypoint
                 set entrypoint $value

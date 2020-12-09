@@ -4,6 +4,9 @@ function utils.kill.processes -d ''
     function ___usage
         set -l help_args '-a' 'Kill all processes that match the provided name'
         set -a help_args '-f' "n|name|Name of process to kill|$process_name"
+        set -a help_args '-e' ' -n ssh-agent'
+        set -a help_args '-e' ' -n tabnine'
+        set -a help_args '-e' ' -n rust-analyzer'
         show.help $help_args
     end
 

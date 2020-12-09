@@ -1,7 +1,7 @@
 ---
 extra_to_create:
   - dest: "{{ bins_dir }}/code"
-    src: "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin"
+    src: "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
     state: link
   - dest: "{{ ansible_env.HOME }}/.config/alacritty"
     src: "{{ dotfiles_path }}/configs/alacritty"

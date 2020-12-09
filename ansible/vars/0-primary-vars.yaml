@@ -72,8 +72,11 @@ scripts:
 to_create:
   - dest: "{{ ansible_env.HOME }}/.config"
     state: "directory"
-  - dest: "{{ ansible_env.HOME }}/.config/fish"
-    src: "{{ dotfiles_path }}/configs/fish"
+  - dest: "{{ ansible_env.HOME }}/.config/fish/config.fish"
+    src: "{{ dotfiles_path }}/configs/fish/config.fish"
+    state: "link"
+  - dest: "{{ ansible_env.HOME }}/.config/fish/fish_plugins"
+    src: "{{ dotfiles_path }}/configs/fish/fish_plugins"
     state: "link"
   - dest: "{{ ansible_env.HOME }}/.SpaceVim.d"
     src: "{{ dotfiles_path }}/configs/spacevim"

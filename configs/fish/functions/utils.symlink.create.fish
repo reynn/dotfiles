@@ -1,8 +1,6 @@
 #!/usr/bin/env fish
 
 function utils.symlink.create -d "Create a symlink, overwriting any existing ones"
-    set -lx function_name (status current-function)
-
     function ___usage
         set -a help_args '-f' "s|src|The original file that is being linked"
         set -a help_args '-f' "d|dest|Where the link will be created"
@@ -19,7 +17,7 @@ function utils.symlink.create -d "Create a symlink, overwriting any existing one
             case d dest
                 set dest $value
             case v verbose
-                set -lx DEBUG 'true'
+                set -x DEBUG 'true'
         end
     end
 
@@ -36,6 +34,6 @@ function utils.symlink.create -d "Create a symlink, overwriting any existing one
         return 2
     end
 
-    log.info -m "$function_name Linking $src -> $dest"
+    log.info -m "Linking $src -> $dest"
     ln -fs $src $dest
 end
