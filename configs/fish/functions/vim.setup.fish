@@ -2,8 +2,8 @@ function vim.setup -d 'Cleanup files and reinstall Spacevim'
     set -lx SPACEVIM_INIT_PATH "$DFP/configs/spacevim"
     set -lx SYSTEM_CONFIG_DIR (set -q XDG_CONFIG_HOME; and echo "$XDG_CONFIG_HOME"; or echo "$HOME/.config")
     set -lx SYSTEM_CACHE_DIR (set -q XDG_CACHE_HOME; and echo "$XDG_CACHE_HOME"; or echo "$HOME/.cache")
-    set -lx NEOVIM_HOME "$SYSTE_CONFIG_DIR/nvim"
-    set -lx NEOVIM_CACHE "$SYSTE_CACHE_DIR/nvim"
+    set -lx NEOVIM_HOME "$SYSTEM_CONFIG_DIR/nvim"
+    set -lx NEOVIM_CACHE "$SYSTEM_CACHE_DIR/nvim"
     set -lx PYTHON_VENV_PATH "$NEOVIM_CACHE/py3-env"
     set -lx rm_command (command -s rm)
 
@@ -56,10 +56,10 @@ function vim.setup -d 'Cleanup files and reinstall Spacevim'
     __vim_clean_files_delete "$SYSTEM_CONFIG_DIR/coc/extensions"
 
     log.info -m 'Linking custom config to default spacevim config'
-    ln -s $SPACEVIM_INIT_PATH $HOME/.SpaceVim.d
+    ln -fs $SPACEVIM_INIT_PATH $HOME/.SpaceVim.d
 
     log.info -m 'Re-linking SpaceVim for Neovim'
-    ln -s $HOME/.SpaceVim $NEOVIM_HOME/nvim
+    ln -fs $HOME/.SpaceVim $NEOVIM_HOME/nvim
 
     if test -d "$PYTHON_VENV_PATH"
         log.info -m "Deleting python virtual environment $PYTHON_VENV_PATH"

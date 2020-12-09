@@ -59,7 +59,8 @@ function show.help -d 'Specially formatted help messages'
     printf '# Usage: %s on %s\n\n' "$function_name" "$system_platform"
 
     if test -n "$about"
-        printf '> %s\n\n' $about
+        echo -e "> $about\n"
+        # printf '> %s\n\n' $about
     end
 
     if test (count $flags) -gt 0
