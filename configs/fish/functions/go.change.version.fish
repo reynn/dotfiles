@@ -13,7 +13,7 @@ function go.change.version -d "Get a version of Go or source the latest environm
         if test -z "$argv"
             curl -sL $script_url | bash
         else
-            curl -sL $script_url | $argv bash
+            curl -sL $script_url | env $argv bash
         end
     end
 

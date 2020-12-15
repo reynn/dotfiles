@@ -31,6 +31,6 @@ function log.info -d "Log a special information message"
     test -z $msg; and return 0
 
     set_color $color
-    echo -e "[INFO]"(test -n $label; and echo "($label)"; or echo '')": $msg"
+    echo -e "[INFO]"(test -n $label; and echo "($label)"; or echo '')": $msg" >&2
     set_color normal
 end

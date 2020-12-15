@@ -28,6 +28,6 @@ function log.error -d "Log a error message"
     test -z $msg; and return 0
 
     set_color $color
-    echo -e "[ERROR]"(test -n $label; and echo "($label)"; or echo "")": $msg"
+    echo -e "[ERROR]"(test -n $label; and echo "($label)"; or echo "")": $msg" >&2
     set_color normal
 end

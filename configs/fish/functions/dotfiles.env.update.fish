@@ -2,6 +2,8 @@
 
 function dotfiles.env.update -d 'Setup global/universal variables'
     set -lx paths_to_add
+    set -lx go_versions_path "$HOME/.gimme/versions"
+    set -lx node_versions_path "$HOME/.local/share/nvm"
 
     function ___usage
         set -l help_args '-a' 'Setup global/universal variables'
@@ -11,6 +13,10 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     getopts $argv | while read -l key value
         switch $key
+            case go_versions_path
+                set go_versions_path "$value"
+            case node_versions_path
+                set node_versions_path "$value"
             case P path
                 set -a paths_to_add "$value"
             case v verbose
@@ -20,12 +26,6 @@ function dotfiles.env.update -d 'Setup global/universal variables'
                 return 0
         end
     end
-
-    # Exports
-    ## General ENV vars
-    set -Ux GFP "$HOME/git"
-    set -Ux DFP "$GFP/github.com/reynn/dotfiles"
-    set -Ux REYNN "$GFP/github.com/reynn"
 
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.9'
@@ -41,10 +41,26 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     utils.path.add "$HOME/.bins"
     utils.path.add "$HOME/.bins/envs"
     utils.path.add "$HOME/.cargo/bin"
-    utils.path.add "$PYTHON_HOME/bin"
-    if functions -q nvm
-        set -l latest_node_version (nvm list | grep 'latest' | awk '{print $1}')
-        utils.path.add "$HOME/.local/share/nvm/$latest_node_version/bin"
+    utils.path.replace "$PYTHON_HOME/bin"
+
+    log.debug -m "Checking for go versions in $go_versions_path"
+    if test -d "$go_versions_path"
+        set -l go_version (fd -td -d1 . --base-directory $go_versions_path | sort -r)
+        if test (count $go_version) -gt 1
+          set go_version $go_version[1]
+        end
+        log.debug -m "Go Version $go_version"
+        utils.path.replace "$go_versions_path/$go_version/bin" '2'
+    end
+
+    log.debug -m "Checking for node versions in $node_versions_path"
+    if test -d "$node_versions_path"
+        set -l node_version (fd -td -d1 . --base-directory $node_versions_path | sort -r)
+        if test (count $node_version) -gt 1
+          set node_version $node_version[1]
+        end
+        log.debug -m "Node Version $node_version"
+        utils.path.replace "$node_versions_path/$node_version/bin" '2'
     end
 
     for extra_path in $paths_to_add

@@ -55,9 +55,12 @@ function utils.path.replace
     end
 
     function __utils_path_replace_usage
-        show.help -e "$function_name \"$HOME/.gimme/versions/go1.15.4.darwin.amd64/bin\" '2'" \
-            -e "$function_name \"$HOME/.nvm/versions/node/v15.2.1/bin\" '2'" \
-            -e "$function_name \"$HOME/Library/Python/3.9/bin\" '2'"
+        set -l help_args '-a' 'Update a path for a versioned language, eg. Go 1.14 to Go 1.15'
+        set -a help_args '-e' "\"$HOME/.gimme/versions/go1.15.4.darwin.amd64/bin\" '2'"
+        set -a help_args '-e' "\"$HOME/.nvm/versions/node/v15.2.1/bin\" '2'"
+        set -a help_args '-e' "\"$HOME/Library/Python/3.9/bin\" '2'"
+        show.help $help_args
+
     end
 
     if test "$argv[1]" = "-h"

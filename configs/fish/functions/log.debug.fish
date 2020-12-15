@@ -30,6 +30,6 @@ function log.debug -d "Log a debug message"
     test -z $msg; and test -z $label; and return 0
 
     set_color $color
-    echo -e "[DEBUG]"(test -n $label; and echo "($label)"; or echo "")": $msg"
+    echo -e "[DEBUG]"(test -n $label; and echo "($label)"; or echo "")": $msg" >&2
     set_color normal
 end

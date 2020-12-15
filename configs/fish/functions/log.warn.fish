@@ -28,6 +28,6 @@ function log.warn -d "Log a warning message"
     test -z $msg; and return 0
 
     set_color $color
-    echo -e "[WARN]"(test -n $label; and echo "($label)"; or echo "")": $msg"
+    echo -e "[WARN]"(test -n $label; and echo "($label)"; or echo "")": $msg" >&2
     set_color normal
 end
