@@ -11,7 +11,6 @@ function github.clean.forks -d "Delete forks from GitHub"
         set -l help_args '-a' 'Delete all repositories from GitHub that are forked by the specified user'
         set -a help_args '-f' "o|owner|Owner of the repositories, will be filtered for forks|$owner"
         set -a help_args '-f' "n|noop|Dont actually delete the fork|$noop"
-        set -a help_args '-f' 'v|verbose|Additional verbose output|false'
         set -a help_args '-c' '1|Noop exit'
         show.help $help_args
     end

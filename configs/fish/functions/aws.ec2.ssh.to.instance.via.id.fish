@@ -3,8 +3,23 @@
 function aws.ec2.ssh.to.instance.via.id -d "SSH to an AWS instance via it's ID instead of IP"
     set -l instance_id $argv[1]
 
-    if test -x (command -s aws)
-        log.error -m 'AWS CLI is not installed'
+    function ___usage
+        set -l help_args '-a' "SSH to an AWS instance via it's ID instead of IP"
+        show.help $help_args
+    end
+
+    getopts $argv | while read -l key value
+        switch $key
+            case h help
+                ___usage
+                return 0
+            case v verbose
+                set -x DEBUG 'true'
+        end
+    end
+
+    if not utils.command.available -c 'aws'
+        log.error -m '`aws` is not installed'
         return 1
     end
 

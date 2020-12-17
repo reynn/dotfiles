@@ -1,6 +1,6 @@
-function mkcd -d 'Make a directory and cd into it'
-
+function mkcd -d 'Creates a directory then cd into automatically'
     function ___usage
+      set -l help_args '-a' 'Creates a directory then cd into automatically'
         show.help $help_args
     end
 
@@ -14,12 +14,9 @@ function mkcd -d 'Make a directory and cd into it'
         end
     end
 
-    set -l func_name (status current-function)
-    log.debug -l 'func_name' -m "$func_name"
     set -l function_args $argv
     set -l directory $function_args[1]
     set -l mkdir_args '-p'
-    log.debug -l 'function_args' -m "$function_args"
 
     if test (count $function_args) -gt 1
         log.debug -m "Adding arguments to mkdirs list"

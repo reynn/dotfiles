@@ -2,11 +2,10 @@
 - hosts: localhost
   force_handlers: yes
   gather_facts: yes
-  strategy: free
 
   handlers:
     - name: "Run fzf install script"
-      shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --64"
+      shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --no-key-bindings --no-completion --no-update-rc"
 
   tasks:
     - name: Include universal variables
@@ -32,7 +31,7 @@
 
     - name: "Install certificate handling for darwin"
       ansible.builtin.shell: "sh '/Applications/Python
-        {{ansible_python.version.major}}.{{ansible_python.version.minor}}/Install\
+        {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/Install\
         Certificates.command'"
       register: cert_handler
       changed_when: '"Requirement already up-to-date" not in cert_handler.stdout'

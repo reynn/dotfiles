@@ -1,7 +1,8 @@
 #!/usr/bin/env fish
 
 function docker.container.clean -d "Clean up containers"
-    set -l all 'false'
+    set -lx all 'false'
+
     function ___usage
         set -l help_args '-a' 'Clean up Docker containers'
         set -l help_args '-f' "a|all|Remove all images|$all"
@@ -20,16 +21,22 @@ function docker.container.clean -d "Clean up containers"
                 return 0
         end
     end
-    if test -x (command -s docker)
-        log.error -m 'Docker is not installed'
+
+    if not utils.command.available -c 'docker'
+        log.error -m '`docker` is not installed'
         return 1
     end
 
+    set -l containers
     if test "$all" = 'true'
-        log.info -m 'Removing all existing containers'
-        docker container rm -f (docker container ls -qa)
+        set containers (docker container ls -qa)
     else
-        log.info -m 'Removing exited and stopped containers'
-        docker container rm -f (docker container ls -q)
+        set containers (docker container ls -q)
+    end
+    if test (count $containers) -gt 0
+        log.info -m "Cleaning "(count $containers)" containers"
+        docker container rm -f $containers
+    else
+        log.info -m "There are no containers to remove"
     end
 end

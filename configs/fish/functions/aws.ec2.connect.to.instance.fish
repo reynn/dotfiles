@@ -17,6 +17,8 @@ function aws.ec2.connect.to.instance -d "Interactively connect to a created inst
             case h help
                 ___usage
                 return 0
+            case v verbose
+                set -x DEBUG 'true'
             case f filter
                 set -a filters $value
             case "no-filters"
@@ -24,12 +26,13 @@ function aws.ec2.connect.to.instance -d "Interactively connect to a created inst
         end
     end
 
-    log.debug -m "Filters: $filters"
-    log.debug -m "Tmp_File: $tmp_file"
-    if test -x (command -s aws)
-        log.error -m 'AWS CLI is not installed'
+    if not utils.command.available -c 'aws'
+        log.error -m '`aws` is not installed'
         return 1
     end
+
+    log.debug -m "Filters   : $filters"
+    log.debug -m "Tmp_File  : $tmp_file"
 
     aws ec2 describe-instances --filters $filters >$tmp_file
 

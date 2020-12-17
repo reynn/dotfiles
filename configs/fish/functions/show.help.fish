@@ -2,7 +2,7 @@
 
 function show.help -d 'Specially formatted help messages'
     set -lx examples
-    set -lx flags
+    set -lx flags 'v|verbose|Enable debug logging|false' 'h|help|Show this help message|false'
     set -lx exit_codes '0|Successful'
     set -l system_platform (uname | string lower)
     set -l single_col_percent '0.1'
@@ -27,9 +27,9 @@ function show.help -d 'Specially formatted help messages'
             case c exit-code
                 set -a exit_codes "$value"
             case e example
-                set -a examples "$value"
+                set -p examples "$value"
             case f flag
-                set -a flags "$value"
+                set -p flags "$value"
             case v verbose
                 set -x DEBUG 'true'
         end
@@ -60,7 +60,6 @@ function show.help -d 'Specially formatted help messages'
 
     if test -n "$about"
         echo -e "> $about\n"
-        # printf '> %s\n\n' $about
     end
 
     if test (count $flags) -gt 0

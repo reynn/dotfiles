@@ -19,7 +19,7 @@ function color.schemes.update -d "Read the latest from the colors.list file and 
         end
     end
 
-    if test ! -d $color_scheme_folder
+    if not test -d $color_scheme_folder
         log.info -m "Cloning color scheme repo to $color_scheme_folder"
         git clone --depth 1 https://github.com/mbadolato/iTerm2-Color-Schemes $color_scheme_folder
     end

@@ -72,6 +72,8 @@ scripts:
 to_create:
   - dest: "{{ ansible_env.HOME }}/.config"
     state: "directory"
+  - dest: "{{ ansible_env.HOME }}/.config/fish"
+    state: "directory"
   - dest: "{{ ansible_env.HOME }}/.config/fish/config.fish"
     src: "{{ dotfiles_path }}/configs/fish/config.fish"
     state: "link"

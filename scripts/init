@@ -12,11 +12,11 @@ log() {
   fi
   local color_level="\033[0;33m"
   case $level in
+  debug) color_level="\033[0;34m" ;;
   error) color_level="\033[0;31m" ;;
   fatal) color_level="\033[0;31m" ;;
-  warn) color_level="\033[0;32m" ;;
-  debug) color_level="\033[0;34m" ;;
   prompt) color_level="\033[0;35m" ;;
+  warn) color_level="\033[0;32m" ;;
   esac
 
   echo -e "$color_level[$(pad 6 $level | tr '[:lower:]' '[:upper:]')] $message$color_reset" 1>&2
@@ -25,9 +25,23 @@ log() {
   fi
 }
 
+executed_as_root() {
+  test "$(id -u)" -eq 0 && echo 'true' || echo 'false'
+}
+
+check_for_command() {
+  local CMD=$(command -v $1)
+  if [ -z $CMD ]; then
+    log 'error' "Command ($1) is not available"
+    return 2
+  else
+    log 'info' "Command ($1) is available"
+  fi
+}
+
 rust_check() {
   local cargo_location="${CARGO_HOME:-$HOME/.cargo}"
-  if test ! -d $cargo_location; then
+  if [ ! -d $cargo_location ]; then
     log "Cargo is not found at $cargo_location"
   fi
 }
@@ -41,45 +55,87 @@ python_packages() {
     --no-cache-dir \
     --upgrade \
     --quiet \
-    ansible-base
+    ansible
 }
 
 platform_mac() {
   log 'Installing Mac dependencies'
-  if test -z "$BREW_BINARY"; then
+  if [ -z "$BREW_BINARY" ]; then
     log 'Brew is not installed.'
   else
     log 'Installing brew dependencies'
     log "Brew installation: $(dirname $BREW_BINARY)"
+    brew install tmux rsync wget
   fi
 }
 
 platform_linux() {
+  local packages=('git' 'curl' 'fish')
   local release="$(cat /etc/*release* | grep -G '^ID=.*' | cut -d= -f2 | tr '[:upper:]' '[:lower:]' | tr -d \")"
-  log "Installing Linux dependencies for $release"
-  local packages=('git')
   platform_linux_apt() {
-    packages+=('python3-pip')
-    log "Installing [${#packages[@]}] packages with apt"
-    sudo apt-get update &&
-      apt-get upgrade -y &&
-      echo "${packages[@]}" | xargs -l apt-get install -y
-  }
-  platform_linux_dnf() {
-    packages+=('python3-pip' 'ncurses')
-    log "Installing [${#packages[@]}] packages with dnf"
-    sudo dnf update -y &&
-      sudo dnf upgrade -y &&
-      echo "${packages[@]}" | xargs -l sudo dnf install -y
+    packages+=('python3' 'python3-pip')
+    if test "$(executed_as_root)" = 'true'; then
+      apt-get update && apt-get install -y gpg curl
+      # Add the fish apt sources
+      echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_9.0/ /' |
+        tee /etc/apt/sources.list.d/shells:fish:release:3.list
+      # Pull the GPG key for Fish
+      curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_9.0/Release.key |
+        gpg --dearmor |
+        tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg >/dev/null
+      apt-get update &&
+        apt-get upgrade -y &&
+        echo "${packages[@]}" | xargs -l apt-get install -y
+    else
+      sudo apt-get update && sudo apt-get install -y gpg curl
+      echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_9.0/ /' |
+        sudo tee /etc/apt/sources.list.d/shells:fish:release:3.list
+      curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_9.0/Release.key |
+        gpg --dearmor |
+        tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg >/dev/null
+      sudo apt-get update &&
+        sudo apt-get upgrade -y &&
+        echo "${packages[@]}" | xargs -l sudo apt-get install -y
+    fi
     return $?
   }
+
+  platform_linux_dnf() {
+    packages+=('python3' 'python3-pip' 'ncurses')
+    log "Installing [${#packages[@]}] packages with dnf"
+    if test "$(executed_as_root)" = 'true'; then
+      dnf config-manager --add-repo https://download.opensuse.org/repositories/shells:fish:release:3/Fedora_31/shells:fish:release:3.repo
+      dnf update -y &&
+        dnf upgrade -y &&
+        echo "${packages[@]}" | xargs -l dnf install -y
+    else
+      sudo dnf config-manager --add-repo https://download.opensuse.org/repositories/shells:fish:release:3/Fedora_31/shells:fish:release:3.repo
+      sudo dnf update -y &&
+        sudo dnf upgrade -y &&
+        echo "${packages[@]}" | xargs -l sudo dnf install -y
+    fi
+    return $?
+  }
+
   platform_linux_pacman() {
-    packages+=('python' 'python-pip')
+    packages+=('python' 'python-pip' 'fish' 'openssh')
+    if [ ! -d /build/packages ]; then
+      mkdir -p /build/packages
+      touch /build/packages/packages.db
+    fi
     log "Installing [${#packages[@]}] packages with pacman"
     # Get latest from configured pacman repos
     # Update the system packages
-    sudo pacman --sync --refresh --sysupgrade &&
-      echo "${packages[@]}" | xargs -l sudo pacman --noconfirm -S
+    if test "$(executed_as_root)" = 'true'; then
+      pacman --sync --refresh --sysupgrade --noconfirm &&
+        echo "${packages[@]}" | xargs -l pacman --noconfirm -S
+      return $?
+    else
+      sudo pacman --sync --refresh --sysupgrade --noconfirm &&
+        echo "${packages[@]}" | xargs -l sudo pacman --noconfirm -S
+      return $?
+    fi
+    return $?
   }
   case $release in
   debian) platform_linux_apt || log 'fatal' 'Failed to install packages with APT' ;;
@@ -95,69 +151,73 @@ ansible_run() {
 }
 
 clone() {
-  local git_command=$(command -s git)
-  if test -z git_command; then
-    log 'fatal' '`git` is not installed'
-    exit 2
-  fi
-  if test ! -d $DFP; then
-    if test ! -f ~/.ssh/id_rsa; then
-      log 'Creating ssh key'
-      ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa
-    fi
-    log 'prompt' "Has the following public key been added to GitHub?\n\n$(cat ~/.ssh/id_rsa.pub)\n"
-    read key_added
-    case $key_added in
-    y) log 'debug' 'Key added!' ;;
-    n) log 'debug' 'Key not confirmed to be added, some commands may not work' ;;
-    *) log 'error' "Unknown [$key_added]" ;;
-    esac
-    log "Cloning the dotfiles repo to $DFP"
-    ssh-keyscan -t rsa,dsa -f github.com >>$HOME/.ssh/known_hosts
-    git clone $DOTFILES_REPO $DFP
-  fi
+  log 'info' "Cloning $DOTFILES_REPO"
+  check_for_command 'git' || log 'fatal' '`git` is not installed'
+  check_for_command 'ssh-keygen' || log 'fatal' '`ssh-keygen` is not installed'
+  check_for_command 'ssh-keyscan' || log 'fatal' '`ssh-keyscan` is not installed'
+
+  mkdir -p "$HOME/.ssh"
+  test -d "$(dirname DFP)" || log 'fatal' "$DFP directory does not exist"
+
+  log 'info' 'Adding github.com to SSH known hosts'
+  ssh-keyscan github.com >>$HOME/.ssh/known_hosts || log 'error' 'Failed to scan github.com'
+  test -f "$HOME/.ssh/id_rsa" || log 'fatal' '`id_rsa` is not available'
+
+  log 'prompt' "Has the following public key been added to GitHub?\n\n$(cat ~/.ssh/id_rsa.pub)\n"
+  read key_added
+  case $key_added in
+  y) log 'debug' 'Key added!' ;;
+  n) log 'debug' 'Key not confirmed to be added, some commands may not work' ;;
+  *) log 'error' "Unknown [$key_added]" ;;
+  esac
+
+  log 'info' "Cloning the dotfiles repo to $DFP"
+  git clone $DOTFILES_REPO $DFP
 }
 
 main() {
-  log 'Installing prerequisites'
+  local terminal_cols=$(tput cols || echo '80')
+  export PATH="$HOME/.local/bin:$PATH"
+  export HEADER='This is a work in progress'
+  declare -i header_length=terminal_cols/2
+  log 'warn' "$(pad $header_length "$HEADER")"
+  log 'debug' "Is Root?         : $(executed_as_root)"
+  log 'debug' "Terminal Columns : $terminal_cols"
+  log 'debug' "Header Length    : $header_length"
+  log 'debug' "Is Root?         : $IS_ROOT"
+  log 'debug' "Dotfiles Repo    : $DOTFILES_REPO"
+  log 'debug' "DFP              : $DFP"
+  log 'debug' "Platform         : $PLATFORM"
+  log 'debug' "Python Binary    : $PYTHON_BINARY"
+  log 'debug' "Brew Binary      : $BREW_BINARY"
+  log 'debug' "User ID          : $USER_ID"
+  log 'debug' "User Group ID    : $GROUP_ID"
+
   case $PLATFORM in
   macos) platform_mac || log 'fatal' 'Failed to configure platform OS X' ;;
-  darwin) platform_mac || log 'fatal' 'Failed configure platform OS X' ;;
-  linux) platform_linux || log 'fatal' 'Failed configure platform Linux' ;;
+  darwin) platform_mac || log 'fatal' 'Failed to configure platform OS X' ;;
+  linux) platform_linux || log 'fatal' 'Failed to configure platform Linux' ;;
   *) log 'fatal' "Unsupported/Unknown platform [$PLATFORM]" ;;
   esac
-  export PATH="$HOME/.local/bin:$PATH"
 
-  local terminal_cols=$(tput cols)
-
-  if test -z "$PYTHON_BINARY"; then
-    log 'Setting PYTHON_BINARY again'
-    PYTHON_BINARY=$(command -s python3 || command -v python3)
-  fi
-
-  log 'warn' "$(pad $(($terminal_cols - 30)) 'This is a work in progress')"
-  log 'Initializing reynn/dotfiles'
+  PYTHON_BINARY="$(command -v python3)"
   python_packages
   clone
-  ansible_run
 
   fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher; and fisher update'
-  fish -c "set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.env.update"
+  ansible_run
+  fish -c "fisher update; set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.env.update"
 
   log 'Completed!'
 }
 
-DOTFILES_REPO="git@github.com:reynn/dotfiles"
-DFP=$HOME/git/github.com/reynn/dotfiles
-PYTHON_BINARY=$(command -s python3)
-BREW_BINARY=$(command -s brew)
+export BREW_BINARY="$(command -v brew)"
+export DFP="$HOME/git/github.com/reynn/dotfiles"
+export DOTFILES_REPO="git@github.com:reynn/dotfiles"
+export GROUP_ID="$(id -g)"
+export IS_ROOT="$(executed_as_root)"
+export PYTHON_BINARY="$(command -v python3)"
+export USER_ID="$(id -u)"
+export PLATFORM="$(uname | tr '[:upper:]' '[:lower:]')"
 
-if test -n "$PYTHON_BINARY"; then
-  log 'debug' "Setting PLATFORM using $PYTHON_BINARY"
-  PLATFORM="$($PYTHON_BINARY -m platform | cut -f1 -d- | tr '[:upper:]' '[:lower:]')"
-else
-  log 'debug' "Setting PLATFORM using [uname]"
-  PLATFORM="$(uname | tr '[:upper:]' '[:lower:]')"
-fi
-
-main "$@"
+main $@

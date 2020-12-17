@@ -18,7 +18,6 @@ function github.clone.repo -d "Clone repository to the layout used"
         set -l help_args '-a' "Clone repository to the layout used [format:'$base_directory/$git_host/{owner}/{repo}']"
         set -a help_args '-f' 'r|repo|The owner/name of the repository to clone'
         set -a help_args '-f' "H|host|GitHub host name, for using against enterprise GitHub|$git_host"
-        set -a help_args '-f' 'v|verbose|Additional verbose output|false'
         show.help $help_args
     end
 

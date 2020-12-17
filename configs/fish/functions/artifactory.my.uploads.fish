@@ -10,8 +10,6 @@ function artifactory.my.uploads -d "Search for files that you have uploaded"
         set -a help_args '-f' "c|creator|The user that created the artifacts|$creator"
         set -a help_args '-f' "r|repo|The Artifactory repository to search for files|$repo"
         set -a help_args '-f' "t|time-frame|The upload time frame|$time_frame"
-        set -a help_args '-f' 'v|verbose|Additional verbose output|false'
-        set -a help_args '-f' 'h|help|Print this help message'
         show.help $help_args
     end
 
@@ -29,6 +27,11 @@ function artifactory.my.uploads -d "Search for files that you have uploaded"
                 ___usage
                 return 0
         end
+    end
+
+    if not utils.command.available -c 'jfrog'
+        log.error -m '`jfrog` is not installed'
+        return 1
     end
 
     set -l spec_file (mktemp -t my-uploads-spec.json)

@@ -22,6 +22,10 @@ function ansible.generate.ssh.config.from.inventory -d "Generate valid SSH confi
         return 0
     end
 
+    if not utils.command.available -c 'ansible'
+        log.error -m '`ansible` is not installed'
+        return 1
+    end
 
     if test -z $INVENTORY_FILE
         log.info -m 'No inventory file provided'
@@ -47,12 +51,12 @@ function ansible.generate.ssh.config.from.inventory -d "Generate valid SSH confi
             set -l ip (echo $entry | jq -r '.ip')
             set -l user (echo $entry | jq -r '.user')
             set -l identFile (echo $entry | jq -r '.ident')
-            log.debug -l "name" -m "[$name]"
-            log.debug -l "splitName" -m "[$splitName]"
-            log.debug -l "dc" -m "[$dc]"
-            log.debug -l "ip" -m "[$ip]"
-            log.debug -l "user" -m "[$user]"
-            log.debug -l "identFile" -m "[$identFile]"
+            log.debug -m "name       : [$name]"
+            log.debug -m "splitName  : [$splitName]"
+            log.debug -m "dc         : [$dc]"
+            log.debug -m "ip         : [$ip]"
+            log.debug -m "user       : [$user]"
+            log.debug -m "identFile  : [$identFile]"
 
             log.info -l "HOST" -m "[$name] ssh: $user@$ip"
             echo "Host $name" >>$CONFIG_DIRECTORY/$dc

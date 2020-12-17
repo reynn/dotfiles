@@ -26,13 +26,13 @@ function aws.ec2.run.instance -d "Create an instance in AWS"
         show.help $help_args
     end
 
-    log.info -m "Args: $argv"
-
     getopts $argv | while read -l key value
         switch $key
             case h help
                 ___usage
                 return 0
+            case v verbose
+                set -x DEBUG 'true'
             case a "ami-id"
                 set ami_id $value
             case f "ami-filter"
@@ -46,6 +46,11 @@ function aws.ec2.run.instance -d "Create an instance in AWS"
             case n name
                 set name $value
         end
+    end
+
+    if not utils.command.available -c 'aws'
+        log.error -m '`aws` is not installed'
+        return 1
     end
 
     log.debug -m "force_search  : $force_search"

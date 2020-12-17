@@ -18,8 +18,6 @@ function artifactory.upload -d "Upload files to Artifactory"
         set -a help_args '-f' "N|build-number|A unique number for the build|$build_number"
         set -a help_args '-f' "g|glob|An ant style pattern to match files|$glob_match"
         set -a help_args '-f' "s|subfolder|Create a subfolder in the target repo|$subfolder"
-        set -a help_args '-f' 'v|verbose|Additional verbose output|false'
-        set -a help_args '-f' 'h|help|Print this help message'
         show.help $help_args
     end
 
@@ -45,6 +43,11 @@ function artifactory.upload -d "Upload files to Artifactory"
                 ___usage
                 return 0
         end
+    end
+
+    if not utils.command.available -c 'jfrog'
+        log.error -m '`jfrog` is not installed'
+        return 1
     end
 
     if test -n $subfolder

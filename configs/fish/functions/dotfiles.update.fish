@@ -1,21 +1,18 @@
 #!/usr/bin/env fish
 
 function dotfiles.update -d 'Run the playbook to apply latest changes'
-    set -lx function_name (status current-function)
-    set -l tags
-    set -l verbose 0
-
-    set -l ansible_args "$DFP/ansible/config.yaml"
+    set -lx tags
+    set -lx verbose 0
+    set -lx ansible_args "$DFP/ansible/config.yaml"
 
     function ___usage -d 'Show a help message'
-      set -l help_args '-f' 'h|help|Print this help message'
-      set -a help_args '-f' 't|tags|Tags to run instead of full playbook'
-      set -a help_args '-f' 'K|become|Run as sudo after asking for password'
-      set -a help_args '-f' 'v|verbose|Add verbosity levels to Ansible'
-      set -a help_args '-e' "$function_name --tags scripts,links         # Run the Ansible playbook with just the links and scripts tags"
-      set -a help_args '-e' "$function_name -vvv --tags links            # Run the Ansible playbook with just the links tag with additional verbosity levels"
-      set -a help_args '-c' '2|Missing Configuration'
-      show.help $help_args
+        set -l help_args '-f' 'h|help|Print this help message'
+        set -a help_args '-f' 't|tags|Tags to run instead of full playbook|$tags'
+        set -a help_args '-f' 'K|become|Run as sudo after asking for password|false'
+        set -a help_args '-e' " --tags scripts,links     # Run the Ansible playbook with just the links and scripts tags"
+        set -a help_args '-e' " -vvv --tags links        # Run the Ansible playbook with just the links tag with additional verbosity levels"
+        set -a help_args '-c' '2|Missing Configuration'
+        show.help $help_args
     end
 
     getopts $argv | while read -l key value

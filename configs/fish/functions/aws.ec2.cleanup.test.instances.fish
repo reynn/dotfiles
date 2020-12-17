@@ -1,9 +1,24 @@
 #!/usr/bin/env fish
 
 function aws.ec2.cleanup.test.instances -d "Cleanup any instances that were created to test with"
-    if test -x (command -s aws)
-        log.error -m 'AWS CLI is not installed'
+    if not utils.command.available 'aws'
+        log.error -m '`aws` is not installed'
         return 1
+    end
+
+    function ___usage
+        set -l help_args '-a' 'Cleanup any instances that were created to test with'
+        show.help $help_args
+    end
+
+    getopts $argv | while read -l key value
+        switch $key
+            case v verbose
+                set -x DEBUG 'true'
+            case h help
+                ___usage
+                return 0
+        end
     end
 
     set -l instance_ids (aws \
@@ -12,7 +27,8 @@ function aws.ec2.cleanup.test.instances -d "Cleanup any instances that were crea
     --filters "Name=tag:Name,Values=$USER-test-instance" \
     "Name=instance-state-name,Values=running,shut-down" |
     jq -r '.Reservations[].Instances[].InstanceId')
-    if test ! $status -eq 0
+
+    if not test $status -eq 0
         echo "Unable to get instances from AWS"
         return 1
     end

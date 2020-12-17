@@ -25,6 +25,8 @@ function aws.utils.json.run.instances -d "Create the necessary JSON data to send
                 set security_group $value
             case subnet_id
                 set subnet_id $value
+            case v verbose
+                set -x DEBUG 'true'
         end
     end
 

@@ -10,8 +10,6 @@ function artifactory.search -d "Search Artifactory for files"
         set -a help_args '-f' "p|pattern|Overwrite the default pattern of (repo/*glob*)|$pattern"
         set -a help_args '-f' "r|repo|The Artifactory repository to search for files|$repo"
         set -a help_args '-f' "g|glob|An ant style pattern to match files|$glob_match"
-        set -a help_args '-f' 'v|verbose|Additional verbose output|false'
-        set -a help_args '-f' 'h|help|Print this help message'
         show.help $help_args
     end
 
@@ -31,8 +29,13 @@ function artifactory.search -d "Search Artifactory for files"
         end
     end
 
+    if not utils.command.available -c 'jfrog'
+        log.error -m '`jfrog` is not installed'
+        return 1
+    end
+
     if test -z $pattern
-      set pattern "$repo/*$glob_match*"
+        set pattern "$repo/*$glob_match*"
     end
 
     set -l spec_file (mktemp -t search-spec.json)

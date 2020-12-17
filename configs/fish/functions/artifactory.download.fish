@@ -21,8 +21,6 @@ function artifactory.download -d "Download files from Artifactory based on a giv
         set -a help_args '-f' "r|repo|The Artifactory repository to search for files|$repo"
         set -a help_args '-f' "t|target|The target folder to download files to|$target"
         set -a help_args '-f' "g|glob|An ant style pattern to match files|$glob_match"
-        set -a help_args '-f' 'v|verbose|Additional verbose output|false'
-        set -a help_args '-f' 'h|help|Print this help message'
         show.help $help_args
     end
 
@@ -44,6 +42,11 @@ function artifactory.download -d "Download files from Artifactory based on a giv
                 ___usage
                 return 0
         end
+    end
+
+    if not utils.command.available -c 'jfrog'
+        log.error -m '`jfrog` is not installed'
+        return 1
     end
 
     set -l spec_file (mktemp -t download-spec.json)

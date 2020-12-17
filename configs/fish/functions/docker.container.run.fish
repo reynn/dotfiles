@@ -9,7 +9,7 @@ function docker.container.run -d "Run a basic container"
     set -lx volume_paths "$PWD:/app"
     set -lx args '--rm' '-w' '/app'
     set -lx env_vars
-    set -lx presets go python rust debian centos postgres
+    set -lx presets go python rust debian centos manjaro postgres
 
     function ___usage -d 'Show usage'
         set -l help_args '-a' "Run a Docker container with the current directory mounted\n\n## Presets\n\n - "(string join '\n - ' $presets)
@@ -77,6 +77,10 @@ function docker.container.run -d "Run a basic container"
                 set entrypoint "/bin/bash"
                 set interactive 'true'
                 set image "debian"
+            case "manjaro"
+                set entrypoint "/bin/bash"
+                set interactive 'true'
+                set image "manjarolinux/build-stable"
             case "centos"
                 set entrypoint "/bin/bash"
                 set interactive 'true'

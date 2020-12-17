@@ -17,8 +17,8 @@ function docker.container.list -d "Show a list of containers with minimal inform
         end
     end
 
-    if test -x (command -s docker)
-        log.error -m 'Docker is not installed'
+    if not utils.command.available -c 'docker'
+        log.error -m '`docker` is not installed'
         return 1
     end
 
