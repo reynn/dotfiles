@@ -204,7 +204,9 @@ main() {
   python_packages
   clone
 
-  fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher; and fisher update'
+  if [[ ! -f "$HOME/.config/fish" ]]; then
+    fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher; and fisher update'
+  fi
   ansible_run
   fish -c "fisher update; set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.env.update"
 

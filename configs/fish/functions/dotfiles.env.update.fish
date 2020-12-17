@@ -45,9 +45,9 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     log.debug -m "Checking for go versions in $go_versions_path"
     if test -d "$go_versions_path"
-        set -l go_version (fd -td -d1 . --base-directory $go_versions_path | sort -r)
+        set -l go_version (find $go_versions_path -type d -depth 1 | xargs -L1 basename | sort -r)
         if test (count $go_version) -gt 1
-          set go_version $go_version[1]
+            set go_version $go_version[1]
         end
         log.debug -m "Go Version $go_version"
         utils.path.replace "$go_versions_path/$go_version/bin" '2'
@@ -55,9 +55,9 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     log.debug -m "Checking for node versions in $node_versions_path"
     if test -d "$node_versions_path"
-        set -l node_version (fd -td -d1 . --base-directory $node_versions_path | sort -r)
+        set -l node_version (find $node_versions_path -type d -depth 1 | xargs -L1 basename | sort -r)
         if test (count $node_version) -gt 1
-          set node_version $node_version[1]
+            set node_version $node_version[1]
         end
         log.debug -m "Node Version $node_version"
         utils.path.replace "$node_versions_path/$node_version/bin" '2'
