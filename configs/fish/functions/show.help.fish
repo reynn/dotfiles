@@ -3,7 +3,7 @@
 function show.help -d 'Specially formatted help messages'
     set -lx examples
     set -lx flags 'v|verbose|Enable debug logging|false' 'h|help|Show this help message|false'
-    set -lx exit_codes '0|Successful'
+    set -lx exit_codes '0|Successful' '1|Invalid Arguments'
     set -l system_platform (uname | string lower)
     set -l single_col_percent '0.1'
     set -l double_col_percent '0.2'

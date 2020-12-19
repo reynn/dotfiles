@@ -1,5 +1,7 @@
 #!/usr/bin/env fish
 
+set -x DEBUG 'true'
+
 status is-login
 set -l login_shell $status
 status is-interactive

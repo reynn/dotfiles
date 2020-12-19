@@ -1,6 +1,7 @@
 #!/usr/bin/env fish
 
-function docker.container.run -d "Run a basic container"
+function docker.container.run -d 'Run a basic container'
+
     set -lx entrypoint ''
     set -lx image 'alpine:latest'
     set -lx preset ''
@@ -30,6 +31,8 @@ function docker.container.run -d "Run a basic container"
 
     getopts $argv | while read -l key value
         switch $key
+            case _
+
             case entrypoint
                 set entrypoint $value
             case e env
@@ -37,7 +40,7 @@ function docker.container.run -d "Run a basic container"
             case i image
                 set image $value
             case p preset
-                set preset $value
+                set preset "$value"
             case V volume_paths
                 set -a volume_paths $value
             case port

@@ -188,7 +188,6 @@ main() {
   log 'debug' "Dotfiles Repo    : $DOTFILES_REPO"
   log 'debug' "DFP              : $DFP"
   log 'debug' "Platform         : $PLATFORM"
-  log 'debug' "Python Binary    : $PYTHON_BINARY"
   log 'debug' "Brew Binary      : $BREW_BINARY"
   log 'debug' "User ID          : $USER_ID"
   log 'debug' "User Group ID    : $GROUP_ID"
@@ -201,14 +200,15 @@ main() {
   esac
 
   PYTHON_BINARY="$(command -v python3)"
+  log 'debug' "Python Binary    : $PYTHON_BINARY"
   python_packages
   clone
 
-  if [[ ! -f "$HOME/.config/fish" ]]; then
-    fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher; and fisher update'
-  fi
+  # Run our ansible playbook to configure the main system
   ansible_run
-  fish -c "fisher update; set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.env.update"
+
+  # Source the latest fisher and run fisher update
+  fish -c "curl -sL https://git.io/fisher | source && fisher update; set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.env.update"
 
   log 'Completed!'
 }
@@ -218,7 +218,6 @@ export DFP="$HOME/git/github.com/reynn/dotfiles"
 export DOTFILES_REPO="git@github.com:reynn/dotfiles"
 export GROUP_ID="$(id -g)"
 export IS_ROOT="$(executed_as_root)"
-export PYTHON_BINARY="$(command -v python3)"
 export USER_ID="$(id -u)"
 export PLATFORM="$(uname | tr '[:upper:]' '[:lower:]')"
 

@@ -27,12 +27,65 @@ function github.download.release -d "Download a release from GitHub in the expec
     ###########################################################
     # Functions
     ###########################################################
+
+    function __versm -d 'Main logic to get assets for a specific repository'
+        if utils.command.available -c 'fzf'
+            set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | fzf --select-1 --exit-0)
+        else
+            set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
+        end
+
+        if test "$latest_release_version" = ''
+            log.error -m 'Failed to get the latest release from GitHub'
+            return 1
+        end
+
+        set -lx version_directory "$base_directory/github/$repo/$latest_release_version"
+
+        log.debug -m "Base directory           : $base_directory"
+        log.debug -m "Repo                     : $repo"
+        log.debug -m "Latest version           : $latest_release_version"
+        log.debug -m "Latest version directory : $version_directory"
+
+        mkdir -p "$version_directory"
+        mkdir -p "$bins_env_path"
+
+        if test -z $pattern
+            log.info -m "Downloading assets from GitHub to $version_directory"
+            gh release --repo $repo download $latest_release_version --dir $version_directory
+        else
+            log.info -m "Downloading assets from GitHub to $version_directory with pattern $pattern"
+            gh release --repo $repo download $latest_release_version --dir $version_directory --pattern $pattern
+        end
+
+        log.debug -m "Getting assets from $version_directory"
+        set -l downloaded_assets (__versm_get_asset_data $version_directory)
+
+        if test -z "$downloaded_assets"
+            log.error -m 'No assets downloaded from GitHub, try altering the pattern'
+            gh release --repo $repo view $latest_release_version
+            return 3
+        end
+
+        log.debug -m "Found "(count $downloaded_assets)" assets"
+        log.debug -m "Downloaded assets [$downloaded_assets]"
+
+        for asset in $downloaded_assets
+            __versm_handle_asset -a "$asset" -d "$version_directory" -b "$bin_alias" -e "$bins_env_path" -f "$bin_filter"
+            if test "$cleanup_assets" = 'true'
+                set -l asset_name (string split ':' $asset)[1]
+                log.info -m "Deleting asset $asset_name"
+                rm -fv $asset_name
+            end
+        end
+    end
+
     function __versm_handle_asset -d 'Extract archive if necessary. link to envs path if executable'
-        set -l asset ''
-        set -l version_directory ''
-        set -l bin_alias ''
-        set -l bin_filter ''
-        set -l env_dir ''
+        set -lx asset ''
+        set -lx version_directory ''
+        set -lx bin_alias ''
+        set -lx bin_filter ''
+        set -lx env_dir ''
 
         getopts $argv | while read -l key value
             switch $key
@@ -49,10 +102,10 @@ function github.download.release -d "Download a release from GitHub in the expec
             end
         end
 
-        set -l asset_path (string split ':' $asset | head -1)
-        set -l asset_type (string split ':' $asset | tail -1 | string trim)
-        set -l ver_base_dir (dirname $version_directory)
-        set -l asset_current_link "$ver_base_dir/$bin_alias"
+        set -lx asset_path (string split ':' $asset | head -1)
+        set -lx asset_type (string split ':' $asset | tail -1 | string trim)
+        set -lx ver_base_dir (dirname $version_directory)
+        set -lx asset_current_link "$ver_base_dir/$bin_alias"
 
         log.debug -m "handle_asset.asset               : $asset"
         log.debug -m "handle_asset.bin_filter          : $bin_filter"
@@ -65,7 +118,7 @@ function github.download.release -d "Download a release from GitHub in the expec
 
         if test "$asset_path" = "$asset_type"
             log.error -m "handle_asset The provided asset isn't in the right format (call [file --mime-type {}] on the file path)"
-            return 2
+            return 1
         end
         switch $asset_type
             case '*/x-mach-binary' '*/x-pie-executable' '*/x-executable'
@@ -83,7 +136,7 @@ function github.download.release -d "Download a release from GitHub in the expec
                     __versm_find_exec_after_extract "$version_directory" "$bin_filter" "$asset_path" "$bin_alias" "$env_dir"
                 else
                     log.error -m 'handle_asset `unzip` is unavailable in the path'
-                    return 2
+                    return 1
                 end
             case 'application/gzip*'
                 if test -x (command -s tar)
@@ -92,7 +145,7 @@ function github.download.release -d "Download a release from GitHub in the expec
                     __versm_find_exec_after_extract "$version_directory" "$bin_filter" "$asset_path" "$bin_alias" "$env_dir"
                 else
                     log.error -m 'handle_asset `tar` is unavailable in the path'
-                    return 2
+                    return 1
                 end
             case 'inode/directory'
                 return 3
@@ -107,11 +160,11 @@ function github.download.release -d "Download a release from GitHub in the expec
     end
 
     function __versm_find_exec_after_extract -d 'Find executables and send appropriate ones to __versm_handle_asset'
-        set -l directory "$argv[1]"
-        set -l filter "$argv[2]"
-        set -l asset_name "$argv[3]"
-        set -l alias "$argv[4]"
-        set -l env_dir "$argv[5]"
+        set -lx directory "$argv[1]"
+        set -lx filter "$argv[2]"
+        set -lx asset_name "$argv[3]"
+        set -lx alias "$argv[4]"
+        set -lx env_dir "$argv[5]"
 
         log.debug -m "find_exec_after_extract.directory  : $directory"
         log.debug -m "find_exec_after_extract.filter     : $filter"
@@ -155,7 +208,7 @@ function github.download.release -d "Download a release from GitHub in the expec
         log.info -m "directory_exists: $directory_exists"
         if test "$directory_exists" != 'true'
             log.info -m 'Need to download from scratch'
-            # return 2
+            # return 1
         end
         set -l cli_symlink "$base_directory/github/cli/cli/gh"
         set -l symlink_exists (test -L "$cli_symlink"; and echo 'true'; or echo 'false')
@@ -165,7 +218,7 @@ function github.download.release -d "Download a release from GitHub in the expec
             # return 0
         end
         log.error -m 'Not yet implemented.'
-        return 2
+        return 1
     end
 
     function ___usage
@@ -224,98 +277,39 @@ function github.download.release -d "Download a release from GitHub in the expec
         show.help $help_args
     end
 
-    function __versm -d 'Main logic to get assets for a specific repository'
-        if test -e (command -s fzf)
-            set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | fzf --select-1 --exit-0)
-        else
-            set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
-        end
-        set latest_release_version (string trim -r -l "$latest_release_version")
-
-        if test "$latest_release_version" = ''
-            log.error -m 'Failed to get the latest release from GitHub'
-            return 2
-        end
-
-        set -lx version_directory "$base_directory/github/$repo/$latest_release_version"
-
-        log.debug -m "Base directory           : $base_directory"
-        log.debug -m "Repo                     : $repo"
-        log.debug -m "Latest version           : $latest_release_version"
-        log.debug -m "Latest version directory : $version_directory"
-
-        mkdir -p "$version_directory"
-        mkdir -p "$bins_env_path"
-
-        if test -z $pattern
-            log.info -m "Downloading assets from GitHub to $version_directory"
-            gh release --repo $repo download $latest_release_version --dir $version_directory
-        else
-            log.info -m "Downloading assets from GitHub to $version_directory with pattern $pattern"
-            gh release --repo $repo download $latest_release_version --dir $version_directory --pattern $pattern
-        end
-
-        log.debug -m "Getting assets from $version_directory"
-        set -l downloaded_assets (__versm_get_asset_data $version_directory)
-
-        if test -z "$downloaded_assets"
-            log.error -m 'No assets downloaded from GitHub, try altering the pattern'
-            gh release --repo $repo view $latest_release_version
-            return 3
-        end
-
-        log.debug -m "Found "(count $downloaded_assets)" assets"
-        log.debug -m "Downloaded assets [$downloaded_assets]"
-
-        for asset in $downloaded_assets
-            __versm_handle_asset -a "$asset" -d "$version_directory" -b "$bin_alias" -e "$bins_env_path" -f "$bin_filter"
-            if test "$cleanup_assets" = 'true'
-                set -l asset_name (string split ':' $asset)[1]
-                log.info -m "Deleting asset $asset_name"
-                rm -fv $asset_name
-            end
-        end
-    end
-
     function __versm_get_system_defaults -d 'Gets a set of default repositories to fetch'
         set -l repositories
         switch "$system_platform"
             case 'darwin'
-                set -a repositories " -r 'argoproj/argo-cd'             -p '*darwin*'                 -a 'argocd'"
                 set -a repositories " -r 'denisidoro/navi'              -p '*osx*'"
-                set -a repositories " -r 'derailed/k9s'                 -p '*Darwin*'"
                 set -a repositories " -r 'digitalocean/doctl'           -p '*darwin*'"
                 set -a repositories " -r 'extrawurst/gitui'"
                 set -a repositories " -r 'jesseduffield/lazygit'        -p '*Darwin*'                 -a 'lg'"
                 set -a repositories " -r 'mikefarah/yq'                 -p '*darwin*'"
                 set -a repositories " -r 'neovim/neovim'                -p '*macos.tar.gz'            -a 'nvim'         -P"
                 set -a repositories " -r 'ogham/exa'                    -p '*macos*'"
-                set -a repositories " -r 'ovh/cds'                      -p 'cds-engine-darwin-amd64'  -a 'cds-engine'   -f 'cds-engine-darwin-amd64'"
-                set -a repositories " -r 'ovh/cds'                      -p 'cdsctl-darwin-amd64'      -a 'cdsctl'       -f 'cdsctl-darwin-amd64'"
-                set -a repositories " -r 'Powershell/Powershell'        -p '*-osx-x64.tar.gz'         -a 'pwsh'         -f '/pwsh\$'"
                 set -a repositories " -r 'rust-analyzer/rust-analyzer'  -p 'rust-analyzer-mac'        -P"
                 set -a repositories " -r 'sharkdp/fd'                   -p '*-x86_64-apple*'"
                 set -a repositories " -r 'starship/starship'            -p '*-x86_64-apple*'"
                 set -a repositories " -r 'stedolan/jq'                  -p '*-osx-amd64'              -a 'jq'"
             case 'linux'
-                set -a repositories " -r 'argoproj/argo-cd'             -p '*linux-amd64'                     -a 'argocd'"
                 set -a repositories " -r 'denisidoro/navi'              -p '*x86_64-unknown-linux-musl.tar.gz'"
-                set -a repositories " -r 'derailed/k9s'                 -p '*Linux_x86_64.tar.gz'"
                 set -a repositories " -r 'digitalocean/doctl'           -p '*linux-amd64.tar.gz'"
                 set -a repositories " -r 'extrawurst/gitui'"
                 set -a repositories " -r 'jesseduffield/lazygit'        -p '*Linux_x86_64.tar.gz'             -a 'lg'"
                 set -a repositories " -r 'mikefarah/yq'                 -p 'yq_linux_amd64'"
                 set -a repositories " -r 'neovim/neovim'                -p '*linux64.tar.gz'                  -a 'nvim'         -P"
                 set -a repositories " -r 'ogham/exa'"
-                set -a repositories " -r 'ovh/cds'                      -p 'cds-engine-linux-amd64'           -a 'cds-engine'   -f 'cds-engine-linux-amd64'"
-                set -a repositories " -r 'ovh/cds'                      -p 'cdsctl-linux-amd64-nokeychain'    -a 'cdsctl'       -f 'cdsctl-linux-amd64-nokeychain'"
-                set -a repositories " -r 'Powershell/Powershell'        -p '*linux-x64.tar.gz'                -a 'pwsh'         -f '/pwsh\$'"
                 set -a repositories " -r 'rust-analyzer/rust-analyzer'  -p '*-linux'                          -P"
                 set -a repositories " -r 'sharkdp/fd'                   -p '*x86_64-unknown-linux-gnu.tar.gz'"
                 set -a repositories " -r 'starship/starship'            -p '*linux-gnu.tar.gz'"
                 set -a repositories " -r 'stedolan/jq'                  -p 'jq-linux64'                       -a 'jq'"
         end
-        echo $repositories
+
+        for repo in $repositories
+            log.debug -m "Setting up [$repo]"
+            eval "github.download.release$repo"
+        end
     end
 
     ###########################################################
@@ -338,9 +332,6 @@ function github.download.release -d "Download a release from GitHub in the expec
 
     getopts $argv | while read -l key value
         switch $key
-            case h help
-                ___usage
-                return 0
             case D defaults
                 __versm_get_system_defaults
                 return 0
@@ -368,6 +359,9 @@ function github.download.release -d "Download a release from GitHub in the expec
                 set bin_filter $value
             case P pre-release
                 set release_filter 'pre-release'
+            case h help
+                ___usage
+                return 0
             case v verbose
                 set -x DEBUG 'true'
         end
@@ -379,7 +373,7 @@ function github.download.release -d "Download a release from GitHub in the expec
         __versm_init
         if test $status -gt 0
             log.error -m 'Failed to initialize the GitHub CLI'
-            return 2
+            return 1
         end
     end
 
@@ -391,8 +385,8 @@ function github.download.release -d "Download a release from GitHub in the expec
         set bin_filter "/$bin_alias\$"
     end
 
-    set bins_env_path "$base_directory/envs"
-    set -l show_versions_result ''
+    set -lx bins_env_path "$base_directory/envs"
+    set -lx show_versions_result ''
     if test $set_env_only = 'true'
         __versm_set_env $bins_env_path
         return 0
@@ -420,7 +414,7 @@ function github.download.release -d "Download a release from GitHub in the expec
 
     if test -z $repo_name || test -z $repo_owner
         log.error -m 'Please provide a <repo_name> and a <repo_owner>'
-        return 2
+        return 1
     end
 
     ###########################################################

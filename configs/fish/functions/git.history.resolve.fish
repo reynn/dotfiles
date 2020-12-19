@@ -15,6 +15,7 @@ function git.history.resolve -d 'Resolve the rest of git history after an initia
                 return 0
         end
     end
+
     log.info -m 'Converting shallow clone to full clone'
     git fetch --unshallow
     log.info -m 'Updating remote config to access all branches'

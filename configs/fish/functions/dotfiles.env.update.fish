@@ -27,6 +27,9 @@ function dotfiles.env.update -d 'Setup global/universal variables'
         end
     end
 
+    set -Ux GFP "$HOME/git"
+    set -Ux DFP "$GFP/github.com/reynn/dotfiles"
+
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.9'
     set -Ux LANGUAGES_GO_VERSION '1.15'
@@ -45,7 +48,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     log.debug -m "Checking for go versions in $go_versions_path"
     if test -d "$go_versions_path"
-        set -l go_version (find $go_versions_path -type d -depth 1 | xargs -L1 basename | sort -r)
+        set -l go_version (fd -td -d1 . --base-directory $go_versions_path | sort -r)
         if test (count $go_version) -gt 1
             set go_version $go_version[1]
         end
@@ -55,7 +58,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     log.debug -m "Checking for node versions in $node_versions_path"
     if test -d "$node_versions_path"
-        set -l node_version (find $node_versions_path -type d -depth 1 | xargs -L1 basename | sort -r)
+        set -l node_version (fd -td -d1 . --base-directory $node_versions_path | sort -r)
         if test (count $node_version) -gt 1
             set node_version $node_version[1]
         end

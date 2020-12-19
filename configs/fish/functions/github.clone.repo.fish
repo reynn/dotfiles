@@ -18,6 +18,7 @@ function github.clone.repo -d "Clone repository to the layout used"
         set -l help_args '-a' "Clone repository to the layout used [format:'$base_directory/$git_host/{owner}/{repo}']"
         set -a help_args '-f' 'r|repo|The owner/name of the repository to clone'
         set -a help_args '-f' "H|host|GitHub host name, for using against enterprise GitHub|$git_host"
+
         show.help $help_args
     end
 
@@ -37,10 +38,10 @@ function github.clone.repo -d "Clone repository to the layout used"
         end
     end
 
-    log.debug -m "git_host: $git_host"
-    log.debug -m "repo    : $repo"
-    log.debug -m "name    : $repo_name"
-    log.debug -m "owner   : $repo_owner"
+    log.debug -m "git_host : $git_host"
+    log.debug -m "repo     : $repo"
+    log.debug -m "name     : $repo_name"
+    log.debug -m "owner    : $repo_owner"
 
     ###########################################################
     # Main logic

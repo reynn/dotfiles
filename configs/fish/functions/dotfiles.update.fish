@@ -1,45 +1,52 @@
 #!/usr/bin/env fish
 
-function dotfiles.update -d 'Run the playbook to apply latest changes'
-    set -lx tags
-    set -lx verbose 0
-    set -lx ansible_args "$DFP/ansible/config.yaml"
+function dotfiles.update -d 'Run various updates to our system'
+    set -lx available_updates 'ansible' 'env'
+    set -lx default_updates 'ansible' 'env'
+    set -lx updates_to_run
 
-    function ___usage -d 'Show a help message'
-        set -l help_args '-f' 'h|help|Print this help message'
-        set -a help_args '-f' 't|tags|Tags to run instead of full playbook|$tags'
-        set -a help_args '-f' 'K|become|Run as sudo after asking for password|false'
-        set -a help_args '-e' " --tags scripts,links     # Run the Ansible playbook with just the links and scripts tags"
-        set -a help_args '-e' " -vvv --tags links        # Run the Ansible playbook with just the links tag with additional verbosity levels"
-        set -a help_args '-c' '2|Missing Configuration'
+    function ___usage
+        set -l help_args '-a' 'Run various updates to our system'
+        set -a help_args '-f' "a|add-update|Add an update to run|"
+        set -a help_args '-f' "A|all-updates|Runn all available updates|$default_updates"
+        set -a help_args '-f' "p|prepend-update|Prepend an update to run|"
+        set -a help_args '-f' 'R|reset-updates|Remove updates to run|false'
+
         show.help $help_args
     end
 
     getopts $argv | while read -l key value
         switch $key
-            case h helps
+            case A 'all-updates'
+                set updates_to_run $default_updates
+            case a 'add-update'
+                set -a updates_to_run "$value"
+            case p 'prepend-update'
+                set -p updates_to_run "$value"
+            case R 'reset-updates'
+                set -e updates_to_run
+            case v verbose
+                set -x DEBUG 'true'
+            case h help
                 ___usage
                 return 0
-            case t tags
-                set tags $value
-            case K become
-                set -a ansible_args '-K'
-            case v verbose
-                set verbose (math $verbose + 1)
         end
     end
 
-    if test $verbose -gt 0
-        set -x DEBUG 'true'
-        set -a ansible_args "-"(string repeat 'v' -n $verbose)
+    for update in $updates_to_run
+        if not contains -- "$update" $available_updates
+            log.error -m "[$update] is not available."
+            continue
+        end
+        switch $update
+            case env
+                log.info -m 'Updating environment'
+                dotfiles.env.update
+            case ansible
+                log.info -m 'Running ansible playbook'
+                dotfiles.ansible.update
+            case *
+                log.error -m "$update is not available"
+        end
     end
-
-    if test -n "$tags"
-        set -a ansible_args '--tags'
-        set -a ansible_args $tags
-    end
-
-    log.debug -m (count ansible_args)" arguments ($ansible_args)"
-    log.debug -m "ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook $ansible_args"
-    ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook $ansible_args
 end

@@ -22,9 +22,11 @@ function fonts.list -d 'List all installed font families, sorted by name'
                 return 0
         end
     end
-    if test -z (command -s fc-list)
+
+    if not utils.command.available -c 'fc-list'
         log.error -m 'Command `fc-list` is not available'
         return 1
     end
+
     fc-list --format="%{family[0]}\n" | sort -u
 end
