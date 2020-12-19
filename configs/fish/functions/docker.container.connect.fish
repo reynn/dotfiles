@@ -1,28 +1,31 @@
 #!/usr/bin/env fish
 
 function docker.container.connect -d "Select a container to attach too"
-    set -l container ""
+    set -l container
 
     function ___usage
         set -l help_args '-a' 'Select a container to attach to'
-        set -a help_args '-c' '1|Command not available'
-        show.help $help_args
+
+        __dotfiles_help $help_args
     end
 
     getopts $argv | while read -l key value
         switch $key
             case c container
-                set container $value
-            case v verbose
-                set -x DEBUG 'true'
+                set -x container "$value"
+                # Common args
             case h help
                 ___usage
                 return 0
+            case q quiet
+                set -x QUIET 'true'
+            case v verbose
+                set -x DEBUG 'true'
         end
     end
 
-    if not utils.command.available -c 'docker'
-        log.error -m '`docker` is not installed'
+    if not command.is_available -c 'docker'
+        log.error '`docker` is not installed'
         return 1
     end
 

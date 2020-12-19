@@ -7,10 +7,11 @@
 ## #######################################################################
 
 function fonts.list -d 'List all installed font families, sorted by name'
+
     function ___usage
         set -l help_args '-a' 'List all installed font families, sorted by name'
         set -a help_args '-c' '1|Command not available'
-        show.help $help_args
+        __dotfiles_help $help_args
     end
 
     getopts $argv | while read -l key value
@@ -23,8 +24,8 @@ function fonts.list -d 'List all installed font families, sorted by name'
         end
     end
 
-    if not utils.command.available -c 'fc-list'
-        log.error -m 'Command `fc-list` is not available'
+    if not command.is_available -c 'fc-list'
+        log.error 'Command `fc-list` is not available'
         return 1
     end
 

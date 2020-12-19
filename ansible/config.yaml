@@ -111,19 +111,10 @@
         - git
         - repos
 
-    - name: "Ensure binary dirs exist"
-      ansible.builtin.file:
-        path: "{{ bins_dir | default(ansible_env.HOME + '/.bins') }}"
-        state: directory
-        mode: u=rwx,g=rx,o=rx
-      tags:
-        - scripts
-        - update
-
     - name: "Downloading scripts"
       ansible.builtin.get_url:
         url: "{{ item.url }}"
-        dest: "{{ item.dir | default(bins_dir) }}/{{ item.name }}"
+        dest: "{{ item.dir | default(ansible_env.HOME + '.local/bin') }}/{{ item.name }}"
         mode: u=rwx,g=rx,o=rx
         owner: "{{ ansible_user_uid | quote }}"
         group: "{{ ansible_user_gid | quote }}"

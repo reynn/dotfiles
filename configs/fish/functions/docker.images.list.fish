@@ -1,13 +1,15 @@
 #!/usr/bin/env fish
 
 function docker.images.list -d "Show a list of images with minimal information"
-    set -lx columns 'Repository' 'Tag' 'Size'
+    set -x columns 'Repository' 'Tag' 'Size'
+
     function ___usage
         set -l help_args '-a' 'List all Docker images with only specific columns'
         set -a help_args '-f' '|clear-columns|Clear the current list of columns|false'
         set -a help_args '-f' "C|prepend-column|Prepend a column to the output|$columns"
         set -a help_args '-f' "c|add-column|Add a column to the output|$columns"
-        show.help $help_args
+
+        __dotfiles_help $help_args
     end
 
     getopts $argv | while read -l key value
@@ -18,25 +20,28 @@ function docker.images.list -d "Show a list of images with minimal information"
                 set -p columns "$value"
             case c add-column
                 set -a columns "$value"
-            case v verbose
-                set -x DEBUG 'true'
+                # Common args
             case h help
                 ___usage
                 return 0
+            case q quiet
+                set -x QUIET 'true'
+            case v verbose
+                set -x DEBUG 'true'
         end
     end
 
     if test -x (command -s docker)
-        log.error -m 'Docker is not installed'
+        log.error 'Docker is not installed'
         return 1
     end
 
-    set -lx output_format "table {{.$columns[1]}}\\t"
+    set -x output_format "table {{.$columns[1]}}\\t"
     for column in $columns[2..-1]
         set output_format "$output_format{{.$column}}\\t"
     end
 
-    log.info -m "Output format: $output_format"
+    log.info "Output format: $output_format"
 
     docker image list --all --format "$output_format" --filter "dangling=false"
 end

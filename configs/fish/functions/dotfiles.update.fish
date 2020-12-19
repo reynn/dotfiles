@@ -1,9 +1,9 @@
 #!/usr/bin/env fish
 
 function dotfiles.update -d 'Run various updates to our system'
-    set -lx available_updates 'ansible' 'env'
-    set -lx default_updates 'ansible' 'env'
-    set -lx updates_to_run
+    set -x available_updates 'ansible' 'env' 'system' 'links' 'path'
+    set -x default_updates 'env' 'path' 'links' 'ansible'
+    set -x updates_to_run
 
     function ___usage
         set -l help_args '-a' 'Run various updates to our system'
@@ -12,7 +12,7 @@ function dotfiles.update -d 'Run various updates to our system'
         set -a help_args '-f' "p|prepend-update|Prepend an update to run|"
         set -a help_args '-f' 'R|reset-updates|Remove updates to run|false'
 
-        show.help $help_args
+        __dotfiles_help $help_args
     end
 
     getopts $argv | while read -l key value
@@ -35,18 +35,27 @@ function dotfiles.update -d 'Run various updates to our system'
 
     for update in $updates_to_run
         if not contains -- "$update" $available_updates
-            log.error -m "[$update] is not available."
+            log.error "[$update] is not available."
             continue
         end
         switch $update
+            case links
+                log.info 'Updating configured file links'
+                dotfiles.links.update
             case env
-                log.info -m 'Updating environment'
+                log.info 'Updating environment'
                 dotfiles.env.update
+            case path
+                log.info 'Updating PATH'
+                dotfiles.path.update
             case ansible
-                log.info -m 'Running ansible playbook'
+                log.info 'Running ansible playbook'
                 dotfiles.ansible.update
+            case system
+                log.info 'Updating system packages'
+                dotfiles.system.update
             case *
-                log.error -m "$update is not available"
+                log.error "$update is not available"
         end
     end
 end

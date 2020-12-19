@@ -1,5 +1,29 @@
 # Fish Configuration
 
+## Function naming
+
+Following a namespacing structure to organize functions based on tools, separated by a period `.`. lets look at some examples:
+
+```plaintext
+Format: <tool>.<optional_subject>.<action>*
+# actions should typically be one of [list, create, update, remove, connect, generate]
+```
+
+[dotfiles.ansible.update][./functions/dotfiles.ansible.update.fish]
+[dotfiles.env.update][./functions/dotfiles.env.update.fish]
+[dotfiles.system.update][./functions/dotfiles.system.update.fish]
+[dotfile.update][./functions/dotfiles.update.fish]
+[ansible.config.generate][./functions/ansible.config.generate.fish]
+
+Helper functions are functions that dont execute any permanent action and should have no long term affect on the environment.
+They typically are used to create complex JSON or YAML on the fly for things like the AWS CLI or the `jfrog` cli.
+
+They should be named with `_ (underscores)` instead of `. (period)` and be prefixed by 2 or more `_ (underscores)` to differentiate from normal functions.
+
+Examples:
+
+- [``]
+
 ## Plugins
 
 Plugins are managed by [Fisher][fish-plugin-fisher], run `fisher update` to install plugins.

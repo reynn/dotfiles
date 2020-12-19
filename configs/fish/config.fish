@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set -x DEBUG 'true'
+# set -x DEBUG 'true'
 
 status is-login
 set -l login_shell $status
@@ -18,15 +18,15 @@ set -gp fish_function_path "$reynn_fish_home/functions"
 set -gp fish_complete_path "$reynn_fish_home/completions"
 
 ## Load any secrets
-utils.source "$DFP/.host/$hostname.fish"
-utils.source "$DFP/.secrets/$hostname.fish"
+source "$DFP/.host/$hostname.fish" 1&>>/dev/null; or log.debug 'Unable to load secrets'
+source "$DFP/.secrets/$hostname.fish" 1&>>/dev/null; or log.debug 'Unable to load secrets'
 
 # Escape before loading paths
 if test $login_shell -ne 0
     exit 0
 end
 
-utils.source "$GFP/github.com/junegunn/fzf/shell/key-bindings.fish"
+source "$GFP/github.com/junegunn/fzf/shell/key-bindings.fish" 1&>>/dev/null; or log.debug 'Unable to load `fzf` key bindings'
 
 ## FZF
 set -xg FZF_DEFAULT_OPTS '--height 50%'
@@ -49,6 +49,10 @@ alias cp 'cp -i'
 alias mkdir 'mkdir -p'
 alias mv 'mv -i'
 alias rm 'rm -iv'
+alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
+alias l 'exa -lah --git-ignore --icons --git --group-directories-first --time-style long-iso --color-scale $argv'
+alias ll 'l --tree --level 3 $argv'
+alias mkcd 'mkdir -p $argv; and cd $argv'
 
 ## Initialize starship if available
 if test -e (command -s starship; or command -v starship)

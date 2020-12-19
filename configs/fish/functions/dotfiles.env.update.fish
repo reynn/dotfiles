@@ -1,14 +1,15 @@
 #!/usr/bin/env fish
 
 function dotfiles.env.update -d 'Setup global/universal variables'
-    set -lx paths_to_add
-    set -lx go_versions_path "$HOME/.gimme/versions"
-    set -lx node_versions_path "$HOME/.local/share/nvm"
+    set -x paths_to_add
+    set -x go_versions_path "$HOME/.gimme/versions"
+    set -x node_versions_path "$HOME/.local/share/nvm"
 
     function ___usage
         set -l help_args '-a' 'Setup global/universal variables'
         set -l help_args '-f' 'P|path|Ensure paths are in fish_user_paths'
-        show.help $help_args
+
+        __dotfiles_help $help_args
     end
 
     getopts $argv | while read -l key value
@@ -19,11 +20,14 @@ function dotfiles.env.update -d 'Setup global/universal variables'
                 set node_versions_path "$value"
             case P path
                 set -a paths_to_add "$value"
-            case v verbose
-                set -x DEBUG 'true'
+                # Common args
             case h help
                 ___usage
                 return 0
+            case q quiet
+                set -x QUIET 'true'
+            case v verbose
+                set -x DEBUG 'true'
         end
     end
 
@@ -39,34 +43,34 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
 
     # These will add to the fish_user_paths only if necessary
-    utils.path.add "$GFP/github.com/junegunn/fzf/bin"
-    utils.path.add "$DFP/scripts"
-    utils.path.add "$HOME/.bins"
-    utils.path.add "$HOME/.bins/envs"
-    utils.path.add "$HOME/.cargo/bin"
-    utils.path.replace "$PYTHON_HOME/bin"
+    path.add "$GFP/github.com/junegunn/fzf/bin"
+    path.add "$DFP/scripts"
+    path.add "$HOME/.bins"
+    path.add "$HOME/.bins/envs"
+    path.add "$HOME/.cargo/bin"
+    path.replace "$PYTHON_HOME/bin"
 
-    log.debug -m "Checking for go versions in $go_versions_path"
+    log.debug "Checking for go versions in $go_versions_path"
     if test -d "$go_versions_path"
         set -l go_version (fd -td -d1 . --base-directory $go_versions_path | sort -r)
         if test (count $go_version) -gt 1
             set go_version $go_version[1]
         end
-        log.debug -m "Go Version $go_version"
-        utils.path.replace "$go_versions_path/$go_version/bin" '2'
+        log.debug "Go Version $go_version"
+        path.replace "$go_versions_path/$go_version/bin" '2'
     end
 
-    log.debug -m "Checking for node versions in $node_versions_path"
+    log.debug "Checking for node versions in $node_versions_path"
     if test -d "$node_versions_path"
         set -l node_version (fd -td -d1 . --base-directory $node_versions_path | sort -r)
         if test (count $node_version) -gt 1
             set node_version $node_version[1]
         end
-        log.debug -m "Node Version $node_version"
-        utils.path.replace "$node_versions_path/$node_version/bin" '2'
+        log.debug "Node Version $node_version"
+        path.replace "$node_versions_path/$node_version/bin" '2'
     end
 
     for extra_path in $paths_to_add
-        utils.path.add "extra_path"
+        path.add "extra_path"
     end
 end
