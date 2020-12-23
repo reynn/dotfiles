@@ -1,14 +1,14 @@
 #!/usr/bin/env fish
 
 function dotfiles.update -d 'Run various updates to our system'
-    set -x available_updates 'ansible' 'env' 'system' 'links' 'path'
-    set -x default_updates 'env' 'path' 'links' 'ansible'
+    set -x available_updates 'ansible' 'env' 'system' 'links' 'path' 'fisher' 'tide'
+    set -x default_updates 'fisher' 'env' 'path' 'links' 'ansible'
     set -x updates_to_run
 
     function ___usage
         set -l help_args '-a' 'Run various updates to our system'
         set -a help_args '-f' "a|add-update|Add an update to run|"
-        set -a help_args '-f' "A|all-updates|Runn all available updates|$default_updates"
+        set -a help_args '-f' "A|all-updates|Run all available updates|$default_updates"
         set -a help_args '-f' "p|prepend-update|Prepend an update to run|"
         set -a help_args '-f' 'R|reset-updates|Remove updates to run|false'
 
@@ -38,7 +38,8 @@ function dotfiles.update -d 'Run various updates to our system'
             log.error "[$update] is not available."
             continue
         end
-        switch $update
+
+        switch "$update"
             case links
                 log.info 'Updating configured file links'
                 dotfiles.links.update
@@ -54,6 +55,12 @@ function dotfiles.update -d 'Run various updates to our system'
             case system
                 log.info 'Updating system packages'
                 dotfiles.system.update
+            case fisher
+                log.info 'Running fisher update'
+                fisher update
+            case tide
+                log.info 'Configuring Tide prompt'
+                tide.config
             case *
                 log.error "$update is not available"
         end

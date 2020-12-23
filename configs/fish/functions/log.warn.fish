@@ -3,11 +3,10 @@
 function log.warn -d "Log a warning message"
     set -x label
     set -x msg
-    set -q COLOR_LOG_WARN; and set -x color "$COLOR_LOG_WARN"; or set -x color "$fish_color_search_match"
+    set -q COLOR_LOG_WARN; and set -x color "$COLOR_LOG_WARN"; or set -x color 'yellow'
 
     function ___usage
         set -x help_args '-a' "Log a warning message [color: $color]"
-        set -a help_args '-f' 'l|label|An extra label to include at the beginning, in `()`'
 
         __dotfiles_help $help_args
     end

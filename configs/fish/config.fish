@@ -55,6 +55,6 @@ alias ll 'l --tree --level 3 $argv'
 alias mkcd 'mkdir -p $argv; and cd $argv'
 
 ## Initialize starship if available
-if test -e (command -s starship; or command -v starship)
-    starship init fish | source
-end
+# if test -e (command -s starship; or command -v starship)
+#     starship init fish | source
+# end

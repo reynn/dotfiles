@@ -4,7 +4,7 @@ function __log -d "HELPER for logging"
     set -x level
     set -x msg
     set -x color 'normal'
-    set -x level_length '7'
+    set -x level_length '6'
 
     getopts $argv | while read -l key value
         switch $key
@@ -25,6 +25,6 @@ function __log -d "HELPER for logging"
     string length -q "$msg"; or return 0
 
     set_color (string split ' ' $color)[1]
-    printf "[%-8s]: %s\n" "$level" "$msg"
+    printf '[%-'$level_length's]: %s\n' "$level" "$msg"
     set_color normal
 end

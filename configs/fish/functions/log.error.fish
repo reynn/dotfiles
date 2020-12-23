@@ -3,7 +3,7 @@
 function log.error -d "Log a error message"
     set -x label
     set -x msg
-    set -q COLOR_LOG_ERROR; and set -x color "$COLOR_LOG_ERROR"; or set -x color "$fish_color_error"
+    set -q COLOR_LOG_ERROR; and set -x color "$COLOR_LOG_ERROR"; or set -x color 'red'
 
     function ___usage
         set -l help_args '-a' "Log an error message [color: $color]"

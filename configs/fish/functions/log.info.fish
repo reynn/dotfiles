@@ -3,11 +3,11 @@
 function log.info -d "Log an info message"
     set -x label
     set -x msg
-    set -q COLOR_LOG_INFO; and set -x color "$COLOR_LOG_INFO"; or set -x color "$fish_color_quote"
+    set -q COLOR_LOG_INFO; and set -x color "$COLOR_LOG_INFO"; or set -x color 'blue'
 
     function ___usage
-        set -x help_args '-a' "Log an info message [color: $color]"
-        set -a help_args '-f' 'l|label|An extra label to include at the beginning, in `()`'
+        set -l help_args '-a' "Log an info message [color: $color]"
+        set -a help_args '-f' 'l|label|An extra label to include at the beginning in between `()`'
 
         __dotfiles_help $help_args
     end

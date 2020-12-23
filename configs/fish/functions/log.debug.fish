@@ -3,7 +3,7 @@
 function log.debug -d "Log a debug message"
     set -x label
     set -x msg
-    set -q COLOR_LOG_DEBUG; and set -x color "$COLOR_LOG_DEBUG"; or set -x color "$fish_color_comment"
+    set -q COLOR_LOG_DEBUG; and set -x color "$COLOR_LOG_DEBUG"; or set -x color 'green'
 
     function ___usage
         set -l help_args '-a' "Log a debug message [color: $color]"
