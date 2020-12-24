@@ -35,34 +35,41 @@ function dotfiles.update -d 'Run various updates to our system'
 
     for update in $updates_to_run
         if not contains -- "$update" $available_updates
-            log.error "[$update] is not available."
+            log.error "[$update] is not a recognized update"
             continue
         end
 
-        switch "$update"
-            case links
-                log.info 'Updating configured file links'
-                dotfiles.links.update
-            case env
-                log.info 'Updating environment'
-                dotfiles.env.update
-            case path
-                log.info 'Updating PATH'
-                dotfiles.path.update
-            case ansible
-                log.info 'Running ansible playbook'
-                dotfiles.ansible.update
-            case system
-                log.info 'Updating system packages'
-                dotfiles.system.update
-            case fisher
-                log.info 'Running fisher update'
-                fisher update
-            case tide
-                log.info 'Configuring Tide prompt'
-                tide.config
-            case *
-                log.error "$update is not available"
+        if not functions -q dotfiles.$update.update
+            log.error "dotfiles.$update.update is not available"
+            continue
         end
+        log.info "Executing $update update"
+        dotfiles.$update.update
+
+        # switch "$update"
+        #     case links
+        #         log.info 'Updating configured file links'
+        #         dotfiles.links.update
+        #     case env
+        #         log.info 'Updating environment'
+        #         dotfiles.env.update
+        #     case path
+        #         log.info 'Updating PATH'
+        #         dotfiles.path.update
+        #     case ansible
+        #         log.info 'Running ansible playbook'
+        #         dotfiles.ansible.update
+        #     case system
+        #         log.info 'Updating system packages'
+        #         dotfiles.system.update
+        #     case fisher
+        #         log.info 'Running fisher update'
+        #         fisher update
+        #     case tide
+        #         log.info 'Configuring Tide prompt'
+        #         tide.config
+        #     case *
+        #         log.error "$update is not available"
+        # end
     end
 end
