@@ -105,7 +105,6 @@ function vim.update -d 'Cleanup files and reinstall Spacevim'
         if test "$CLEAN_CACHE" = 'true'
             __vim_clean_files_delete "$HOME/.cache/vimfiles"
         end
-        TabNine::config
     end
 
     if test "$CLEAN_NVIM" = 'true'

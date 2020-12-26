@@ -1,6 +1,5 @@
 # All SpaceVim option below [option] section
 [options]
-autocomplete_method           = "coc"
 automatic_update              = true
 bootstrap_after               = 'config#after'
 bootstrap_before              = 'config#before'
@@ -12,7 +11,7 @@ enable_tabline_filetype_icon  = true
 filemanager                   = "nerdtree"
 guifont                       = "SourceCodePro Nerd Font Mono:h11"
 statusline_inactive_separator = "bar"
-statusline_right_sections     = ["cursorpos"]
+statusline_right_sections     = ["test", "cursorpos"]
 statusline_separator          = "arrow"
 
 # LAYER DEFINITIONS: https://spacevim.org/layers/
@@ -33,14 +32,6 @@ name = "colorscheme"
 filetree_show_hidden = true
 name                 = "core"
 
-# # https://spacevim.org/layers/core/statusline
-[[layers]]
-name = "core#statusline"
-
-# https://spacevim.org/layers/edit/
-[[layers]]
-name = "edit"
-
 # https://spacevim.org/layers/leaderf/
 [[layers]]
 name = "incsearch"
@@ -49,25 +40,9 @@ name = "incsearch"
 [[layers]]
 name = "lang#sh"
 
-# https://spacevim.org/layers/lang/vim/
-[[layers]]
-name = "lang#vim"
-
-# https://spacevim.org/layers/lang/json/
-[[layers]]
-name = "lang#json"
-
-# https://spacevim.org/layers/lang/extra/
-[[layers]]
-name = "lang#extra"
-
-# https://spacevim.org/layers/lang/toml/
-[[layers]]
-name = "lang#toml"
-
 # https://spacevim.org/layers/lang/markdown/
-# [[layers]]
-# name = "lang#markdown"
+[[layers]]
+name = "lang#markdown"
 
 # https://spacevim.org/layers/lang/go/
 [[layers]]
@@ -77,16 +52,22 @@ name = "lang#go"
 [[layers]]
 name = "lang#rust"
 
-[[layers]]
-filetypes = ["rust"]
-name      = "lsp"
-  [layers.override_cmd]
-  rust = ["rustup", "run", "nightly", "rust-analyzer"]
-
-
-  # https://spacevim.org/layers/leaderf/
+# https://spacevim.org/layers/leaderf/
 [[layers]]
 name = "leaderf"
+
+# https://spacevim.org/layers/lsp/
+[[layers]]
+  name = "lsp"
+  filetypes = [
+    "rust"
+  ]
+  [layers.override_cmd]
+    rust = ["rust-analyzer"]
+
+# https://spacevim.org/layers/tmux/
+[[layers]]
+name = "tmux"
 
 # https://spacevim.org/layers/shell/
 [[layers]]
@@ -141,4 +122,12 @@ repo   = "junegunn/vim-easy-align"
 
 [[custom_plugins]]
 merged = false
+repo   = "kana/vim-textobj-user"
+
+[[custom_plugins]]
+merged = false
 repo   = "michaeljsmith/vim-indent-object"
+
+[[custom_plugins]]
+merged = false
+repo   = "vim-scripts/argtextobj.vim"

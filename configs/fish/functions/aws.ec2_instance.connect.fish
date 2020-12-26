@@ -8,7 +8,7 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
         set -l help_args '-a' "Interactively connect to a created instance"
         set -a help_args '-f' "f|filter|Set of filters to narrow down list of instances|$filters"
         set -a help_args '-f' "F|no-filters|Removes all filters (Will grab all running instances)|false"
-        set -a help_args '-f' ""
+        set -a help_args '-f' "e"
 
         __dotfiles_help $help_args
     end

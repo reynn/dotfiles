@@ -17,10 +17,6 @@ set -gx EDITOR 'nvim'
 set -gp fish_function_path "$reynn_fish_home/functions"
 set -gp fish_complete_path "$reynn_fish_home/completions"
 
-## Load any secrets
-source "$DFP/.host/$hostname.fish" 1&>>/dev/null; or log.debug 'Unable to load secrets'
-source "$DFP/.secrets/$hostname.fish" 1&>>/dev/null; or log.debug 'Unable to load secrets'
-
 # Escape before loading paths
 if test $login_shell -ne 0
     exit 0
@@ -50,7 +46,6 @@ alias mkdir 'mkdir -p'
 alias mv 'mv -i'
 alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
-alias l 'exa -lah --git-ignore --icons --git --group-directories-first --time-style long-iso --color-scale $argv'
 alias ll 'l --tree --level 3 $argv'
 alias mkcd 'mkdir -p $argv; and cd $argv'
 

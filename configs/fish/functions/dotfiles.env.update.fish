@@ -73,4 +73,9 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     for extra_path in $paths_to_add
         path.add "extra_path"
     end
+
+    ## Load any secrets
+    source "$DFP/.host/$hostname.fish" 1&>>/dev/null; or log.debug 'Unable to load host values'
+    source "$DFP/.secrets/__global.fish" 1&>>/dev/null; or log.debug 'Unable to load global secrets'
+    source "$DFP/.secrets/$hostname.fish" 1&>>/dev/null; or log.debug 'Unable to load secrets'
 end

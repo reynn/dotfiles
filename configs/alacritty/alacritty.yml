@@ -71,12 +71,10 @@ cursor:
 
 hide_cursor_while_typing: true
 shell:
-  program: fish
+  program: /usr/local/bin/fish
   args:
     - "-i"
     - "-l"
-    - "-c"
-    - "tmux attach; or tmux"
 
 schemes:
   afterglow: &afterglow
