@@ -119,18 +119,24 @@ platform_linux() {
 
   platform_linux_pacman() {
     packages+=('python' 'python-pip' 'fish' 'openssh')
-    if [ ! -d /build/packages ]; then
-      mkdir -p /build/packages
-      touch /build/packages/packages.db
-    fi
     log "Installing [${#packages[@]}] packages with pacman"
     # Get latest from configured pacman repos
     # Update the system packages
     if test "$(executed_as_root)" = 'true'; then
+      log 'info' 'Executing pacman assuming already root'
+      if [ ! -d /build/packages ]; then
+        mkdir -p /build/packages
+        touch /build/packages/packages.db
+      fi
       pacman --sync --refresh --sysupgrade --noconfirm &&
         echo "${packages[@]}" | xargs -l pacman --noconfirm -S
       return $?
     else
+      log 'info' 'Executing pacman assuming not already root'
+      if [ ! -d /build/packages ]; then
+        sudo mkdir -p /build/packages
+        sudo touch /build/packages/packages.db
+      fi
       sudo pacman --sync --refresh --sysupgrade --noconfirm &&
         echo "${packages[@]}" | xargs -l sudo pacman --noconfirm -S
       return $?

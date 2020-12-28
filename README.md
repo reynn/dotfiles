@@ -1,15 +1,12 @@
 # dotfiles
 
-## Prereqs
+## Installation
 
-1. Fish
-1. Git
-1. Ansible
+```shell
+$ curl -Ssl https://raw.githubusercontent.com/reynn/dotfiles/master/scripts/init | bash
+```
 
-## Install
-
-- Clone repo `git clone git@github.com:reynn/dotfiles $HOME/git/github.com/reynn/dotfiles`
-- Run `ansible-playbook ansible/config.yaml` from the root of the project directory.
+This will run the installation script and setup all necessary dependencies and links.
 
 ## Configuration Options
 

@@ -16,21 +16,11 @@ git_repos:
   - repo: "git@github.com:reynn/dotfiles.git"
     dest: "{{ dotfiles_path }}"
     ignore_errors: "yes"
-  - repo: "git@github.com:reynn/k8s.git"
-    dest: "{{ github_path }}/reynn/k8s"
-    ignore_errors: "yes"
-  - repo: "git@github.com:reynn/k8s-ops.git"
-    dest: "{{ github_path }}/reynn/k8s-ops"
-    ignore_errors: "yes"
-  - repo: "git@github.com:mbadolato/iTerm2-Color-Schemes.git"
-    dest: "{{ github_path }}/mbadolato/iterm2-color"
   - repo: "git@github.com:powerline/fonts.git"
     dest: "{{ github_path }}/powerline/fonts"
   - repo: "git@github.com:junegunn/fzf.git"
     dest: "{{ github_path }}/junegunn/fzf"
     handler: "Run fzf install script"
-  - repo: "git@github.com:tmux-plugins/tpm"
-    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
 
 # ------------
 # Maps
@@ -60,8 +50,6 @@ packages:
     - tmux
 
 scripts:
-  - name: "gimme"
-    url: "https://raw.githubusercontent.com/travis-ci/gimme/master/gimme"
   - name: "installer.starship"
     url: "https://raw.githubusercontent.com/starship/starship/master/install/install.sh"
   - name: "installer.spacevim"
@@ -83,15 +71,9 @@ to_create:
   - dest: "{{ ansible_env.HOME }}/.SpaceVim.d"
     src: "{{ dotfiles_path }}/configs/spacevim"
     state: "link"
-  - dest: "{{ ansible_env.HOME }}/.config/starship.toml"
-    src: "{{ dotfiles_path }}/configs/starship/config.toml"
-    state: "link"
   - dest: "{{ ansible_env.HOME }}/.config/nvim"
     src: "{{ ansible_env.HOME }}/.SpaceVim"
     state: "link"
   - dest: "{{ ansible_env.HOME }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"
-    state: "link"
-  - dest: "{{ ansible_env.HOME }}/.tmux.conf"
-    src: "{{ dotfiles_path }}/configs/tmux/tmux.conf"
     state: "link"

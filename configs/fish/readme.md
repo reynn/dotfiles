@@ -17,12 +17,7 @@ Format: <tool>.<optional_subject>.<action>*
 
 Helper functions are functions that dont execute any permanent action and should have no long term affect on the environment.
 They typically are used to create complex JSON or YAML on the fly for things like the AWS CLI or the `jfrog` cli.
-
 They should be named with `_ (underscores)` instead of `. (period)` and be prefixed by 2 or more `_ (underscores)` to differentiate from normal functions.
-
-Examples:
-
-- [``]
 
 ## Plugins
 
@@ -31,12 +26,12 @@ Plugins are managed by [Fisher][fish-plugin-fisher], run `fisher update` to inst
 | Plugin                                             | Description                                     |
 | ------                                             | -----------                                     |
 | [Fisher][fish-plugin-fisher]                       | The Plugin Manager                              |
+| [getopts][fish-plugin-getopts]                     | Fish version of GNU getopts for flag parsing    |
 | [Z][fish-plugin-z]                                 | Jump around directories                         |
 | [fzf.fish][fish-plugin-fzf.fish]                   | FZF key bindings, more convenient than official |
 | [fish-nvm][fish-plugin-fish-nvm]                   | Use Node Version Manager in Fish                |
 | [bass][fish-plugin-bass]                           | Use bash utilities in Fish                      |
 | [YSU][fish-plugin-ysu]                             | Reminder of aliases                             |
-| [getopts][fish-plugin-getopts]                     | Fish version of GNU getopts for flag parsing    |
 | [colored_man_pages][fish-plugin-colored_man_pages] |                                                 |
 | [fish-git-util][fish-plugin-git-util]              |                                                 |
 | [xxh][fish-plugin-xxh]                             |                                                 |
