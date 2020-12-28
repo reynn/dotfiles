@@ -31,10 +31,16 @@ function completions.list -d 'Show completions that have been added to our dotfi
         end
     end
 
+    log.debug "Show all completions: $show_all_completions"
+
     if test "$show_all_completions" = 'true'
         for completion_path in $fish_complete_path
             log.info "Listing completions available in $completion_path"
             __list_completions $completion_path
         end
+    else
+        set -x custom_completions $fish_complete_path[1]
+        log.info "Listing completions for $custom_completions"
+        __list_completions "$custom_completions"
     end
 end
