@@ -34,12 +34,8 @@ filetree_show_hidden = true
 name                 = "core"
 
 # # https://spacevim.org/layers/core/statusline
-[[layers]]
-name = "core#statusline"
-
-# https://spacevim.org/layers/edit/
-[[layers]]
-name = "edit"
+# [[layers]]
+# name    = "core#statusline"
 
 # https://spacevim.org/layers/leaderf/
 [[layers]]
@@ -49,44 +45,17 @@ name = "incsearch"
 [[layers]]
 name = "lang#sh"
 
-# https://spacevim.org/layers/lang/vim/
-[[layers]]
-name = "lang#vim"
-
-# https://spacevim.org/layers/lang/json/
-[[layers]]
-name = "lang#json"
-
-# https://spacevim.org/layers/lang/extra/
-[[layers]]
-name = "lang#extra"
-
-# https://spacevim.org/layers/lang/toml/
-[[layers]]
-name = "lang#toml"
-
 # https://spacevim.org/layers/lang/markdown/
-# [[layers]]
-# name = "lang#markdown"
-
-# https://spacevim.org/layers/lang/go/
 [[layers]]
-name = "lang#go"
+name = "lang#markdown"
 
-# https://spacevim.org/layers/lang/rust/
-[[layers]]
-name = "lang#rust"
-
-[[layers]]
-filetypes = ["rust"]
-name      = "lsp"
-  [layers.override_cmd]
-  rust = ["rustup", "run", "nightly", "rust-analyzer"]
-
-
-  # https://spacevim.org/layers/leaderf/
+# https://spacevim.org/layers/leaderf/
 [[layers]]
 name = "leaderf"
+
+# https://spacevim.org/layers/tmux/
+[[layers]]
+name = "tmux"
 
 # https://spacevim.org/layers/shell/
 [[layers]]
@@ -141,4 +110,12 @@ repo   = "junegunn/vim-easy-align"
 
 [[custom_plugins]]
 merged = false
+repo   = "kana/vim-textobj-user"
+
+[[custom_plugins]]
+merged = false
 repo   = "michaeljsmith/vim-indent-object"
+
+[[custom_plugins]]
+merged = false
+repo   = "vim-scripts/argtextobj.vim"
