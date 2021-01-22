@@ -49,6 +49,10 @@ name = "lang#sh"
 [[layers]]
 name = "lang#markdown"
 
+# https://spacevim.org/layers/lang/toml/
+[[layers]]
+name = "lang#toml"
+
 # https://spacevim.org/layers/leaderf/
 [[layers]]
 name = "leaderf"
@@ -119,3 +123,7 @@ repo   = "michaeljsmith/vim-indent-object"
 [[custom_plugins]]
 merged = false
 repo   = "vim-scripts/argtextobj.vim"
+
+[[custom_plugins]]
+merged = false
+repo   = "mhinz/vim-crates"

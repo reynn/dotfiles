@@ -12,8 +12,8 @@ if test $interactive_shell -ne 0
 end
 
 set -gx reynn_fish_home "$HOME/git/github.com/reynn/dotfiles/configs/fish"
-set -gx TERM 'screen-256color'
-set -gx EDITOR 'nvim'
+set -gx TERM screen-256color
+set -gx EDITOR nvim
 set -gp fish_function_path "$reynn_fish_home/functions"
 set -gp fish_complete_path "$reynn_fish_home/completions"
 
@@ -26,7 +26,7 @@ source "$GFP/github.com/junegunn/fzf/shell/key-bindings.fish" 1&>>/dev/null; or 
 
 ## FZF
 set -xg FZF_DEFAULT_OPTS '--height 50%'
-set -gp FZF_DEFAULT_OPTS '--border'
+set -gp FZF_DEFAULT_OPTS --border
 set -gp FZF_DEFAULT_OPTS '--layout=reverse'
 # -- FZF theme: Gruvbox Light
 # set -gp FZF_DEFAULT_OPTS '--color=fg:#282828,bg:#fbf1c7,hl:#076678,fg+:,bg+:,hl+:#458588'
@@ -47,9 +47,10 @@ alias mv 'mv -i'
 alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
 alias ll 'l --tree --level 3 $argv'
-alias mkcd 'mkdir -p $argv; and cd $argv'
 
-## Initialize starship if available
-# if test -e (command -s starship; or command -v starship)
-#     starship init fish | source
-# end
+if test -n "$DOTFILES_USE_STARSHIP"
+    # Initialize starship if available
+    if test -e (command -s starship; or command -v starship)
+        starship init fish | source
+    end
+end
