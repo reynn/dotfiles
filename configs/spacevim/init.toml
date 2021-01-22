@@ -37,7 +37,7 @@ name                 = "core"
 # [[layers]]
 # name    = "core#statusline"
 
-# https://spacevim.org/layers/leaderf/
+# https://spacevim.org/layers/incsearch/
 [[layers]]
 name = "incsearch"
 
@@ -53,9 +53,9 @@ name = "lang#markdown"
 [[layers]]
 name = "lang#toml"
 
-# https://spacevim.org/layers/leaderf/
+# https://spacevim.org/layers/ctrlp/
 [[layers]]
-name = "leaderf"
+name = "ctrlp"
 
 # https://spacevim.org/layers/tmux/
 [[layers]]
