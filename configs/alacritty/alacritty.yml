@@ -71,7 +71,7 @@ cursor:
 
 hide_cursor_while_typing: true
 shell:
-  program: /usr/local/bin/fish
+  program: /usr/bin/fish
   args:
     - "-i"
     - "-l"

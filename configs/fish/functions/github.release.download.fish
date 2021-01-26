@@ -331,6 +331,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     set -x show_assets_only 'false'
     set -x cleanup_assets 'false'
 
+    # Parse the option flags, fails without `getopts` package, if using dotfiles run `dotfiles.update -A` 
     getopts $argv | while read -l key value
         switch $key
             case D defaults
@@ -360,6 +361,10 @@ function github.release.download -d "Download a release from GitHub in the expec
                 set -x bin_filter "$value"
             case P pre-release
                 set release_filter 'pre-release'
+            case U update
+              set -l os (string lower (uname))
+              github.release.download -r 'cli/cli' -a gh -p "*_$os""_amd64.tar.gz"
+              return 0
                 # Common args
             case h help
                 ___usage

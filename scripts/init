@@ -35,7 +35,7 @@ check_for_command() {
     log 'error' "Command ($1) is not available"
     return 2
   else
-    log 'info' "Command ($1) is available"
+    log "Command ($1) is available"
   fi
 }
 
@@ -47,9 +47,9 @@ rust_check() {
 }
 
 python_packages() {
-  log 'Installing python packages'
   log "Python installation: $(dirname $PYTHON_BINARY)"
 
+  log 'Installing python packages'
   $PYTHON_BINARY -m pip install \
     --disable-pip-version-check \
     --no-cache-dir \
@@ -70,8 +70,13 @@ platform_mac() {
 }
 
 platform_linux() {
-  local packages=('git' 'curl' 'fish')
   local release="$(cat /etc/*release* | grep -G '^ID=.*' | cut -d= -f2 | tr '[:upper:]' '[:lower:]' | tr -d \")"
+  local packages=(
+    'git'
+    'fish'
+    'curl'
+  )
+
   platform_linux_apt() {
     packages+=('python3' 'python3-pip')
     if test "$(executed_as_root)" = 'true'; then
@@ -101,7 +106,11 @@ platform_linux() {
   }
 
   platform_linux_dnf() {
-    packages+=('python3' 'python3-pip' 'ncurses')
+    packages+=(
+      'python3'
+      'python3-pip'
+      'ncurses'
+    )
     log "Installing [${#packages[@]}] packages with dnf"
     if test "$(executed_as_root)" = 'true'; then
       curl -SsL https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo >/etc/yum.repos.d/shells:fish:release:3.repo
@@ -118,12 +127,16 @@ platform_linux() {
   }
 
   platform_linux_pacman() {
-    packages+=('python' 'python-pip' 'fish' 'openssh')
+    packages+=(
+      'python'
+      'python-pip'
+      'openssh'
+    )
     log "Installing [${#packages[@]}] packages with pacman"
     # Get latest from configured pacman repos
     # Update the system packages
     if test "$(executed_as_root)" = 'true'; then
-      log 'info' 'Executing pacman assuming already root'
+      log 'Executing pacman assuming already root'
       if [ ! -d /build/packages ]; then
         mkdir -p /build/packages
         touch /build/packages/packages.db
@@ -132,7 +145,7 @@ platform_linux() {
         echo "${packages[@]}" | xargs -l pacman --noconfirm -S
       return $?
     else
-      log 'info' 'Executing pacman assuming not already root'
+      log 'Executing pacman assuming not already root'
       if [ ! -d /build/packages ]; then
         sudo mkdir -p /build/packages
         sudo touch /build/packages/packages.db
@@ -143,6 +156,7 @@ platform_linux() {
     fi
     return $?
   }
+
   case $release in
   debian) platform_linux_apt || log 'fatal' 'Failed to install packages with APT' ;;
   centos) platform_linux_dnf || log 'fatal' 'failed to install packages with DNF' ;;
@@ -157,14 +171,14 @@ ansible_run() {
 }
 
 clone() {
-  log 'info' "Cloning $DOTFILES_REPO"
+  log 'Preparing to clone Git repository'
   check_for_command 'git' || log 'fatal' '`git` is not installed'
   check_for_command 'ssh-keygen' || log 'fatal' '`ssh-keygen` is not installed'
   check_for_command 'ssh-keyscan' || log 'fatal' '`ssh-keyscan` is not installed'
 
   mkdir -p "$HOME/.ssh"
 
-  log 'info' 'Adding github.com to SSH known hosts'
+  log 'Adding github.com to SSH known hosts'
   ssh-keyscan github.com >>$HOME/.ssh/known_hosts || log 'error' 'Failed to scan github.com'
   test -f "$HOME/.ssh/id_ed25519" || ssh-keygen -b 4096 -t ed25519
 
@@ -176,12 +190,12 @@ clone() {
   *) log 'error' "Unknown [$key_added]" ;;
   esac
 
-  log 'info' "Cloning the dotfiles repo to $DFP"
+  log "Cloning the dotfiles repo to $DFP"
   git clone $DOTFILES_REPO $DFP
 }
 
 main() {
-  local terminal_cols=$(tput cols || echo '80')
+  local terminal_cols=$(tput cols || echo '120')
   export PATH="$HOME/.local/bin:$PATH"
   export HEADER='This is a work in progress'
   declare -i header_length=terminal_cols/2
