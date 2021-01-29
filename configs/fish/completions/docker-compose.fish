@@ -7,7 +7,7 @@ for line in (docker-compose --help | \
              string match -r '^\s+\w+\s+[^\n]+' | \
              string trim)
     set -l doc (string split -m 1 ' ' -- $line)
-    complete -c docker-compose -n '__fish_use_subcommand' -xa $doc[1] --description $doc[2]
+    complete -c docker-compose -n __fish_use_subcommand -xa $doc[1] --description $doc[2]
 end
 
 complete -c docker-compose -s f -l file -r -d 'Specify an alternate compose file'

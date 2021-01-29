@@ -2,8 +2,8 @@
 
 function symlink.create -d "Create a symlink, overwriting any existing ones"
     function ___usage
-        set -a help_args '-f' "s|src|The original file that is being linked"
-        set -a help_args '-f' "d|dest|Where the link will be created"
+        set -a help_args -f "s|src|The original file that is being linked"
+        set -a help_args -f "d|dest|Where the link will be created"
         __dotfiles_help $help_args
     end
 
@@ -18,9 +18,9 @@ function symlink.create -d "Create a symlink, overwriting any existing ones"
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 

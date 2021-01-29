@@ -6,10 +6,10 @@ function dotfiles.ansible.update -d 'Run the playbook to apply latest changes'
     set -x ansible_args "$DFP/ansible/config.yaml"
 
     function ___usage -d 'Show a help message'
-        set -l help_args '-f' 'h|help|Print this help message'
-        set -a help_args '-f' 't|tags|Tags to run instead of full playbook|$tags'
-        set -a help_args '-e' " --tags scripts,links     # Run the Ansible playbook with just the links and scripts tags"
-        set -a help_args '-e' " -vvv --tags links        # Run the Ansible playbook with just the links tag with additional verbosity levels"
+        set -l help_args -f 'h|help|Print this help message'
+        set -a help_args -f 't|tags|Tags to run instead of full playbook|$tags'
+        set -a help_args -e " --tags scripts,links     # Run the Ansible playbook with just the links and scripts tags"
+        set -a help_args -e " -vvv --tags links        # Run the Ansible playbook with just the links tag with additional verbosity levels"
 
         __dotfiles_help $help_args
     end
@@ -25,19 +25,19 @@ function dotfiles.ansible.update -d 'Run the playbook to apply latest changes'
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
     if test $verbose -gt 0
-        set -x DEBUG 'true'
+        set -x DEBUG true
         set -a ansible_args "-"(string repeat 'v' -n $verbose)
     end
 
     if test -n "$tags"
-        set -a ansible_args '--tags'
+        set -a ansible_args --tags
         set -a ansible_args $tags
     end
 

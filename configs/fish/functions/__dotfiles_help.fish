@@ -34,9 +34,9 @@ function __dotfiles_help -d 'Specially formatted help messages'
                 set -p flags "$value"
                 # Common args
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
@@ -70,7 +70,7 @@ function __dotfiles_help -d 'Specially formatted help messages'
     if test (count $flags) -gt 0
         set -l header '## Flags '
         printf $header(string repeat -n (math $max_width-(string length $header)) '-')'\n\n'
-        printf '| %-'$half_col_width's | %-'$one_half_col_width's | %-'$desc_col_width's | %-'$default_col_width's |\n' 'Short' 'Long' 'Description' 'Default'
+        printf '| %-'$half_col_width's | %-'$one_half_col_width's | %-'$desc_col_width's | %-'$default_col_width's |\n' Short Long Description Default
         printf $table_row_format (string repeat -n $half_col_width '-') (string repeat -n $one_half_col_width '-') (string repeat -n $desc_col_width '-') (string repeat -n $default_col_width '-')
         for flag in $flags
             set -l short (string split '|' $flag)[1]

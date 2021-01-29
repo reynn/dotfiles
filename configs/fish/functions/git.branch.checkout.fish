@@ -3,7 +3,7 @@
 function git.branch.checkout -d 'Show a FZF list of branches to select for checkout'
 
     function ___usage
-        set -l help_args '-a' "Show a FZF list of branches to select for checkout"
+        set -l help_args -a "Show a FZF list of branches to select for checkout"
         __dotfiles_help $help_args
     end
 
@@ -14,9 +14,9 @@ function git.branch.checkout -d 'Show a FZF list of branches to select for check
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 

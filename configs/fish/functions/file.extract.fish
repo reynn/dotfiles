@@ -5,8 +5,8 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
     set -x extract_destination "."
 
     function ___usage -d 'Show usage'
-        set -l help_args '-a' "Extract a file [Heavily inspired by OpenZSH extract plugin]"
-        set -a help_args '-f' "d|destination|The target directory to extract files to|$extract_destination"
+        set -l help_args -a "Extract a file [Heavily inspired by OpenZSH extract plugin]"
+        set -a help_args -f "d|destination|The target directory to extract files to|$extract_destination"
 
         __dotfiles_help $help_args
     end
@@ -22,9 +22,9 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 

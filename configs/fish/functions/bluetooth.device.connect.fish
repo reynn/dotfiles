@@ -40,7 +40,7 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
     end
 
     function ___usage
-        set -l help_args '-a' 'Connect to a Bluetooth device'
+        set -l help_args -a 'Connect to a Bluetooth device'
 
         __dotfiles_help $help_args
     end
@@ -48,14 +48,14 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
     getopts $argv | while read -l key value
         switch $key
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
             case h help
                 ___usage
                 return 0
         end
     end
 
-    if not command.is_available -c 'osascript'
+    if not command.is_available -c osascript
         log.error '`osascript` is not installed'
         return 1
     end
@@ -77,6 +77,6 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
         log.debug 'No device selected'
         return 0
     end
-    log.info -l 'bluetooth' "Connecting to device $device_name [$device_address]"
+    log.info -l bluetooth "Connecting to device $device_name [$device_address]"
     __connect_device $device_address
 end

@@ -3,7 +3,7 @@
 function __yq_debug
     set file "$BASH_COMP_DEBUG_FILE"
     if test -n "$file"
-        echo "$argv" >> $file
+        echo "$argv" >>$file
     end
 end
 
@@ -133,4 +133,4 @@ complete -c yq -n 'set --query __yq_comp_do_file_comp'
 # This completion will be run first as complete commands are added FILO.
 # The call to __yq_prepare_completions will setup both __yq_comp_results abd __yq_comp_do_file_comp.
 # It provides the program's completion choices.
-complete -c yq -n '__yq_prepare_completions' -f -a '$__yq_comp_results'
+complete -c yq -n __yq_prepare_completions -f -a '$__yq_comp_results'

@@ -3,11 +3,11 @@
 function log.debug -d "Log a debug message"
     set -x label
     set -x msg
-    set -q COLOR_LOG_DEBUG; and set -x color "$COLOR_LOG_DEBUG"; or set -x color 'green'
+    set -q COLOR_LOG_DEBUG; and set -x color "$COLOR_LOG_DEBUG"; or set -x color green
 
     function ___usage
-        set -l help_args '-a' "Log a debug message [color: $color]"
-        set -a help_args '-f' 'l|label|An extra label to include at the beginning, in `()`'
+        set -l help_args -a "Log a debug message [color: $color]"
+        set -a help_args -f 'l|label|An extra label to include at the beginning, in `()`'
 
         __dotfiles_help $help_args
     end
@@ -23,9 +23,9 @@ function log.debug -d "Log a debug message"
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
@@ -33,5 +33,5 @@ function log.debug -d "Log a debug message"
     set -q DEBUG; or return 0
     test -n "$label"; and set msg "($label) $msg"
 
-    __log --color "$color" --message "$msg" --level 'debug'
+    __log --color "$color" --message "$msg" --level debug
 end

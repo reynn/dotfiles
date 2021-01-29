@@ -4,7 +4,7 @@ function aws.ec2.ssh.to.instance.via.id -d "SSH to an AWS instance via it's ID i
     set -l instance_id $argv[1]
 
     function ___usage
-        set -l help_args '-a' "SSH to an AWS instance via it's ID instead of IP"
+        set -l help_args -a "SSH to an AWS instance via it's ID instead of IP"
         __dotfiles_help $help_args
     end
 
@@ -15,13 +15,13 @@ function aws.ec2.ssh.to.instance.via.id -d "SSH to an AWS instance via it's ID i
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
-    if not command.is_available -c 'aws'
+    if not command.is_available -c aws
         log.error '`aws` is not installed'
         return 1
     end
@@ -34,10 +34,10 @@ function aws.ec2.ssh.to.instance.via.id -d "SSH to an AWS instance via it's ID i
     set -l key_name (echo "$instance_data" | jq -r '.KeyName')
     set -l instance_name (echo "$instance_data" | jq -r '.Tags[] | select(.Key=="Name").Value')
 
-    log.debug -l "instance_id" "$instance_id"
-    log.debug -l "ip" "$ip"
-    log.debug -l "key_name" "$key_name"
-    log.debug -l "instance_name" "$instance_name"
+    log.debug -l instance_id "$instance_id"
+    log.debug -l ip "$ip"
+    log.debug -l key_name "$key_name"
+    log.debug -l instance_name "$instance_name"
 
     log.info "Connecting to EC2 instance $instance_name [$ip] using $key_name"
     ssh -i ~/.ssh/$key_name.pem ec2-user@$ip

@@ -7,9 +7,11 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     path.add "$PYTHON_HOME/bin"
     path.add "$DFP/scripts"
     path.add "$HOME/.bins/envs"
+
     if test -e (command -v cargo)
         path.add "$HOME/.cargo/bin"
     end
+
     if test -e (command -v fzf)
         path.add "$GFP/github.com/junegunn/fzf/bin"
     end

@@ -5,7 +5,7 @@ function color_schemes.update -d "Read the latest from the colors.list file and 
     set -l colors (cat $DFP/color-schemes/colors.list)
 
     function ___usage
-        set -l help_args '-a' 'Read the latest from the colors.list file and update color scheme folders'
+        set -l help_args -a 'Read the latest from the colors.list file and update color scheme folders'
         __dotfiles_help $help_args
     end
 
@@ -16,9 +16,9 @@ function color_schemes.update -d "Read the latest from the colors.list file and 
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 

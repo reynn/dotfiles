@@ -8,10 +8,10 @@ function aws.ec2_instance.create -d "Create an instance in AWS"
 
 
     function ___usage
-        set -l help_args '-a' "Create an instance in AWS Using a the standard CFN template"
-        set -a help_args '-f' "t|template|Cloudformation template to use|"(basename $cfn_template)
-        set -a help_args '-f' "s|stack-name|Stack name to use|$stack_name"
-        set -a help_args '-f' "T|tag|Bar separated list of tags|["(count tags)"] $tags"
+        set -l help_args -a "Create an instance in AWS Using a the standard CFN template"
+        set -a help_args -f "t|template|Cloudformation template to use|"(basename $cfn_template)
+        set -a help_args -f "s|stack-name|Stack name to use|$stack_name"
+        set -a help_args -f "T|tag|Bar separated list of tags|["(count tags)"] $tags"
 
         __dotfiles_help $help_args
     end
@@ -20,7 +20,7 @@ function aws.ec2_instance.create -d "Create an instance in AWS"
         switch $key
             case t template
                 set cfn_template "$value"
-            case s 'stack-name'
+            case s stack-name
                 set stack_name "$value"
 
                 # Common args
@@ -28,9 +28,9 @@ function aws.ec2_instance.create -d "Create an instance in AWS"
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 

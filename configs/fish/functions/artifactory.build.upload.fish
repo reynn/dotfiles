@@ -3,38 +3,38 @@
 function artifactory.build.upload -d "Upload files to Artifactory"
     set -x glob_match '*'
     set -x subfolder ''
-    set -x repo 'ext-util-sandbox-local'
-    set -x flat 'false'
-    set -x dry_run 'false'
+    set -x repo ext-util-sandbox-local
+    set -x flat false
+    set -x dry_run false
     set -x build_name ''
     set -x build_number (date '+%Y.%m.%d(%H:%M:%S)')
 
     function ___usage
-        set -l help_args '-a' 'Upload files to Artifactory'
-        set -a help_args '-f' "d|dry-run|Run the command without uploading files|$dry_run"
-        set -a help_args '-f' "f|flat|Files in subdirectories are uploaded to the base subfolder|$flat"
-        set -a help_args '-f' "r|repo|The Artifactory repository to upload to|$repo"
-        set -a help_args '-f' "n|build-name|Name of the Build that will be published|$build_name"
-        set -a help_args '-f' "N|build-number|A unique number for the build|$build_number"
-        set -a help_args '-f' "g|glob|An ant style pattern to match files|$glob_match"
-        set -a help_args '-f' "s|subfolder|Create a subfolder in the target repo|$subfolder"
+        set -l help_args -a 'Upload files to Artifactory'
+        set -a help_args -f "d|dry-run|Run the command without uploading files|$dry_run"
+        set -a help_args -f "f|flat|Files in subdirectories are uploaded to the base subfolder|$flat"
+        set -a help_args -f "r|repo|The Artifactory repository to upload to|$repo"
+        set -a help_args -f "n|build-name|Name of the Build that will be published|$build_name"
+        set -a help_args -f "N|build-number|A unique number for the build|$build_number"
+        set -a help_args -f "g|glob|An ant style pattern to match files|$glob_match"
+        set -a help_args -f "s|subfolder|Create a subfolder in the target repo|$subfolder"
 
         __dotfiles_help $help_args
     end
 
     getopts $argv | while read -l key value
         switch $key
-            case d 'dry-run'
-                set dry_run 'true'
+            case d dry-run
+                set dry_run true
             case f flat
-                set flat 'true'
+                set flat true
             case r repo
                 set -x repo "$value"
-            case n 'build-name'
+            case n build-name
                 set -x build_name "$value"
-            case N 'build-number'
+            case N build-number
                 set -x build_number "$value"
-            case g 'glob'
+            case g glob
                 set -x glob_match "$value"
             case s subfolder
                 set -x subfolder "$value"
@@ -43,13 +43,13 @@ function artifactory.build.upload -d "Upload files to Artifactory"
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
-    if not command.is_available -c 'jfrog'
+    if not command.is_available -c jfrog
         log.error '`jfrog` is not installed'
         return 1
     end
@@ -68,7 +68,7 @@ function artifactory.build.upload -d "Upload files to Artifactory"
         "files[0][pattern]=$pattern" \
         "files[0][flat]=$flat" | tee $spec_file
 
-    if test $dry_run = 'true'
+    if test $dry_run = true
         jfrog rt upload --threads=(sysctl -n hw.logicalcpu) --dry-run --spec $spec_file --build-name=$build_name --build-number=$build_number
         if test $status -eq 0
             jfrog rt build-collect-env $build_name $build_number

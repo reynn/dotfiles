@@ -5,7 +5,7 @@ function path.replace
     set -x k $argv[1]
     set -x l $argv[2]
     if test -z $l
-        set l '1'
+        set l 1
     end
 
     function __utils_path_add
@@ -54,15 +54,15 @@ function path.replace
     end
 
     function __utils_path_replace_usage
-        set -l help_args '-a' 'Update a path for a versioned language, eg. Go 1.14 to Go 1.15'
-        set -a help_args '-e' "\"$HOME/.gimme/versions/go1.15.4.darwin.amd64/bin\" '2'"
-        set -a help_args '-e' "\"$HOME/.nvm/versions/node/v15.2.1/bin\" '2'"
-        set -a help_args '-e' "\"$HOME/Library/Python/3.9/bin\" '2'"
+        set -l help_args -a 'Update a path for a versioned language, eg. Go 1.14 to Go 1.15'
+        set -a help_args -e "\"$HOME/.gimme/versions/go1.15.4.darwin.amd64/bin\" '2'"
+        set -a help_args -e "\"$HOME/.nvm/versions/node/v15.2.1/bin\" '2'"
+        set -a help_args -e "\"$HOME/Library/Python/3.9/bin\" '2'"
         __dotfiles_help $help_args
 
     end
 
-    if test "$argv[1]" = "-h"
+    if test "$argv[1]" = -h
         __utils_path_replace_usage
         return 0
     end

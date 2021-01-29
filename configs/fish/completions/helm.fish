@@ -3,7 +3,7 @@
 function __helm_debug
     set file "$BASH_COMP_DEBUG_FILE"
     if test -n "$file"
-        echo "$argv" >> $file
+        echo "$argv" >>$file
     end
 end
 
@@ -133,4 +133,4 @@ complete -c helm -n 'set --query __helm_comp_do_file_comp'
 # This completion will be run first as complete commands are added FILO.
 # The call to __helm_prepare_completions will setup both __helm_comp_results abd __helm_comp_do_file_comp.
 # It provides the program's completion choices.
-complete -c helm -n '__helm_prepare_completions' -f -a '$__helm_comp_results'
+complete -c helm -n __helm_prepare_completions -f -a '$__helm_comp_results'

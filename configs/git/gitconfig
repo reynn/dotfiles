@@ -106,7 +106,7 @@ retag = "!r() { if test -z $1; then echo 'git retag <tag>' && return; fi; git ta
 # ----------------------------------------------------------------------------#
 
 # Shortcut to follow CI/CD in CDS ---------------------------------------------
-track = !cdsctl workflow status --track
+track = !which cdsctl && cdsctl workflow status --track
 project-summary = !which onefetch && onefetch
 
 [apply]

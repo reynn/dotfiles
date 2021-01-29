@@ -30,7 +30,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     ###########################################################
 
     function __versm -d 'Main logic to get assets for a specific repository'
-        if command.is_available -c 'fzf'
+        if command.is_available -c fzf
             set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | fzf --select-1 --exit-0)
         else
             set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
@@ -73,7 +73,7 @@ function github.release.download -d "Download a release from GitHub in the expec
 
         for asset in $downloaded_assets
             __versm_handle_asset -a "$asset" -d "$version_directory" -b "$bin_alias" -e "$bins_env_path" -f "$bin_filter"
-            if test "$cleanup_assets" = 'true'
+            if test "$cleanup_assets" = true
                 set -l asset_name (string split ':' $asset)[1]
                 log.info "Deleting asset $asset_name"
                 rm -fv $asset_name
@@ -148,7 +148,7 @@ function github.release.download -d "Download a release from GitHub in the expec
                     log.error 'handle_asset `tar` is unavailable in the path'
                     return 1
                 end
-            case 'inode/directory'
+            case inode/directory
                 return 3
         end
     end
@@ -207,14 +207,14 @@ function github.release.download -d "Download a release from GitHub in the expec
         set -l cli_base_dir "$base_directory/github/cli/cli"
         set -l directory_exists (test -d "$cli_base_dir"; and echo 'true'; or echo 'false')
         log.info "directory_exists: $directory_exists"
-        if test "$directory_exists" != 'true'
+        if test "$directory_exists" != true
             log.info 'Need to download from scratch'
             # return 1
         end
         set -l cli_symlink "$base_directory/github/cli/cli/gh"
         set -l symlink_exists (test -L "$cli_symlink"; and echo 'true'; or echo 'false')
         log.info "symlink_exists: $symlink_exists"
-        if test "$symlink_exists" = 'true'
+        if test "$symlink_exists" = true
             # check that symlink is valid
             # return 0
         end
@@ -223,65 +223,65 @@ function github.release.download -d "Download a release from GitHub in the expec
     end
 
     function ___usage
-        set -a help_args '-f' 'h|help|Print this help message'
-        set -a help_args '-f' 'e|env|Set path if necessary'
-        set -a help_args '-f' 'r|repo|The name of the repo to get release from [repo-owner/repo-name]'
-        set -a help_args '-f' 'p|pattern|File pattern for downloading from release asset list'
-        set -a help_args '-f' 'a|alias|How to call the release after downloaded if different from the repo name'
-        set -a help_args '-f' 'd|base-dir|Where to store the data for this script), default(\$HOME/.bins'
-        set -a help_args '-f' 'f|filter|Filter for the name of the binary if not found automatically'
-        set -a help_args '-f' 'P|pre-release|Allow pre-releases to be pulled as well as stable'
-        set -a help_args '-f' 's|show|Show list of versions for the repo'
-        set -a help_args '-f' 'S|show-assets|Shows assets for a specific version"'
+        set -a help_args -f 'h|help|Print this help message'
+        set -a help_args -f 'e|env|Set path if necessary'
+        set -a help_args -f 'r|repo|The name of the repo to get release from [repo-owner/repo-name]'
+        set -a help_args -f 'p|pattern|File pattern for downloading from release asset list'
+        set -a help_args -f 'a|alias|How to call the release after downloaded if different from the repo name'
+        set -a help_args -f 'd|base-dir|Where to store the data for this script), default(\$HOME/.bins'
+        set -a help_args -f 'f|filter|Filter for the name of the binary if not found automatically'
+        set -a help_args -f 'P|pre-release|Allow pre-releases to be pulled as well as stable'
+        set -a help_args -f 's|show|Show list of versions for the repo'
+        set -a help_args -f 'S|show-assets|Shows assets for a specific version"'
         switch "$system_platform"
-            case 'linux'
+            case linux
                 log.debug 'Adding examples for Linux'
-                set -a help_args '-e' " -r 'argoproj/argo-cd'             -p '*linux-amd64'                     -a 'argocd'"
-                set -a help_args '-e' " -r 'denisidoro/navi'              -p '*x86_64-unknown-linux-musl.tar.gz'"
-                set -a help_args '-e' " -r 'derailed/k9s'                 -p '*Linux_x86_64.tar.gz'"
-                set -a help_args '-e' " -r 'digitalocean/doctl'           -p '*linux-amd64.tar.gz'"
-                set -a help_args '-e' " -r 'extrawurst/gitui'"
-                set -a help_args '-e' " -r 'jesseduffield/lazygit'        -p '*Linux_x86_64.tar.gz'             -a 'lg'"
-                set -a help_args '-e' " -r 'mikefarah/yq'                 -p 'yq_linux_amd64'"
-                set -a help_args '-e' " -r 'neovim/neovim'                -p '*linux64.tar.gz'                  -a 'nvim'         -P"
-                set -a help_args '-e' " -r 'ogham/exa'"
-                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cds-engine-linux-amd64'           -a 'cds-engine'   -f 'cds-engine-linux-amd64'"
-                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cdsctl-linux-amd64-nokeychain'    -a 'cdsctl'       -f 'cdsctl-linux-amd64-nokeychain'"
-                set -a help_args '-e' " -r 'Powershell/Powershell'        -p '*linux-x64.tar.gz'                -a 'pwsh'         -f '/pwsh\$'"
-                set -a help_args '-e' " -r 'rust-analyzer/rust-analyzer'  -p '*-linux'                          -P"
-                set -a help_args '-e' " -r 'sharkdp/fd'                   -p '*x86_64-unknown-linux-gnu.tar.gz'"
-                set -a help_args '-e' " -r 'starship/starship'            -p '*linux-gnu.tar.gz'"
-                set -a help_args '-e' " -r 'stedolan/jq'                  -p 'jq-linux64'                       -a 'jq'"
-            case 'darwin'
+                set -a help_args -e " -r 'argoproj/argo-cd'             -p '*linux-amd64'                     -a 'argocd'"
+                set -a help_args -e " -r 'denisidoro/navi'              -p '*x86_64-unknown-linux-musl.tar.gz'"
+                set -a help_args -e " -r 'derailed/k9s'                 -p '*Linux_x86_64.tar.gz'"
+                set -a help_args -e " -r 'digitalocean/doctl'           -p '*linux-amd64.tar.gz'"
+                set -a help_args -e " -r 'extrawurst/gitui'"
+                set -a help_args -e " -r 'jesseduffield/lazygit'        -p '*Linux_x86_64.tar.gz'             -a 'lg'"
+                set -a help_args -e " -r 'mikefarah/yq'                 -p 'yq_linux_amd64'"
+                set -a help_args -e " -r 'neovim/neovim'                -p '*linux64.tar.gz'                  -a 'nvim'         -P"
+                set -a help_args -e " -r 'ogham/exa'"
+                set -a help_args -e " -r 'ovh/cds'                      -p 'cds-engine-linux-amd64'           -a 'cds-engine'   -f 'cds-engine-linux-amd64'"
+                set -a help_args -e " -r 'ovh/cds'                      -p 'cdsctl-linux-amd64-nokeychain'    -a 'cdsctl'       -f 'cdsctl-linux-amd64-nokeychain'"
+                set -a help_args -e " -r 'Powershell/Powershell'        -p '*linux-x64.tar.gz'                -a 'pwsh'         -f '/pwsh\$'"
+                set -a help_args -e " -r 'rust-analyzer/rust-analyzer'  -p '*-linux'                          -P"
+                set -a help_args -e " -r 'sharkdp/fd'                   -p '*x86_64-unknown-linux-gnu.tar.gz'"
+                set -a help_args -e " -r 'starship/starship'            -p '*linux-gnu.tar.gz'"
+                set -a help_args -e " -r 'stedolan/jq'                  -p 'jq-linux64'                       -a 'jq'"
+            case darwin
                 log.debug 'Adding examples for Darwin'
-                set -a help_args '-e' " -r 'argoproj/argo-cd'             -p '*darwin*'                 -a 'argocd'"
-                set -a help_args '-e' " -r 'denisidoro/navi'              -p '*osx*'"
-                set -a help_args '-e' " -r 'derailed/k9s'                 -p '*Darwin*'"
-                set -a help_args '-e' " -r 'digitalocean/doctl'           -p '*darwin*'"
-                set -a help_args '-e' " -r 'extrawurst/gitui'"
-                set -a help_args '-e' " -r 'jesseduffield/lazygit'        -p '*Darwin*'                 -a 'lg'"
-                set -a help_args '-e' " -r 'mikefarah/yq'                 -p '*darwin*'"
-                set -a help_args '-e' " -r 'neovim/neovim'                -p '*macos.tar.gz'            -a 'nvim'         -P"
-                set -a help_args '-e' " -r 'ogham/exa'                    -p '*macos*'"
-                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cds-engine-darwin-amd64'  -a 'cds-engine'   -f 'cds-engine-darwin-amd64'"
-                set -a help_args '-e' " -r 'ovh/cds'                      -p 'cdsctl-darwin-amd64'      -a 'cdsctl'       -f 'cdsctl-darwin-amd64'"
-                set -a help_args '-e' " -r 'Powershell/Powershell'        -p '*-osx-x64.tar.gz'         -a 'pwsh'         -f '/pwsh\$'"
-                set -a help_args '-e' " -r 'rust-analyzer/rust-analyzer'  -p 'rust-analyzer-mac'        -P"
-                set -a help_args '-e' " -r 'sharkdp/fd'                   -p '*-x86_64-apple*'"
-                set -a help_args '-e' " -r 'starship/starship'            -p '*-x86_64-apple*'"
-                set -a help_args '-e' " -r 'stedolan/jq'                  -p '*-osx-amd64'              -a 'jq'"
+                set -a help_args -e " -r 'argoproj/argo-cd'             -p '*darwin*'                 -a 'argocd'"
+                set -a help_args -e " -r 'denisidoro/navi'              -p '*osx*'"
+                set -a help_args -e " -r 'derailed/k9s'                 -p '*Darwin*'"
+                set -a help_args -e " -r 'digitalocean/doctl'           -p '*darwin*'"
+                set -a help_args -e " -r 'extrawurst/gitui'"
+                set -a help_args -e " -r 'jesseduffield/lazygit'        -p '*Darwin*'                 -a 'lg'"
+                set -a help_args -e " -r 'mikefarah/yq'                 -p '*darwin*'"
+                set -a help_args -e " -r 'neovim/neovim'                -p '*macos.tar.gz'            -a 'nvim'         -P"
+                set -a help_args -e " -r 'ogham/exa'                    -p '*macos*'"
+                set -a help_args -e " -r 'ovh/cds'                      -p 'cds-engine-darwin-amd64'  -a 'cds-engine'   -f 'cds-engine-darwin-amd64'"
+                set -a help_args -e " -r 'ovh/cds'                      -p 'cdsctl-darwin-amd64'      -a 'cdsctl'       -f 'cdsctl-darwin-amd64'"
+                set -a help_args -e " -r 'Powershell/Powershell'        -p '*-osx-x64.tar.gz'         -a 'pwsh'         -f '/pwsh\$'"
+                set -a help_args -e " -r 'rust-analyzer/rust-analyzer'  -p 'rust-analyzer-mac'        -P"
+                set -a help_args -e " -r 'sharkdp/fd'                   -p '*-x86_64-apple*'"
+                set -a help_args -e " -r 'starship/starship'            -p '*-x86_64-apple*'"
+                set -a help_args -e " -r 'stedolan/jq'                  -p '*-osx-amd64'              -a 'jq'"
             case '*'
                 log.error "Platform [$system_platform] doesn't have available examples"
         end
-        set -a help_args '-c' "2|Invalid or missing configuration"
-        set -a help_args '-c' "3|Github/Validation error"
+        set -a help_args -c "2|Invalid or missing configuration"
+        set -a help_args -c "3|Github/Validation error"
         __dotfiles_help $help_args
     end
 
     function __versm_get_system_defaults -d 'Gets a set of default repositories to fetch'
         set -l repositories
         switch "$system_platform"
-            case 'darwin'
+            case darwin
                 set -a repositories " -r 'denisidoro/navi'              -p '*osx*'"
                 set -a repositories " -r 'digitalocean/doctl'           -p '*darwin*'"
                 set -a repositories " -r 'extrawurst/gitui'"
@@ -293,7 +293,7 @@ function github.release.download -d "Download a release from GitHub in the expec
                 set -a repositories " -r 'sharkdp/fd'                   -p '*-x86_64-apple*'"
                 set -a repositories " -r 'starship/starship'            -p '*-x86_64-apple*'"
                 set -a repositories " -r 'stedolan/jq'                  -p '*-osx-amd64'              -a 'jq'"
-            case 'linux'
+            case linux
                 set -a repositories " -r 'denisidoro/navi'              -p '*x86_64-unknown-linux-musl.tar.gz'"
                 set -a repositories " -r 'digitalocean/doctl'           -p '*linux-amd64.tar.gz'"
                 set -a repositories " -r 'extrawurst/gitui'"
@@ -324,27 +324,27 @@ function github.release.download -d "Download a release from GitHub in the expec
     set -x pattern (__versm_default_github_pattern)
     set -x bin_alias ''
     set -x bin_filter ''
-    set -x release_filter 'latest'
-    set -x set_env_only 'false'
-    set -x show_versions 'false'
-    set -x show_versions_only 'false'
-    set -x show_assets_only 'false'
-    set -x cleanup_assets 'false'
+    set -x release_filter latest
+    set -x set_env_only false
+    set -x show_versions false
+    set -x show_versions_only false
+    set -x show_assets_only false
+    set -x cleanup_assets false
 
-    # Parse the option flags, fails without `getopts` package, if using dotfiles run `dotfiles.update -A` 
+    # Parse the option flags, fails without `getopts` package, if using dotfiles run `dotfiles.update -A`
     getopts $argv | while read -l key value
         switch $key
             case D defaults
                 __versm_get_system_defaults
                 return 0
             case e env
-                set set_env_only 'true'
+                set set_env_only true
             case s show
-                set show_versions 'true'
-                set show_versions_only 'true'
+                set show_versions true
+                set show_versions_only true
             case S show-assets
-                set show_versions 'true'
-                set show_assets_only 'true'
+                set show_versions true
+                set show_assets_only true
             case r repo
                 set -x repo "$value"
                 set -x repo_owner (string split '/' "$value" | head -1)
@@ -352,7 +352,7 @@ function github.release.download -d "Download a release from GitHub in the expec
             case p pattern
                 set -x pattern "$value"
             case c clean
-                set cleanup_assets 'true'
+                set cleanup_assets true
             case a alias
                 set -x bin_alias "$value"
             case d base-dir
@@ -360,19 +360,19 @@ function github.release.download -d "Download a release from GitHub in the expec
             case f filter
                 set -x bin_filter "$value"
             case P pre-release
-                set release_filter 'pre-release'
+                set release_filter pre-release
             case U update
-              set -l os (string lower (uname))
-              github.release.download -r 'cli/cli' -a gh -p "*_$os""_amd64.tar.gz"
-              return 0
+                set -l os (string lower (uname))
+                github.release.download -r cli/cli -a gh -p "*_$os""_amd64.tar.gz"
+                return 0
                 # Common args
             case h help
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
@@ -396,17 +396,17 @@ function github.release.download -d "Download a release from GitHub in the expec
 
     set -x bins_env_path "$base_directory/envs"
     set -x show_versions_result ''
-    if test $set_env_only = 'true'
+    if test $set_env_only = true
         __versm_set_env $bins_env_path
         return 0
     end
-    if test $show_versions = 'true'
+    if test $show_versions = true
         set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t' | fzf)
-        if test $show_versions_only = 'true'
+        if test $show_versions_only = true
             return 0
         end
     end
-    if test $show_assets_only = 'true'
+    if test $show_assets_only = true
         gh release --repo $repo view $show_versions_result
         return 0
     end

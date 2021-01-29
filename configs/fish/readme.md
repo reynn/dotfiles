@@ -6,7 +6,7 @@ Following a namespacing structure to organize functions based on tools, separate
 
 ```plaintext
 Format: <tool>.<optional_subject>.<action>*
-# actions should typically be one of [list, create, update, remove, connect, generate]
+# actions are typically one of [list, create, update, remove, connect, generate]. This should not limit naming though and others should be freely considered.
 ```
 
 [dotfiles.ansible.update][./functions/dotfiles.ansible.update.fish]
@@ -24,7 +24,7 @@ They should be named with `_ (underscores)` instead of `. (period)` and be prefi
 Plugins are managed by [Fisher][fish-plugin-fisher], run `fisher update` to install plugins.
 
 | Plugin                                             | Description                                     |
-| ------                                             | -----------                                     |
+| -------------------------------------------------- | ----------------------------------------------- |
 | [Fisher][fish-plugin-fisher]                       | The Plugin Manager                              |
 | [getopts][fish-plugin-getopts]                     | Fish version of GNU getopts for flag parsing    |
 | [Z][fish-plugin-z]                                 | Jump around directories                         |
@@ -41,7 +41,7 @@ Plugins are managed by [Fisher][fish-plugin-fisher], run `fisher update` to inst
 ## Keybindings
 
 | Key        | Result                                             |
-| ---        | ------                                             |
+| ---------- | -------------------------------------------------- |
 | CTRL+f     | (fzf.fish) List files tab to select multiple files |
 | CTRL+ALT+s | (fzf.fish) Use git status to show modified files   |
 | CTRL+ALT+l | (fzf.fish) Show git log and copy the selected hash |

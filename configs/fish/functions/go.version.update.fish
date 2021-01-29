@@ -7,7 +7,7 @@ function go.version.update -d "Get a version of Go or source the latest environm
 
     function ___usage
         set -l versions (string join ', ' $existing_versions)
-        set -l help_args '-a' "Change or install Golang versions, discovered versions [$versions]"
+        set -l help_args -a "Change or install Golang versions, discovered versions [$versions]"
         __dotfiles_help $help_args
     end
 
@@ -30,9 +30,9 @@ function go.version.update -d "Get a version of Go or source the latest environm
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
@@ -40,7 +40,7 @@ function go.version.update -d "Get a version of Go or source the latest environm
         set -l new_version $argv[1]
         set -l go_path "$HOME/.gimme/versions/go$new_version"
         set -xU GOROOT $go_path
-        path.replace $go_path/bin '3'
+        path.replace $go_path/bin 3
     end
 
     if test -n "$go_version"

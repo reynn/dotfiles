@@ -3,11 +3,11 @@
 function log.error -d "Log a error message"
     set -x label
     set -x msg
-    set -q COLOR_LOG_ERROR; and set -x color "$COLOR_LOG_ERROR"; or set -x color 'red'
+    set -q COLOR_LOG_ERROR; and set -x color "$COLOR_LOG_ERROR"; or set -x color red
 
     function ___usage
-        set -l help_args '-a' "Log an error message [color: $color]"
-        set -a help_args '-f' 'l|label|An extra label to include at the beginning, in `()`'
+        set -l help_args -a "Log an error message [color: $color]"
+        set -a help_args -f 'l|label|An extra label to include at the beginning, in `()`'
 
         __dotfiles_help $help_args
     end
@@ -23,9 +23,9 @@ function log.error -d "Log a error message"
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
     test -n "$label"; and set msg "($label) $msg"

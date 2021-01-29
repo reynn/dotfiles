@@ -3,7 +3,7 @@
 function aws.ec2.untagged -d 'List all untagged EC2 instances'
 
     function ___usage
-        set -l help_args '-a' "List all untagged EC2 instances"
+        set -l help_args -a "List all untagged EC2 instances"
 
         __dotfiles_help $help_args
     end
@@ -15,13 +15,13 @@ function aws.ec2.untagged -d 'List all untagged EC2 instances'
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
-    if not command.is_available -c 'aws'
+    if not command.is_available -c aws
         log.error '`aws` is not installed'
         return 1
     end
@@ -29,6 +29,5 @@ function aws.ec2.untagged -d 'List all untagged EC2 instances'
     aws ec2 \
         describe-instances \
         --output text \
-        --query 'Reservations[].Instances[?!not_null(Tags[?Key == "Name"].Value)] | [].InstanceId' | \
-        tr '\t' '\n'
+        --query 'Reservations[].Instances[?!not_null(Tags[?Key == "Name"].Value)] | [].InstanceId' | tr '\t' '\n'
 end

@@ -13,16 +13,16 @@ function ansible.config.generate -d "Generate valid SSH config from an Ansible i
     set -l CONFIG_DIRECTORY "$HOME/.ssh/config.d"
 
     function ___usage
-        set -l help_args '-a' 'Creates an SSH config from an Ansible inventory file'
+        set -l help_args -a 'Creates an SSH config from an Ansible inventory file'
         __dotfiles_help $help_args
     end
 
-    if test "$argv[1]" = '-h'
+    if test "$argv[1]" = -h
         ___usage
         return 0
     end
 
-    if not command.is_available -c 'ansible'
+    if not command.is_available -c ansible
         log.error '`ansible` is not installed'
         return 1
     end
@@ -58,13 +58,13 @@ function ansible.config.generate -d "Generate valid SSH config from an Ansible i
             log.debug "user       : [$user]"
             log.debug "identFile  : [$identFile]"
 
-            log.info -l "HOST" "[$name] ssh: $user@$ip"
+            log.info -l HOST "[$name] ssh: $user@$ip"
             echo "Host $name" >>$CONFIG_DIRECTORY/$dc
             echo "  HostName $ip" >>$CONFIG_DIRECTORY/$dc
-            if test "$identFile" != "null"
+            if test "$identFile" != null
                 echo "  IdentityFile $identFile" >>$CONFIG_DIRECTORY/$dc
             end
-            if test "$user" != "null"
+            if test "$user" != null
                 echo "  User $user" >>$CONFIG_DIRECTORY/$dc
             end
             echo "" >>$CONFIG_DIRECTORY/$dc

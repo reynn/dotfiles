@@ -4,7 +4,7 @@ function docker.container.connect -d "Select a container to attach too"
     set -l container
 
     function ___usage
-        set -l help_args '-a' 'Select a container to attach to'
+        set -l help_args -a 'Select a container to attach to'
 
         __dotfiles_help $help_args
     end
@@ -18,13 +18,13 @@ function docker.container.connect -d "Select a container to attach too"
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
-    if not command.is_available -c 'docker'
+    if not command.is_available -c docker
         log.error '`docker` is not installed'
         return 1
     end

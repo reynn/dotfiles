@@ -4,11 +4,11 @@ function processes.kill -d 'Kill all processes that match the provided name'
     set -x process_name
 
     function ___usage
-        set -l help_args '-a' 'Kill all processes that match the provided name'
-        set -a help_args '-f' "n|name|Name of process to kill|$process_name"
-        set -a help_args '-e' ' -n ssh-agent'
-        set -a help_args '-e' ' -n tabnine'
-        set -a help_args '-e' ' -n rust-analyzer'
+        set -l help_args -a 'Kill all processes that match the provided name'
+        set -a help_args -f "n|name|Name of process to kill|$process_name"
+        set -a help_args -e ' -n ssh-agent'
+        set -a help_args -e ' -n tabnine'
+        set -a help_args -e ' -n rust-analyzer'
         __dotfiles_help $help_args
     end
 
@@ -21,9 +21,9 @@ function processes.kill -d 'Kill all processes that match the provided name'
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 

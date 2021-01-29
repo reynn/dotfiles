@@ -4,8 +4,8 @@ function aws.cfn_stacks.search -d 'Get a list of AWS Cloudformation stacks that 
     set -x matcher
 
     function ___usage
-        set -l help_args '-a' 'Get a list of AWS Cloudformation stacks that match the specified pattern'
-        set -a help_args '-f' 'm|match|The matcher to use to find Stach names|$matcher'
+        set -l help_args -a 'Get a list of AWS Cloudformation stacks that match the specified pattern'
+        set -a help_args -f 'm|match|The matcher to use to find Stach names|$matcher'
         __dotfiles_help $help_args
     end
 
@@ -18,13 +18,13 @@ function aws.cfn_stacks.search -d 'Get a list of AWS Cloudformation stacks that 
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
-    if not command.is_available -c 'aws'
+    if not command.is_available -c aws
         log.error '`aws` is not installed'
         return 1
     end

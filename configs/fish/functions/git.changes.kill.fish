@@ -10,7 +10,7 @@ function git.changes.kill -d 'Hard Reset of git changes as well as a clean of no
     set -l to_clean (git clean -nx 2>/dev/null)
 
     function ___usage
-        set -l help_args -a -a "Hard Reset of git changes as well as a clean of non tracked files [to_clean: '$to_clean']"
+        set -l help_args -a "Hard Reset of git changes as well as a clean of non tracked files"
         __dotfiles_help $help_args
     end
 

@@ -5,10 +5,10 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
     set -x filters "Name=tag:Owner,Values=$EMAIL" "Name=instance-state-name,Values=running"
 
     function ___usage
-        set -l help_args '-a' "Interactively connect to a created instance"
-        set -a help_args '-f' "f|filter|Set of filters to narrow down list of instances|$filters"
-        set -a help_args '-f' "F|no-filters|Removes all filters (Will grab all running instances)|false"
-        set -a help_args '-f' "e"
+        set -l help_args -a "Interactively connect to a created instance"
+        set -a help_args -f "f|filter|Set of filters to narrow down list of instances|$filters"
+        set -a help_args -f "F|no-filters|Removes all filters (Will grab all running instances)|false"
+        set -a help_args -f e
 
         __dotfiles_help $help_args
     end
@@ -19,20 +19,20 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
         switch $key
             case f filter
                 set -x -a filters "$value"
-            case "no-filters"
+            case no-filters
                 set filters "Name=instance-state-name,Values=running"
                 # Common args
             case h help
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
-    if not command.is_available -c 'aws'
+    if not command.is_available -c aws
         log.error '`aws` is not installed'
         return 1
     end

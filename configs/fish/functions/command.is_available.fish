@@ -4,8 +4,8 @@ function command.is_available -d 'Determines if a command is available to execut
     set -x utils_command
 
     function ___usage -d 'Determines if a command is available to execute'
-        set -l help_args '-a' "Determines if a command is available to execute"
-        set -a help_args '-f' 'c|cmd|The command to validate|'
+        set -l help_args -a "Determines if a command is available to execute"
+        set -a help_args -f 'c|cmd|The command to validate|'
         __dotfiles_help $help_args
     end
 
@@ -18,9 +18,9 @@ function command.is_available -d 'Determines if a command is available to execut
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 

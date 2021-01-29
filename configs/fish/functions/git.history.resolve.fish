@@ -2,7 +2,7 @@
 
 function git.history.resolve -d 'Resolve the rest of git history after an initial shallow clone'
     function ___usage
-        set -l help_args '-a' 'Resolve the rest of git history after an initial shallow clone'
+        set -l help_args -a 'Resolve the rest of git history after an initial shallow clone'
         __dotfiles_help $help_args
     end
 
@@ -13,9 +13,9 @@ function git.history.resolve -d 'Resolve the rest of git history after an initia
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
