@@ -5,26 +5,26 @@ function docker.containers.run -d 'Run a basic container'
     set -x entrypoint ''
     set -x image 'alpine:latest'
     set -x preset ''
-    set -x detach 'false'
-    set -x interactive 'false'
+    set -x detach false
+    set -x interactive false
     set -x volume_paths "$PWD:/app"
-    set -x args '--rm' '-w' '/app'
+    set -x args --rm -w /app
     set -x env_vars
     set -x presets go python rust debian centos manjaro postgres
 
     function ___usage -d 'Show usage'
-        set -l help_args '-a' "Run a Docker container with the current directory mounted\n\n## Presets\n\n - "(string join '\n - ' $presets)
-        set -a help_args '-f' "|entrypoint|The Entrypoint for the docker container|$entrypoint"
-        set -a help_args '-f' "e|env|Add environment variables to the running container|"
-        set -a help_args '-f' "i|image|The image to use for the container|$image"
-        set -a help_args '-f' "p|preset|Use a preset for launching the container|$preset"
-        set -a help_args '-f' "V|volume_path|Mount volumes to the container|$volume_paths"
-        set -a help_args '-f' "|port|Port specifications|"
-        set -a help_args '-f' "d|detach|Detach from the container so it runs in the background|$detach"
-        set -a help_args '-f' "|interactive|Run the container in interactive mode|$interactive"
-        set -a help_args '-e' " -i rust:$LANGUAGES_RUST_VERSION --interactive"
-        set -a help_args '-e' " -p centos"
-        set -a help_args '-e' " -p postgres"
+        set -l help_args -a "Run a Docker container with the current directory mounted\n\n## Presets\n\n - "(string join '\n - ' $presets)
+        set -a help_args -f "|entrypoint|The Entrypoint for the docker container|$entrypoint"
+        set -a help_args -f "e|env|Add environment variables to the running container|"
+        set -a help_args -f "i|image|The image to use for the container|$image"
+        set -a help_args -f "p|preset|Use a preset for launching the container|$preset"
+        set -a help_args -f "V|volume_path|Mount volumes to the container|$volume_paths"
+        set -a help_args -f "|port|Port specifications|"
+        set -a help_args -f "d|detach|Detach from the container so it runs in the background|$detach"
+        set -a help_args -f "|interactive|Run the container in interactive mode|$interactive"
+        set -a help_args -e " -i rust:$LANGUAGES_RUST_VERSION --interactive"
+        set -a help_args -e " -p centos"
+        set -a help_args -e " -p postgres"
 
         __dotfiles_help $help_args
     end
@@ -44,17 +44,17 @@ function docker.containers.run -d 'Run a basic container'
             case port
                 set -x port "$value"
             case d detach
-                set detach 'true'
+                set detach true
             case interactive
-                set interactive 'true'
+                set interactive true
                 # Common args
             case h help
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+                set -x QUIET true
             case v verbose
-                set -x DEBUG 'true'
+                set -x DEBUG true
         end
     end
 
@@ -65,32 +65,32 @@ function docker.containers.run -d 'Run a basic container'
 
     if test -n $preset
         switch $preset
-            case "go"
-                set entrypoint "/bin/bash"
-                set interactive 'true'
+            case go
+                set entrypoint /bin/bash
+                set interactive true
                 set image "golang:$LANGUAGES_GO_VERSION-buster"
-            case "python"
-                set entrypoint "/bin/bash"
-                set interactive 'true'
+            case python
+                set entrypoint /bin/bash
+                set interactive true
                 set image "python:$LANGUAGES_PYTHON_VERSION"
-            case "rust"
-                set entrypoint "/bin/bash"
-                set interactive 'true'
+            case rust
+                set entrypoint /bin/bash
+                set interactive true
                 set image "rust:$LANGUAGES_RUST_VERSION"
-            case "debian"
-                set entrypoint "/bin/bash"
-                set interactive 'true'
-                set image "debian"
-            case "manjaro"
-                set entrypoint "/bin/bash"
-                set interactive 'true'
-                set image "manjarolinux/build-stable"
-            case "centos"
-                set entrypoint "/bin/bash"
-                set interactive 'true'
-                set image "centos"
-            case "postgres"
-                set detach 'true'
+            case debian
+                set entrypoint /bin/bash
+                set interactive true
+                set image debian
+            case manjaro
+                set entrypoint /bin/bash
+                set interactive true
+                set image manjarolinux/build-stable
+            case centos
+                set entrypoint /bin/bash
+                set interactive true
+                set image centos
+            case postgres
+                set detach true
                 set -p env_vars "POSTGRES_PASSWORD=postgres" "POSTGRES_USERNAME=postgres"
                 set image "postgres:latest"
         end
@@ -100,12 +100,12 @@ function docker.containers.run -d 'Run a basic container'
         set -a args -v $path
     end
 
-    if test "$interactive" = "true"
-        set -p args '-it'
+    if test "$interactive" = true
+        set -p args -it
     end
 
-    if test "$detach" = "true"
-        set -p args '-d'
+    if test "$detach" = true
+        set -p args -d
     end
 
     if test -n "$entrypoint"
@@ -118,7 +118,7 @@ function docker.containers.run -d 'Run a basic container'
                 continue
             end
             log.debug "VAR: `$env`"
-            set -a args '-e' "$env"
+            set -a args -e "$env"
         end
     end
 
@@ -126,5 +126,5 @@ function docker.containers.run -d 'Run a basic container'
 
     log.debug "docker run $args"
 
-    docker run $args
+    echo docker run $args
 end

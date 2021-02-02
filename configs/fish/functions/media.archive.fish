@@ -45,9 +45,9 @@ function media.archive -d 'Move media files to a specified directory'
     end
 
     fd --type f \
-      --max-depth=$max_depth \
-      "--extension="$extensions \
-      . \
-      --base-directory=$source_directory \
-      --exec mv -nv "$source_directory/{/}" "$backup_directory/Pictures/{/}" ;
+        --max-depth=$max_depth \
+        "--extension=$extensions" \
+        . \
+        --base-directory=$source_directory \
+        --exec mv -nv "$source_directory/{/}" "$backup_directory/Pictures/{/}"
 end

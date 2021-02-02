@@ -107,7 +107,7 @@ retag = "!r() { if test -z $1; then echo 'git retag <tag>' && return; fi; git ta
 
 # Shortcut to follow CI/CD in CDS ---------------------------------------------
 track = !cdsctl workflow status --track
-	project-summary = !which onefetch && onefetch
+project-summary = !which onefetch && onefetch
 
 [apply]
 # Detect whitespace errors when applying a patch
@@ -186,12 +186,16 @@ name = Nic Patterson
 
 [push]
 # https://git-scm.com/docs/git-config#git-config-pushdefault
-default = upstream
+default = simple
 # Make `git push` push relevant annotated tags when pushing branches out.
 followTags = true
 rebase = "true"
 
 [tag]
 forceSignAnnotated = true
+
 [pull]
-	rebase = true
+rebase = true
+
+[init]
+defaultBranch = "main"
