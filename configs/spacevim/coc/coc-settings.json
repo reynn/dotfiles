@@ -15,7 +15,7 @@
   "go.goplsOptions": {
     "hoverKind": "SynopsisDocumentation",
     "usePlaceholders": true,
-    "codelens": {
+    "codelenses": {
       "upgrade_dependency": true,
       "tidy": true,
       "generate": true

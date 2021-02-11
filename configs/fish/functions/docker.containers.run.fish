@@ -124,7 +124,7 @@ function docker.containers.run -d 'Run a basic container'
 
     set -a args $image
 
-    log.debug "docker run $args"
+log.debug "docker run $args"
 
     echo docker run $args
 end

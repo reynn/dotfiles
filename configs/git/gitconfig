@@ -180,10 +180,6 @@ autocorrect = 1
 # Include summaries of merged commits in newly created merge commit messages
 log = true
 
-[user]
-email = nic@reynn.dev
-name = Nic Patterson
-
 [push]
 # https://git-scm.com/docs/git-config#git-config-pushdefault
 default = simple

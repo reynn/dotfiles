@@ -6,8 +6,9 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     set -x node_versions_path "$HOME/.local/share/nvm"
 
     function ___usage
-        set -l help_args '-a' 'Setup global/universal variables'
-        set -l help_args '-f' 'P|path|Ensure paths are in fish_user_paths'
+set -l help_args -a 'Setup global/universal variables'
+set -l help_args -f 'P|path|Ensure paths are in fish_user_paths'
+
 
         __dotfiles_help $help_args
     end
@@ -25,9 +26,11 @@ function dotfiles.env.update -d 'Setup global/universal variables'
                 ___usage
                 return 0
             case q quiet
-                set -x QUIET 'true'
+set -x QUIET true
+
             case v verbose
-                set -x DEBUG 'true'
+set -x DEBUG true
+
         end
     end
 
@@ -57,8 +60,11 @@ function dotfiles.env.update -d 'Setup global/universal variables'
             set go_version $go_version[1]
         end
         log.debug "Go Version $go_version"
-        path.replace "$go_versions_path/$go_version/bin" '2'
+path.replace "$go_versions_path/$go_version/bin" 2
+
     end
+set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'
+
 
     log.debug "Checking for node versions in $node_versions_path"
     if test -d "$node_versions_path"
@@ -67,11 +73,13 @@ function dotfiles.env.update -d 'Setup global/universal variables'
             set node_version $node_version[1]
         end
         log.debug "Node Version $node_version"
-        path.replace "$node_versions_path/$node_version/bin" '2'
+path.replace "$node_versions_path/$node_version/bin" 2
+
     end
 
     for extra_path in $paths_to_add
-        path.add "extra_path"
+path.add extra_path
+
     end
 
     ## Load any secrets
