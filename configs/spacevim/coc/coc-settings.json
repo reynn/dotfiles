@@ -2,11 +2,11 @@
   "coc.preferences.colorSupport": true,
   "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.formatOnSaveFiletypes": [
-    "rust",
     "go",
-    "yaml",
     "json",
-    "vim"
+    "rust",
+    "vim",
+    "yaml"
   ],
   "codeLens.enable": true,
   "git.enableGutters": true,
@@ -31,5 +31,9 @@
   "yaml.format.enable": true,
   "yaml.format.proseWrap": "preserve",
   "yaml.format.singleQuote": false,
-  "yaml.schemas": {}
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/argoproj/argo/master/api/jsonschema/schema.json": [
+      "argo.*.yaml"
+    ]
+  }
 }

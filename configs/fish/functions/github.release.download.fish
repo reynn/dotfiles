@@ -30,10 +30,12 @@ function github.release.download -d "Download a release from GitHub in the expec
     ###########################################################
 
     function __versm -d 'Main logic to get assets for a specific repository'
-        if command.is_available -c fzf
-            set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | fzf --select-1 --exit-0)
-        else
-            set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
+        if test -z "$latest_release_version"
+            if command.is_available -c fzf
+                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | fzf --select-1 --exit-0)
+            else
+                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
+            end
         end
 
         if test "$latest_release_version" = ''
@@ -121,7 +123,7 @@ function github.release.download -d "Download a release from GitHub in the expec
             log.error "handle_asset The provided asset isn't in the right format (call [file --mime-type {}] on the file path)"
             return 1
         end
-        switch $asset_type
+        switch "$asset_type"
             case '*/x-mach-binary' '*/x-pie-executable' '*/x-executable'
                 log.debug "handle_asset treating "(basename $asset_path)" as an executable"
                 chmod +x $asset_path
@@ -347,8 +349,18 @@ function github.release.download -d "Download a release from GitHub in the expec
                 set show_assets_only true
             case r repo
                 set -x repo "$value"
-                set -x repo_owner (string split '/' "$value" | head -1)
-                set -x repo_name (string split '/' "$value" | tail -1)
+                set -l repo_split (string split '/' "$value")
+                set -x repo_owner $repo_split[1]
+                set -x repo_name $repo_split[2]
+                set -l repo_name_split (string split '@' $repo_name)
+                if string match -q "*@*" $repo_name
+                    # set -e repo_name
+                    set -x repo_name $repo_name_split[1]
+                    set -x repo "$repo_owner/$repo_name"
+                    set -x latest_release_version $repo_name_split[2]
+                else
+                    set -x repo_name $repo_name_split[1]
+                end
             case p pattern
                 set -x pattern "$value"
             case c clean
@@ -415,6 +427,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     log.debug "global.repo           : $repo"
     log.debug "global.repo_name      : $repo_name"
     log.debug "global.repo_owner     : $repo_owner"
+    set -q latest_release_version; and log.debug "global.latest_release_version  : $latest_release_version"
     log.debug "global.pattern        : $pattern"
     log.debug "global.release_filter : $release_filter"
     log.debug "global.bin_alias      : $bin_alias"
@@ -425,6 +438,7 @@ function github.release.download -d "Download a release from GitHub in the expec
         log.error 'Please provide a <repo_name> and a <repo_owner>'
         return 1
     end
+    # return 0
 
     ###########################################################
     # Main logic

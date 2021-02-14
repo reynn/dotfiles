@@ -1,5 +1,5 @@
 function k8s.pods.delete --description 'delete pods from the specified kubernetes namespace' --wraps='kubectl delete pods'
-    set -lx k8s_namespace default
+    set -lx k8s_namespace (kubectl config get-contexts --no-headers | grep '*' | awk '{print $5}')
     set -lx force false
     set -lx extra_args
 
@@ -7,6 +7,7 @@ function k8s.pods.delete --description 'delete pods from the specified kubernete
         set -l help_args -a "Create a Kubernetes cluster in DigitalOcean"
         set -a help_args -f "N|namespace|Namespace of the Kubernetes cluster to search|$k8s_namespace"
         set -a help_args -f "f|force|Delete the pods without confirmation|$force"
+
         set -a help_args -e ' -N argocd # Will show a list of containers that will be deleted'
         set -a help_args -e ' -N argocd -f # Will skip showing containers and just proceed with removal'
 

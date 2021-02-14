@@ -21,10 +21,14 @@ function __log -d "HELPER for logging"
         end
     end
 
+    # Return 0 because this isn't an error case we just didn't need to output
+    if test "$level" = debug
+        set -q DEBUG; or return 0
+    end
     # If no message was provided we will go ahead and return
     string length -q "$msg"; or return 0
 
     set_color (string split ' ' $color)[1]
-    printf '[%-'$level_length's]: %s\n' "$level" "$msg"
+    printf '[%-'$level_length's]: %s\n' "$level" "$msg" >&2
     set_color normal
 end

@@ -46,7 +46,7 @@ alias mkdir 'mkdir -p'
 alias mv 'mv -i'
 alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
-alias ll 'l --tree --level 3 $argv'
+alias ll 'l --tree --level 3'
 
 if test -n "$DOTFILES_USE_STARSHIP"
     # Initialize starship if available
@@ -54,3 +54,5 @@ if test -n "$DOTFILES_USE_STARSHIP"
         starship init fish | source
     end
 end
+
+test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish

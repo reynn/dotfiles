@@ -13,4 +13,4 @@ The following config values are likely to need changing based on your environmen
 | volume_controller |             |
 | device_name       |             |
 
-[npm-bitwarden-cli]: https://
+[npm-bitwarden-cli]: https://www.npmjs.com/package/@bitwarden/cli
