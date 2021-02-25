@@ -76,7 +76,7 @@ function doctl.k8s_cluster.create -d 'Create a Kubernetes cluster in DigitalOcea
         set auto_scale false
     end
 
-    set -lx node_pool "'name=$cluster_name-worker-pool;size=$node_type;min-nodes=$min_size;max-nodes=$max_size;auto-scale=true'"
+    set -lx node_pool "name=$cluster_name-worker-pool;size=$node_type;min-nodes=$min_size;max-nodes=$max_size;auto-scale=true"
 
     log.debug "cluster_name : $cluster_name"
     log.debug "min_size     : $min_size"
@@ -109,5 +109,5 @@ function doctl.k8s_cluster.create -d 'Create a Kubernetes cluster in DigitalOcea
 
     log.info "Creating cluster [$cluster_name]"
     echo doctl kubernetes cluster create $doctl_args
-
+    doctl kubernetes cluster create $doctl_args
 end

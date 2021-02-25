@@ -71,7 +71,8 @@ cursor:
 
 hide_cursor_while_typing: true
 shell:
-  program: /usr/bin/fish
+  program: /Users/reynn/.local/bin/fish
+  # program: /usr/bin/fish
   args:
     - "-i"
     - "-l"
@@ -282,4 +283,4 @@ schemes:
       cyan: "#6d96a5"
       white: "#aeb3bb"
 
-colors: *gruvbox_dark
+colors: *afterglow
