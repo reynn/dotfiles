@@ -3,7 +3,7 @@
 function __gh_debug
     set file "$BASH_COMP_DEBUG_FILE"
     if test -n "$file"
-        echo "$argv" >>$file
+        echo "$argv" >> $file
     end
 end
 
@@ -144,7 +144,7 @@ end
 # so we can properly delete any completions provided by another script.
 # The space after the the program name is essential to trigger completion for the program
 # and not completion of the program name itself.
-complete --do-complete "gh " >/dev/null 2>&1
+complete --do-complete "gh " > /dev/null 2>&1
 # Using '> /dev/null 2>&1' since '&>' is not supported in older versions of fish.
 
 # Remove any pre-existing completions for the program since we will be handling all of them.
@@ -160,4 +160,5 @@ complete -c gh -n 'set --query __gh_comp_do_file_comp'
 # This completion will be run first as complete commands are added FILO.
 # The call to __gh_prepare_completions will setup both __gh_comp_results and __gh_comp_do_file_comp.
 # It provides the program's completion choices.
-complete -c gh -n __gh_prepare_completions -f -a '$__gh_comp_results'
+complete -c gh -n '__gh_prepare_completions' -f -a '$__gh_comp_results'
+

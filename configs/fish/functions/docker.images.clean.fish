@@ -25,7 +25,7 @@ function docker.images.clean -d 'Clean up Images'
         end
     end
 
-    if test -x (command -s docker)
+    if test ! -x (command -s docker)
         log.error 'Docker is not installed'
         return 1
     end

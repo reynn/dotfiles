@@ -78,7 +78,7 @@ platform_linux() {
   )
 
   platform_linux_apt() {
-    packages+=('python3' 'python3-pip')
+    packages+=('python3' 'python3-pip' 'python3-apt')
     if test "$(executed_as_root)" = 'true'; then
       apt-get update && apt-get install -y gpg curl
       # Add the fish apt sources
@@ -90,7 +90,7 @@ platform_linux() {
         tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg >/dev/null
       apt-get update &&
         apt-get upgrade -y &&
-        echo "${packages[@]}" | xargs -l apt-get install -y
+        apt-get install -y ${packages[@]}
     else
       sudo apt-get update && sudo apt-get install -y gpg curl
       echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_9.0/ /' |
@@ -100,7 +100,7 @@ platform_linux() {
         tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg >/dev/null
       sudo apt-get update &&
         sudo apt-get upgrade -y &&
-        echo "${packages[@]}" | xargs -l sudo apt-get install -y
+        sudo apt-get install -y ${packages[@]}
     fi
     return $?
   }
@@ -173,22 +173,22 @@ ansible_run() {
 clone() {
   log 'Preparing to clone Git repository'
   check_for_command 'git' || log 'fatal' '`git` is not installed'
-  check_for_command 'ssh-keygen' || log 'fatal' '`ssh-keygen` is not installed'
-  check_for_command 'ssh-keyscan' || log 'fatal' '`ssh-keyscan` is not installed'
+  # check_for_command 'ssh-keygen' || log 'fatal' '`ssh-keygen` is not installed'
+  # check_for_command 'ssh-keyscan' || log 'fatal' '`ssh-keyscan` is not installed'
 
-  mkdir -p "$HOME/.ssh"
+  # mkdir -p "$HOME/.ssh"
 
-  log 'Adding github.com to SSH known hosts'
-  ssh-keyscan github.com >>$HOME/.ssh/known_hosts || log 'error' 'Failed to scan github.com'
-  test -f "$HOME/.ssh/id_ed25519" || ssh-keygen -b 4096 -t ed25519
+  # log 'Adding github.com to SSH known hosts'
+  # ssh-keyscan github.com >>$HOME/.ssh/known_hosts || log 'error' 'Failed to scan github.com'
+  # test -f "$HOME/.ssh/id_ed25519" || ssh-keygen -b 4096 -t ed25519
 
-  log 'prompt' "Has the following public key been added to GitHub?\n\n$(cat ~/.ssh/id_ed25519.pub)\n"
-  read key_added
-  case $key_added in
-  y) log 'debug' 'Key added!' ;;
-  n) log 'debug' 'Key not confirmed to be added, some commands may not work' ;;
-  *) log 'error' "Unknown [$key_added]" ;;
-  esac
+  # log 'prompt' "Has the following public key been added to GitHub?\n\n$(cat ~/.ssh/id_ed25519.pub)\n"
+  # read key_added
+  # case $key_added in
+  # y) log 'debug' 'Key added!' ;;
+  # n) log 'debug' 'Key not confirmed to be added, some commands may not work' ;;
+  # *) log 'error' "Unknown [$key_added]" ;;
+  # esac
 
   log "Cloning the dotfiles repo to $DFP"
   git clone $DOTFILES_REPO $DFP
@@ -227,14 +227,14 @@ main() {
   ansible_run
 
   # Source the latest fisher and run fisher update
-  fish -c "curl -sL https://git.io/fisher | source && fisher update; set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.env.update"
+  fish -c "curl -sL https://git.io/fisher | source && fisher update; set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.update -A"
 
   log 'Completed!'
 }
 
 export BREW_BINARY="$(command -v brew)"
 export DFP="$HOME/git/github.com/reynn/dotfiles"
-export DOTFILES_REPO="git@github.com:reynn/dotfiles"
+export DOTFILES_REPO="https://github.com/reynn/dotfiles"
 export GROUP_ID="$(id -g)"
 export IS_ROOT="$(executed_as_root)"
 export USER_ID="$(id -u)"

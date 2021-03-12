@@ -48,6 +48,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     path.add "$HOME/.bins"
     path.add "$HOME/.bins/envs"
     path.add "$HOME/.cargo/bin"
+    path.add "$HOME/go/bin"
     path.replace "$PYTHON_HOME/bin"
 
     log.debug "Checking for go versions in $go_versions_path"

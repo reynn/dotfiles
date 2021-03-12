@@ -77,3 +77,6 @@ to_create:
   - dest: "{{ ansible_env.HOME }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"
     state: "link"
+  - dest: "{{ github_path }}/.gitconfig"
+    src: "{{ dotfiles_path }}/configs/git/public_github"
+    state: "link"
