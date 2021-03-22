@@ -197,6 +197,9 @@ rebase = true
 [init]
 defaultBranch = "main"
 
+[user]
+name = "Nic Patterson"
+
 [includeIf "gitdir:~/git/github.com/"]
 path = ~/git/github.com/.gitconfig
 [includeIf "gitdir:~/git/github.concur.com/"]
