@@ -195,7 +195,7 @@ forceSignAnnotated = true
 rebase = true
 
 [init]
-defaultBranch = "main"
+	defaultBranch = main
 
 [user]
 name = "Nic Patterson"
