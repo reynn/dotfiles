@@ -70,12 +70,15 @@ cursor:
   style: Block
 
 hide_cursor_while_typing: true
+
 shell:
-  program: /Users/reynn/.local/bin/fish
-  # program: /usr/bin/fish
+  program: /usr/local/bin/fish
   args:
     - "-i"
     - "-l"
+    - "-c"
+    - "tmux attach; or tmux"
+    # - "tmux attach; or tmux"
 
 schemes:
   afterglow: &afterglow
