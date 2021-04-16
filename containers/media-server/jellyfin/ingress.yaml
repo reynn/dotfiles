@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jellyfin
+  labels:
+    name: jellyfin
+spec:
+  rules:
+    - host: jellyfin.reynn.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend: &backend
+              service:
+                name: jellyfin
+                port:
+                  number: 80
+    - host: "mimikyu.k3s"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/jellyfin"
+            backend: *backend
