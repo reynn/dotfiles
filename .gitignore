@@ -9,27 +9,5 @@ configs/fish/fish_variables
 containers/adult/stash/
 **/.nvimlog
 *.scr
-# Fisher ignores
-## Fisher completions
-configs/fish/completions/fisher.fish
-configs/fish/completions/nvm.fish
-## Fisher conf.d
-configs/fish/conf.d/fzf.fish
-configs/fish/conf.d/you_should_use.fish
-configs/fish/conf.d/z.fish
-## Fisher Functions
-configs/fish/functions/__bass.py
-configs/fish/functions/__fzf_*.fish
-configs/fish/functions/__nvm*.fish
-configs/fish/functions/__ysu*.fish
-configs/fish/functions/__z_*.fish
-configs/fish/functions/__z.fish
-configs/fish/functions/bass.fish
-configs/fish/functions/fisher.fish
-configs/fish/functions/getopts.fish
-configs/fish/functions/node.fish
-configs/fish/functions/npm.fish
-configs/fish/functions/npx.fish
-configs/fish/functions/nvm*.fish
-configs/fish/functions/yarn.fish
-configs/systemd/**/tmux*
+**/tls.*
+.build/
