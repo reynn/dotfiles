@@ -77,8 +77,7 @@ shell:
     - "-i"
     - "-l"
     - "-c"
-    - "tmux attach; or tmux"
-    # - "tmux attach; or tmux"
+    - "zellij"
 
 schemes:
   afterglow: &afterglow
