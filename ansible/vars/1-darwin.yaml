@@ -3,10 +3,10 @@ extra_to_create:
   - dest: "{{ bins_dir }}/code"
     src: "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
     state: link
-  - dest: "{{ ansible_env.HOME }}/.config/alacritty"
+  - dest: "{{ ansible_user_dir }}/.config/alacritty"
     src: "{{ dotfiles_path }}/configs/alacritty"
     state: "link"
-  - dest: "{{ ansible_env.HOME }}/.config/spotifyd"
+  - dest: "{{ ansible_user_dir }}/.config/spotifyd"
     src: "{{ dotfiles_path }}/configs/spotifyd"
     state: "link"
 os_scripts:

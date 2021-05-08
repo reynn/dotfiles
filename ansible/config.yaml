@@ -114,7 +114,7 @@
     - name: "Downloading scripts"
       ansible.builtin.get_url:
         url: "{{ item.url }}"
-        dest: "{{ item.dir | default(ansible_env.HOME + '/.local/bin') }}/{{ item.name }}"
+        dest: "{{ item.dir | default(ansible_user_dir + '/.local/bin') }}/{{ item.name }}"
         mode: u=rwx,g=rx,o=rx
         owner: "{{ ansible_user_uid | quote }}"
         group: "{{ ansible_user_gid | quote }}"

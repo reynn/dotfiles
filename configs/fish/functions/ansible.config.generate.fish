@@ -4,7 +4,7 @@
 ## #######################################################################
 ## Examples
 ## #######################################################################
-## `ansible.generate.ssh.config.from.inventory $DFP/ansible/inventory.yml` -> list all fonts piped to fzf for easier searching
+## `ansible.generate.ssh.config.from.inventory $DFP/ansible/inventory.yaml` -> list all fonts piped to fzf for easier searching
 ## #######################################################################
 
 function ansible.config.generate -d "Generate valid SSH config from an Ansible inventory"

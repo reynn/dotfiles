@@ -1,8 +1,8 @@
 # ------------
 # Strings
 
-bins_dir: "{{ ansible_env.HOME }}/.bins"
-git_path: "{{ ansible_env.HOME }}/git"
+bins_dir: "{{ ansible_user_dir }}/.bins"
+git_path: "{{ ansible_user_dir }}/git"
 github_path: "{{ git_path }}/github.com"
 dotfiles_path: "{{ github_path }}/reynn/dotfiles"
 
@@ -58,23 +58,23 @@ scripts:
     url: "https://raw.githubusercontent.com/rust-lang/rustup/master/rustup-init.sh"
 
 to_create:
-  - dest: "{{ ansible_env.HOME }}/.config"
+  - dest: "{{ ansible_user_dir }}/.config"
     state: "directory"
-  - dest: "{{ ansible_env.HOME }}/.config/fish"
+  - dest: "{{ ansible_user_dir }}/.config/fish"
     state: "directory"
-  - dest: "{{ ansible_env.HOME }}/.config/fish/config.fish"
+  - dest: "{{ ansible_user_dir }}/.config/fish/config.fish"
     src: "{{ dotfiles_path }}/configs/fish/config.fish"
     state: "link"
-  - dest: "{{ ansible_env.HOME }}/.config/fish/fish_plugins"
+  - dest: "{{ ansible_user_dir }}/.config/fish/fish_plugins"
     src: "{{ dotfiles_path }}/configs/fish/fish_plugins"
     state: "link"
-  - dest: "{{ ansible_env.HOME }}/.SpaceVim.d"
+  - dest: "{{ ansible_user_dir }}/.SpaceVim.d"
     src: "{{ dotfiles_path }}/configs/spacevim"
     state: "link"
-  - dest: "{{ ansible_env.HOME }}/.config/nvim"
-    src: "{{ ansible_env.HOME }}/.SpaceVim"
+  - dest: "{{ ansible_user_dir }}/.config/nvim"
+    src: "{{ ansible_user_dir }}/.SpaceVim"
     state: "link"
-  - dest: "{{ ansible_env.HOME }}/.gitconfig"
+  - dest: "{{ ansible_user_dir }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"
     state: "link"
   - dest: "{{ github_path }}/.gitconfig"

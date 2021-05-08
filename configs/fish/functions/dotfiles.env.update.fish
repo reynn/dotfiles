@@ -36,8 +36,8 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.9'
-    set -Ux LANGUAGES_GO_VERSION '1.15'
-    set -Ux LANGUAGES_RUST_VERSION '1.48'
+    set -Ux LANGUAGES_GO_VERSION '1.16'
+    set -Ux LANGUAGES_RUST_VERSION '1.52'
 
     ## Python exports
     set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
