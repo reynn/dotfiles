@@ -1,22 +1,10 @@
 # Defined in /var/folders/g1/yb6lm8vn30l9n0fcjck955rr0000gn/T//fish.tnSdsJ/aws.okta.auth.fish @ line 2
 function aws.okta.auth
-    set -l accounts_to_generate
-    set -lx config_file_path "$HOME/.config/reynn.aws_okta_keyman.yaml"
+    set -lx accounts_to_generate
+    set -lx config_file_path "$HOME/.config/aws_okta_keyman.yaml"
+
     function ___usage -d 'Show usage'
-        set -l help_args -a "Use the AWS Okta Keyman tool to connect to get AWS credentials, FZF is used for user input"
-        set -a help_args -a "Example input yaml"
-        set -a help_args -a "---"
-        set -a help_args -a "okta:"
-        set -a help_args -a "  concur:"
-        set -a help_args -a "   - name: AWS DA"
-        set -a help_args -a "     app_id: 0oa19f48n4x4jtFsZ1d8/272"
-        set -a help_args -a "     profile_name: aws-da"
-        set -a help_args -a "     bw_id: 0f39edd0-e925-4f1b-bee0-acc40040c6d8"
-        set -a help_args -a "     okta_org: concur"
-        set -a help_args -a "     password_cache: true"
-        set -a help_args -a "     region: us-west-2"
-        set -a help_args -a "     role: aws-ss-reTeam"
-        set -a help_args -a "     username: Nic.Patterson@concur.com"
+        set -l help_args -a "Use the AWS Okta Keyman tool to connect to get AWS credentials, FZF is used for user input\n\nExample input yaml\n---\nokta:\n  - name: AWS DA\n    app_id: 0oa19f48n4x4jtFsZ1d8/272\n    profile_name: aws-da\n    bw_id: 0f39edd0-e925-4f1b-bee0-acc40040c6d8\n    okta_org: concur\n    password_cache: true\n    region: us-west-2\n    role: aws-ss-reTeam\n    username: Nic.Patterson@concur.com"
         set -a help_args -f "a|account|The account to generate credentials for|"
         set -a help_args -f "c|config-file|The file containing account info|$config_file_path"
 
@@ -27,7 +15,7 @@ function aws.okta.auth
         switch $key
             case a account
                 set -x -a accounts_to_generate "$value"
-            case a account
+            case c "config-file"
                 set config_file_path "$value"
                 # Common args
             case h help
@@ -39,16 +27,17 @@ function aws.okta.auth
                 set -x DEBUG true
         end
     end
-    set -l available_keyman_accounts (yq e '.okta.[].name' $HOME/.config/aws_okta_keyman.yaml --indent 0 --tojson)
+
+    log.debug "YQ Binary: "(which yq)" version "(yq --version | awk '{print $3}')
+    log.debug "JQ Binary: "(which jq)" version "(jq --version | tr -d 'jq-')
 
     if test -z "$accounts_to_generate"
         log.debug "Available accounts: $available_keyman_accounts"
-        set accounts_to_generate (echo $available_keyman_accounts | jq -r '.[].name' | fzf --multi --select-1)
+        set accounts_to_generate (yq e -MN '.okta[].name' $config_file_path | fzf --multi --select-1)
     end
-    return 3
     for account in $accounts_to_generate
         log info "Getting credentials for the [$account] account"
-        set account_data (echo $available_keyman_accounts | jq ".[] | select(.name == \"$account\")")
+        set account_data (yq e ".okta[] | select(.name == \"$account\")" $config_file_path --tojson --indent 0)
         log.debug "Full account data: $account_data"
 
         set -lx username (echo $account_data | jq -r '.username' 2> /dev/null)
