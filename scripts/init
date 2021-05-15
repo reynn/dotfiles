@@ -54,8 +54,9 @@ python_packages() {
     --disable-pip-version-check \
     --no-cache-dir \
     --upgrade \
+    --user \
     --quiet \
-    ansible
+    ansible-core
 }
 
 platform_mac() {
@@ -113,12 +114,16 @@ platform_linux() {
     )
     log "Installing [${#packages[@]}] packages with dnf"
     if test "$(executed_as_root)" = 'true'; then
-      curl -SsL https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo >/etc/yum.repos.d/shells:fish:release:3.repo
+      if test "$release" = 'centos'; then
+        curl -SsL https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo >/etc/yum.repos.d/shells:fish:release:3.repo
+      fi
       dnf update -y &&
         dnf upgrade -y &&
         echo "${packages[@]}" | xargs -l dnf install -y
     else
-      curl -SsL https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo | sudo tee /etc/yum.repos.d/shells:fish:release:3.repo
+      if test "$release" = 'centos'; then
+        curl -SsL https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo | sudo tee /etc/yum.repos.d/shells:fish:release:3.repo
+      fi
       sudo dnf update -y &&
         sudo dnf upgrade -y &&
         echo "${packages[@]}" | xargs -l sudo dnf install -y
@@ -157,7 +162,7 @@ platform_linux() {
     return $?
   }
 
-  case $release in
+  case "$release" in
   debian | ubuntu) platform_linux_apt || log 'fatal' 'Failed to install packages with APT' ;;
   centos | fedora) platform_linux_dnf || log 'fatal' 'failed to install packages with DNF' ;;
   manjaro | arch) platform_linux_pacman || log 'fatal' 'failed to install packages with Pacman' ;;
@@ -190,8 +195,8 @@ clone() {
   # *) log 'error' "Unknown [$key_added]" ;;
   # esac
 
-  log "Cloning the dotfiles repo to $DFP"
-  git clone $DOTFILES_REPO $DFP
+  log "Cloning the dotfiles repo to $TMP_DFP"
+  git clone $DOTFILES_REPO $TMP_DFP
 }
 
 main() {
@@ -233,6 +238,7 @@ main() {
 }
 
 export BREW_BINARY="$(command -v brew)"
+export TMP_DFP="/tmp/dotfiles"
 export DFP="$HOME/git/github.com/reynn/dotfiles"
 export DOTFILES_REPO="https://github.com/reynn/dotfiles"
 export GROUP_ID="$(id -g)"
