@@ -1,17 +1,19 @@
 #!/usr/bin/env fish
 
-function github.repos.clone -d "Clone repository to the layout used"
+function git.repos.clone -d "Clone repository to the layout used"
     ###########################################################
     # Variables
     ###########################################################
     set -x base_directory "$HOME/git"
     set -x git_host 'github.com'
+    set -x protocol ssh
     set -x repos
 
     function ___usage
         set -l help_args -a "Clone repository to the layout used [format:'$base_directory/$git_host/{owner}/{repo}']"
         set -a help_args -f 'r|repos|The owner/name of the repository to clone'
         set -a help_args -f "b|base-dir|The base directory to store repositories|$HOME/git"
+        set -a help_args -f "p|protocol|Clone protocol, either HTTPS or SSH|$protocol"
         set -a help_args -f "H|host|GitHub host name, for using against enterprise GitHub|$git_host"
 
         __dotfiles_help $help_args
@@ -26,6 +28,8 @@ function github.repos.clone -d "Clone repository to the layout used"
                 set base_directory $value
             case H host
                 set -x git_host "$value"
+              case p protocol
+                set -x protocol (string lower $value)
             case r repos
                 set -x repos "$value"
                 # Common args
@@ -39,19 +43,22 @@ function github.repos.clone -d "Clone repository to the layout used"
         end
     end
 
-    function __github_clone_repo
+    function __git_clone_repo
         set repo $argv
 
         log.debug "git_host : $git_host"
         log.debug "repo     : $repo"
+        log.debug "protocol : $protocol"
+        test (string lower "$protocol") = ssh; and set -x git_url "git@$git_host:$repo"; or set -x git_url "https://$git_host/$repo"
+        log.debug "git_url  : $git_url"
 
-        env GH_HOST=$git_host gh repo clone "$repo" "$base_directory/$git_host/$repo" -- --depth 1
+        git clone --depth 1 "$git_url" "$base_directory/$git_host/$repo"
     end
 
     ###########################################################
     # Main logic
     ###########################################################
     for repo in $repos
-        __github_clone_repo "$repo"
+        __git_clone_repo "$repo"
     end
 end
