@@ -8,16 +8,6 @@
       shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --no-key-bindings --no-completion --no-update-rc"
 
   tasks:
-    - name: Include universal variables
-      include_vars: "vars/0-primary-vars.yaml"
-      tags:
-        - always
-
-    - name: "Include the platform-specific variables"
-      include_vars: "vars/1-{{ ansible_os_family | lower }}.yaml"
-      tags:
-        - always
-
     - name: "Create necessary files, folders and links"
       ansible.builtin.file:
         src: "{{ item.src | default(omit) }}"
@@ -25,9 +15,35 @@
         force: yes
         state: "{{ item.state | default('link') }}"
       loop: "{{ to_create + extra_to_create|default([]) }}"
+      loop_control:
+        label: "{{ item.dest }}"
       tags:
         - always
         - links
+
+    - name: "Create SSH Keys"
+      copy:
+        content: "{{ item.key }}"
+        dest: "{{ ansible_user_dir }}/.ssh/keys/{{ item.host }}"
+        mode: "u=rw,g=,o="
+      loop: "{{ ssh_keys.private }}"
+      loop_control:
+        label: "{{ item.host }}"
+
+    - name: "Add {{ item.host }} the user SSH configuration"
+      community.general.ssh_config:
+        user: "{{ item.user | default(omit) }}"
+        host: "{{ item.host }}"
+        hostname: "{{ item.hostname }}"
+        identity_file: "{{ item.identity_file | default(omit) }}"
+        port: "{{ item.port | default(22) }}"
+        ssh_config_file: "{{ ansible_user_dir }}/.ssh/config"
+        state: present
+      loop: "{{ ssh_hosts }}"
+      loop_control:
+        label: "{{ item.host }}"
+      tags:
+        - ssh
 
     - name: "Install certificate handling for darwin"
       ansible.builtin.shell: "sh '/Applications/Python
@@ -133,11 +149,3 @@
       loop: "{{ commands }}"
       tags:
         - commands
-    # - name: "Build Docker images"
-    #   docker_image: "{{ item }}"
-    #   loop: "{{ docker_images }}"
-    #   loop_control:
-    #     label: "{{ item.name }}"
-    #   tags:
-    #     - never
-    #     - docker

@@ -7,6 +7,11 @@ github_path: "{{ git_path }}/github.com"
 dotfiles_path: "{{ github_path }}/reynn/dotfiles"
 
 # ------------
+# Secrets
+ssh_keys: "{{ vault_ssh_keys }}"
+ssh_hosts: "{{ vault_ssh_hosts }}"
+
+# ------------
 # Lists
 commands: []
 docker_images: []
@@ -58,6 +63,10 @@ scripts:
     url: "https://raw.githubusercontent.com/rust-lang/rustup/master/rustup-init.sh"
 
 to_create:
+  - dest: "{{ ansible_user_dir }}/.ssh"
+    state: "directory"
+  - dest: "{{ ansible_user_dir }}/.ssh/keys"
+    state: "directory"
   - dest: "{{ ansible_user_dir }}/.config"
     state: "directory"
   - dest: "{{ ansible_user_dir }}/.config/fish"

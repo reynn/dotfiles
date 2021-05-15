@@ -1,8 +1,8 @@
-\.ansible
+.ansible
 **/.secrets
-\.git
-\.idea/
-\.vscode/
+.git
+.idea/
+.vscode/
 images/
 .DS_Store
 configs/fish/fish_variables

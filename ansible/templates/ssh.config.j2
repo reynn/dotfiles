@@ -1,0 +1,5 @@
+{% for host in ssh_hosts %}
+Host {{ host.name }}
+  Hostname {{ host.hostname }}
+  User {{ host.user }}
+{% endfor %}
