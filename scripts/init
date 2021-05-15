@@ -158,9 +158,9 @@ platform_linux() {
   }
 
   case $release in
-  debian) platform_linux_apt || log 'fatal' 'Failed to install packages with APT' ;;
-  centos) platform_linux_dnf || log 'fatal' 'failed to install packages with DNF' ;;
-  manjaro) platform_linux_pacman || log 'fatal' 'failed to install packages with Pacman' ;;
+  debian | ubuntu) platform_linux_apt || log 'fatal' 'Failed to install packages with APT' ;;
+  centos | fedora) platform_linux_dnf || log 'fatal' 'failed to install packages with DNF' ;;
+  manjaro | arch) platform_linux_pacman || log 'fatal' 'failed to install packages with Pacman' ;;
   *) log 'fatal' "Unsupported/Unknown Linux distribution $release" ;;
   esac
 }
