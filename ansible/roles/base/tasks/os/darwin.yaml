@@ -1,0 +1,5 @@
+---
+- name: "Install certificate handling for darwin"
+  ansible.builtin.shell: "sh '/Applications/Python {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/Install\ Certificates.command'"
+  register: cert_handler
+  changed_when: '"Requirement already up-to-date" not in cert_handler.stdout'

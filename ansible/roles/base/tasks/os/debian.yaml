@@ -1,0 +1,10 @@
+---
+- name: "Install system packages"
+  ansible.builtin.apt:
+    name: "{{ packages.system.basic + packages.system.apt|default([]) }}"
+    state: "latest"
+    update_cache: "yes"
+  become: true
+  tags:
+    - packages
+    - update

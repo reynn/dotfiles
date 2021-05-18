@@ -1,0 +1,22 @@
+---
+- name: "Install yum system packages"
+  ansible.builtin.dnf:
+    name: "{{ packages.system.basic + packages.system.yum|default([]) }}"
+    state: "latest"
+    update_cache: "yes"
+  when: "ansible_pkg_mgr|lower == 'yum'"
+  become: true
+  tags:
+    - packages
+    - update
+
+- name: "Install dnf system packages"
+  ansible.builtin.dnf:
+    name: "{{ packages.system.basic + packages.system.dnf|default([]) }}"
+    state: "latest"
+    update_cache: "yes"
+  when: "ansible_pkg_mgr|lower == 'dnf'"
+  become: true
+  tags:
+    - packages
+    - update
