@@ -2,11 +2,15 @@
 function aws.okta.auth
     set -lx accounts_to_generate
     set -lx config_file_path "$HOME/.config/aws_okta_keyman.yaml"
+    set -lx duration 9001
+    set -lx password_reset false
 
     function ___usage -d 'Show usage'
         set -l help_args -a "Use the AWS Okta Keyman tool to connect to get AWS credentials, FZF is used for user input\n\nExample input yaml\n---\nokta:\n  - name: AWS DA\n    app_id: 0oa19f48n4x4jtFsZ1d8/272\n    profile_name: aws-da\n    bw_id: 0f39edd0-e925-4f1b-bee0-acc40040c6d8\n    okta_org: concur\n    password_cache: true\n    region: us-west-2\n    role: aws-ss-reTeam\n    username: Nic.Patterson@concur.com"
         set -a help_args -f "a|account|The account to generate credentials for|"
         set -a help_args -f "c|config-file|The file containing account info|$config_file_path"
+        set -a help_args -f "d|duration|Set the duration the credential is valid for|$duration"
+        set -a help_args -f "R|password_reset|Reset password cache|$password_reset"
 
         __dotfiles_help $help_args
     end
@@ -15,7 +19,7 @@ function aws.okta.auth
         switch $key
             case a account
                 set -x -a accounts_to_generate "$value"
-            case c "config-file"
+            case c config-file
                 set config_file_path "$value"
                 # Common args
             case h help
@@ -35,6 +39,7 @@ function aws.okta.auth
         log.debug "Available accounts: $available_keyman_accounts"
         set accounts_to_generate (yq e -MN '.okta[].name' $config_file_path | fzf --multi --select-1)
     end
+    set -lx account_count (count $accounts_to_generate)
     for account in $accounts_to_generate
         log info "Getting credentials for the [$account] account"
         set account_data (yq e ".okta[] | select(.name == \"$account\")" $config_file_path --tojson --indent 0)
@@ -69,11 +74,18 @@ function aws.okta.auth
         test -n $appid; and set -a keyman_args --appid $appid
         test "$role" != null; and set -a keyman_args --role $role
         test "$preview" = true; and set -a keyman_args --oktapreview
+        test "$password_reset" = true; and set -a keyman_args -R
+        test -n "$duration"; and set -a keyman_args -du $duration
         log.debug "calling aws_okta_keyman with $keyman_args"
         if test -z $bw_id
             echo $keyman_args | xargs aws_okta_keyman
         else
             bw get totp $bw_id | aws_okta_keyman $keyman_args
+        end
+        set account_count (math "$account_count - 1")
+        if test $account_count -gt 0
+            log.info "Sleeping for 20 seconds"
+            sleep 20
         end
     end
 end
