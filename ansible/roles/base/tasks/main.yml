@@ -1,5 +1,8 @@
 ---
 # tasks file for base
+- debug:
+    var: "ansible_hostname"
+
 - name: "Create necessary files, folders and links"
   ansible.builtin.file:
     src: "{{ item.src | default(omit) }}"

@@ -5,7 +5,10 @@ all:
       ansible_connection: local
       ansible_python_interpreter: /usr/local/bin/python3
     mimikyu:
-      ansible_host: mimikyu
+      ansible_host: 10.0.0.2
+      ansible_user: reynn
+      ansible_private_key_file: "~/.ssh/keys/mimikyu"
+      ansible_connection: ssh
 
 media_server:
   hosts:
