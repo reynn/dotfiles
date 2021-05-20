@@ -10,17 +10,27 @@
   loop_control:
     label: "{{ item.dest }}"
 
-- name: "Create SSH Keys"
-  copy:
-    content: "{{ item.key }}"
+- name: "Create SSH Private Keys"
+  ansible.builtin.copy:
+    content: "{{ item.private_key }}"
     dest: "{{ ansible_user_dir }}/.ssh/keys/{{ item.host }}"
     mode: "u=rw,g=,o="
-  loop: "{{ ssh_keys.private }}"
+  loop: "{{ ssh_keys }}"
   loop_control:
     label: "{{ item.host }}"
   tags: [ssh]
 
-- name: "Add {{ item.host }} the user SSH configuration"
+- name: "Create SSH Public Keys"
+  ansible.builtin.copy:
+    content: "{{ item.public_key }}"
+    dest: "{{ ansible_user_dir }}/.ssh/keys/{{ item.host }}.pub"
+    mode: "u=rw,g=r,o=r"
+  loop: "{{ ssh_keys }}"
+  loop_control:
+    label: "{{ item.host }}"
+  tags: [ssh]
+
+- name: "Adding {{ ssh_hosts | length }} hosts the user SSH configuration"
   community.general.ssh_config:
     user: "{{ item.user | default(omit) }}"
     host: "{{ item.host }}"
@@ -34,8 +44,8 @@
     label: "{{ item.host }}"
   tags: [ssh]
 
-- name: Handle OS Specifics
-  include_tasks: "os/{{ ansible_os_family | lower }}.yaml"
+- name: "Handle OS Specifics"
+  ansible.builtin.include_tasks: "os/{{ ansible_os_family | lower }}.yaml"
   tags: [os]
 
 - name: "Installing pip packages"

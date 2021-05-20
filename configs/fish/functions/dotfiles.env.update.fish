@@ -45,7 +45,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     # These will add to the fish_user_paths only if necessary
     fish_add_path "$GFP/github.com/junegunn/fzf/bin"
     fish_add_path "$DFP/scripts"
-    fish_add_path "$HOME/.bins"
+    fish_add_path "$HOME/.local/bin"
     fish_add_path "$HOME/.bins/envs"
     fish_add_path "$HOME/.cargo/bin"
     fish_add_path "$HOME/go/bin"
