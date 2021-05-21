@@ -172,7 +172,7 @@ platform_linux() {
 
 ansible_run() {
   log 'Running ansible playbook'
-  ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook "$DFP/ansible/config.yaml" || log 'fatal' 'Failure in ansible run'
+  ANSIBLE_CONFIG=$TMP_DFP/ansible/ansible.cfg ansible-playbook "$TMP_DFP/ansible/config.yaml" || log 'fatal' 'Failure in ansible run'
 }
 
 clone() {
@@ -217,8 +217,7 @@ main() {
   log 'debug' "User Group ID    : $GROUP_ID"
 
   case $PLATFORM in
-  macos) platform_mac || log 'fatal' 'Failed to configure platform OS X' ;;
-  darwin) platform_mac || log 'fatal' 'Failed to configure platform OS X' ;;
+  macos | darwin) platform_mac || log 'fatal' 'Failed to configure platform OS X' ;;
   linux) platform_linux || log 'fatal' 'Failed to configure platform Linux' ;;
   *) log 'fatal' "Unsupported/Unknown platform [$PLATFORM]" ;;
   esac
