@@ -89,3 +89,6 @@ to_create:
   - dest: "{{ github_path }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/public_github"
     state: "link"
+  - dest: "{{ ansible_user_dir }}/.config/alacritty"
+    src: "{{ dotfiles_path }}/configs/alacritty"
+    state: "link"

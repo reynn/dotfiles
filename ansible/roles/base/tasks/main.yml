@@ -1,7 +1,7 @@
 ---
 # tasks file for base
 - debug:
-    var: "ansible_hostname"
+    var: "ansible_os_family"
 
 - name: "Create necessary files, folders and links"
   ansible.builtin.file:

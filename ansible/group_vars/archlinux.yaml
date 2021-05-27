@@ -1,8 +1,5 @@
 ---
 extra_to_create:
-  - dest: "{{ ansible_user_dir }}/.config/alacritty"
-    src: "{{ dotfiles_path }}/configs/alacritty"
-    state: "link"
   - dest: "{{ ansible_user_dir }}/.config/spotifyd"
     state: "directory"
   - dest: "{{ ansible_user_dir }}/.config/spotifyd/spotifyd.conf"
