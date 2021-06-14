@@ -23,40 +23,34 @@ They should be named with `_ (underscores)` instead of `. (period)` and be prefi
 
 Plugins are managed by [Fisher][fish-plugin-fisher], run `fisher update` to install plugins.
 
-| Plugin                                             | Description                                     |
-| -------------------------------------------------- | ----------------------------------------------- |
-| [Fisher][fish-plugin-fisher]                       | The Plugin Manager                              |
-| [getopts][fish-plugin-getopts]                     | Fish version of GNU getopts for flag parsing    |
-| [Z][fish-plugin-z]                                 | Jump around directories                         |
-| [fzf.fish][fish-plugin-fzf.fish]                   | FZF key bindings, more convenient than official |
-| [fish-nvm][fish-plugin-fish-nvm]                   | Use Node Version Manager in Fish                |
-| [bass][fish-plugin-bass]                           | Use bash utilities in Fish                      |
-| [YSU][fish-plugin-ysu]                             | Reminder of aliases                             |
-| [colored_man_pages][fish-plugin-colored_man_pages] |                                                 |
-| [fish-git-util][fish-plugin-git-util]              |                                                 |
-| [xxh][fish-plugin-xxh]                             |                                                 |
-| [gitignore][fish-plugin-gitignore]                 |                                                 |
-| [puffer-fish][fish-plugin-puffer-fish]             |                                                 |
+| Plugin                                             | Description                                                                                |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [Fisher][fish-plugin-fisher]                       | The Plugin Manager                                                                         |
+| [getopts][fish-plugin-getopts]                     | Fish version of GNU getopts for flag parsing                                               |
+| [sk.fish][fish-plugin-sk.fish]                     | SK (FZF Alt.) key bindings, more convenient than official                                  |
+| [fish-nvm][fish-plugin-fish-nvm]                   | Use Node Version Manager in Fish                                                           |
+| [bass][fish-plugin-bass]                           | Use bash utilities in Fish                                                                 |
+| [YSU][fish-plugin-ysu]                             | Reminder of aliases                                                                        |
+| [colored_man_pages][fish-plugin-colored_man_pages] | Colorizes man pages automatically to ease reading                                          |
+| [mattgreen/park.fish][fish-plugin-park]            | "parks" your current command line in a temporary buffer                                    |
+| [puffer-fish][fish-plugin-puffer-fish]             | Expands `...` to `../..` automatically. Add support for `!!` expanding to previous command |
 
 ## Keybindings
 
-| Key        | Result                                             |
-| ---------- | -------------------------------------------------- |
-| CTRL+f     | (fzf.fish) List files tab to select multiple files |
-| CTRL+ALT+s | (fzf.fish) Use git status to show modified files   |
-| CTRL+ALT+l | (fzf.fish) Show git log and copy the selected hash |
-| CTRL+r     | (fzf.fish) Reverse-i-Search, back search commands  |
-| CTRL+v     | (fzf.fish) Shell variables                         |
+| Key        | Result                                            |
+| ---------- | ------------------------------------------------- |
+| CTRL+f     | (sk.fish) List files tab to select multiple files |
+| CTRL+ALT+s | (sk.fish) Use git status to show modified files   |
+| CTRL+ALT+l | (sk.fish) Show git log and copy the selected hash |
+| CTRL+ALT+r | (sk.fish) Reverse-i-Search, back search commands  |
+| CTRL+ALT+v | (sk.fish) Shell variables                         |
 
 [fish-plugin-fisher]: https://github.com/orgebucaran/fisher
-[fish-plugin-z]: https://github.com/jethrokuan/z
-[fish-plugin-fzf.fish]: https://github.com/PatrickF1/fzf.fish
+[fish-plugin-sk.fish]: https://github.com/reynn/sk.fish
 [fish-plugin-fish-nvm]: https://github.com/FabioAntunes/fish-nvm
 [fish-plugin-getopts]: https://github.com/jorgebucaran/getopts.fish
 [fish-plugin-bass]: https://github.com/edc/bass
 [fish-plugin-ysu]: https://github.com/paysonwallach/fish-you-should-use
 [fish-plugin-colored_man_pages]: https://github.com/PatrickF1/colored_man_pages.fish
-[fish-plugin-git-util]: https://github.com/fishpkg/fish-git-util
-[fish-plugin-xxh]: https://github.com/xxh/xxh
-[fish-plugin-gitignore]: https://github.com/sijad/gitignore
+[fish-plugin-park]: https://github.com/mattgreen/park.fish
 [fish-plugin-puffer-fish]: https://github.com/nickeb96/puffer-fish

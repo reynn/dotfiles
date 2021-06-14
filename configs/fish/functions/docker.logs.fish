@@ -3,7 +3,7 @@
 function docker.logs -d 'Show logs for a running container'
     set -l docker_args -f
     set -lx container
-    set -lx fzf_preview 'docker log --since 2m {}'
+    set -lx sk_preview 'docker log --since 2m {}'
 
     function ___usage -d 'Show usage'
         set -l help_args -a 'Show logs for a running container'
@@ -28,7 +28,7 @@ function docker.logs -d 'Show logs for a running container'
     end
 
     if test -z "$container"
-        set container (docker container ls --format "{{ .Names }}" | fzf --select-1 --preview "$fzf_preview")
+        set container (docker container ls --format "{{ .Names }}" | sk --select-1 --preview "$sk_preview")
     end
 
     docker logs $docker_args $container

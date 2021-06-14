@@ -34,7 +34,7 @@ function artifactory.aql.search -d "Search Artifactory for files"
     end
 
     if not command.is_available -c jfrog
-        log.error '`jfrog` is not installed'
+        log error '`jfrog` is not installed'
         return 1
     end
 

@@ -35,15 +35,15 @@ function dotfiles.update -d 'Run various updates to our system'
 
     for update in $updates_to_run
         if not contains -- "$update" $available_updates
-            log.error "[$update] is not a recognized update"
+            log error "[$update] is not a recognized update"
             continue
         end
 
         if not functions -q dotfiles.$update.update
-            log.error "dotfiles.$update.update is not available"
+            log error "dotfiles.$update.update is not available"
             continue
         end
-        log.info "Executing $update update"
+        log "Executing $update update"
         dotfiles.$update.update
     end
 end

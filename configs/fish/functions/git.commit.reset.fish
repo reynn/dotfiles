@@ -3,7 +3,7 @@
 function git.commit.reset -d 'Show a list of commits in MRU order. Will use selected commit to `git reset --hard <SHA>`'
     set -lx target ''
     set -lx fzf_preview 'git show --color --format="medium" {}'
-    set -lx result_count '30'
+    set -lx result_count 30
 
     function ___usage
         set -l help_args -a "Show a list of commits in MRU order. Will use selected commit to `git reset --hard <SHA>`"
@@ -19,7 +19,7 @@ function git.commit.reset -d 'Show a list of commits in MRU order. Will use sele
                 set target $value
             case p preview
                 set fzf_preview $value
-            case n 'max-count'
+            case n max-count
                 set result_count $value
                 # Common args
             case h help
@@ -34,7 +34,7 @@ function git.commit.reset -d 'Show a list of commits in MRU order. Will use sele
 
     # If the current target is empty we start a FZF selector
     if test -z "$target"
-        set target (git rev-list -n $result_count --date-order origin | fzf --select-1 --preview "$fzf_preview")
+        set -x target (git rev-list -n $result_count --date-order origin | sk --select-1 --preview "$fzf_preview")
     end
 
     if test -n "$target"

@@ -23,9 +23,6 @@ git_repos:
     ignore_errors: "yes"
   - repo: "git@github.com:powerline/fonts.git"
     dest: "{{ github_path }}/powerline/fonts"
-  - repo: "git@github.com:junegunn/fzf.git"
-    dest: "{{ github_path }}/junegunn/fzf"
-    handler: "Run fzf install script"
 
 # ------------
 # Maps

@@ -9,6 +9,7 @@ function github.repos.clean -d "Delete forks from GitHub"
 
     function ___usage
         set -l help_args -a 'Delete all repositories from GitHub that are forked by the specified user'
+
         set -a help_args -f "o|owner|Owner of the repositories, will be used to filter forks|$owner"
         set -a help_args -f "n|noop|Dont actually delete the fork|$noop"
         set -a help_args -c '1|Noop exit'
@@ -33,7 +34,7 @@ function github.repos.clean -d "Delete forks from GitHub"
         end
     end
 
-    log.info -l 'args.owner' "($owner)"
+    log -l 'args.owner' "($owner)"
 
     ###########################################################
     # Main logic
@@ -42,9 +43,9 @@ function github.repos.clean -d "Delete forks from GitHub"
     for forked_repo in $forked_repos
         if test "$noop" = false
             gh api repos/$forked_repo --method DELETE
-            log.info -l 'delete.repo' "Repo ($forked_repo) deleted"
+            log -l 'delete.repo' "Repo ($forked_repo) deleted"
         else
-            log.info -l 'delete.repo.noop' "Repo ($forked_repo) deleted"
+            log -l 'delete.repo.noop' "Repo ($forked_repo) deleted"
             return 1
         end
     end

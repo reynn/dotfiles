@@ -8,23 +8,18 @@ function path.replace
         set l 1
     end
 
-    function __utils_path_add
-        log.debug "Adding $k to fish_user_paths"
-        set -pU fish_user_paths $k
-    end
-
     function __utils_path_replace_path
-        log.debug "Removing base dirs for $k"
+        log debug "Removing base dirs for $k"
         set -l base_dir $k
         for iter in (seq $l)
             set base_dir (dirname $base_dir)
         end
-        log.debug "Matching $base_dir in paths"
+        log debug "Matching $base_dir in paths"
         set -l index 1
         for path in $PATH
-            log.debug "path: $path"
+            log debug "path: $path"
             if string match -q "$base_dir*" "$path"
-                log.debug "Removing [$index] $path from PATH"
+                log debug "Removing [$index] $path from PATH"
                 set -e PATH[$index]
                 # break # break out of the loop looking for the right user path
             end
@@ -33,24 +28,24 @@ function path.replace
     end
 
     function __utils_path_replace
-        log.debug "Removing base dirs for $k"
+        log debug "Removing base dirs for $k"
         set -l base_dir $k
         for iter in (seq $l)
             set base_dir (dirname $base_dir)
         end
-        log.debug "Matching $base_dir in fish_user_paths"
+        log debug "Matching $base_dir in fish_user_paths"
         set -l index 1
         # Look through fish_user_paths to see if the base_dir already exists
         for user_path in $fish_user_paths
-            log.debug "fish_user_path: $user_path"
+            log debug "fish_user_path: $user_path"
             if string match -q "$base_dir*" "$user_path"
-                log.debug "Removing [$index] $user_path from fish_user_paths"
+                log debug "Removing [$index] $user_path from fish_user_paths"
                 # delete the path from fish_user_paths
                 set -e fish_user_paths[$index]
             end
             set index (math $index + 1)
         end
-        __utils_path_add $k
+        fish_add_path "$k"
     end
 
     function __utils_path_replace_usage

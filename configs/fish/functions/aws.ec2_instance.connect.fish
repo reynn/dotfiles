@@ -13,8 +13,6 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
         __dotfiles_help $help_args
     end
 
-    function
-
     getopts $argv | while read -l key value
         switch $key
             case f filter
@@ -33,12 +31,12 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
     end
 
     if not command.is_available -c aws
-        log.error '`aws` is not installed'
+        log error '`aws` is not installed'
         return 1
     end
 
-    log.debug "Filters   : $filters"
-    log.debug "Tmp_File  : $tmp_file"
+    log debug "Filters   : $filters"
+    log debug "Tmp_File  : $tmp_file"
 
     aws ec2 describe-instances --filters $filters >$tmp_file
 
@@ -46,7 +44,7 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
       fzf --select-1 --prompt 'instance> ' --height 50% \
         --preview "jq -S '.Reservations[].Instances[] | select(.InstanceId==\"{}\") | {InstanceId,ImageId,InstanceType,PrivateIpAddress,Tags}' $tmp_file")
 
-    log.debug $instance_id -l "instance.id"
+    log debug $instance_id -l "instance.id"
     rm -f $tmp_file
     if ! test -z "$instance_id"
         aws.ec2.ssh.to.instance.via.id $instance_id

@@ -26,15 +26,15 @@ function docker.images.clean -d 'Clean up Images'
     end
 
     if test ! -x (command -s docker)
-        log.error 'Docker is not installed'
+        log error 'Docker is not installed'
         return 1
     end
 
     if test "$all" = true
-        log.info 'Removing all existing images'
+        log 'Removing all existing images'
         docker image rm -f (docker image ls -qa)
     else
-        log.info 'Removing exited and stopped images'
+        log 'Removing exited and stopped images'
         docker image rm -f (docker image ls -q)
     end
 end

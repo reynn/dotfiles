@@ -59,11 +59,11 @@ function k8s.service.port-forward --description 'Forward an available port to a 
     test -n "$service_name"; or return 2 # bail out if we didn't get a service port
     set -q pod_port_number; or set -x pod_port_number (__get_service_port)
 
-    log.debug "Namespace       : $k8s_namespace"
-    log.debug "Service Name    : $service_name"
-    log.debug "Target Port     : $local_target_port"
-    log.debug "PodPort Number  : $pod_port_number"
+    log debug "Namespace       : $k8s_namespace"
+    log debug "Service Name    : $service_name"
+    log debug "Target Port     : $local_target_port"
+    log debug "PodPort Number  : $pod_port_number"
 
-    echo kubectl port-forward -n $k8s_namespace $extra_args svc/$service_name $local_target_port:$pod_port_number
+    log debug "kubectl port-forward -n $k8s_namespace $extra_args svc/$service_name $local_target_port:$pod_port_number"
     kubectl port-forward -n $k8s_namespace $extra_args svc/$service_name $local_target_port:$pod_port_number
 end

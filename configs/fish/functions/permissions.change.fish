@@ -10,12 +10,15 @@ function permissions.change -d "Update file permissions and ownership"
 
     function ___usage
         set -l help_args -a 'Update file permissions and ownership'
+
         set -a help_args -f "p|set-permissions|Set the permissions for the given patterns using `chmod`|$set_permissions"
         set -a help_args -f "P|permissions|The permissions to set using `chmod`|$permissions"
         set -a help_args -f "o|set-owner|Set the owner for the given patterns using `chown`|$set_owner"
         set -a help_args -f "O|owner|The owner to set using `chown`|`(id -u):(id -g)`"
+
         set -a help_args -e ' -P 0777'
         set -a help_args -e ' -P "u=rwx,g=rw,o=r"'
+
         __dotfiles_help $help_args
     end
 
@@ -44,15 +47,15 @@ function permissions.change -d "Update file permissions and ownership"
         end
     end
 
-    log.debug "argv            : $argv"
-    log.debug "patterns        : $patterns"
-    log.debug "set_permissions : $set_permissions"
-    log.debug "permissions     : $permissions"
-    log.debug "set_owner       : $set_owner"
-    log.debug "owner           : $owner"
+    log debug "argv            : $argv"
+    log debug "patterns        : $patterns"
+    log debug "set_permissions : $set_permissions"
+    log debug "permissions     : $permissions"
+    log debug "set_owner       : $set_owner"
+    log debug "owner           : $owner"
 
     for pattern in $patterns
-        log.info "Updating permissions for $pattern"
+        log "Updating permissions for $pattern"
         if test "$set_permissions" = true
             # chmod -R $permissions "$pattern"
         end

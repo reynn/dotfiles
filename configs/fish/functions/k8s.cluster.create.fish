@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
-function doctl.k8s_cluster.create -d 'Create a Kubernetes cluster in DigitalOcean' --wraps='doctl kubernetes cluster create'
-    set -lx doctl_args
+function k8s.cluster.create -d 'Create a Kubernetes cluster in DigitalOcean' --wraps='doctl kubernetes cluster create'
+    set -lx cloud_provider_args
     set -x cluster_name
     set -x min_size 1
     set -x max_size 5
@@ -62,14 +62,14 @@ function doctl.k8s_cluster.create -d 'Create a Kubernetes cluster in DigitalOcea
     end
 
     if test ! -x (command -s doctl)
-        log.error "`doctl` is not available on this system"
+        log error "`doctl` is not available on this system"
         return 1
     end
 
     if test -z "$cluster_name"
         set cluster_name (__get_random_name)
     else
-        set doctl_args[1] $cluster_name
+        set cloud_provider_args[1] $cluster_name
     end
 
     if test "$min_size" = "$max_size"
@@ -78,36 +78,36 @@ function doctl.k8s_cluster.create -d 'Create a Kubernetes cluster in DigitalOcea
 
     set -lx node_pool "name=$cluster_name-worker-pool;size=$node_type;min-nodes=$min_size;max-nodes=$max_size;auto-scale=true"
 
-    log.debug "cluster_name : $cluster_name"
-    log.debug "min_size     : $min_size"
-    log.debug "max_size     : $max_size"
-    log.debug "node_type    : $node_type"
-    log.debug "auto_scale   : $auto_scale"
-    log.debug "one_clicks   : $one_clicks"
-    log.debug "k8s_version  : $k8s_version"
-    log.debug "do_region    : $do_region"
-    log.debug "node_pool    : $node_pool"
+    log debug "cluster_name : $cluster_name"
+    log debug "min_size     : $min_size"
+    log debug "max_size     : $max_size"
+    log debug "node_type    : $node_type"
+    log debug "auto_scale   : $auto_scale"
+    log debug "one_clicks   : $one_clicks"
+    log debug "k8s_version  : $k8s_version"
+    log debug "do_region    : $do_region"
+    log debug "node_pool    : $node_pool"
 
-    set -lx doctl_args $cluster_name
-    set -a doctl_args --verbose
-    set -a doctl_args '--auto-upgrade=true'
-    set -a doctl_args --region
-    set -a doctl_args "$do_region"
-    set -a doctl_args --version
-    set -a doctl_args "$k8s_version"
-    set -a doctl_args --maintenance-window
-    set -a doctl_args 'sunday=03:00'
-    set -a doctl_args --surge-upgrade
+    set -lx cloud_provider_args $cluster_name
+    set -a cloud_provider_args --verbose
+    set -a cloud_provider_args '--auto-upgrade=true'
+    set -a cloud_provider_args --region
+    set -a cloud_provider_args "$do_region"
+    set -a cloud_provider_args --version
+    set -a cloud_provider_args "$k8s_version"
+    set -a cloud_provider_args --maintenance-window
+    set -a cloud_provider_args 'sunday=03:00'
+    set -a cloud_provider_args --surge-upgrade
 
     if test (count $one_clicks) -gt 0
-        set -a doctl_args --1-clicks
-        set -a doctl_args (string join ',' $one_clicks)
+        set -a cloud_provider_args --1-clicks
+        set -a cloud_provider_args (string join ',' $one_clicks)
     end
 
-    set -a doctl_args --node-pool
-    set -a doctl_args "$node_pool"
+    set -a cloud_provider_args --node-pool
+    set -a cloud_provider_args "$node_pool"
 
-    log.info "Creating cluster [$cluster_name]"
-    echo doctl kubernetes cluster create $doctl_args
-    doctl kubernetes cluster create $doctl_args
+    log "Creating cluster [$cluster_name]"
+    echo doctl kubernetes cluster create $cloud_provider_args
+    doctl kubernetes cluster create $cloud_provider_args
 end

@@ -49,7 +49,7 @@ function artifactory.build.download -d "Download files from Artifactory based on
     end
 
     if not command.is_available -c jfrog
-        log.error '`jfrog` is not installed'
+        log error '`jfrog` is not installed'
         return 1
     end
 

@@ -9,11 +9,13 @@ function media.archive -d 'Move media files to a specified directory'
 
     function ___usage
         set -l help_args -a "Move media files to a specified directory\n\n\tiCloud Directory: $icloud_directory"
+
         set -a help_args -f "b|backup-directory|Where media files will be moved to for archiving|[iCloud]"
         set -a help_args -f "s|source_directory|Where media files will be from during archiving|$source_directory"
         set -a help_args -f "e|extension|Include an additional extension to the list|$extensions"
         set -a help_args -f "E|clear-extensions|Clear the list of extensions to add a limitted set only|false"
         set -a help_args -f "d|depth|Maximum depth to iterate through|$max_depth"
+
         set -a help_args -e ' -E -e jpg # Include only jpg files'
 
         __dotfiles_help $help_args
@@ -44,10 +46,20 @@ function media.archive -d 'Move media files to a specified directory'
         end
     end
 
-    fd --type f \
-        --max-depth=$max_depth \
-        "--extension=$extensions" \
-        . \
-        --base-directory=$source_directory \
-        --exec mv -nv "$source_directory/{/}" "$backup_directory/Pictures/{/}"
+    set -la fd_args --type f
+    set -a fd_args --max-depth=$max_depth
+    set -a fd_args --extension="$extensions"
+    set -a fd_args .
+    set -a fd_args --base-directory="$source_directory"
+    set -a fd_args --exec mv -nv "{}" "$backup_directory/Pictures/{/}"
+
+    log debug '['(count $fd_args)"] FD args: $fd_args"
+
+    fd $fd_args
+    # fd --type f \
+    # --max-depth=$max_depth \
+    # --extension="$extensions" \
+    # . \
+    # --base-directory="$source_directory" \
+    # --exec mv -nv "{}" "$backup_directory/Pictures/{/}"
 end

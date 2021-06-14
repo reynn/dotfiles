@@ -4,9 +4,9 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
     set -lx installed_version (cat $HOME/.bins/aws-cli/installed_version 2>/dev/null; or echo '')
 
     if test -z "$installed_version"
-        log.info "AWS CLI is not installed"
+        log "AWS CLI is not installed"
     else
-        log.info "AWS CLI currently installed ($installed_version) latest ($latest_version)"
+        log "AWS CLI currently installed ($installed_version) latest ($latest_version)"
         if test "$installed_version" = "$latest_version"
             echo "--> Up to date!"
             return
@@ -14,5 +14,5 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
             echo "--> Installed but not on latest version"
         end
     end
-    log.info "--> completed <--"
+    log "--> completed <--"
 end

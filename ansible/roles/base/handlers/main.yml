@@ -1,4 +1,0 @@
----
-# handlers file for base
-- name: "Run fzf install script"
-  shell: "{{ git_path }}/github.com/junegunn/fzf/install --bin --no-key-bindings --no-completion --no-update-rc"

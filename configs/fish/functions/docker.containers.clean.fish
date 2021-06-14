@@ -26,7 +26,7 @@ function docker.containers.clean -d "Clean up containers"
     end
 
     if not command.is_available -c docker
-        log.error '`docker` is not installed'
+        log error '`docker` is not installed'
         return 1
     end
 
@@ -37,9 +37,9 @@ function docker.containers.clean -d "Clean up containers"
         set containers (docker container ls -q)
     end
     if test (count $containers) -gt 0
-        log.info "Cleaning "(count $containers)" containers"
+        log "Cleaning "(count $containers)" containers"
         docker container rm -f $containers
     else
-        log.info "There are no containers to remove"
+        log "There are no containers to remove"
     end
 end

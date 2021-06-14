@@ -1,26 +1,25 @@
 #!/usr/bin/env fish
 
 function __dotfiles_help -d 'Specially formatted help messages'
-    set -x examples
-    set -x flags 'v|verbose|Enable debug logging|false' 'h|help|Show this help message|false' 'q|quiet|quiet all logged output|false'
-    set -x exit_codes '0|Successful' '1|Invalid arguments/Missing command'
+    set examples
+    set flags 'v|verbose|Enable debug logging|false' 'h|help|Show this help message|false' 'q|quiet|quiet all logged output|false'
+    set exit_codes '0|Successful' '1|Invalid arguments/Missing command'
     set system_platform (uname | string lower)
     set single_col_percent '0.1'
     set double_col_percent '0.2'
 
-    test -f (command -v tput); and set -x max_width (tput cols); or set -x max_width 120
+    command.is_available -c tput; and set -x max_width (tput cols); or set -x max_width 120
     if test $max_width -lt 80
         # Overall size should not be less than 80, though ideally it should be >100-120
         set max_width 80
     end
-    set -x last_trace (status stack-trace)[-1]
 
+    set last_trace (status stack-trace)[-1]
     set function_name (string replace --filter --regex 'in function \'(.+?)\'.+' '$1' $last_trace)
-
-    set -x single_col_width (math "round($max_width * $single_col_percent)")
-    set -x double_col_width (math "round($max_width * $double_col_percent)")
-    set -x half_col_width (math "round($single_col_width/2)")
-    set -x one_half_col_width (math "$half_col_width+$single_col_width")
+    set single_col_width (math "round($max_width * $single_col_percent)")
+    set double_col_width (math "round($max_width * $double_col_percent)")
+    set half_col_width (math "round($single_col_width/2)")
+    set one_half_col_width (math "$half_col_width+$single_col_width")
 
     getopts $argv | while read -l key value
         switch $key
@@ -40,25 +39,25 @@ function __dotfiles_help -d 'Specially formatted help messages'
         end
     end
 
-    log.debug "Function Name           : $function_name"
-    log.debug "Last Trace              : $last_trace"
-    log.debug "Terminal Width          : $max_width"
-    log.debug "Single Column (w*$single_col_percent)   : $single_col_width"
-    log.debug "Double Column (w*$double_col_percent)   : $double_col_width"
-    log.debug "About                   : $about"
-    log.debug "Flags                   : $flags"
-    log.debug "# Flags                 : "(count $flags)
-    log.debug "Examples                : $examples"
-    log.debug "# Examples              : "(count $examples)
-    log.debug "Name                    : $function_name"
+    log debug "Function Name           : $function_name"
+    log debug "Last Trace              : $last_trace"
+    log debug "Terminal Width          : $max_width"
+    log debug "Single Column (w*$single_col_percent)   : $single_col_width"
+    log debug "Double Column (w*$double_col_percent)   : $double_col_width"
+    log debug "About                   : $about"
+    log debug "Flags                   : $flags"
+    log debug "# Flags                 : "(count $flags)
+    log debug "Examples                : $examples"
+    log debug "# Examples              : "(count $examples)
+    log debug "Name                    : $function_name"
 
     set -l table_row_format '| %s | %s | %s | %s |\n'
 
     set -x desc_col_width (math "round($max_width - (4*$single_col_width))+10-"(string length $table_row_format))
     set -x default_col_width (math "round($max_width-($desc_col_width+(2*$single_col_width))-14)")
 
-    log.debug "Description Column (w-(4*col)) : $desc_col_width"
-    log.debug "Default Column (w-(desc_w+2*s_col_w)) : $default_col_width"
+    log debug "Description Column (w-(4*col)) : $desc_col_width"
+    log debug "Default Column (w-(desc_w+2*s_col_w)) : $default_col_width"
 
     set -q HELP_COLOR; and set_color $HELP_COLOR; or set_color $fish_color_operator
     printf '# Usage: %s on %s\n\n' "$function_name" "$system_platform"

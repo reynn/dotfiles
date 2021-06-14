@@ -18,7 +18,7 @@ function aws.eks_kubeconfig.retrieve
     end
 
     if not command.is_available -c aws
-        log.error '`aws` is not installed'
+        log error '`aws` is not installed'
         return 1
     end
 

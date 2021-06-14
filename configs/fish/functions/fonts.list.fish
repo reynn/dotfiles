@@ -25,7 +25,7 @@ function fonts.list -d 'List all installed font families, sorted by name'
     end
 
     if not command.is_available -c fc-list
-        log.error 'Command `fc-list` is not available'
+        log error 'Command `fc-list` is not available'
         return 1
     end
 

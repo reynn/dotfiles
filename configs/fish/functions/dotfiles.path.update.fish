@@ -1,18 +1,41 @@
 #!/usr/bin/env fish
 
 function dotfiles.path.update -d "Setup the fish_user_path variable"
-    # Source additional files
+    # Python exports
+    set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
 
     # These will add to the fish_user_paths only if necessary
-    fish_add_path "$PYTHON_HOME/bin"
+    fish_add_path "$GFP/github.com/junegunn/fzf/bin"
     fish_add_path "$DFP/scripts"
+    fish_add_path "$HOME/.local/bin"
     fish_add_path "$HOME/.bins/envs"
+    fish_add_path "$HOME/.cargo/bin"
+    fish_add_path "$HOME/go/bin"
+    path.replace "$PYTHON_HOME/bin"
 
-    if test -e (command -v cargo)
-        fish_add_path "$HOME/.cargo/bin"
+    command.is_available -c cargo; and fish_add_path "$HOME/.cargo/bin"
+
+    log debug "Checking for go versions in $go_versions_path"
+    if test -d "$go_versions_path"
+        set -l go_version (fd -td -d1 . --base-directory $go_versions_path | sort -r)
+        if test (count $go_version) -gt 1
+            set go_version $go_version[1]
+        end
+        log debug "Go Version $go_version"
+        path.replace "$go_versions_path/$go_version/bin" 2
     end
 
-    if test -e (command -v fzf)
-        fish_add_path "$GFP/github.com/junegunn/fzf/bin"
+    log debug "Checking for node versions in $node_versions_path"
+    if test -d "$node_versions_path"
+        set -l node_version (fd -td -d1 . --base-directory $node_versions_path | sort -r)
+        if test (count $node_version) -gt 1
+            set node_version $node_version[1]
+        end
+        log debug "Node Version $node_version"
+        path.replace "$node_versions_path/$node_version/bin" 2
+    end
+
+    for extra_path in $paths_to_add
+        fish_add_path extra_path
     end
 end

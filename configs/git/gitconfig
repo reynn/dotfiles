@@ -199,6 +199,7 @@ defaultBranch = main
 
 [user]
 name = "Nic Patterson"
+	email = nic@reynn.dev
 
 [includeIf "gitdir:~/git/github.com/"]
 path = ~/git/github.com/.gitconfig

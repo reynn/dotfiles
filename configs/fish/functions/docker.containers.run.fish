@@ -59,7 +59,7 @@ function docker.containers.run -d 'Run a basic container'
     end
 
     if test ! -x (command -s docker)
-        log.error 'Docker is not installed'
+        log error 'Docker is not installed'
         return 1
     end
 
@@ -117,13 +117,13 @@ function docker.containers.run -d 'Run a basic container'
             if test $env = ""
                 continue
             end
-            log.debug "VAR: `$env`"
+            log debug "VAR: `$env`"
             set -a args -e "$env"
         end
     end
 
     set -a args $image
 
-    log.debug "docker run $args"
+    log debug "docker run $args"
     docker run $args
 end

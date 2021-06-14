@@ -29,7 +29,8 @@ function k8s.pods.list --description 'Show a list of pods for a Kubernetes names
         end
     end
 
-    log.debug "Namespace: $k8s_namespace"
-    log.debug "ExtraArgs: $extra_args"
+    log debug "Namespace: $k8s_namespace"
+    log debug "ExtraArgs: $extra_args"
+
     kubectl get pods -n $k8s_namespace $extra_args
 end
