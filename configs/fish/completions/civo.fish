@@ -161,4 +161,3 @@ complete -c civo -n 'set --query __civo_comp_do_file_comp'
 # The call to __civo_prepare_completions will setup both __civo_comp_results and __civo_comp_do_file_comp.
 # It provides the program's completion choices.
 complete -c civo -n '__civo_prepare_completions' -f -a '$__civo_comp_results'
-

@@ -134,4 +134,3 @@ complete -c kustomize -n 'set --query __kustomize_comp_do_file_comp'
 # The call to __kustomize_prepare_completions will setup both __kustomize_comp_results abd __kustomize_comp_do_file_comp.
 # It provides the program's completion choices.
 complete -c kustomize -n '__kustomize_prepare_completions' -f -a '$__kustomize_comp_results'
-

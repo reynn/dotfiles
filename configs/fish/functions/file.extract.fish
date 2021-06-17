@@ -16,21 +16,21 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
     end
 
     function ___extract
-        set -l file $argv[1]
-        set -l target_dir $argv[2]
+        set -l file "$argv[1]"
+        set -l target_dir "$argv[2]"
 
-        set -l extension ()
+        set -l extension ''
 
         switch $extension
-            case .tar.gz *.tgz
+            case .tar.gz .tgz
                 tar zxvf "$file"
-            case .tar.bz2 *.tbz *.tbz2
+            case .tar.bz2 .tbz .tbz2
                 tar xvjf "$file"
-            case .tar.xz *.txz
+            case .tar.xz .txz
                 tar --xz --help &>/dev/null && tar --xz -xvf "$file" || xzcat "$file" | tar xvf -
-            case .tar.zma *.tlz
+            case .tar.zma .tlz
                 tar --lzma --help &>/dev/null && tar --lzma -xvf "$file" || lzcat "$file" | tar xvf -
-            case .tar.zst *.tzst
+            case .tar.zst .tzst
                 tar --zstd --help &>/dev/null && tar --zstd -xvf "$file" || zstdcat "$file" | tar xvf -
             case .tar
                 tar xvf "$file"
@@ -54,7 +54,7 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
                 unlzma "$file"
             case .z
                 uncompress "$file"
-            case .zip *.war *.jar *.sublime-package *.ipsw *.xpi *.apk *.aar *.whl
+            case .zip .war .jar .sublime-package .ipsw .xpi .apk .aar .whl
                 unzip "$file" -d $target_dir
             case .rar
                 unrar x -ad "$file"
@@ -62,7 +62,7 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
                 7za x "$file"
             case .zst
                 unzstd "$file"
-            case *
+            case '*'
                 log fatal ''
         end
     end

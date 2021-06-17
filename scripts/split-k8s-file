@@ -8,8 +8,7 @@ from pathlib import Path
 def yaml_loader(yaml_file: Path, out_dir: Path):
     if not out_dir.is_dir():
         print(
-            f"{out_dir.absolute()} is not a directory, " +
-            "please provide a different path.")
+            f"{out_dir.absolute()} is not a directory, please provide a different path.")
         exit(1)
     try:
         with yaml_file.open('r') as stream:
@@ -25,11 +24,10 @@ def yaml_loader(yaml_file: Path, out_dir: Path):
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument('--file',
-                        help='The original file containing the YAML to split')
-    parser.add_argument('--out',
-                        help='Directory to output files to, default is `.`',
-                        default='.')
+    parser.add_argument(
+        '--file', help='The original file containing the YAML to split')
+    parser.add_argument(
+        '--out', help='Directory to output files to, default is `.`', default='.')
     args = parser.parse_args()
 
     if args.file is None or args.file == '':

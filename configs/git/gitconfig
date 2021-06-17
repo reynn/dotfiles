@@ -131,7 +131,7 @@ precomposeunicode = false
 # https://git-scm.com/docs/git-update-index#_untracked_cache
 untrackedCache = true
 pager = delta
-hooksPath = ~/git/github.com/reynn/dotfiles/config/git/hooks
+# hooksPath = ~/git/github.com/reynn/dotfiles/config/git/hooks
 
 [delta]
 plus-color = "#012800"
@@ -199,7 +199,7 @@ defaultBranch = main
 
 [user]
 name = "Nic Patterson"
-	email = nic@reynn.dev
+email = nic@reynn.dev
 
 [includeIf "gitdir:~/git/github.com/"]
 path = ~/git/github.com/.gitconfig

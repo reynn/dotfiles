@@ -35,6 +35,7 @@ function dotfiles.ansible.update -d 'Run the playbook to apply latest changes'
             case q quiet
                 set -x QUIET true
             case v verbose
+                set verbose (math "$verbose + 1")
                 set -x DEBUG true
         end
     end
@@ -50,12 +51,12 @@ function dotfiles.ansible.update -d 'Run the playbook to apply latest changes'
     end
 
     for env in $ansible_env
-        set -a ansible_args --env
+        set -a ansible_args -e
         set -a ansible_args $env
     end
 
     log debug (count ansible_args)" arguments ($ansible_args)"
     log debug "ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook $ansible_args"
 
-    ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook -e "ansible_python_interpreter=$python3_bin" $ansible_args
+    ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook $ansible_args
 end

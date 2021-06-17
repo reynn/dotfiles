@@ -31,6 +31,12 @@ function dotfiles.env.update -d 'Setup global/universal variables'
         end
     end
 
+    set -Ux SCRATCH_DIRECTORY "$DFP/.scratch"
+    if not test -d $SCRATCH_DIRECTORY
+        mkdir -p $SCRATCH_DIRECTORY
+        touch $SCRATCH_DIRECTORY/scratch.{rs,go,py,yaml,json,toml,txt,md}
+    end
+
     set -Ux GFP "$HOME/git"
     set -Ux DFP "$GFP/github.com/reynn/dotfiles"
 
@@ -39,7 +45,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     set -Ux LANGUAGES_GO_VERSION '1.16'
     set -Ux LANGUAGES_RUST_VERSION '1.52'
 
-    # 
+    #
     set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'
 
     ## Load any secrets

@@ -46,10 +46,9 @@ packages:
     - ansible
     - certifi
     - httpie
-    - docker
+    - pre-commit
   cargo: []
-  brew:
-    - tmux
+  brew: []
 
 scripts:
   - name: "installer.starship"

@@ -161,4 +161,3 @@ complete -c k0s -n 'set --query __k0s_comp_do_file_comp'
 # The call to __k0s_prepare_completions will setup both __k0s_comp_results and __k0s_comp_do_file_comp.
 # It provides the program's completion choices.
 complete -c k0s -n '__k0s_prepare_completions' -f -a '$__k0s_comp_results'
-

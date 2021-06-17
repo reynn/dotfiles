@@ -11,3 +11,4 @@ containers/adult/stash/
 *.scr
 **/tls.*
 .build/
+.scratch/
