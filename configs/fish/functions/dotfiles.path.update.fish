@@ -5,13 +5,12 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
 
     # These will add to the fish_user_paths only if necessary
-    fish_add_path "$GFP/github.com/junegunn/fzf/bin"
+    path.replace "$PYTHON_HOME/bin"
     fish_add_path "$DFP/scripts"
     fish_add_path "$HOME/.local/bin"
     fish_add_path "$HOME/.bins/envs"
     fish_add_path "$HOME/.cargo/bin"
     fish_add_path "$HOME/go/bin"
-    path.replace "$PYTHON_HOME/bin"
 
     command.is_available -c cargo; and fish_add_path "$HOME/.cargo/bin"
 
@@ -33,9 +32,5 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
         end
         log debug "Node Version $node_version"
         path.replace "$node_versions_path/$node_version/bin" 2
-    end
-
-    for extra_path in $paths_to_add
-        fish_add_path extra_path
     end
 end

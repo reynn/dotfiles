@@ -77,7 +77,7 @@ shell:
     - "-i"
     - "-l"
     - "-c"
-    - "zellij attach alacritty; and zellij -s alacritty"
+    - "zellij attach alacritty; or zellij -s alacritty"
 
 schemes:
   afterglow: &afterglow

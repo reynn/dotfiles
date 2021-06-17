@@ -52,13 +52,20 @@ function github.release.download -d "Download a release from GitHub in the expec
 
         mkdir -p "$version_directory"
         mkdir -p "$bins_env_path"
-
+        set download_status 0
         if test -z $pattern
             log "Downloading assets from GitHub to $version_directory"
             gh release --repo $repo download $latest_release_version --dir $version_directory
+            set download_status $status
         else
             log "Downloading assets from GitHub to $version_directory with pattern $pattern"
             gh release --repo $repo download $latest_release_version --dir $version_directory --pattern $pattern
+            set download_status $status
+        end
+
+        if test $download_status != 0
+          log "Latest version already downloaded 🐟"
+          return 0
         end
 
         log debug "Getting assets from $version_directory"

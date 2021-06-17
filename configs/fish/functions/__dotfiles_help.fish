@@ -21,10 +21,12 @@ function __dotfiles_help -d 'Specially formatted help messages'
     set half_col_width (math "round($single_col_width/2)")
     set one_half_col_width (math "$half_col_width+$single_col_width")
 
+    set -x about_lines
+
     getopts $argv | while read -l key value
         switch $key
             case a about
-                set about "$value"
+                set -a about_lines "$value"
             case c exit-code
                 set -a exit_codes "$value"
             case e example
@@ -44,7 +46,7 @@ function __dotfiles_help -d 'Specially formatted help messages'
     log debug "Terminal Width          : $max_width"
     log debug "Single Column (w*$single_col_percent)   : $single_col_width"
     log debug "Double Column (w*$double_col_percent)   : $double_col_width"
-    log debug "About                   : $about"
+    log debug "About                   : $about_lines"
     log debug "Flags                   : $flags"
     log debug "# Flags                 : "(count $flags)
     log debug "Examples                : $examples"
@@ -62,8 +64,11 @@ function __dotfiles_help -d 'Specially formatted help messages'
     set -q HELP_COLOR; and set_color $HELP_COLOR; or set_color $fish_color_operator
     printf '# Usage: %s on %s\n\n' "$function_name" "$system_platform"
 
-    if test -n "$about"
-        echo -e "> $about\n"
+    if test -n "$about_lines"
+        for about in $about_lines
+            printf "\n> $about"
+        end
+        printf '\n\n'
     end
 
     if test (count $flags) -gt 0
