@@ -22,10 +22,10 @@
     }
   },
   "json.enable": true,
-  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.lens.enable": true,
   "rust-analyzer.notifications.cargoTomlNotFound": false,
   "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.assist.importGroup": true,
   "rust-analyzer.updates.channel": "nightly",
   "yaml.completion": true,
   "yaml.format.enable": true,

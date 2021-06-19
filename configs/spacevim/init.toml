@@ -49,10 +49,6 @@ name = "lang#go"
 [[layers]]
 name = "lang#sh"
 
-# https://spacevim.org/layers/lang/markdown/
-[[layers]]
-name = "lang#markdown"
-
 # https://spacevim.org/layers/lang/toml/
 [[layers]]
 name = "lang#toml"
