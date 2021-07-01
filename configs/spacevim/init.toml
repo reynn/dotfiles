@@ -1,19 +1,19 @@
 # All SpaceVim option below [option] section
 [options]
-autocomplete_method = "coc"
-automatic_update = true
-bootstrap_after = 'config#after'
-bootstrap_before = 'config#before'
-colorscheme = "gruvbox"
-colorscheme_bg = "dark"
-enable_guicolors = true
-enable_statusline_mode = true
-enable_tabline_filetype_icon = true
-filemanager = "nerdtree"
-guifont = "SourceCodePro Nerd Font Mono:h11"
+autocomplete_method           = "coc"
+automatic_update              = true
+bootstrap_after               = 'config#after'
+bootstrap_before              = 'config#before'
+colorscheme                   = "gruvbox"
+colorscheme_bg                = "dark"
+enable_guicolors              = true
+enable_statusline_mode        = true
+enable_tabline_filetype_icon  = true
+filemanager                   = "nerdtree"
+guifont                       = "SourceCodePro Nerd Font Mono:h11"
 statusline_inactive_separator = "bar"
-statusline_right_sections = ["cursorpos"]
-statusline_separator = "arrow"
+statusline_right_sections     = ["cursorpos"]
+statusline_separator          = "arrow"
 
 # LAYER DEFINITIONS: https://spacevim.org/layers/
 # #######################################################################
@@ -21,8 +21,8 @@ statusline_separator = "arrow"
 # https://spacevim.org/layers/autocomplete/
 [[layers]]
 auto_completion_return_key_behavior = "complete"
-auto_completion_tab_key_behavior = "smart"
-name = "autocomplete"
+auto_completion_tab_key_behavior    = "smart"
+name                                = "autocomplete"
 
 # https://spacevim.org/layers/colorscheme/
 [[layers]]
@@ -31,7 +31,7 @@ name = "colorscheme"
 # https://spacevim.org/layers/core/
 [[layers]]
 filetree_show_hidden = true
-name = "core"
+name                 = "core"
 
 # # https://spacevim.org/layers/core/statusline
 # [[layers]]
@@ -63,66 +63,60 @@ name = "tmux"
 
 # https://spacevim.org/layers/shell/
 [[layers]]
-default_height = 30
+default_height   = 30
 default_position = "top"
-name = "shell"
+name             = "shell"
 
 # https://spacevim.org/layers/ui
 [[layers]]
 enable_scrollbar = true
-name = "ui"
+name             = "ui"
 
 # Custom Plugins: https://spacevim.org/documentation/#custom-configuration
 # #######################################################################
 
-# Rust Object Notation
-[[custom_plugins]]
-merged = false
-on_ft = "ron"
-repo = "ron-rs/ron.vim"
-
 # Add Helm integration
 [[custom_plugins]]
 merged = false
-on_ft = "helm"
-repo = "towolf/vim-helm"
+on_ft  = "helm"
+repo   = "towolf/vim-helm"
 
 # Add git integration to Nerdtree
 [[custom_plugins]]
 merged = false
-repo = "Xuyuanp/nerdtree-git-plugin"
+repo   = "Xuyuanp/nerdtree-git-plugin"
 
 # Improve the builtin `.` repeat
 [[custom_plugins]]
 merged = false
-repo = "tpope/vim-repeat"
+repo   = "tpope/vim-repeat"
 
 # using w, b to traverse words considers camel case separate words
 [[custom_plugins]]
 merged = false
-repo = "bkad/CamelCaseMotion"
+repo   = "bkad/CamelCaseMotion"
 
 # text motions to surround object with a character `ys$'` will surround from cursor to end of line with single quote
 [[custom_plugins]]
 merged = false
-repo = "tpope/vim-surround"
+repo   = "tpope/vim-surround"
 
 # Spacevim default aligns are a bit weird to me and I'm used to this instead, the LiveEasyAlign is hella useful
 [[custom_plugins]]
 merged = false
-repo = "junegunn/vim-easy-align"
+repo   = "junegunn/vim-easy-align"
 
 [[custom_plugins]]
 merged = false
-repo = "kana/vim-textobj-user"
+repo   = "kana/vim-textobj-user"
 
 [[custom_plugins]]
 merged = false
-repo = "michaeljsmith/vim-indent-object"
+repo   = "michaeljsmith/vim-indent-object"
 
 [[custom_plugins]]
 merged = false
-repo = "vim-scripts/argtextobj.vim"
+repo   = "vim-scripts/argtextobj.vim"
 
 [[custom_plugins]]
 merged = false
@@ -131,3 +125,7 @@ repo   = "vim-scripts/argtextobj.vim"
 [[custom_plugins]]
 merged = false
 repo   = "mhinz/vim-crates"
+
+[[custom_plugins]]
+merged = false
+repo   = "pedrohdz/vim-yaml-folds"

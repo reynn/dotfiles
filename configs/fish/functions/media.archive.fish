@@ -48,7 +48,9 @@ function media.archive -d 'Move media files to a specified directory'
 
     set -la fd_args --type f
     set -a fd_args --max-depth=$max_depth
-    set -a fd_args --extension="$extensions"
+    for extension in $extensions
+        set -a fd_args "--extension=$extension"
+    end
     set -a fd_args .
     set -a fd_args --base-directory="$source_directory"
     set -a fd_args --exec mv -nv "{}" "$backup_directory/Pictures/{/}"
@@ -56,10 +58,4 @@ function media.archive -d 'Move media files to a specified directory'
     log debug '['(count $fd_args)"] FD args: $fd_args"
 
     fd $fd_args
-    # fd --type f \
-    # --max-depth=$max_depth \
-    # --extension="$extensions" \
-    # . \
-    # --base-directory="$source_directory" \
-    # --exec mv -nv "{}" "$backup_directory/Pictures/{/}"
 end
