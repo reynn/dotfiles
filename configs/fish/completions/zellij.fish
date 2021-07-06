@@ -16,10 +16,13 @@ complete -c zellij -n "__fish_use_subcommand" -f -a "attach" -d 'Attach to sessi
 complete -c zellij -n "__fish_use_subcommand" -f -a "help" -d 'Prints this message or the help of the given subcommand(s)'
 complete -c zellij -n "__fish_seen_subcommand_from options" -l theme -d 'Set the default theme'
 complete -c zellij -n "__fish_seen_subcommand_from options" -l default-mode -d 'Set the default mode'
+complete -c zellij -n "__fish_seen_subcommand_from options" -l default-shell -d 'Set the default shell'
+complete -c zellij -n "__fish_seen_subcommand_from options" -l layout-dir -d 'Set the layout_dir, defaults to subdirectory of config dir'
 complete -c zellij -n "__fish_seen_subcommand_from options" -l simplified-ui -d 'Allow plugins to use a more simplified layout that is compatible with more fonts'
+complete -c zellij -n "__fish_seen_subcommand_from options" -l disable-mouse-mode
 complete -c zellij -n "__fish_seen_subcommand_from options" -s h -l help -d 'Prints help information'
 complete -c zellij -n "__fish_seen_subcommand_from options" -s V -l version -d 'Prints version information'
-complete -c zellij -n "__fish_seen_subcommand_from setup" -l generate-completion
+complete -c zellij -n "__fish_seen_subcommand_from setup" -l generate-completion -d 'Generates completion for the specified shell'
 complete -c zellij -n "__fish_seen_subcommand_from setup" -l dump-config -d 'Dump the default configuration file to stdout'
 complete -c zellij -n "__fish_seen_subcommand_from setup" -l clean -d 'Disables loading of configuration file at default location, loads the defaults that zellij ships with'
 complete -c zellij -n "__fish_seen_subcommand_from setup" -l check -d 'Checks the configuration of zellij and displays currently used directories'
