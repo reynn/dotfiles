@@ -8,4 +8,4 @@ extra_to_create:
     state: "link"
 os_scripts:
   - name: "installer.brew"
-    url: "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+    url: "https://raw.githubusercontent.com/Homebrew/install/master/install.sh"

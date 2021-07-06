@@ -1,6 +1,15 @@
 ---
 - hosts: localhost
   force_handlers: yes
-  gather_facts: yes
+  gather_facts: no
+
+  pre_tasks:
+    - add_host:
+        name: "localhost"
+        groups:
+          - "{{ ansible_os_family | lower }}"
+      tags: [always]
+    - gather_facts:
+      tags: [always]
 
   roles: [base]

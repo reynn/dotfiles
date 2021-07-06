@@ -1,0 +1,5 @@
+---
+- name: "Install fonts from `ryanoasis/nerd-fonts`"
+  ansible.builtin.command: "./install.sh --clean --link --complete --otf"
+  args:
+    chdir: "{{ github_path }}/ryanoasis/nerd-fonts"

@@ -21,8 +21,9 @@ git_repos:
   - repo: "git@github.com:reynn/dotfiles.git"
     dest: "{{ dotfiles_path }}"
     ignore_errors: "yes"
-  - repo: "git@github.com:powerline/fonts.git"
-    dest: "{{ github_path }}/powerline/fonts"
+  - repo: "git@github.com:ryanoasis/nerd-fonts.git"
+    dest: "{{ github_path }}/ryanoasis/nerd-fonts"
+    handler: "Install fonts from `ryanoasis/nerd-fonts`"
 
 # ------------
 # Maps
@@ -51,8 +52,6 @@ packages:
   brew: []
 
 scripts:
-  - name: "installer.starship"
-    url: "https://raw.githubusercontent.com/starship/starship/master/install/install.sh"
   - name: "installer.spacevim"
     url: "https://raw.githubusercontent.com/SpaceVim/SpaceVim/master/docs/install.sh"
   - name: "installer.rustup"

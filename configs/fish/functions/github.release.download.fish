@@ -31,8 +31,8 @@ function github.release.download -d "Download a release from GitHub in the expec
 
     function __versm -d 'Main logic to get assets for a specific repository'
         if test -z "$latest_release_version"
-            if command.is_available -c fzf
-                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | fzf --select-1 --exit-0)
+            if command.is_available -c sk
+                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | sk --select-1 --exit-0)
             else
                 set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
             end
@@ -64,8 +64,8 @@ function github.release.download -d "Download a release from GitHub in the expec
         end
 
         if test $download_status != 0
-          log "Latest version already downloaded 🐟"
-          return 0
+            log "Latest version already downloaded 🐟"
+            return 0
         end
 
         log debug "Getting assets from $version_directory"
@@ -420,7 +420,7 @@ function github.release.download -d "Download a release from GitHub in the expec
         return 0
     end
     if test $show_versions = true
-        set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t' | fzf)
+        set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t' | sk)
         if test $show_versions_only = true
             return 0
         end

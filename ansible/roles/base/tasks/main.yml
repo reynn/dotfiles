@@ -1,8 +1,5 @@
 ---
 # tasks file for base
-- debug:
-    var: "ansible_os_family"
-
 - name: "Create necessary files, folders and links"
   ansible.builtin.file:
     src: "{{ item.src | default(omit) }}"
@@ -33,7 +30,7 @@
     label: "{{ item.host }}"
   tags: [ssh]
 
-- name: "Adding {{ ssh_hosts | length }} hosts the user SSH configuration"
+- name: "Adding hosts to the user SSH configuration"
   community.general.ssh_config:
     user: "{{ item.user | default(omit) }}"
     host: "{{ item.host }}"
@@ -92,10 +89,3 @@
   when: item.url is defined
   loop: "{{ scripts + os_scripts|default([])}}"
   tags: [scripts]
-# - name: "Exec commands"
-#   ansible.builtin.command: "{{ item.cmd }}"
-#   args:
-#     chdir: "{{ item.dir | default('.') }}"
-#   loop: "{{ commands }}"
-#   tags:
-#     - commands
