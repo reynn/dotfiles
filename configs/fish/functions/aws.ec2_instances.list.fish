@@ -22,7 +22,7 @@ function aws.ec2.untagged -d 'List all untagged EC2 instances'
     end
 
     if not command.is_available -c aws
-        log error '`aws` is not installed'
+        __log error '`aws` is not installed'
         return 1
     end
 

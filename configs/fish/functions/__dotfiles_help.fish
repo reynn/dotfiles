@@ -41,25 +41,25 @@ function __dotfiles_help -d 'Specially formatted help messages'
         end
     end
 
-    log debug "Function Name           : $function_name"
-    log debug "Last Trace              : $last_trace"
-    log debug "Terminal Width          : $max_width"
-    log debug "Single Column (w*$single_col_percent)   : $single_col_width"
-    log debug "Double Column (w*$double_col_percent)   : $double_col_width"
-    log debug "About                   : $about_lines"
-    log debug "Flags                   : $flags"
-    log debug "# Flags                 : "(count $flags)
-    log debug "Examples                : $examples"
-    log debug "# Examples              : "(count $examples)
-    log debug "Name                    : $function_name"
+    __log debug "Function Name           : $function_name"
+    __log debug "Last Trace              : $last_trace"
+    __log debug "Terminal Width          : $max_width"
+    __log debug "Single Column (w*$single_col_percent)   : $single_col_width"
+    __log debug "Double Column (w*$double_col_percent)   : $double_col_width"
+    __log debug "About                   : $about_lines"
+    __log debug "Flags                   : $flags"
+    __log debug "# Flags                 : "(count $flags)
+    __log debug "Examples                : $examples"
+    __log debug "# Examples              : "(count $examples)
+    __log debug "Name                    : $function_name"
 
     set -l table_row_format '| %s | %s | %s | %s |\n'
 
     set -x desc_col_width (math "round($max_width - (4*$single_col_width))+10-"(string length $table_row_format))
     set -x default_col_width (math "round($max_width-($desc_col_width+(2*$single_col_width))-14)")
 
-    log debug "Description Column (w-(4*col)) : $desc_col_width"
-    log debug "Default Column (w-(desc_w+2*s_col_w)) : $default_col_width"
+    __log debug "Description Column (w-(4*col)) : $desc_col_width"
+    __log debug "Default Column (w-(desc_w+2*s_col_w)) : $default_col_width"
 
     set -q HELP_COLOR; and set_color $HELP_COLOR; or set_color $fish_color_operator
     printf '# Usage: %s on %s\n\n' "$function_name" "$system_platform"

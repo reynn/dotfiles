@@ -27,7 +27,7 @@ function aws.cfn_stacks.search -d 'Get a list of AWS Cloudformation stacks that 
     end
 
     if not command.is_available -c aws
-        log error '`aws` is not installed'
+        __log error '`aws` is not installed'
         return 1
     end
 

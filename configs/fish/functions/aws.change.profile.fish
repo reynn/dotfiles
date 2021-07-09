@@ -19,11 +19,11 @@ function aws.change.profile
                 set selected_profile "$value"
             case E erase
                 if set -q AWS_PROFILE
-                    log "Unsetting `$AWS_PROFILE` as the current profile"
+                    __log "Unsetting `$AWS_PROFILE` as the current profile"
                     set -e AWS_PROFILE
                 end
                 if set -q AWS_SHARED_CREDENTIALS_FILE
-                    log "Unsetting `$AWS_SHARED_CREDENTIALS_FILE` as the current credentials file"
+                    __log "Unsetting `$AWS_SHARED_CREDENTIALS_FILE` as the current credentials file"
                     set -e AWS_SHARED_CREDENTIALS_FILE
                 end
                 return 0
@@ -48,7 +48,7 @@ function aws.change.profile
 
     if test -z "$selected_profile"
         set available_aws_profiles (cat $credentials_file | string replace --filter --regex "\[(.+)\]" '$1')
-        log debug 'Found '(count $available_aws_profiles)" aws profiles in $credentials_file"
+        __log debug 'Found '(count $available_aws_profiles)" aws profiles in $credentials_file"
         set selected_profile (cat $credentials_file |\
           string replace --filter --regex "\[(.+)\]" '$1' |\
           sk --height 30% -p 'Profile> ' --preview='aws --profile {} sts get-caller-identity | jq -r "."')

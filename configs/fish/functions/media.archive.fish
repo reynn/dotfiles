@@ -55,7 +55,7 @@ function media.archive -d 'Move media files to a specified directory'
     set -a fd_args --base-directory="$source_directory"
     set -a fd_args --exec mv -nv "{}" "$backup_directory/Pictures/{/}"
 
-    log debug '['(count $fd_args)"] FD args: $fd_args"
+    __log debug '['(count $fd_args)"] FD args: $fd_args"
 
     fd $fd_args
 end

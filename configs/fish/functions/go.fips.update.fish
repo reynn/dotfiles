@@ -7,7 +7,7 @@ function go.fips.update -d "Create a dummy src package for fips to fix building 
     echo "package fipsonly" >"$go_fips_src_root/fipsonly.go"
 
     if test "$argv[1]" = -v
-        log 'Fips package contents `'(cat "$go_fips_src_root/fipsonly.go")'`'
+        __log 'Fips package contents `'(cat "$go_fips_src_root/fipsonly.go")'`'
     end
 
 end

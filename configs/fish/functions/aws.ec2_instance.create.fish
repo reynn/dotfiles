@@ -35,10 +35,10 @@ function aws.ec2_instance.create -d "Create an instance in AWS"
     end
 
     if not command.is_available -c aws
-        log error '`aws` is not installed'
+        __log error '`aws` is not installed'
         return 1
     end
 
-    log debug "aws cloudformation deploy --stack-name $stack_name--template-file "$cfn_template""
+    __log debug "aws cloudformation deploy --stack-name $stack_name--template-file "$cfn_template""
     cat $cfn_template
 end

@@ -19,9 +19,9 @@ function git.history.resolve -d 'Resolve the rest of git history after an initia
         end
     end
 
-    log 'Converting shallow clone to full clone'
+    __log 'Converting shallow clone to full clone'
     git fetch --unshallow
-    log 'Updating remote config to access all branches'
+    __log 'Updating remote config to access all branches'
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
     git fetch origin
 end

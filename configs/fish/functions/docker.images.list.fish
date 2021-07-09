@@ -32,7 +32,7 @@ function docker.images.list -d "Show a list of images with minimal information"
     end
 
     if command.is_available -c docker
-        log error 'Docker is not installed'
+        __log error 'Docker is not installed'
         return 1
     end
 
@@ -41,7 +41,7 @@ function docker.images.list -d "Show a list of images with minimal information"
         set output_format "$output_format{{.$column}}\\t"
     end
 
-    log "Output format: $output_format"
+    __log "Output format: $output_format"
 
     docker image list --all --format "$output_format" --filter "dangling=false"
 end

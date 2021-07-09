@@ -50,11 +50,11 @@ function git.repos.clone -d "Clone repository to the layout used"
     function __git_clone_repo
         set repo $argv
 
-        log debug "git_host : $git_host"
-        log debug "repo     : $repo"
-        log debug "protocol : $protocol"
+        __log debug "git_host : $git_host"
+        __log debug "repo     : $repo"
+        __log debug "protocol : $protocol"
         test (string lower "$protocol") = ssh; and set -x git_url "git@$git_host:$repo"; or set -x git_url "https://$git_host/$repo"
-        log debug "git_url  : $git_url"
+        __log debug "git_url  : $git_url"
 
         git clone --depth 1 "$git_url" "$base_directory/$git_host/$repo"
 

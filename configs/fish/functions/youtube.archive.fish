@@ -26,9 +26,9 @@ function youtube.archive --wraps youtube-dl -d ''
     echo "local_hostname: $local_hostname"
     switch $local_hostname
         case mimikyu
-            log "Running automation for $local_hostname"
+            __log "Running automation for $local_hostname"
         case '*'
-            log error "There are no preconfigured archives for $local_hostname"
+            __log error "There are no preconfigured archives for $local_hostname"
             return 2
     end
 end

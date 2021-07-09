@@ -5,7 +5,7 @@ function os.update -d "Run os updates for various types of systems"
 
     function __update_linux_system
         set release (cat /etc/*release* | string replace --regex --filter '^ID\=(.+)' '$1')
-        log "Running updates for Linux ($release)"
+        __log "Running updates for Linux ($release)"
         switch $release
             case fedora centos
                 sudo dnf update -y; and sudo dnf autoremove -y
@@ -15,7 +15,7 @@ function os.update -d "Run os updates for various types of systems"
     end
 
     function __update_mac_system
-        log "Running updates for OS X"
+        __log "Running updates for OS X"
     end
 
     switch $current_platform

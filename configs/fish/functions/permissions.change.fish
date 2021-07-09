@@ -47,15 +47,15 @@ function permissions.change -d "Update file permissions and ownership"
         end
     end
 
-    log debug "argv            : $argv"
-    log debug "patterns        : $patterns"
-    log debug "set_permissions : $set_permissions"
-    log debug "permissions     : $permissions"
-    log debug "set_owner       : $set_owner"
-    log debug "owner           : $owner"
+    __log debug "argv            : $argv"
+    __log debug "patterns        : $patterns"
+    __log debug "set_permissions : $set_permissions"
+    __log debug "permissions     : $permissions"
+    __log debug "set_owner       : $set_owner"
+    __log debug "owner           : $owner"
 
     for pattern in $patterns
-        log "Updating permissions for $pattern"
+        __log "Updating permissions for $pattern"
         if test "$set_permissions" = true
             # chmod -R $permissions "$pattern"
         end

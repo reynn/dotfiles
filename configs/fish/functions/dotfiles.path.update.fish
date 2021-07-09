@@ -14,23 +14,23 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
 
     command.is_available -c cargo; and fish_add_path "$HOME/.cargo/bin"
 
-    log debug "Checking for go versions in $go_versions_path"
+    __log debug "Checking for go versions in $go_versions_path"
     if test -d "$go_versions_path"
         set -l go_version (fd -td -d1 . --base-directory $go_versions_path | sort -r)
         if test (count $go_version) -gt 1
             set go_version $go_version[1]
         end
-        log debug "Go Version $go_version"
+        __log debug "Go Version $go_version"
         path.replace "$go_versions_path/$go_version/bin" 2
     end
 
-    log debug "Checking for node versions in $node_versions_path"
+    __log debug "Checking for node versions in $node_versions_path"
     if test -d "$node_versions_path"
         set -l node_version (fd -td -d1 . --base-directory $node_versions_path | sort -r)
         if test (count $node_version) -gt 1
             set node_version $node_version[1]
         end
-        log debug "Node Version $node_version"
+        __log debug "Node Version $node_version"
         path.replace "$node_versions_path/$node_version/bin" 2
     end
 end

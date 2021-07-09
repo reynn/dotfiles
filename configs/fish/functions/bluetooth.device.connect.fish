@@ -56,7 +56,7 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
     end
 
     if not command.is_available -c osascript
-        log error '`osascript` is not installed'
+        __log error '`osascript` is not installed'
         return 1
     end
 
@@ -74,7 +74,7 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
     set -l device_address (string replace --regex -a '\t' ',' $selected | string split ',')[1]
     set -l device_name (string replace --regex -a '\t' ',' $selected | string split ',')[2]
     if test -z "$device_address"
-        log debug 'No device selected'
+        __log debug 'No device selected'
         return 0
     end
     log -l bluetooth "Connecting to device $device_name [$device_address]"

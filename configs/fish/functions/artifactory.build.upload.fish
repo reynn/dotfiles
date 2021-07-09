@@ -50,7 +50,7 @@ function artifactory.build.upload -d "Upload files to Artifactory"
     end
 
     if not command.is_available -c jfrog
-        log error '`jfrog` is not installed'
+        __log error '`jfrog` is not installed'
         return 1
     end
 
@@ -75,7 +75,7 @@ function artifactory.build.upload -d "Upload files to Artifactory"
             jfrog rt build-add-git $build_name $build_number
             jfrog rt build-publish --dry-run --env-exclude $env_excludes $build_name $build_number
         else
-            log error 'Failed to upload files to artifactory' -l 'artifactory.upload(dry-run)'
+            __log error 'Failed to upload files to artifactory' -l 'artifactory.upload(dry-run)'
         end
     else
         jfrog rt upload --threads=(sysctl -n hw.logicalcpu) --spec $spec_file --build-name=$build_name --build-number=$build_number
@@ -84,7 +84,7 @@ function artifactory.build.upload -d "Upload files to Artifactory"
             jfrog rt build-add-git $build_name $build_number
             jfrog rt build-publish --env-exclude $env_excludes $build_name $build_number
         else
-            log error 'Failed to upload files to artifactory' -l 'artifactory.upload'
+            __log error 'Failed to upload files to artifactory' -l 'artifactory.upload'
         end
     end
 end

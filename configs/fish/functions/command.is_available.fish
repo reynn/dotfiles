@@ -25,8 +25,8 @@ function command.is_available -d 'Determines if a command is available to execut
     end
 
     set -l command_directory (command -v "$utils_command")
-    log debug "Checking for command  : $utils_command"
-    log debug "Command path          : $command_directory"
+    __log debug "Checking for command  : $utils_command"
+    __log debug "Command path          : $command_directory"
     if test -e "$command_directory"
         return 0
     else

@@ -34,7 +34,7 @@ function artifactory.my.uploads -d "Search for files that you have uploaded"
     end
 
     if not command.is_available -c jfrog
-        log error '`jfrog` is not installed'
+        __log error '`jfrog` is not installed'
         return 1
     end
 

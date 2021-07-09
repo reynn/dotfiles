@@ -31,15 +31,15 @@ function processes.kill -d 'Kill all processes that match the provided name'
     set -l process_count (count $process_ids)
 
     if test $process_count -eq 0
-        log debug "No processes matched [$process_name] using `rg`"
+        __log debug "No processes matched [$process_name] using `rg`"
         return 0
     end
 
-    log debug "Found $process_count processes named [$process_name]"
-    log debug "Process_ids: [$process_ids]"
+    __log debug "Found $process_count processes named [$process_name]"
+    __log debug "Process_ids: [$process_ids]"
     for process in $process_ids
         set -l cmd (ps -eo command $process | tail -n1)
-        log debug "Process [id: $process, cmd: $cmd]"
+        __log debug "Process [id: $process, cmd: $cmd]"
     end
 
     kill -9 $process_ids

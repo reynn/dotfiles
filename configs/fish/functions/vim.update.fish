@@ -20,7 +20,7 @@ function vim.update -d 'Cleanup files and reinstall Spacevim'
 
     function __vim_create_venv
         set -l venv_path "$argv[1]"
-        log "Creating python virtual environment $venv_path"
+        __log "Creating python virtual environment $venv_path"
         mkdir -p (dirname $venv_path)
         python3 -m venv $venv_path
         source "$venv_path/bin/activate.fish"
@@ -32,13 +32,13 @@ function vim.update -d 'Cleanup files and reinstall Spacevim'
         # Get a handle to the builtin rm command instead of an alias
         set -l item_name "$argv[1]"
         if test -d $item_name
-            log "Deleting directory $item_name"
+            __log "Deleting directory $item_name"
             $rm_command -rf $item_name
         else if test -f $item_name
-            log "Deleting file $item_name"
+            __log "Deleting file $item_name"
             $rm_command -f $item_name
         else
-            log "$item_name doesn't need to be deleted"
+            __log "$item_name doesn't need to be deleted"
         end
     end
 
@@ -91,16 +91,16 @@ function vim.update -d 'Cleanup files and reinstall Spacevim'
         end
     end
 
-    log debug "CONFIGURE_VIM      : $CONFIGURE_VIM"
-    log debug "CONFIGURE_NVIM     : $CONFIGURE_NVIM"
-    log debug "CONFIGURE_SPACEVIM : $CONFIGURE_SPACEVIM"
-    log debug "CLEAN_CACHE        : $CLEAN_CACHE"
-    log debug "CLEAN_NVIM         : $CLEAN_NVIM"
-    log debug "CLEAN_CACHE        : $CLEAN_CACHE"
-    log debug "CLEAN_VIM          : $CLEAN_VIM"
+    __log debug "CONFIGURE_VIM      : $CONFIGURE_VIM"
+    __log debug "CONFIGURE_NVIM     : $CONFIGURE_NVIM"
+    __log debug "CONFIGURE_SPACEVIM : $CONFIGURE_SPACEVIM"
+    __log debug "CLEAN_CACHE        : $CLEAN_CACHE"
+    __log debug "CLEAN_NVIM         : $CLEAN_NVIM"
+    __log debug "CLEAN_CACHE        : $CLEAN_CACHE"
+    __log debug "CLEAN_VIM          : $CLEAN_VIM"
 
     if test "$CLEAN_VIM" = true
-        log 'Deleting Vim files'
+        __log 'Deleting Vim files'
         __vim_clean_files_delete "$HOME/.vim"
         if test "$CLEAN_CACHE" = true
             __vim_clean_files_delete "$HOME/.cache/vimfiles"
@@ -108,15 +108,15 @@ function vim.update -d 'Cleanup files and reinstall Spacevim'
     end
 
     if test "$CLEAN_NVIM" = true
-        log 'Deleting NeoVim files'
+        __log 'Deleting NeoVim files'
         __vim_clean_files_delete "$NEOVIM_HOME"
         __vim_clean_files_delete "$HOME/.local/share/nvim"
-        log 'Deleting CoC.nvim files'
+        __log 'Deleting CoC.nvim files'
         __vim_clean_files_delete "$SYSTEM_CONFIG_DIR/coc/extensions"
     end
 
     if test "$CLEAN_SPACEVIM" = true
-        log 'Deleting SpaceVim files'
+        __log 'Deleting SpaceVim files'
         __vim_clean_files_delete "$HOME/.Spacevim.d"
         __vim_clean_files_delete "$HOME/.Spacevim"
         if test "$CLEAN_CACHE" = true
@@ -125,19 +125,19 @@ function vim.update -d 'Cleanup files and reinstall Spacevim'
     end
 
     if test "$CONFIGURE_SPACEVIM" = true
-        log 'Linking custom config to default spacevim config'
+        __log 'Linking custom config to default spacevim config'
         ln -fs "$SPACEVIM_INIT_PATH" "$HOME/.SpaceVim.d"
 
-        log 'Re-linking SpaceVim for Neovim'
+        __log 'Re-linking SpaceVim for Neovim'
         ln -fs "$HOME/.SpaceVim" "$NEOVIM_HOME"
 
-        log 'Running SpaceVim installer'
+        __log 'Running SpaceVim installer'
         installer.spacevim
     end
 
     if test "$CONFIGURE_NVIM" = true
         if test -d "$PYTHON_VENV_PATH"
-            log "Deleting python virtual environment $PYTHON_VENV_PATH"
+            __log "Deleting python virtual environment $PYTHON_VENV_PATH"
             $rm_command -rf $PYTHON_VENV_PATH
         end
 

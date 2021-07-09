@@ -38,9 +38,9 @@ function k8s.pods.delete --description 'delete pods from the specified kubernete
         set -lx pods (string split ' ' "$argv[2]")
         set -lx force_delete "$argv[3]"
 
-        log debug "[delete_pods]Force enabled: $force_delete"
-        log debug "[delete_pods]Pod count: "(count $pods)
-        log debug "[delete_pods]Pods to delete: $pods"
+        __log debug "[delete_pods]Force enabled: $force_delete"
+        __log debug "[delete_pods]Pod count: "(count $pods)
+        __log debug "[delete_pods]Pods to delete: $pods"
 
         if test "$force_delete" = true
             kubectl delete pods --namespace $ns --grace-period=0 --force $pods $extra_args
@@ -54,11 +54,11 @@ function k8s.pods.delete --description 'delete pods from the specified kubernete
         kubectl get pods -n $ns --output 'jsonpath={.items[*].metadata.name}'
     end
 
-    log debug "Namespace: $k8s_namespace"
+    __log debug "Namespace: $k8s_namespace"
     set -lx ns_pods (__k8s_get_pods $k8s_namespace)
     if count $ns_pods >0
         __k8s_delete_pods "$k8s_namespace" "$ns_pods" "$force"
     else
-        log "Namespace [$k8s_namespace] doesn't contain any pods to delete"
+        __log "Namespace [$k8s_namespace] doesn't contain any pods to delete"
     end
 end

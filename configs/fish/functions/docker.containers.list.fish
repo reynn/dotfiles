@@ -21,7 +21,7 @@ function docker.containers.list -d "Show a list of containers with minimal infor
     end
 
     if not command.is_available -c docker
-        log error '`docker` is not installed'
+        __log error '`docker` is not installed'
         return 1
     end
 

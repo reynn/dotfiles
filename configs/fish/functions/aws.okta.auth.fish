@@ -75,14 +75,14 @@ function aws.okta.auth
         end
     end
 
-    log debug "YQ Binary: "(which yq)" version "(yq --version | awk '{print $3}')
-    log debug "JQ Binary: "(which jq)" version "(jq --version | tr -d 'jq-')
+    __log debug "YQ Binary: "(which yq)" version "(yq --version | awk '{print $3}')
+    __log debug "JQ Binary: "(which jq)" version "(jq --version | tr -d 'jq-')
 
     if test -z "$accounts_to_generate"
         if test -n "$fuzzy_filter"
-            log debug "Using filter '$fuzzy_filter' on "(yq e -MN '.okta[].name' $config_file_path | count)" total accounts"
+            __log debug "Using filter '$fuzzy_filter' on "(yq e -MN '.okta[].name' $config_file_path | count)" total accounts"
             set accounts_to_generate (yq e -MN '.okta[].name' $config_file_path | sk --height 30% --filter $fuzzy_filter --multi --select-1)
-            log debug "Filtered to "(count $accounts_to_generate)" accounts"
+            __log debug "Filtered to "(count $accounts_to_generate)" accounts"
         else
             set accounts_to_generate (yq e -MN '.okta[].name' $config_file_path | sk --height 30% --multi --select-1)
         end
@@ -91,9 +91,9 @@ function aws.okta.auth
     set account_count (count $accounts_to_generate)
 
     for account in $accounts_to_generate
-        log "Getting credentials for the [$account] account"
+        __log "Getting credentials for the [$account] account"
         set account_data (yq e ".okta[] | select(.name == \"$account\")" $config_file_path --tojson --indent 0)
-        log debug "Full account data: $account_data"
+        __log debug "Full account data: $account_data"
 
         set -lx username (echo $account_data | jq -r '.username' 2> /dev/null)
         set -lx appid (echo $account_data | jq -r '.app_id' 2> /dev/null)
@@ -109,18 +109,18 @@ function aws.okta.auth
         set -lx bw_id (echo $account_data | jq -r '.bw_id | select (.!=null)' 2> /dev/null)
         set -lx role (echo $account_data | jq -r '.role' 2> /dev/null)
 
-        log debug "---> AWS Okta Keyman data"
-        log debug "username       : $username"
-        log debug "appid          : $appid"
-        log debug "name           : $name"
-        log debug "preview        : $preview"
-        log debug "passwordReset  : $password_reset"
-        log debug "region         : $region"
-        log debug "account        : $account"
-        log debug "role           : $role"
-        log debug "org            : $org"
-        log debug "profileName    : $profile_name"
-        log debug "bwId           : $bw_id"
+        __log debug "---> AWS Okta Keyman data"
+        __log debug "username       : $username"
+        __log debug "appid          : $appid"
+        __log debug "name           : $name"
+        __log debug "preview        : $preview"
+        __log debug "passwordReset  : $password_reset"
+        __log debug "region         : $region"
+        __log debug "account        : $account"
+        __log debug "role           : $role"
+        __log debug "org            : $org"
+        __log debug "profileName    : $profile_name"
+        __log debug "bwId           : $bw_id"
 
         set -x keyman_args --region $region
         set -a keyman_args --org $org
@@ -136,7 +136,7 @@ function aws.okta.auth
         test "$password_reset" = true; and set -a keyman_args -R
         test -n "$duration"; and set -a keyman_args -du $duration
 
-        log debug "calling [aws_okta_keyman $keyman_args]"
+        __log debug "calling [aws_okta_keyman $keyman_args]"
 
         if test -z "$bw_id"
             aws_okta_keyman $keyman_args
@@ -147,8 +147,8 @@ function aws.okta.auth
         set account_count (math "$account_count - 1")
 
         if test $account_count -gt 0
-            log "There are $account_count accounts left to process"
-            log "Sleeping for 20 seconds"
+            __log "There are $account_count accounts left to process"
+            __log "Sleeping for 20 seconds"
             sleep 20
         end
     end

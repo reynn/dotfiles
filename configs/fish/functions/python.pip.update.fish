@@ -26,7 +26,7 @@ function python.pip.update -d "Update all outdated Python packages using PIP"
 
 
     if test (count $packages) -eq 0
-        log warn "Nothing to update"
+        __log warn "Nothing to update"
         return 0
     end
 

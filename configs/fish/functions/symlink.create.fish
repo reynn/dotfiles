@@ -25,18 +25,18 @@ function symlink.create -d "Create a symlink, overwriting any existing ones"
     end
 
     if test -z "$src"
-        log error "src must be set"
+        __log error "src must be set"
         return 2
     end
     if test -z "$dest"
-        log error "dest must be set"
+        __log error "dest must be set"
         return 2
     end
     if test "$src" = "$dest"
-        log error "Src and dest cannot be the same"
+        __log error "Src and dest cannot be the same"
         return 2
     end
 
-    log "Linking $src -> $dest"
+    __log "Linking $src -> $dest"
     ln -fs $src $dest
 end

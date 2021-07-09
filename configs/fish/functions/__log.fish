@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-function log -d "Log a message"
+function __log -d "Log a message"
     set -lx log_levels debug info warn error
     set -lx level info
     set -lx color

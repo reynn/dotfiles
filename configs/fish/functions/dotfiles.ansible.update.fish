@@ -55,8 +55,8 @@ function dotfiles.ansible.update -d 'Run the playbook to apply latest changes'
         set -a ansible_args $env
     end
 
-    log debug (count ansible_args)" arguments ($ansible_args)"
-    log debug "ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook $ansible_args"
+    __log debug (count ansible_args)" arguments ($ansible_args)"
+    __log debug "ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook $ansible_args"
 
     ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook $ansible_args
 end

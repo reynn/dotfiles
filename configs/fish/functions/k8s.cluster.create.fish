@@ -62,7 +62,7 @@ function k8s.cluster.create -d 'Create a Kubernetes cluster in DigitalOcean' --w
     end
 
     if test ! -x (command -s doctl)
-        log error "`doctl` is not available on this system"
+        __log error "`doctl` is not available on this system"
         return 1
     end
 
@@ -78,15 +78,15 @@ function k8s.cluster.create -d 'Create a Kubernetes cluster in DigitalOcean' --w
 
     set -lx node_pool "name=$cluster_name-worker-pool;size=$node_type;min-nodes=$min_size;max-nodes=$max_size;auto-scale=true"
 
-    log debug "cluster_name : $cluster_name"
-    log debug "min_size     : $min_size"
-    log debug "max_size     : $max_size"
-    log debug "node_type    : $node_type"
-    log debug "auto_scale   : $auto_scale"
-    log debug "one_clicks   : $one_clicks"
-    log debug "k8s_version  : $k8s_version"
-    log debug "do_region    : $do_region"
-    log debug "node_pool    : $node_pool"
+    __log debug "cluster_name : $cluster_name"
+    __log debug "min_size     : $min_size"
+    __log debug "max_size     : $max_size"
+    __log debug "node_type    : $node_type"
+    __log debug "auto_scale   : $auto_scale"
+    __log debug "one_clicks   : $one_clicks"
+    __log debug "k8s_version  : $k8s_version"
+    __log debug "do_region    : $do_region"
+    __log debug "node_pool    : $node_pool"
 
     set -lx cloud_provider_args $cluster_name
     set -a cloud_provider_args --verbose
@@ -107,7 +107,7 @@ function k8s.cluster.create -d 'Create a Kubernetes cluster in DigitalOcean' --w
     set -a cloud_provider_args --node-pool
     set -a cloud_provider_args "$node_pool"
 
-    log "Creating cluster [$cluster_name]"
+    __log "Creating cluster [$cluster_name]"
     echo doctl kubernetes cluster create $cloud_provider_args
     doctl kubernetes cluster create $cloud_provider_args
 end
