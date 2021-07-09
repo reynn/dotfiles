@@ -1,6 +1,5 @@
 #!/usr/bin/env fish
 
-
 complete -c github.release.download -x -s r -l repo -d 'The name of the repo to get release from [repo-owner/repo-name]'
 complete -c github.release.download -s e -l env -d 'Set path if necessary'
 complete -c github.release.download -s c -l clean -d 'Removes assets after extracting'

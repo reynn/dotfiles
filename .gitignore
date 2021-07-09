@@ -6,7 +6,6 @@
 images/
 .DS_Store
 configs/fish/fish_variables
-containers/adult/stash/
 **/.nvimlog
 *.scr
 **/tls.*
