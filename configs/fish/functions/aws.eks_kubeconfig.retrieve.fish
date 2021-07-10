@@ -3,6 +3,16 @@ function aws.eks_kubeconfig.retrieve
     set -l aws_profile default
     set -l kubeconfig_path "$HOME/.kube/config"
 
+    function ___usage
+        set -l help_args -a "Interactively get kubeconfigs from AWS for EKS clusters"
+
+        set -a help_args -f "k|kubeconfig|The kubeconfig the cluster info will be added to|"
+        set -a help_args -f "n|name|Name of a cluster to get Kubeconfig for, can be provided multiple times|"
+        set -a help_args -f "p|profile|AWS Profile used for auth|$aws_profile"
+
+        __dotfiles_help $help_args
+    end
+
     getopts $argv | while read -l key value
         switch $key
             case k kubeconfig
@@ -25,6 +35,10 @@ function aws.eks_kubeconfig.retrieve
     if not command.is_available -c aws
         __log error '`aws` is not installed'
         return 1
+    end
+
+    if test -z "$aws_profile"
+        set aws_profiles (aws configure list-profiles | sk --height 35% --width 60% --multi --select-1)
     end
 
     if test -z "$cluster_names"

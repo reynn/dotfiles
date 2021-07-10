@@ -3,7 +3,7 @@
 function __yq_debug
     set file "$BASH_COMP_DEBUG_FILE"
     if test -n "$file"
-        echo "$argv" >> $file
+        echo "$argv" >>$file
     end
 end
 
@@ -19,7 +19,7 @@ function __yq_perform_completion
     set emptyArg ""
     if test -z "$lastArg"
         __yq_debug "Setting emptyArg"
-        set emptyArg \"\"
+        set emptyArg ""
     end
     __yq_debug "emptyArg: $emptyArg"
 
@@ -144,7 +144,7 @@ end
 # so we can properly delete any completions provided by another script.
 # The space after the the program name is essential to trigger completion for the program
 # and not completion of the program name itself.
-complete --do-complete "yq " > /dev/null 2>&1
+complete --do-complete "yq " >/dev/null 2>&1
 # Using '> /dev/null 2>&1' since '&>' is not supported in older versions of fish.
 
 # Remove any pre-existing completions for the program since we will be handling all of them.
@@ -160,4 +160,4 @@ complete -c yq -n 'set --query __yq_comp_do_file_comp'
 # This completion will be run first as complete commands are added FILO.
 # The call to __yq_prepare_completions will setup both __yq_comp_results and __yq_comp_do_file_comp.
 # It provides the program's completion choices.
-complete -c yq -n '__yq_prepare_completions' -f -a '$__yq_comp_results'
+complete -c yq -n __yq_prepare_completions -f -a '$__yq_comp_results'
