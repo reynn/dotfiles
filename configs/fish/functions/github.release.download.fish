@@ -34,7 +34,7 @@ function github.release.download -d "Download a release from GitHub in the expec
             if command.is_available -c sk
                 set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | sk --select-1 --exit-0)
             else
-                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
+                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | head -n 1)
             end
         end
 
@@ -50,9 +50,10 @@ function github.release.download -d "Download a release from GitHub in the expec
         log debug "Latest version           : $latest_release_version"
         log debug "Latest version directory : $version_directory"
 
-        mkdir -p "$version_directory"
-        mkdir -p "$bins_env_path"
+        mkdir -p "$version_directory"; and mkdir -p "$bins_env_path"
+
         set download_status 0
+
         if test -z $pattern
             log "Downloading assets from GitHub to $version_directory"
             gh release --repo $repo download $latest_release_version --dir $version_directory
@@ -130,6 +131,7 @@ function github.release.download -d "Download a release from GitHub in the expec
             log error "handle_asset The provided asset isn't in the right format (call [file --mime-type {}] on the file path)"
             return 1
         end
+
         switch "$asset_type"
             case '*/x-mach-binary' '*/x-pie-executable' '*/x-executable'
                 log debug "handle_asset treating "(basename $asset_path)" as an executable"
@@ -139,7 +141,7 @@ function github.release.download -d "Download a release from GitHub in the expec
                 # if the $env_path isn't already a symlink we will create it
                 __versm_create_symlink "$asset_current_link" "$env_dir/$bin_alias"
                 return 0
-            case 'application/zip*'
+            case application/zip
                 if command.is_available -c unzip
                     log "handle_asset Extracting $asset_path"
                     unzip -o "$asset_path" -d (dirname "$asset_path")
@@ -148,13 +150,13 @@ function github.release.download -d "Download a release from GitHub in the expec
                     log error 'handle_asset `unzip` is unavailable in the path'
                     return 1
                 end
-            case 'application/gzip*'
-                if command.is_available -c tar
-                    log "handle_asset Extracting ($asset_path) to ($version_directory)"
-                    tar xf "$asset_path" -C "$version_directory"
+            case application/gzip
+                if command.is_available -c gunzip
+                    log "handle_asset Extracting ($asset_path)"
+                    gunzip -k "$asset_path" #-C "$version_directory"
                     __versm_find_exec_after_extract "$version_directory" "$bin_filter" "$asset_path" "$bin_alias" "$env_dir"
                 else
-                    log error 'handle_asset `tar` is unavailable in the path'
+                    log error 'handle_asset `gunzip` is unavailable in the path'
                     return 1
                 end
             case inode/directory
@@ -165,7 +167,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     function __versm_create_symlink -d "Create a symlink, delete existing one"
         set -l src "$argv[1]"
         set -l dest "$argv[2]"
-        log "create_symlink Linking $src -> $dest"
+        log "create_symlink Linking [$src] -> [$dest]"
         ln -fs $src $dest
     end
 
@@ -415,16 +417,19 @@ function github.release.download -d "Download a release from GitHub in the expec
 
     set -x bins_env_path "$base_directory/envs"
     set -x show_versions_result ''
+
     if test $set_env_only = true
         __versm_set_env $bins_env_path
         return 0
     end
+
     if test $show_versions = true
         set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t' | sk)
         if test $show_versions_only = true
             return 0
         end
     end
+
     if test $show_assets_only = true
         gh release --repo $repo view $show_versions_result
         return 0

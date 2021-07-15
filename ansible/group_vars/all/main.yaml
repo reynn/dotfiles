@@ -48,6 +48,7 @@ packages:
     - certifi
     - httpie
     - pre-commit
+    - python-language-server[yapf]
   cargo: []
   brew: []
 
@@ -71,12 +72,6 @@ to_create:
     state: "link"
   - dest: "{{ ansible_user_dir }}/.config/fish/fish_plugins"
     src: "{{ dotfiles_path }}/configs/fish/fish_plugins"
-    state: "link"
-  - dest: "{{ ansible_user_dir }}/.SpaceVim.d"
-    src: "{{ dotfiles_path }}/configs/spacevim"
-    state: "link"
-  - dest: "{{ ansible_user_dir }}/.config/nvim"
-    src: "{{ ansible_user_dir }}/.SpaceVim"
     state: "link"
   - dest: "{{ ansible_user_dir }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"
