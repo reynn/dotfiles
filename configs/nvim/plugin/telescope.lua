@@ -1,10 +1,13 @@
-" Using lua functions
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+--  Using lua functions
+local utils = require('reynn.utils')
+local map = utils.map
+local no_remap = { noremap = true }
 
-lua << EOF
+map('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({}))<cr>", no_remap)
+map('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", no_remap)
+map('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({}))<cr>", no_remap)
+map('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags(require('telescope.themes').get_dropdown({}))<cr>", no_remap)
+
 require('telescope').setup{
   defaults = {
     vimgrep_arguments = {
@@ -45,4 +48,3 @@ require('telescope').setup{
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
   }
 }
-EOF

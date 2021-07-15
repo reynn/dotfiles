@@ -11,3 +11,13 @@ configs/fish/fish_variables
 **/tls.*
 .build/
 .scratch/
+configs/nvim/plugin/packer_compiled.lua
+
+**/node_modules/
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
