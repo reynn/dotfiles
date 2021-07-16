@@ -8,10 +8,10 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
     else
         __log "AWS CLI currently installed ($installed_version) latest ($latest_version)"
         if test "$installed_version" = "$latest_version"
-            log info "==> Up to date!"
+            __log info "==> Up to date!"
             return
         else
-            log info "==> Installed but not on latest version"
+            __log info "==> Installed but not on latest version"
             set -l choices_tmp_file (mktemp -t aws-cli-choices)
             set -l choices_tmp_file (mktemp -t aws-cli-choices)
 
@@ -38,7 +38,7 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
                 -applyChoiceChangesXML $choices_tmp_file
 
             if test $status -ne 0
-                log fail "Failed to install the AWS CLI"
+                __log fail "Failed to install the AWS CLI"
                 return 2
             end
 
@@ -52,5 +52,5 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
             end
         end
     end
-    log info "==> completed"
+    __log info "==> completed"
 end

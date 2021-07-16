@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 pad() { printf '%*s%s\n' "$(($1 - ${#2}))" "" "$2"; }
-log() {
+__log() {
   local log_args=("$@")
   local level='info'
   local color_reset="\033[0m"
@@ -32,24 +32,24 @@ executed_as_root() {
 check_for_command() {
   local CMD=$(command -v $1)
   if [ -z $CMD ]; then
-    log 'error' "Command ($1) is not available"
+    __log 'error' "Command ($1) is not available"
     return 2
   else
-    log "Command ($1) is available"
+    __log "Command ($1) is available"
   fi
 }
 
 rust_check() {
   local cargo_location="${CARGO_HOME:-$HOME/.cargo}"
   if [ ! -d $cargo_location ]; then
-    log "Cargo is not found at $cargo_location"
+    __log "Cargo is not found at $cargo_location"
   fi
 }
 
 python_packages() {
-  log "Python installation: $(dirname $PYTHON_BINARY)"
+  __log "Python installation: $(dirname $PYTHON_BINARY)"
 
-  log 'Installing python packages'
+  __log 'Installing python packages'
   $PYTHON_BINARY -m pip install \
     --disable-pip-version-check \
     --no-cache-dir \
@@ -60,12 +60,12 @@ python_packages() {
 }
 
 platform_mac() {
-  log 'Installing Mac dependencies'
+  __log 'Installing Mac dependencies'
   if [ -z "$BREW_BINARY" ]; then
-    log 'Brew is not installed.'
+    __log 'Brew is not installed.'
   else
-    log 'Installing brew dependencies'
-    log "Brew installation: $(dirname $BREW_BINARY)"
+    __log 'Installing brew dependencies'
+    __log "Brew installation: $(dirname $BREW_BINARY)"
     brew install tmux rsync wget
   fi
 }
@@ -112,7 +112,7 @@ platform_linux() {
       'python3-pip'
       'ncurses'
     )
-    log "Installing [${#packages[@]}] packages with dnf"
+    __log "Installing [${#packages[@]}] packages with dnf"
     if test "$(executed_as_root)" = 'true'; then
       if test "$release" = 'centos'; then
         curl -SsL https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo >/etc/yum.repos.d/shells:fish:release:3.repo
@@ -137,11 +137,11 @@ platform_linux() {
       'python-pip'
       'openssh'
     )
-    log "Installing [${#packages[@]}] packages with pacman"
+    __log "Installing [${#packages[@]}] packages with pacman"
     # Get latest from configured pacman repos
     # Update the system packages
     if test "$(executed_as_root)" = 'true'; then
-      log 'Executing pacman assuming already root'
+      __log 'Executing pacman assuming already root'
       if [ ! -d /build/packages ]; then
         mkdir -p /build/packages
         touch /build/packages/packages.db
@@ -150,7 +150,7 @@ platform_linux() {
         echo "${packages[@]}" | xargs -l pacman --noconfirm -S
       return $?
     else
-      log 'Executing pacman assuming not already root'
+      __log 'Executing pacman assuming not already root'
       if [ ! -d /build/packages ]; then
         sudo mkdir -p /build/packages
         sudo touch /build/packages/packages.db
@@ -163,39 +163,39 @@ platform_linux() {
   }
 
   case "$release" in
-  debian | ubuntu) platform_linux_apt || log 'fatal' 'Failed to install packages with APT' ;;
-  centos | fedora) platform_linux_dnf || log 'fatal' 'failed to install packages with DNF' ;;
-  manjaro | arch) platform_linux_pacman || log 'fatal' 'failed to install packages with Pacman' ;;
-  *) log 'fatal' "Unsupported/Unknown Linux distribution $release" ;;
+  debian | ubuntu) platform_linux_apt || __log 'fatal' 'Failed to install packages with APT' ;;
+  centos | fedora) platform_linux_dnf || __log 'fatal' 'failed to install packages with DNF' ;;
+  manjaro | arch) platform_linux_pacman || __log 'fatal' 'failed to install packages with Pacman' ;;
+  *) __log 'fatal' "Unsupported/Unknown Linux distribution $release" ;;
   esac
 }
 
 ansible_run() {
-  log 'Running ansible playbook'
-  ANSIBLE_CONFIG=$TMP_DFP/ansible/ansible.cfg ansible-playbook "$TMP_DFP/ansible/config.yaml" || log 'fatal' 'Failure in ansible run'
+  __log 'Running ansible playbook'
+  ANSIBLE_CONFIG=$TMP_DFP/ansible/ansible.cfg ansible-playbook "$TMP_DFP/ansible/config.yaml" || __log 'fatal' 'Failure in ansible run'
 }
 
 clone() {
-  log 'Preparing to clone Git repository'
-  check_for_command 'git' || log 'fatal' '`git` is not installed'
-  # check_for_command 'ssh-keygen' || log 'fatal' '`ssh-keygen` is not installed'
-  # check_for_command 'ssh-keyscan' || log 'fatal' '`ssh-keyscan` is not installed'
+  __log 'Preparing to clone Git repository'
+  check_for_command 'git' || __log 'fatal' '`git` is not installed'
+  # check_for_command 'ssh-keygen' || __log 'fatal' '`ssh-keygen` is not installed'
+  # check_for_command 'ssh-keyscan' || __log 'fatal' '`ssh-keyscan` is not installed'
 
   # mkdir -p "$HOME/.ssh"
 
-  # log 'Adding github.com to SSH known hosts'
-  # ssh-keyscan github.com >>$HOME/.ssh/known_hosts || log 'error' 'Failed to scan github.com'
+  # __log 'Adding github.com to SSH known hosts'
+  # ssh-keyscan github.com >>$HOME/.ssh/known_hosts || __log 'error' 'Failed to scan github.com'
   # test -f "$HOME/.ssh/id_ed25519" || ssh-keygen -b 4096 -t ed25519
 
-  # log 'prompt' "Has the following public key been added to GitHub?\n\n$(cat ~/.ssh/id_ed25519.pub)\n"
+  # __log 'prompt' "Has the following public key been added to GitHub?\n\n$(cat ~/.ssh/id_ed25519.pub)\n"
   # read key_added
   # case $key_added in
-  # y) log 'debug' 'Key added!' ;;
-  # n) log 'debug' 'Key not confirmed to be added, some commands may not work' ;;
-  # *) log 'error' "Unknown [$key_added]" ;;
+  # y) __log 'debug' 'Key added!' ;;
+  # n) __log 'debug' 'Key not confirmed to be added, some commands may not work' ;;
+  # *) __log 'error' "Unknown [$key_added]" ;;
   # esac
 
-  log "Cloning the dotfiles repo to $TMP_DFP"
+  __log "Cloning the dotfiles repo to $TMP_DFP"
   git clone $DOTFILES_REPO $TMP_DFP
 }
 
@@ -204,26 +204,26 @@ main() {
   export PATH="$HOME/.local/bin:$PATH"
   export HEADER='This is a work in progress'
   declare -i header_length=terminal_cols/2
-  log 'warn' "$(pad $header_length "$HEADER")"
-  log 'debug' "Is Root?         : $(executed_as_root)"
-  log 'debug' "Terminal Columns : $terminal_cols"
-  log 'debug' "Header Length    : $header_length"
-  log 'debug' "Is Root?         : $IS_ROOT"
-  log 'debug' "Dotfiles Repo    : $DOTFILES_REPO"
-  log 'debug' "DFP              : $DFP"
-  log 'debug' "Platform         : $PLATFORM"
-  log 'debug' "Brew Binary      : $BREW_BINARY"
-  log 'debug' "User ID          : $USER_ID"
-  log 'debug' "User Group ID    : $GROUP_ID"
+  __log 'warn' "$(pad $header_length "$HEADER")"
+  __log 'debug' "Is Root?         : $(executed_as_root)"
+  __log 'debug' "Terminal Columns : $terminal_cols"
+  __log 'debug' "Header Length    : $header_length"
+  __log 'debug' "Is Root?         : $IS_ROOT"
+  __log 'debug' "Dotfiles Repo    : $DOTFILES_REPO"
+  __log 'debug' "DFP              : $DFP"
+  __log 'debug' "Platform         : $PLATFORM"
+  __log 'debug' "Brew Binary      : $BREW_BINARY"
+  __log 'debug' "User ID          : $USER_ID"
+  __log 'debug' "User Group ID    : $GROUP_ID"
 
   case $PLATFORM in
-  macos | darwin) platform_mac || log 'fatal' 'Failed to configure platform OS X' ;;
-  linux) platform_linux || log 'fatal' 'Failed to configure platform Linux' ;;
-  *) log 'fatal' "Unsupported/Unknown platform [$PLATFORM]" ;;
+  macos | darwin) platform_mac || __log 'fatal' 'Failed to configure platform OS X' ;;
+  linux) platform_linux || __log 'fatal' 'Failed to configure platform Linux' ;;
+  *) __log 'fatal' "Unsupported/Unknown platform [$PLATFORM]" ;;
   esac
 
   PYTHON_BINARY="$(command -v python3)"
-  log 'debug' "Python Binary    : $PYTHON_BINARY"
+  __log 'debug' "Python Binary    : $PYTHON_BINARY"
   python_packages
   clone
 
@@ -233,7 +233,7 @@ main() {
   # Source the latest fisher and run fisher update
   fish -c "curl -sL https://git.io/fisher | source && fisher update; set -gp fish_function_path '$DFP/configs/fish/functions'; and dotfiles.update -A"
 
-  log 'Completed!'
+  __log 'Completed!'
 }
 
 export BREW_BINARY="$(command -v brew)"

@@ -20,12 +20,12 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
 
     function ___connect_via_ssh
         set -l instance $argv[1]
-        log "Connecting to $instance via SSH"
+        __log "Connecting to $instance via SSH"
     end
 
     function ___connect_via_ssm
         set -l instance $argv[1]
-        log "Connecting to $instance via AWS SSM"
+        __log "Connecting to $instance via AWS SSM"
         aws --profile $aws_profile ssm start-session --target $instance
     end
 
@@ -53,15 +53,14 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
     end
 
     if not command.is_available -c aws
-        log error 'AWS CLI is not installed'
+        __log error 'AWS CLI is not installed'
         return 1
     end
 
-    log debug "Filters   : $filters"
-    log debug "Tmp_File  : $tmp_file"
-    log debug "Connect   : $connect_method"
-    log debug "Profile   : $aws_profile"
-
+    __log debug "Filters   : $filters"
+    __log debug "Tmp_File  : $tmp_file"
+    __log debug "Connect   : $connect_method"
+    __log debug "Profile   : $aws_profile"
 
     if test -z "$instance_id"
         aws --profile $aws_profile ec2 describe-instances --filters $filters >$tmp_file
@@ -69,7 +68,7 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
           fzf --select-1 --prompt 'instance> ' --height 50% \
           --preview "jq -S '.Reservations[].Instances[] | select(.InstanceId==\"{}\") | {InstanceId,ImageId,InstanceType,PrivateIpAddress,Tags}' $tmp_file")
     end
-    log debug $instance_id -l "instance.id"
+    __log debug $instance_id -l "instance.id"
     rm -f $tmp_file
     if ! test -z "$instance_id"
         switch $connect_method
@@ -78,7 +77,7 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
             case ssm
                 ___connect_via_ssm $instance_id
             case *
-                log error "Invalid connect method: $connect_method"
+                __log error "Invalid connect method: $connect_method"
         end
     end
 end

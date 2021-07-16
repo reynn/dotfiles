@@ -58,7 +58,7 @@ function ansible.config.generate -d "Generate valid SSH config from an Ansible i
             __log debug "user       : [$user]"
             __log debug "identFile  : [$identFile]"
 
-            log -l HOST "[$name] ssh: $user@$ip"
+            __log -l HOST "[$name] ssh: $user@$ip"
             echo "Host $name" >>$CONFIG_DIRECTORY/$dc
             echo "  HostName $ip" >>$CONFIG_DIRECTORY/$dc
             if test "$identFile" != null

@@ -30,10 +30,10 @@ function python.pip.update -d "Update all outdated Python packages using PIP"
         return 0
     end
 
-    log (count $packages)" packages need to be updated, including the following"
+    __log (count $packages)" packages need to be updated, including the following"
 
     for pkg in $packages
-        log -l pkg "--> $pkg"
+        __log -l pkg "--> $pkg"
     end
 
     python3 -m pip install --user -U $packages

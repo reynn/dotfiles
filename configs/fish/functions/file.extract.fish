@@ -63,7 +63,7 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
             case .zst
                 unzstd "$file"
             case '*'
-                log fatal ''
+                __log fatal ''
         end
     end
 

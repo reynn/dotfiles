@@ -77,6 +77,6 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
         __log debug 'No device selected'
         return 0
     end
-    log -l bluetooth "Connecting to device $device_name [$device_address]"
+    __log -l bluetooth "Connecting to device $device_name [$device_address]"
     __connect_device $device_address
 end

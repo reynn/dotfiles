@@ -32,7 +32,7 @@ function git.changes.kill -d 'Hard Reset of git changes as well as a clean of no
     if test (count $to_clean) -gt 0
         __log "Cleaning these files"
         for tc in $to_clean
-            log -l cleaner $tc
+            __log -l cleaner $tc
         end
         # `-x` include cleaning of ignored files | `-f` force
         git clean -fx

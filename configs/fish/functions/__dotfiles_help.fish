@@ -31,14 +31,14 @@ function __dotfiles_help -d 'Specially formatted help messages'
         end
     end
 
-    log debug "Function Name           : $function_name"
-    log debug "Last Trace              : $last_trace"
-    log debug "About                   : $about_lines"
-    log debug "Flags                   : $flags"
-    log debug "# Flags                 : "(count $flags)
-    log debug "Examples                : $examples"
-    log debug "# Examples              : "(count $examples)
-    log debug "Name                    : $function_name"
+    __log debug "Function Name           : $function_name"
+    __log debug "Last Trace              : $last_trace"
+    __log debug "About                   : $about_lines"
+    __log debug "Flags                   : $flags"
+    __log debug "# Flags                 : "(count $flags)
+    __log debug "Examples                : $examples"
+    __log debug "# Examples              : "(count $examples)
+    __log debug "Name                    : $function_name"
 
     set -a complete_lines "# Usage: $function_name on $system_platform\n\n"
 
