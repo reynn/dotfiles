@@ -12,3 +12,4 @@ require('tabline').setup({
 })
 
 map({'n', 'x'}, '<leader>1', '', {noremap = true})
+map({'n', 'x'}, '<leader>2', '', {noremap = true})

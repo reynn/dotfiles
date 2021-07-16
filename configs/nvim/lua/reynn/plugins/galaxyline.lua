@@ -779,7 +779,7 @@ function M.gzygmanski.setup()
     return ''
   end
 
-  function get_current_file_name()
+  local function get_current_file_name()
     local file = vim.fn.expand('%:t')
     if vim.fn.empty(file) == 1 then return '' end
     if string.len(file_readonly()) ~= 0 then

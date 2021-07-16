@@ -1,9 +1,18 @@
-local nvim_lsp = require('lspconfig')
-local lsp_status = require('lsp-status')
 local utils = require('reynn.utils')
+local map = utils.map
 local opt = utils.opt
 
 opt('completeopt', 'menuone,noselect')
+
+local opts = { noremap = true, silent = true, expr = true }
+
+map({'i'}, '<C-Space>', "compe#complete()", opts)
+map({'i'},   '<CR>',    "compe#confirm(luaeval(\"require 'nvim-autopairs'.autopairs_cr()\"))", opts)
+map({'i'},   '<C-e>',   "compe#close('<C-e>')", opts)
+map({'i'},   '<C-f>',   "compe#scroll({ 'delta': +4 })", opts)
+map({'i'},   '<C-d>',   "compe#scroll({ 'delta': -4 })", opts)
+
+vim.api.nvim_command('highlight link CompeDocumentation NormalFloat')
 
 require('compe').setup({
   enabled          = true;

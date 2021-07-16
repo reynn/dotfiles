@@ -1,3 +1,7 @@
+local map = require('reynn.utils').map
+
+map("n", "<leader>gu", "<cmd>lua require('reynn.plugins.term').toggle_git_tui()<CR>", {noremap = true, silent = true})
+
 require("toggleterm").setup{
   hide_numbers = true,
   direction = 'float',
