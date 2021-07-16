@@ -1,3 +1,3 @@
-local reynn_galaxyline = require('reynn.galaxyline.themes')
+local reynn_galaxyline = require('reynn.plugins.galaxyline').hyperbolist
 
-reynn_galaxyline.hyperbolist.setup()
+reynn_galaxyline.setup()

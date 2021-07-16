@@ -263,4 +263,4 @@ schemes:
       cyan: "#6d96a5"
       white: "#aeb3bb"
 
-colors: *gruvbox_flat_dark
+colors: *gruvbox_dark

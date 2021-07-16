@@ -3,6 +3,12 @@ local M = {}
 local cmd = vim.cmd
 local o_s = vim.o
 local map_key = vim.api.nvim_set_keymap
+local buf_map_key = vim.api.nvim_buf_set_keymap
+local buf_add_hi = vim.api.nvim_buf_add_highlight
+
+M.hi = function(buffer, ns_id, hl_group, line, col_start, col_end)
+  buf_add_hi(buffer, ns_id, hl_group, line, col_start, col_end)
+end
 
 M.opt = function(o, v, scopes)
   scopes = scopes or {o_s}
@@ -23,6 +29,13 @@ M.map = function(modes, lhs, rhs, opts)
   opts.noremap = opts.noremap == nil and true or opts.noremap
   if type(modes) == 'string' then modes = {modes} end
   for _, mode in ipairs(modes) do map_key(mode, lhs, rhs, opts) end
+end
+
+M.bufmap = function(bufnr, modes, lhs, rhs, opts)
+  opts = opts or {}
+  opts.noremap = opts.noremap == nil and true or opts.noremap
+  if type(modes) == 'string' then modes = {modes} end
+  for _, mode in ipairs(modes) do buf_map_key(bufnr, mode, lhs, rhs, opts) end
 end
 
 M.replace_termcodes = function(code)

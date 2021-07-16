@@ -43,7 +43,18 @@ function github.release.download -d "Download a release from GitHub in the expec
             return 1
         end
 
-        set -x version_directory "$base_directory/github/$repo/$latest_release_version"
+        set -x repo_directory "$base_directory/github/$repo"
+        set -x installed_versions (fd -td -d1 . $repo_directory)
+
+        if delete_only = true
+            set -x versions_to_delete (echo $installed_versions | sk --select-1 --exit-0)
+            for version in $versions_to_delete
+                log info "Deleting $version"
+            end
+            exit 0
+        end
+
+        set -x version_directory "$repo_directory/$latest_release_version"
 
         __log debug "Base directory           : $base_directory"
         __log debug "Repo                     : $repo"
@@ -344,6 +355,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     set -x show_versions_only false
     set -x show_assets_only false
     set -x cleanup_assets false
+    set -x delete_only false
 
     # Parse the option flags, fails without `getopts` package, if using dotfiles run `dotfiles.update -A`
     getopts $argv | while read -l key value
@@ -351,6 +363,8 @@ function github.release.download -d "Download a release from GitHub in the expec
             case D defaults
                 __versm_get_system_defaults
                 return 0
+            case delete
+                set delete_only = true
             case e env
                 set set_env_only true
             case s show
