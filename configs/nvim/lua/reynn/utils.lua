@@ -4,11 +4,6 @@ local cmd = vim.cmd
 local o_s = vim.o
 local map_key = vim.api.nvim_set_keymap
 local buf_map_key = vim.api.nvim_buf_set_keymap
-local buf_add_hi = vim.api.nvim_buf_add_highlight
-
-M.hi = function(buffer, ns_id, hl_group, line, col_start, col_end)
-  buf_add_hi(buffer, ns_id, hl_group, line, col_start, col_end)
-end
 
 M.opt = function(o, v, scopes)
   scopes = scopes or {o_s}
@@ -54,19 +49,19 @@ M.modes = function()
   local colors = require('reynn.themes').colors
   return {
     n = { color = colors.red, name = 'normal' },
-    no = { color = colors.red, name = 'n·operator pending' },
+    no = { color = colors.red, name = 'n·op' },
     i = { color = colors.green, name = 'insert' },
     v = { color = colors.blue, name = 'visual' },
     V = { color = colors.blue, name = 'v·line' },
-    [''] = { color = colors.blue, name = 'v·block' },
+    [''] = { color = colors.blue, name = 'v·b' },
     c = { color = colors.magenta, name = 'command' },
     s = { color = colors.orange, name = 'select' },
     S = { color = colors.orange, name = 's·line' },
-    [''] = { color = colors.orange, name = 's·block' },
+    [''] = { color = colors.orange, name = 's·b' },
     ic = { color = colors.yellow, name = 'i·completion' },
     R = { color = colors.violet, name = 'replace' },
-    Rv = { color = colors.violet, name = 'v·replace' },
-    cv = { color = colors.red, name = 'vim ex' },
+    Rv = { color = colors.violet, name = 'v·r' },
+    cv = { color = colors.red, name = 'vim·ex' },
     ce = { color = colors.red, name = 'ex' },
     r = { color = colors.cyan, name = 'prompt' },
     rm = { color = colors.cyan, name = 'more' },

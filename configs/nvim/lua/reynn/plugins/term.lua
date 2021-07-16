@@ -5,7 +5,7 @@ local M = {}
 
 M.toggle_git_tui = function()
   return Terminal:new({
-    cmd = "lazygit; or gitui; or echo 'No Git UI available'",
+    cmd = "lazygit 2>/dev/null; or gitui 2>/dev/null; or echo 'No Git UI available'",
     dir = "git_dir",
     direction = "float",
     float_opts = { border = "double" },

@@ -1,7 +1,7 @@
 local utils = require('reynn.utils')
 local autocmd = utils.autocmd
 
-autocmd('start_screen', [[VimEnter * ++once lua require('reynn.start').start()]], true)
+-- autocmd('start_screen', [[VimEnter * ++once lua require('reynn.start').show()]], true)
 autocmd('syntax_aucmds',
   [[Syntax * syn match extTodo "\<\(NOTE\|HACK\|BAD\|TODO\):\?" containedin=.*Comment.* | hi! link extTodo Todo]],
   true)

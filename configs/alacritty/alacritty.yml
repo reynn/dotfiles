@@ -30,7 +30,7 @@ cursor:
 
 hide_cursor_while_typing: true
 
-schemes:
+color_schemes:
   afterglow: &afterglow
     primary:
       background: "#2c2c2c"

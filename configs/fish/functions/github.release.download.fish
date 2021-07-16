@@ -46,12 +46,21 @@ function github.release.download -d "Download a release from GitHub in the expec
         set -x repo_directory "$base_directory/github/$repo"
         set -x installed_versions (fd -td -d1 . $repo_directory)
 
-        if delete_only = true
-            set -x versions_to_delete (echo $installed_versions | sk --select-1 --exit-0)
-            for version in $versions_to_delete
-                log info "Deleting $version"
+        if test "$delete_only" = true
+            set -l versions_to_delete (echo $installed_versions | sk --select-1 --exit-0)
+            set -l user_answer (read -P "Are you sure you want to delete "(count $versions_to_delete)" of $repo? (y/n)  ")
+            if test "$user_answer" = y
+                for repo_version in $versions_to_delete
+                    log info "Deleting $repo_version"
+                    rm -rf $repo_directory/$repo_version
+                end
+                if test "$versions_to_delete" = "$installed_versions"
+                    log info "No more versions installed, removing links"
+                    rm -rf $repo_directory
+                    rm -f $base_directory/envs/$bin_alias
+                end
             end
-            exit 0
+            return 0
         end
 
         set -x version_directory "$repo_directory/$latest_release_version"
@@ -245,12 +254,12 @@ function github.release.download -d "Download a release from GitHub in the expec
     end
 
     function ___usage
-        set -a help_args -f 'h|help|Print this help message'
         set -a help_args -f 'e|env|Set path if necessary'
+        set -a help_args -f '|delete|Delete a release either all or just a specific version|$delete_only'
         set -a help_args -f 'r|repo|The name of the repo to get release from [repo-owner/repo-name]'
         set -a help_args -f 'p|pattern|File pattern for downloading from release asset list'
         set -a help_args -f 'a|alias|How to call the release after downloaded if different from the repo name'
-        set -a help_args -f 'd|base-dir|Where to store the data for this script), default(\$HOME/.bins'
+        set -a help_args -f 'd|base-dir|Where to store the data for this script), default(\$HOME/.bins)'
         set -a help_args -f 'f|filter|Filter for the name of the binary if not found automatically'
         set -a help_args -f 'P|pre-release|Allow pre-releases to be pulled as well as stable'
         set -a help_args -f 's|show|Show list of versions for the repo'
@@ -364,7 +373,7 @@ function github.release.download -d "Download a release from GitHub in the expec
                 __versm_get_system_defaults
                 return 0
             case delete
-                set delete_only = true
+                set delete_only true
             case e env
                 set set_env_only true
             case s show
