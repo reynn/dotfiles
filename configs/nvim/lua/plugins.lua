@@ -15,31 +15,41 @@ local function init()
   -- Packer
   use { 'https://github.com/wbthomason/packer.nvim' }
 
-  -- NVIM 0.5.0 Specific
-  use { 'https://github.com/akinsho/nvim-toggleterm.lua' }    -- persist and toggle multiple terminals
-  use { 'https://github.com/glepnir/galaxyline.nvim', branch = 'main' }
+  -- LSP (Language Server Protocol)
+  use { 'https://github.com/glepnir/lspsaga.nvim' }
+  use { 'https://github.com/onsails/lspkind-nvim' }
+  use { 'https://github.com/hrsh7th/nvim-compe' }
+  use { 'https://github.com/tzachar/compe-tabnine', run = './install.sh' }
   use { 'https://github.com/kabouzeid/nvim-lspinstall' }      -- Install language servers automatically
-  use { 'https://github.com/kyazdani42/nvim-web-devicons' }   -- Adds devicons
-  use { 'https://github.com/nvim-lua/plenary.nvim' }
-  use { 'https://github.com/lewis6991/gitsigns.nvim' }
   use { 'https://github.com/neovim/nvim-lspconfig' }          -- collection of common configs for the built-in LSP
   use { 'https://github.com/nvim-lua/lsp-status.nvim' }       -- generate statusline components from the built-in LSP
   use { 'https://github.com/nvim-lua/lsp_extensions.nvim' }   -- Extensions to built-in LSP, for example, providing type inlay hints
-  use { 'https://github.com/nvim-lua/popup.nvim' }            -- An implementation of the Popup API from vim in Neovim
-  use { 'https://github.com/nvim-telescope/telescope.nvim' }  -- highly extendable fuzzy finder over lists
-  use { 'https://github.com/nvim-treesitter/nvim-treesitter', run = ':TSUpdate' } -- Syntax highlighting... to the max
   use { 'https://github.com/ray-x/lsp_signature.nvim' }       -- Adds method/function signatures while typing
-  use { 'https://github.com/reynn/crates-rs.lua' }
-  use { 'https://github.com/seblj/nvim-tabline' }
+
+  -- UI
+  use { 'https://github.com/romgrk/barbar.nvim' }
+  use { 'https://github.com/glepnir/galaxyline.nvim', branch = 'main' }
+  use { 'https://github.com/lewis6991/gitsigns.nvim' }
+  use { 'https://github.com/kyazdani42/nvim-web-devicons' }   -- Adds devicons
+
+  -- Utils
+  use { 'https://github.com/nvim-telescope/telescope.nvim' }  -- highly extendable fuzzy finder over lists
+  use { 'https://github.com/nvim-telescope/telescope-github.nvim' }
+  use { 'https://github.com/nvim-telescope/telescope-vimspector.nvim' }
+  use { 'https://github.com/akinsho/nvim-toggleterm.lua' }    -- persist and toggle multiple terminals
+  use { 'https://github.com/nvim-lua/plenary.nvim' }
+  use { 'https://github.com/nvim-lua/popup.nvim' }            -- An implementation of the Popup API from vim in Neovim
+  use { 'https://github.com/nvim-treesitter/nvim-treesitter', run = ':TSUpdate' } -- Syntax highlighting... to the max
   use { 'https://github.com/simrat39/rust-tools.nvim' }       -- Initialize the builtin LSP with sane Rust defaults
-  use { 'https://github.com/hrsh7th/nvim-compe' }
-  use { 'https://github.com/tzachar/compe-tabnine', run = './install.sh' }
-  use { 'mhinz/vim-startify', config = [[require('reynn.plugins.startify')]] }
+  use { 'https://github.com/mhinz/vim-startify' }
+  use { 'https://github.com/sudormrfbin/cheatsheet.nvim' }
+
+  -- Color Schemes
+  use { 'https://github.com/eddyekofo94/gruvbox-flat.nvim' }
+  use { 'https://github.com/romgrk/doom-one.vim' }
 
   use { 'https://github.com/andymass/vim-matchup' }           -- Highlight, navigate and operate on sets of matching text
   use { 'https://github.com/bkad/CamelCaseMotion' }           -- using w, b to traverse words considers camel case separate words
-  use { 'https://github.com/eddyekofo94/gruvbox-flat.nvim' }
-  use { 'https://github.com/frazrepo/vim-rainbow' }           -- Colorize tabs, parens to make them easier to see
   use { 'https://github.com/hrsh7th/vim-vsnip' }
   use { 'https://github.com/hrsh7th/vim-vsnip-integ' }
   use { 'https://github.com/junegunn/vim-easy-align' }        -- Text alignment
