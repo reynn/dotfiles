@@ -5,6 +5,7 @@ function aws.okta.auth
     set -lx aws_profile_name
     set -lx duration 3600
     set -lx password_reset false
+    set -lx aws_profile_override
     set -lx reup false
     set -lx fuzzy_filter
     set -lx aws_role_override
@@ -30,26 +31,23 @@ function aws.okta.auth
         set -a help_args -d "cnqr-nonprod:"
         set -a help_args -d "  username: test-user"
 
-        set -p help_args -f "a|account|The account to generate credentials for|"
-        set -p help_args -f "c|config-file|The file containing account info|"(echo $config_file_path | string replace "$HOME" "~")
-        set -p help_args -f "f|filter|Filter to start the fuzzy finder with|$fuzzy_filter"
-        set -p help_args -f "d|duration|Set the duration the credential is valid for|$duration"
-        set -p help_args -f "p|aws-profile|Overwrite the profile name that will be written to credentials file|`profile specific`"
-        set -p help_args -f "R|aws-role|Override the profiles role|`profile specific`"
-        set -p help_args -f "r|reup|Run Keyman in a subshell with reup enabled|$reup"
-        set -p help_args -f "|password-reset|Reset password cache|$password_reset"
+        set -a help_args -f "a|account|The account to generate credentials for|"
+        set -a help_args -f "c|config-file|The file containing account info|"(echo $config_file_path | string replace "$HOME" "~")
+        set -a help_args -f "f|filter|Filter to start the fuzzy finder with|$fuzzy_filter"
+        set -a help_args -f "d|duration|Set the duration the credential is valid for|$duration"
+        set -a help_args -f "r|aws-role|Override the profiles role|`profile specific`"
+        set -a help_args -f "p|aws-profile|Override the profiles name|`profile specific`"
+        set -a help_args -f "R|reup|Run Keyman in a subshell with reup enabled|$reup"
+        set -a help_args -f "|password-reset|Reset password cache|$password_reset"
 
         __dotfiles_help $help_args
     end
 
-    function get_auth
-        set -l auth_profile "$argv[1]"
-
-    end
+    set -x accounts_to_generate
 
     getopts $argv | while read -l key value
         switch $key
-            case a account
+            case _
                 set -a accounts_to_generate "$value"
             case c config-file
                 set config_file_path "$value"
@@ -58,8 +56,8 @@ function aws.okta.auth
             case password-reset
                 set password_reset true
             case p aws-profile
-                set aws_profile_name "$value"
-            case R aws-role
+                set aws_profile_override "$value"
+            case r aws-role
                 set aws_role_override "$value"
             case r reup
                 set reup true
@@ -107,12 +105,15 @@ function aws.okta.auth
         end
         set -lx preview (echo $account_data | jq -r '.preview | select (.!=null)' 2> /dev/null)
         if test -n "$password_reset"
-            set -lx password_reset (echo $account_data | jq -r '.password_reset | select (.!=null)' 2> /dev/null; or echo 'false')
+            set -x password_reset (echo $account_data | jq -r '.password_reset' 2> /dev/null; or echo 'false')
         end
-        set -lx region (echo $account_data | jq -r '.region | select (.!=null)' 2> /dev/null)
-        set -lx account (echo $account_data | jq -r '.account | select (.!=null)' 2> /dev/null)
-        set -lx org (echo $account_data | jq -r '.okta_org | select (.!=null)' 2> /dev/null)
-        set -lx profile_name (echo $account_data | jq -r '.profile_name | select (.!=null)' 2> /dev/null)
+        set -lx region (echo $account_data | jq -r '.region' 2> /dev/null)
+        set -lx account (echo $account_data | jq -r '.account' 2> /dev/null)
+        set -lx org (echo $account_data | jq -r '."okta_org"' 2> /dev/null)
+        set -lx profile_name (echo $account_data | jq -r '.profile_name' 2> /dev/null)
+        if test -n "$aws_profile_override"
+            set profile_name $aws_profile_override
+        end
         set -lx bw_id (echo $account_data | jq -r '.bw_id | select (.!=null)' 2> /dev/null)
         set -lx role (echo $account_data | jq -r '.role | select (.!=null)' 2> /dev/null)
 
@@ -142,11 +143,11 @@ function aws.okta.auth
         test -n "$role"; and set -a keyman_args --role "$role"
         test "$preview" = true; and set -a keyman_args --oktapreview
         test "$password_reset" = true; and set -a keyman_args -R
+        test -n "$duration"; and set -a keyman_args -du $duration
         test "$reup" = true; and set -a keyman_args -r
-        test -n "$duration"; and set -a keyman_args -du "$duration"
 
-        __log debug "calling `aws_okta_keyman $keyman_args`"
-
+        log debug "calling [aws_okta_keyman $keyman_args]"
+        # return 0
         if test -z "$bw_id"
             aws_okta_keyman $keyman_args
         else
