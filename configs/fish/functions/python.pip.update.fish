@@ -24,6 +24,10 @@ function python.pip.update -d "Update all outdated Python packages using PIP"
       pip list --disable-pip-version-check --not-required --user --outdated --format json | \
       jq -r '.[].name')
 
+    # attempt to always update pip
+    if not contains pip $packages
+      set -p packages pip
+    end
 
     if test (count $packages) -eq 0
         __log warn "Nothing to update"
@@ -33,7 +37,7 @@ function python.pip.update -d "Update all outdated Python packages using PIP"
     __log (count $packages)" packages need to be updated, including the following"
 
     for pkg in $packages
-        __log -l pkg "--> $pkg"
+        __log "(PKG) --> $pkg"
     end
 
     python3 -m pip install --user -U $packages
