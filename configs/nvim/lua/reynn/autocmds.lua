@@ -1,12 +1,14 @@
 return {
   setup = function(opts)
-    local utils = require('reynn.utils')
+    local utils = require("reynn.utils")
     local autocmd = utils.autocmd
 
     -- autocmd('start_screen', [[VimEnter * ++once lua require('reynn.start').show()]], true)
-    autocmd('syntax_aucmds',
+    autocmd(
+      "syntax_aucmds",
       [[Syntax * syn match extTodo "\<\(NOTE\|HACK\|BAD\|TODO\):\?" containedin=.*Comment.* | hi! link extTodo Todo]],
-      true)
-    autocmd('hioy_aucmds', { [[BufWinEnter * checktime]], [[TextYankPost * silent! lua vim.highlight.on_yank()]] }, true)
+      true
+    )
+    autocmd("hoy_aucmds", {[[BufWinEnter * checktime]], [[TextYankPost * silent! lua vim.highlight.on_yank()]]}, true)
   end
 }
