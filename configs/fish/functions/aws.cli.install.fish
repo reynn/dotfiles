@@ -44,10 +44,10 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
 
             echo "$latest_version" >$base_directory/aws-cli/installed_version
 
-            if not test -l "$base_directory/envs/aws"
+            if not test -L "$base_directory/envs/aws"
                 ln -s "$base_directory/aws-cli/aws" "$base_directory/envs/aws"
             end
-            if not test -l "$base_directory/envs/aws_completer"
+            if not test -L "$base_directory/envs/aws_completer"
                 ln -s "$base_directory/aws-cli/aws_completer" "$base_directory/envs/aws_completer"
             end
         end

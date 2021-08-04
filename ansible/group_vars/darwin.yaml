@@ -3,9 +3,6 @@ extra_to_create:
   - dest: "{{ bins_dir }}/code"
     src: "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
     state: link
-  - dest: "{{ ansible_user_dir }}/.config/spotifyd"
-    src: "{{ dotfiles_path }}/configs/spotifyd"
-    state: "link"
 os_scripts:
   - name: "installer.brew"
     url: "https://raw.githubusercontent.com/Homebrew/install/master/install.sh"

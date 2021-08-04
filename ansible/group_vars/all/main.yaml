@@ -48,37 +48,36 @@ packages:
     - certifi
     - httpie
     - pre-commit
-    - python-language-server[yapf]
   cargo: []
   brew: []
 
 scripts:
-  - name: "installer.spacevim"
+  - name: installer.spacevim
     url: "https://raw.githubusercontent.com/SpaceVim/SpaceVim/master/docs/install.sh"
-  - name: "installer.rustup"
+  - name: installer.rustup
     url: "https://raw.githubusercontent.com/rust-lang/rustup/master/rustup-init.sh"
 
 to_create:
   - dest: "{{ ansible_user_dir }}/.ssh"
-    state: "directory"
+    state: directory
   - dest: "{{ ansible_user_dir }}/.ssh/keys"
-    state: "directory"
+    state: directory
   - dest: "{{ ansible_user_dir }}/.config"
-    state: "directory"
+    state: directory
   - dest: "{{ ansible_user_dir }}/.config/fish"
-    state: "directory"
+    state: directory
   - dest: "{{ ansible_user_dir }}/.config/fish/config.fish"
     src: "{{ dotfiles_path }}/configs/fish/config.fish"
-    state: "link"
+    state: link
   - dest: "{{ ansible_user_dir }}/.config/fish/fish_plugins"
     src: "{{ dotfiles_path }}/configs/fish/fish_plugins"
-    state: "link"
+    state: link
   - dest: "{{ ansible_user_dir }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/gitconfig"
-    state: "link"
+    state: link
   - dest: "{{ github_path }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/public_github"
-    state: "link"
+    state: link
   - dest: "{{ ansible_user_dir }}/.config/alacritty"
     src: "{{ dotfiles_path }}/configs/alacritty"
-    state: "link"
+    state: link

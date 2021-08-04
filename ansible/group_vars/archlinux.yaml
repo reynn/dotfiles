@@ -1,10 +1,5 @@
 ---
 extra_to_create:
-  - dest: "{{ ansible_user_dir }}/.config/spotifyd"
-    state: "directory"
-  - dest: "{{ ansible_user_dir }}/.config/spotifyd/spotifyd.conf"
-    src: "{{ dotfiles_path }}/configs/spotifyd/{{ ansible_system | lower }}.conf"
-    state: "link"
   - dest: "{{ ansible_user_dir }}/.config/systemd"
     state: "directory"
   - src: "{{ dotfiles_path }}/configs/systemd"

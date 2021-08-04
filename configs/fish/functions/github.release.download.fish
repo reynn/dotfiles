@@ -161,24 +161,9 @@ function github.release.download -d "Download a release from GitHub in the expec
                 # if the $env_path isn't already a symlink we will create it
                 __versm_create_symlink "$asset_current_link" "$env_dir/$bin_alias"
                 return 0
-            case application/zip
-                if command.is_available -c unzip
-                    __log "handle_asset Extracting $asset_path"
-                    unzip -o "$asset_path" -d (dirname "$asset_path")
-                    __versm_find_exec_after_extract "$version_directory" "$bin_filter" "$asset_path" "$bin_alias" "$env_dir"
-                else
-                    __log error 'handle_asset `unzip` is unavailable in the path'
-                    return 1
-                end
-            case 'application/gzip*'
-                if command.is_available -c tar
-                    __log "handle_asset Extracting ($asset_path) to ($version_directory)"
-                    tar xf "$asset_path" -C "$version_directory"
-                    __versm_find_exec_after_extract "$version_directory" "$bin_filter" "$asset_path" "$bin_alias" "$env_dir"
-                else
-                    __log error 'handle_asset `tar` is unavailable in the path'
-                    return 1
-                end
+            case "application/zip" 'application/gzip*'
+                file.extract -d (dirname "$asset_path") "$asset_path"
+                __versm_find_exec_after_extract "$version_directory" "$bin_filter" "$asset_path" "$bin_alias" "$env_dir"
             case inode/directory
                 return 3
         end

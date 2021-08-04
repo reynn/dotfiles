@@ -47,11 +47,7 @@ function aws.change.profile
     end
 
     if test -z "$selected_profile"
-        set available_aws_profiles (cat $credentials_file | string replace --filter --regex "\[(.+)\]" '$1')
-        __log debug 'Found '(count $available_aws_profiles)" aws profiles in $credentials_file"
-        set selected_profile (cat $credentials_file |\
-          string replace --filter --regex "\[(.+)\]" '$1' |\
-          sk --height 30% -p 'Profile> ' --preview='aws --profile {} sts get-caller-identity | dasel select -r json --plain -s "."')
+        set selected_profile (aws configure list-profiles | sk --height 35% -p 'Profile> ' --preview='aws --profile {} sts get-caller-identity | dasel select -r json --plain -s "."')
     end
 
     set -xg AWS_PROFILE $selected_profile

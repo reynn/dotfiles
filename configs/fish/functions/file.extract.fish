@@ -19,51 +19,49 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
         set -l file "$argv[1]"
         set -l target_dir "$argv[2]"
 
-        set -l extension ''
-
-        switch $extension
-            case .tar.gz .tgz
+        switch $file
+            case "*.tar.gz" "*.tgz"
                 tar zxvf "$file"
-            case .tar.bz2 .tbz .tbz2
+            case "*.tar.bz2" "*.tbz" "*.tbz2"
                 tar xvjf "$file"
-            case .tar.xz .txz
+            case "*.tar.xz" "*.txz"
                 tar --xz --help &>/dev/null && tar --xz -xvf "$file" || xzcat "$file" | tar xvf -
-            case .tar.zma .tlz
+            case "*.tar.zma" "*.tlz"
                 tar --lzma --help &>/dev/null && tar --lzma -xvf "$file" || lzcat "$file" | tar xvf -
-            case .tar.zst .tzst
+            case "*.tar.zst" "*.tzst"
                 tar --zstd --help &>/dev/null && tar --zstd -xvf "$file" || zstdcat "$file" | tar xvf -
-            case .tar
+            case "*.tar"
                 tar xvf "$file"
-            case .tar.lz
+            case "*.tar.lz"
                 tar xvf "$file"
-            case .tar.lz4
+            case "*.tar.lz4"
                 lz4 -c -d "$file" | tar xvf -
-            case .tar.lrz
+            case "*.tar.lrz"
                 lrzuntar "$file"
-            case .gz
+            case "*.gz"
                 gunzip -k "$file"
-            case .bz2
+            case "*.bz2"
                 bunzip2 "$file"
-            case .xz
+            case "*.xz"
                 unxz "$file"
-            case .lrz
+            case "*.lrz"
                 lrunzip "$file"
-            case .lz4
+            case "*.lz4"
                 lz4 -d "$file"
-            case .lzma
+            case "*.lzma"
                 unlzma "$file"
-            case .z
+            case "*.z"
                 uncompress "$file"
-            case .zip .war .jar .sublime-package .ipsw .xpi .apk .aar .whl
-                unzip "$file" -d $target_dir
-            case .rar
+            case "*.zip" "*.war" "*.jar" "*.sublime-package" "*.ipsw" "*.xpi" "*.apk" "*.aar" "*.whl"
+                unzip "$file" -d "$target_dir/"
+            case "*.rar"
                 unrar x -ad "$file"
-            case .7z
+            case "*.7z"
                 7za x "$file"
-            case .zst
+            case "*.zst"
                 unzstd "$file"
             case '*'
-                __log fatal ''
+                __log fatal "File $file does not match an expected extension"
         end
     end
 
@@ -83,6 +81,9 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
                 set -x DEBUG true
         end
     end
+
+    __log debug "archive_file : $archive_file"
+    __log debug "destination  : $destination"
 
     ___extract $archive_file $extract_destination
 end
