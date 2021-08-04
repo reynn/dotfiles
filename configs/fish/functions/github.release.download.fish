@@ -51,11 +51,11 @@ function github.release.download -d "Download a release from GitHub in the expec
             set -l user_answer (read -P "Are you sure you want to delete "(count $versions_to_delete)" of $repo? (y/n)  ")
             if test "$user_answer" = y
                 for repo_version in $versions_to_delete
-                    log info "Deleting $repo_version"
+                    __log info "Deleting $repo_version"
                     rm -rf $repo_directory/$repo_version
                 end
                 if test "$versions_to_delete" = "$installed_versions"
-                    log info "No more versions installed, removing links"
+                    __log info "No more versions installed, removing links"
                     rm -rf $repo_directory
                     rm -f $base_directory/envs/$bin_alias
                 end

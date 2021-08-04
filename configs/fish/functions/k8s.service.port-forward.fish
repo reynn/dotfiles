@@ -9,12 +9,12 @@ function k8s.service.port-forward --description 'Forward an available port to a 
 
     function __get_service_name
         set -l service_names (kubectl get service -n $k8s_namespace --output json)
-        echo $service_names | jq -r '.items[].metadata.name' | fzf --select-1
+        echo $service_names | dasel select -r json --plain --null '.items.[*].metadata.name' | sk --select-1
     end
 
     function __get_service_port
         set -l service_details (kubectl get service -n $k8s_namespace $service_name --output json)
-        echo $service_details | jq -r '.spec.ports[].port' | fzf --select-1 --preview ""
+        echo $service_details | dasel select -r json --plain --null '.spec.ports.[*].port' | sk --select-1 --preview ""
     end
 
     function ___usage

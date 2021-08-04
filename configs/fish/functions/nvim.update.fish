@@ -14,7 +14,7 @@ function nvim.update -d 'Cleanup files and reinstall Spacevim'
 
     function ___nvim_create_venv
         set -l venv_path "$argv[1]"
-        log debug "Creating python virtual environment $venv_path"
+        __log debug "Creating python virtual environment $venv_path"
         mkdir -p (dirname $venv_path)
         python3 -m venv $venv_path
         source "$venv_path/bin/activate.fish"
@@ -26,13 +26,13 @@ function nvim.update -d 'Cleanup files and reinstall Spacevim'
         # Get a handle to the builtin rm command instead of an alias
         set -l item_name "$argv[1]"
         if test -d $item_name
-            log "Deleting directory $item_name"
+            __log "Deleting directory $item_name"
             $rm_command -rf $item_name
         else if test -f $item_name
-            log "Deleting file $item_name"
+            __log "Deleting file $item_name"
             $rm_command -f $item_name
         else
-            log "$item_name doesn't need to be deleted"
+            __log "$item_name doesn't need to be deleted"
         end
     end
 
@@ -72,19 +72,19 @@ function nvim.update -d 'Cleanup files and reinstall Spacevim'
         end
     end
 
-    log debug "CLEAN_CACHE        : $CLEAN_CACHE"
-    log debug "CLEAN_NVIM         : $CLEAN_NVIM"
-    log debug "CONFIGURE_NVIM     : $CONFIGURE_NVIM"
+    __log debug "CLEAN_CACHE        : $CLEAN_CACHE"
+    __log debug "CLEAN_NVIM         : $CLEAN_NVIM"
+    __log debug "CONFIGURE_NVIM     : $CONFIGURE_NVIM"
 
     if test "$CLEAN_NVIM" = true
-        log debug 'Deleting NeoVim files'
+        __log debug 'Deleting NeoVim files'
         ___nvim_clean_files_delete "$NEOVIM_HOME"
         ___nvim_clean_files_delete "$NEOVIM_CACHE"
         ___nvim_clean_files_delete "$HOME/.local/share/nvim/site/pack/packer"
         ___nvim_clean_files_delete "$HOME/.local/share/nvim"
 
         if test -d "$PYTHON_VENV_PATH"
-            log debug "Deleting python virtual environment $PYTHON_VENV_PATH"
+            __log debug "Deleting python virtual environment $PYTHON_VENV_PATH"
             $rm_command -rf $PYTHON_VENV_PATH
         end
 
@@ -94,11 +94,11 @@ function nvim.update -d 'Cleanup files and reinstall Spacevim'
     if test "$CONFIGURE_NVIM" = true
         ___nvim_create_venv "$PYTHON_VENV_PATH"
         if not set -q DFP
-            log error 'Dotfiles Path [$DFP] is not set or not exported'
+            __log error 'Dotfiles Path [$DFP] is not set or not exported'
             return 3
         end
 
-        log debug "Symlinking nvim configuration to $NEOVIM_HOME"
+        __log debug "Symlinking nvim configuration to $NEOVIM_HOME"
         set -Ux NVIM_PYTHON3_HOME "$PYTHON_VENV_PATH"
         ln -sf "$DFP/configs/nvim/" "$SYSTEM_CONFIG_DIR"
     end

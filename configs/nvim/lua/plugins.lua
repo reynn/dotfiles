@@ -44,6 +44,7 @@ local function init()
   use {"https://github.com/simrat39/rust-tools.nvim"} -- Initialize the builtin LSP with sane Rust defaults
   use {"https://github.com/mhinz/vim-startify"}
   use {"https://github.com/sudormrfbin/cheatsheet.nvim"}
+  use {"https://github.com/mhinz/vim-sayonara"}
 
   -- Color Schemes
   use {"https://github.com/eddyekofo94/gruvbox-flat.nvim"}

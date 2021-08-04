@@ -1,5 +1,6 @@
 return {
   setup = function(cfg)
+    require("reynn.plugins.buffers").setup(cfg.buffers or {})
     require("reynn.plugins.colors").setup(cfg.colors or {})
     require("reynn.plugins.completion").setup(cfg.completion or {})
     require("reynn.plugins.finder").setup(cfg.finder or {})

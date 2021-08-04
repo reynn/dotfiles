@@ -60,23 +60,20 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
         return 1
     end
 
-    set -l selected (__list_devices \
+    set  selected (__list_devices \
         | sed '/^$/d' \
-        | fzf \
+        | sk \
             --delimiter '\t' \
             --with-nth 2,3 \
-            --preview \
-                'system_profiler SPBluetoothDataType -json 2>/dev/null \
-                    | jq -r ".SPBluetoothDataType[].device_title[]["\"{2}\""]
-                    | select(type != \"null\")"' \
+            --preview "system_profiler SPBluetoothDataType -json 2>/dev/null | dasel select --null -r json -s '.SPBluetoothDataType.[*].device_title.[*]'"
     )
 
-    set -l device_address (string replace --regex -a '\t' ',' $selected | string split ',')[1]
-    set -l device_name (string replace --regex -a '\t' ',' $selected | string split ',')[2]
+    set device_address (string replace --regex -a '\t' ',' $selected | string split ',')[1]
+    set device_name (string replace --regex -a '\t' ',' $selected | string split ',')[2]
     if test -z "$device_address"
         __log debug 'No device selected'
         return 0
     end
-    __log -l bluetooth "Connecting to device $device_name [$device_address]"
+    __log "Connecting to device $device_name [$device_address]"
     __connect_device $device_address
 end

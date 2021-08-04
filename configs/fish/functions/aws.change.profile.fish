@@ -51,7 +51,7 @@ function aws.change.profile
         __log debug 'Found '(count $available_aws_profiles)" aws profiles in $credentials_file"
         set selected_profile (cat $credentials_file |\
           string replace --filter --regex "\[(.+)\]" '$1' |\
-          sk --height 30% -p 'Profile> ' --preview='aws --profile {} sts get-caller-identity | jq -r "."')
+          sk --height 30% -p 'Profile> ' --preview='aws --profile {} sts get-caller-identity | dasel select -r json --plain -s "."')
     end
 
     set -xg AWS_PROFILE $selected_profile

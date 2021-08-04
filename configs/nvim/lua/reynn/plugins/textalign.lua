@@ -24,6 +24,15 @@ function text.setup(opts)
               stdin = true
             }
           end
+        },
+        go = {
+          function()
+            return {
+              exe = "gofmt",
+              args = {},
+              stdin = true
+            }
+          end
         }
       }
     }
