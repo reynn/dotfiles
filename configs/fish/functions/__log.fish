@@ -1,6 +1,9 @@
 #!/usr/bin/env fish
 
 function __log -d "Log a message"
+    if test "$QUIET" = true
+        return 0
+    end
     set -lx log_levels debug info warn error
     set -lx level info
     set -lx color

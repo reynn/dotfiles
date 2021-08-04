@@ -34,7 +34,7 @@ function github.release.download -d "Download a release from GitHub in the expec
             if command.is_available -c sk
                 set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | sk --select-1 --exit-0)
             else
-                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t')
+                set latest_release_version (gh release --repo $repo list | grep -i "$release_filter" | awk '{print $3}' FS='\t' | head -n 1)
             end
         end
 
@@ -43,16 +43,37 @@ function github.release.download -d "Download a release from GitHub in the expec
             return 1
         end
 
-        set -x version_directory "$base_directory/github/$repo/$latest_release_version"
+        set -x repo_directory "$base_directory/github/$repo"
+        set -x installed_versions (fd -td -d1 . $repo_directory)
+
+        if test "$delete_only" = true
+            set -l versions_to_delete (echo $installed_versions | sk --select-1 --exit-0)
+            set -l user_answer (read -P "Are you sure you want to delete "(count $versions_to_delete)" of $repo? (y/n)  ")
+            if test "$user_answer" = y
+                for repo_version in $versions_to_delete
+                    __log info "Deleting $repo_version"
+                    rm -rf $repo_directory/$repo_version
+                end
+                if test "$versions_to_delete" = "$installed_versions"
+                    __log info "No more versions installed, removing links"
+                    rm -rf $repo_directory
+                    rm -f $base_directory/envs/$bin_alias
+                end
+            end
+            return 0
+        end
+
+        set -x version_directory "$repo_directory/$latest_release_version"
 
         __log debug "Base directory           : $base_directory"
         __log debug "Repo                     : $repo"
         __log debug "Latest version           : $latest_release_version"
         __log debug "Latest version directory : $version_directory"
 
-        mkdir -p "$version_directory"
-        mkdir -p "$bins_env_path"
+        mkdir -p "$version_directory"; and mkdir -p "$bins_env_path"
+
         set download_status 0
+
         if test -z $pattern
             __log "Downloading assets from GitHub to $version_directory"
             gh release --repo $repo download $latest_release_version --dir $version_directory
@@ -130,6 +151,7 @@ function github.release.download -d "Download a release from GitHub in the expec
             __log error "handle_asset The provided asset isn't in the right format (call [file --mime-type {}] on the file path)"
             return 1
         end
+
         switch "$asset_type"
             case '*/x-mach-binary' '*/x-pie-executable' '*/x-executable'
                 __log debug "handle_asset treating "(basename $asset_path)" as an executable"
@@ -139,7 +161,7 @@ function github.release.download -d "Download a release from GitHub in the expec
                 # if the $env_path isn't already a symlink we will create it
                 __versm_create_symlink "$asset_current_link" "$env_dir/$bin_alias"
                 return 0
-            case 'application/zip*'
+            case application/zip
                 if command.is_available -c unzip
                     __log "handle_asset Extracting $asset_path"
                     unzip -o "$asset_path" -d (dirname "$asset_path")
@@ -165,7 +187,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     function __versm_create_symlink -d "Create a symlink, delete existing one"
         set -l src "$argv[1]"
         set -l dest "$argv[2]"
-        __log "create_symlink Linking $src -> $dest"
+        __log "create_symlink Linking [$src] -> [$dest]"
         ln -fs $src $dest
     end
 
@@ -232,12 +254,12 @@ function github.release.download -d "Download a release from GitHub in the expec
     end
 
     function ___usage
-        set -a help_args -f 'h|help|Print this help message'
         set -a help_args -f 'e|env|Set path if necessary'
+        set -a help_args -f '|delete|Delete a release either all or just a specific version|$delete_only'
         set -a help_args -f 'r|repo|The name of the repo to get release from [repo-owner/repo-name]'
         set -a help_args -f 'p|pattern|File pattern for downloading from release asset list'
         set -a help_args -f 'a|alias|How to call the release after downloaded if different from the repo name'
-        set -a help_args -f 'd|base-dir|Where to store the data for this script), default(\$HOME/.bins'
+        set -a help_args -f 'd|base-dir|Where to store the data for this script), default(\$HOME/.bins)'
         set -a help_args -f 'f|filter|Filter for the name of the binary if not found automatically'
         set -a help_args -f 'P|pre-release|Allow pre-releases to be pulled as well as stable'
         set -a help_args -f 's|show|Show list of versions for the repo'
@@ -342,6 +364,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     set -x show_versions_only false
     set -x show_assets_only false
     set -x cleanup_assets false
+    set -x delete_only false
 
     # Parse the option flags, fails without `getopts` package, if using dotfiles run `dotfiles.update -A`
     getopts $argv | while read -l key value
@@ -349,6 +372,8 @@ function github.release.download -d "Download a release from GitHub in the expec
             case D defaults
                 __versm_get_system_defaults
                 return 0
+            case delete
+                set delete_only true
             case e env
                 set set_env_only true
             case s show
@@ -418,16 +443,19 @@ function github.release.download -d "Download a release from GitHub in the expec
 
     set -x bins_env_path "$base_directory/envs"
     set -x show_versions_result ''
+
     if test $set_env_only = true
         __versm_set_env $bins_env_path
         return 0
     end
+
     if test $show_versions = true
         set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t' | sk)
         if test $show_versions_only = true
             return 0
         end
     end
+
     if test $show_assets_only = true
         gh release --repo $repo view $show_versions_result
         return 0

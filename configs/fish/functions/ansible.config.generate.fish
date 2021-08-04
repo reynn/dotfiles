@@ -45,12 +45,12 @@ function ansible.config.generate -d "Generate valid SSH config from an Ansible i
 
     for entry in $ENTRIES
         if string match --quiet --invert -- "*windows*" $entry
-            set -l name (echo $entry | jq -r '.name')
-            set -l splitName (helpers text split -d '_' "$name")
-            set -l dc $splitName[1]
-            set -l ip (echo $entry | jq -r '.ip')
-            set -l user (echo $entry | jq -r '.user')
-            set -l identFile (echo $entry | jq -r '.ident')
+            set -l name (echo $entry | dasel select -r json '.name' --plain)
+            set -l splitName (string split '_' "$name")
+            set -l dc "$splitName[1]"
+            set -l ip (echo $entry | dasel select -r json '.ip' --plain)
+            set -l user (echo $entry | dasel select -r json '.user' --plain; or echo "centos")
+            set -l identFile (echo $entry | dasel select -r json '.ident' --plain)
             __log debug "name       : [$name]"
             __log debug "splitName  : [$splitName]"
             __log debug "dc         : [$dc]"
@@ -58,7 +58,7 @@ function ansible.config.generate -d "Generate valid SSH config from an Ansible i
             __log debug "user       : [$user]"
             __log debug "identFile  : [$identFile]"
 
-            __log -l HOST "[$name] ssh: $user@$ip"
+            __log "[$name] ssh: $user@$ip"
             echo "Host $name" >>$CONFIG_DIRECTORY/$dc
             echo "  HostName $ip" >>$CONFIG_DIRECTORY/$dc
             if test "$identFile" != null

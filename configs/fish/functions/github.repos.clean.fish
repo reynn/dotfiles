@@ -12,6 +12,7 @@ function github.repos.clean -d "Delete forks from GitHub"
 
         set -a help_args -f "o|owner|Owner of the repositories, will be used to filter forks|$owner"
         set -a help_args -f "n|noop|Dont actually delete the fork|$noop"
+
         set -a help_args -c '1|Noop exit'
 
         __dotfiles_help $help_args
@@ -20,7 +21,7 @@ function github.repos.clean -d "Delete forks from GitHub"
     getopts $argv | while read -l key value
         switch $key
             case o owner
-                set -x owner (string trim "$value")
+                set owner (string trim "$value")
             case n noop
                 set noop true
                 # Common args
@@ -34,19 +35,19 @@ function github.repos.clean -d "Delete forks from GitHub"
         end
     end
 
-    __log -l 'args.owner' "($owner)"
+    __log "args.owner: ($owner)"
 
-    ###########################################################
+    # #######################
     # Main logic
-    ###########################################################
-    set -l forked_repos (gh api users/$owner/repos --paginate | jq -r '.[] | select(.fork==true) | .full_name')
+    # #######################
+    set forked_repos (gh api users/$owner/repos --paginate | dasel select --null -r json --plain -m '.(fork=true).full_name')
+
     for forked_repo in $forked_repos
         if test "$noop" = false
             gh api repos/$forked_repo --method DELETE
-            __log -l 'delete.repo' "Repo ($forked_repo) deleted"
+            __log "Repo ($forked_repo) deleted"
         else
-            __log -l 'delete.repo.noop' "Repo ($forked_repo) deleted"
-            return 1
+            __log "Repo ($forked_repo) deleted -->NOOP<--"
         end
     end
 end

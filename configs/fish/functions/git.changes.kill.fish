@@ -11,6 +11,7 @@ function git.changes.kill -d 'Hard Reset of git changes as well as a clean of no
 
     function ___usage
         set -l help_args -a "Hard Reset of git changes as well as a clean of non tracked files"
+
         __dotfiles_help $help_args
     end
 
@@ -32,7 +33,7 @@ function git.changes.kill -d 'Hard Reset of git changes as well as a clean of no
     if test (count $to_clean) -gt 0
         __log "Cleaning these files"
         for tc in $to_clean
-            __log -l cleaner $tc
+            __log "file: $tc"
         end
         # `-x` include cleaning of ignored files | `-f` force
         git clean -fx

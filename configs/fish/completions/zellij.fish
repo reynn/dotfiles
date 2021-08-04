@@ -18,8 +18,9 @@ complete -c zellij -n "__fish_seen_subcommand_from options" -l theme -d 'Set the
 complete -c zellij -n "__fish_seen_subcommand_from options" -l default-mode -d 'Set the default mode'
 complete -c zellij -n "__fish_seen_subcommand_from options" -l default-shell -d 'Set the default shell'
 complete -c zellij -n "__fish_seen_subcommand_from options" -l layout-dir -d 'Set the layout_dir, defaults to subdirectory of config dir'
+complete -c zellij -n "__fish_seen_subcommand_from options" -l on-force-close -d 'Set behaviour on force close (quit or detach)'
 complete -c zellij -n "__fish_seen_subcommand_from options" -l simplified-ui -d 'Allow plugins to use a more simplified layout that is compatible with more fonts'
-complete -c zellij -n "__fish_seen_subcommand_from options" -l disable-mouse-mode
+complete -c zellij -n "__fish_seen_subcommand_from options" -l disable-mouse-mode -d 'Disable handling of mouse events'
 complete -c zellij -n "__fish_seen_subcommand_from options" -s h -l help -d 'Prints help information'
 complete -c zellij -n "__fish_seen_subcommand_from options" -s V -l version -d 'Prints version information'
 complete -c zellij -n "__fish_seen_subcommand_from setup" -l generate-completion -d 'Generates completion for the specified shell'

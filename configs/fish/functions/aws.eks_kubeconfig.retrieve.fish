@@ -1,13 +1,13 @@
 function aws.eks_kubeconfig.retrieve
     set -l cluster_names $cluster_name
-    set -l aws_profile default
+    set -l aws_profile
     set -l kubeconfig_path "$HOME/.kube/config"
 
     function ___usage
         set -l help_args -a "Interactively get kubeconfigs from AWS for EKS clusters"
 
-        set -a help_args -f "k|kubeconfig|The kubeconfig the cluster info will be added to|"
-        set -a help_args -f "n|name|Name of a cluster to get Kubeconfig for, can be provided multiple times|"
+        set -a help_args -f "k|kubeconfig|The kubeconfig the cluster info will be added to|$kubeconfig_path"
+        set -a help_args -f "n|name|Name of a cluster to get Kubeconfig for, can be provided multiple times|[]"
         set -a help_args -f "p|profile|AWS Profile used for auth|$aws_profile"
 
         __dotfiles_help $help_args
@@ -38,11 +38,13 @@ function aws.eks_kubeconfig.retrieve
     end
 
     if test -z "$aws_profile"
-        set aws_profiles (aws configure list-profiles | sk --height 35% --width 60% --multi --select-1)
+        set aws_profile (aws configure list-profiles | sk --height 40% --multi --select-1)
     end
 
     if test -z "$cluster_names"
-        set cluster_names (aws --profile "$aws_profile" eks list-clusters | jq -r '.clusters[]' | sk --height 35% --multi --select-1)
+        set cluster_names (aws --profile "$aws_profile" eks list-clusters |\
+            dasel select --plain -r json -m '.clusters.[*]' |\
+            sk --height 40% --multi --select-1)
     end
 
     for cluster in $cluster_names

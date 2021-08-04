@@ -46,6 +46,6 @@ function artifactory.my.uploads -d "Search for files that you have uploaded"
         "files[0][aql][items.find][created_by]=$creator" \
         "files[0][aql][items.find][\$and][0][created][\$last]=$time_frame" | tee "$spec_file"
 
-    jfrog rt search --spec $spec_file | jq -r '.[].path'
+    jfrog rt search --spec $spec_file | dasel select -r json -m '.[*].path'
     rm -f $spec_file
 end

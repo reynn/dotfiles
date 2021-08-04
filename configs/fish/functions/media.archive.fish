@@ -8,17 +8,17 @@ function media.archive -d 'Move media files to a specified directory'
     set -lx max_depth 1
 
     function ___usage
-        set -l help_args -a "Move media files to a specified directory\n\n\tiCloud Directory: $icloud_directory"
+      set -l help_args -a "Move media files to a specified directory\n\n\tiCloud Directory: $icloud_directory"
 
-        set -a help_args -f "b|backup-directory|Where media files will be moved to for archiving|[iCloud]"
-        set -a help_args -f "s|source_directory|Where media files will be from during archiving|$source_directory"
-        set -a help_args -f "e|extension|Include an additional extension to the list|$extensions"
-        set -a help_args -f "E|clear-extensions|Clear the list of extensions to add a limitted set only|false"
-        set -a help_args -f "d|depth|Maximum depth to iterate through|$max_depth"
+      set -a help_args -f "b|backup-directory|Where media files will be moved to for archiving|[iCloud]"
+      set -a help_args -f "s|source_directory|Where media files will be from during archiving|$source_directory"
+      set -a help_args -f "e|extension|Include an additional extension to the list|$extensions"
+      set -a help_args -f "E|clear-extensions|Clear the list of extensions to add a limitted set only|false"
+      set -a help_args -f "d|depth|Maximum depth to iterate through|$max_depth"
 
-        set -a help_args -e ' -E -e jpg # Include only jpg files'
+      set -a help_args -e ' -E -e jpg # Include only jpg files'
 
-        __dotfiles_help $help_args
+      __dotfiles_help $help_args
     end
 
     getopts $argv | while read -l key value

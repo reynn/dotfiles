@@ -1,13 +1,15 @@
 function aws.okta.auth
-    set -lx accounts_to_generate
-    set -lx config_file_path "$HOME/.config/aws_okta_keyman.yaml"
-    set -lx auth_file_path "$HOME/.config/aws_okta_keyman.auth.yaml"
-    set -lx aws_profile_name
-    set -lx duration 3600
-    set -lx password_reset false
-    set -lx reup false
-    set -lx fuzzy_filter
-    set -lx aws_role_override
+    set -x accounts_to_generate
+    set -x config_file_path "$HOME/.config/aws_okta_keyman.yaml"
+    set -x auth_file_path "$HOME/.config/aws_okta_keyman.auth.yaml"
+    set -x aws_profile_name
+    set -x duration 3600
+    set -x password_reset false
+    set -x aws_profile_override
+    set -x reup false
+    set -x fuzzy_filter
+    set -x aws_role_override
+    set -x cred_profile_name
 
     function ___usage -d 'Show usage'
         set -l help_args -a "Use the AWS Okta Keyman tool to connect to get AWS credentials, FZF or Skim are used for user selection"
@@ -30,39 +32,39 @@ function aws.okta.auth
         set -a help_args -d "cnqr-nonprod:"
         set -a help_args -d "  username: test-user"
 
-        set -p help_args -f "a|account|The account to generate credentials for|"
-        set -p help_args -f "c|config-file|The file containing account info|"(echo $config_file_path | string replace "$HOME" "~")
-        set -p help_args -f "f|filter|Filter to start the fuzzy finder with|$fuzzy_filter"
-        set -p help_args -f "d|duration|Set the duration the credential is valid for|$duration"
-        set -p help_args -f "p|aws-profile|Overwrite the profile name that will be written to credentials file|`profile specific`"
-        set -p help_args -f "R|aws-role|Override the profiles role|`profile specific`"
-        set -p help_args -f "r|reup|Run Keyman in a subshell with reup enabled|$reup"
-        set -p help_args -f "|password-reset|Reset password cache|$password_reset"
+        set -a help_args -f "a|account-name|The account to generate credentials for|"
+        set -a help_args -f "c|config-file|The file containing account info|"(echo $config_file_path | string replace "$HOME" "~")
+        set -a help_args -f "f|filter|Filter to start the fuzzy finder with|$fuzzy_filter"
+        set -a help_args -f "d|duration|Set the duration the credential is valid for|$duration"
+        set -a help_args -f "r|aws-role|Override the profiles role|`profile specific`"
+        set -a help_args -f "p|aws-profile|Override the profiles name|`profile specific`"
+        set -a help_args -f "n|profile-name|The profile name that will be set in the credentials file|`profile specific`"
+        set -a help_args -f "|reup|Run Keyman in a subshell with reup enabled|$reup"
+        set -a help_args -f "|password-reset|Reset password cache|$password_reset"
 
         __dotfiles_help $help_args
     end
 
-    function get_auth
-        set -l auth_profile "$argv[1]"
-
-    end
+    set -x accounts_to_generate
 
     getopts $argv | while read -l key value
         switch $key
-            case a account
+            case a account-name
                 set -a accounts_to_generate "$value"
             case c config-file
                 set config_file_path "$value"
             case f filter
                 set fuzzy_filter "$value"
+            case n profile-name
+                set cred_profile_name "$value"
+            case p aws-profile
+                set aws_profile_override "$value"
+            case r aws-role
+                set aws_role_override "$value"
+            case reup
+                set reup true
             case password-reset
                 set password_reset true
-            case p aws-profile
-                set aws_profile_name "$value"
-            case R aws-role
-                set aws_role_override "$value"
-            case r reup
-                set reup true
                 # Common args
             case h help
                 ___usage
@@ -74,16 +76,15 @@ function aws.okta.auth
         end
     end
 
-    __log debug "YQ Binary: "(which yq)" version "(yq --version | awk '{print $3}')
-    __log debug "JQ Binary: "(which jq)" version "(jq --version | tr -d 'jq-')
+    __log debug "Dasel Binary: "(which dasel)" version "(dasel --version | awk '{print $3}')
 
     if test -z "$accounts_to_generate"
         if test -n "$fuzzy_filter"
-            __log debug "Using filter '$fuzzy_filter' on "(yq e -MN '.okta[].name' $config_file_path | count)" total accounts"
-            set accounts_to_generate (yq e -MN '.okta[].name' $config_file_path | sk --height 40% --filter $fuzzy_filter --multi --select-1)
+            __log debug "Using filter '$fuzzy_filter' on "(dasel select -f $config_file_path -m '.okta[#]')" total accounts"
+            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | sk --height 40% --filter $fuzzy_filter --multi --select-1)
             __log debug "Filtered to "(count $accounts_to_generate)" accounts"
         else
-            set accounts_to_generate (yq e -MN '.okta[].name' $config_file_path | sk --height 40% --multi --select-1)
+            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | sk --height 40% --multi --select-1)
         end
     end
 
@@ -96,39 +97,45 @@ function aws.okta.auth
 
     for account in $accounts_to_generate
         __log "Getting credentials for the [$account] account"
-        set account_data (yq e ".okta[] | select(.name == \"$account\")" $config_file_path --tojson --indent 0)
+        set account_data (dasel select -f $config_file_path -s ".okta.(name=$account)" -w json -c)
         __log debug "Full account data: $account_data"
 
-        set -lx username (echo $account_data | jq -r '.username | select (.!=null)' 2> /dev/null)
-        set -lx appid (echo $account_data | jq -r '.app_id | select (.!=null)' 2> /dev/null)
-        set -lx name (echo $account_data | jq -r '.name | select (.!=null)' 2> /dev/null)
+        set -x username (echo $account_data | dasel select -r json -n '.username' --plain 2>/dev/null)
+        set -x appid (echo $account_data | dasel select -r json -n '.app_id' --plain 2>/dev/null)
         if test -n "$aws_profile_name"
-            set name "$aws_profile_name"
+            set -x name "$aws_profile_name"
+        else
+            set name (echo $account_data | dasel select -r json -n '.name' --plain 2>/dev/null)
         end
-        set -lx preview (echo $account_data | jq -r '.preview | select (.!=null)' 2> /dev/null)
+        set -x preview (echo $account_data | dasel select -r json -n '.preview' --plain 2>/dev/null)
         if test -n "$password_reset"
-            set -lx password_reset (echo $account_data | jq -r '.password_reset | select (.!=null)' 2> /dev/null; or echo 'false')
+            set -x password_reset (echo $account_data | dasel select -r json -n -s '.password_reset' 2>/dev/null; or echo 'false')
         end
-        set -lx region (echo $account_data | jq -r '.region | select (.!=null)' 2> /dev/null)
-        set -lx account (echo $account_data | jq -r '.account | select (.!=null)' 2> /dev/null)
-        set -lx org (echo $account_data | jq -r '.okta_org | select (.!=null)' 2> /dev/null)
-        set -lx profile_name (echo $account_data | jq -r '.profile_name | select (.!=null)' 2> /dev/null)
-        set -lx bw_id (echo $account_data | jq -r '.bw_id | select (.!=null)' 2> /dev/null)
-        set -lx role (echo $account_data | jq -r '.role | select (.!=null)' 2> /dev/null)
+        set -x region (echo $account_data | dasel select -r json -n -s '.region' --plain 2>/dev/null)
+        set -x org (echo $account_data | dasel select -r json -n -s '.okta_org' --plain 2>/dev/null)
+        if test -n "$aws_profile_override"
+            set -x profile_name $aws_profile_override
+        else
+            set -x profile_name (echo $account_data | dasel select -r json -n -s '.profile_name' --plain 2>/dev/null)
+        end
+        set -x bw_id (echo $account_data | dasel select -r json -n -s '.bw_id' --plain 2>/dev/null)
+        set -x role (echo $account_data | dasel select -r json -n -s '.role' --plain 2>/dev/null)
 
-        __log debug "---> AWS Okta Keyman data"
-        __log debug "username       : $username"
-        __log debug "appid          : $appid"
-        __log debug "name           : $name"
-        __log debug "preview        : $preview"
-        __log debug "passwordReset  : $password_reset"
-        __log debug "region         : $region"
-        __log debug "account        : $account"
-        __log debug "role           : $role"
-        __log debug "org            : $org"
-        __log debug "profileName    : $profile_name"
-        __log debug "bwId           : $bw_id"
-        __log debug "reup           : $reup"
+        __log debug "[---> AWS Okta Keyman data]"
+        __log debug "username           : $username"
+        __log debug "appid              : $appid"
+        __log debug "name               : $name"
+        __log debug "preview            : $preview"
+        __log debug "passwordReset      : $password_reset"
+        __log debug "region             : $region"
+        __log debug "role               : $role"
+        __log debug "org                : $org"
+        __log debug "profileName        : $profile_name"
+        __log debug "bwId               : $bw_id"
+        __log debug "reup               : $reup"
+        __log debug "cred_profile_name  : $cred_profile_name"
+        __log debug "aws_role_override  : $aws_role_override"
+        __log debug "duration           : $duration"
 
         set -x keyman_args --region "$region"
         set -a keyman_args --org "$org"
@@ -136,17 +143,18 @@ function aws.okta.auth
         # Use keymans built in password cache by default, reset by providing '--password-reset'
         set -a keyman_args --password_cache
 
-        test -n "$profile_name"; and set -a keyman_args --name "$profile_name"
-        test -n "$appid"; and set -a keyman_args --appid "$appid"
-        test -n "$aws_role_override"; and set role "$aws_role_override"
-        test -n "$role"; and set -a keyman_args --role "$role"
+        test -n "$cred_profile_name" && test "$cred_profile_name" != "null"; and set profile_name $cred_profile_name
+        test -n "$profile_name" && test "$profile_name" != "null"; and set -a keyman_args --name "$profile_name"
+        test -n "$appid" && test "$appid" != "null"; and set -a keyman_args --appid "$appid"
+        test -n "$aws_role_override" && test "$aws_role_override" != "null"; and set role "$aws_role_override"
+        test -n "$role" && test "$role" != "null"; and set -a keyman_args --role "$role"
+        test -n "$duration" && test "$duration" != "null"; and set -a keyman_args -du $duration
         test "$preview" = true; and set -a keyman_args --oktapreview
         test "$password_reset" = true; and set -a keyman_args -R
         test "$reup" = true; and set -a keyman_args -r
-        test -n "$duration"; and set -a keyman_args -du "$duration"
 
-        __log debug "calling `aws_okta_keyman $keyman_args`"
-
+        __log "aws_okta_keyman $keyman_args"
+        # return 0
         if test -z "$bw_id"
             aws_okta_keyman $keyman_args
         else
@@ -157,7 +165,7 @@ function aws.okta.auth
 
         if test $account_count -gt 0
             __log "There are $account_count accounts left to process"
-            __log "Sleeping for 20 seconds"
+            __log "Sleeping for 20 seconds to ease Okta MFA limitting"
             sleep 20
         end
     end

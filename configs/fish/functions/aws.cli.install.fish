@@ -1,6 +1,6 @@
 function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI package'
     set -lx base_directory "$HOME/.bins"
-    set -lx latest_version (gh api /repos/aws/aws-cli/tags | jq -r '.[0].name')
+    set -lx latest_version (gh api /repos/aws/aws-cli/tags | dasel select -r json --plain -s '.[0].name')
     set -lx installed_version (cat $base_directory/aws-cli/installed_version 2>/dev/null; or echo '')
 
     if test -z "$installed_version"
