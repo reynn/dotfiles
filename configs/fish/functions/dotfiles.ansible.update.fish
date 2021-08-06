@@ -27,7 +27,7 @@ function dotfiles.ansible.update -d 'Run the playbook to apply latest changes'
             case e env
                 set -a ansible_env "$value"
             case t tags
-                set ansible_tags "$value"
+                set -a ansible_tags "$value"
                 # Common args
             case h help
                 ___usage
@@ -47,7 +47,7 @@ function dotfiles.ansible.update -d 'Run the playbook to apply latest changes'
 
     if test -n "$ansible_tags"
         set -a ansible_args --tags
-        set -a ansible_args $ansible_tags
+        set -a ansible_args (string join , $ansible_tags)
     end
 
     for env in $ansible_env

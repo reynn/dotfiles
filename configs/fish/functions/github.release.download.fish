@@ -44,9 +44,13 @@ function github.release.download -d "Download a release from GitHub in the expec
         end
 
         set -x repo_directory "$base_directory/github/$repo"
-        set -x installed_versions (fd -td -d1 . $repo_directory)
+        set -x installed_versions (fd -td -d1 . $repo_directory 2>/dev/null)
 
-        if test "$delete_only" = true
+        if $delete_only
+            if test (count $installed_versions) -eq 0
+                __log info "There are no versions of $repo to delete"
+                return 0
+            end
             set -l versions_to_delete (echo $installed_versions | sk --select-1 --exit-0)
             set -l user_answer (read -P "Are you sure you want to delete "(count $versions_to_delete)" of $repo? (y/n)  ")
             if test "$user_answer" = y
@@ -72,19 +76,67 @@ function github.release.download -d "Download a release from GitHub in the expec
 
         mkdir -p "$version_directory"; and mkdir -p "$bins_env_path"
 
-        set download_status 0
+        if test "$add_to_environment" = true
+            set tool_in_environment (dasel select -f $environment_file -w json -c --null --plain -s ".tools.(repo=$repo)")
+            set exists_in_file (test $tool_in_environment != null; and echo true; or echo false)
 
-        if test -z $pattern
-            __log "Downloading assets from GitHub to $version_directory"
-            gh release --repo $repo download $latest_release_version --dir $version_directory
-            set download_status $status
-        else
-            __log "Downloading assets from GitHub to $version_directory with pattern $pattern"
-            gh release --repo $repo download $latest_release_version --dir $version_directory --pattern $pattern
-            set download_status $status
+            __log debug "tool_in_environment  : $tool_in_environment"
+            __log debug "exists_in_file       : $exists_in_file"
+            __log debug "environment_file     : $environment_file"
+
+            set dasel_put_args dasel put object -f $environment_file #--out stdout
+
+            if test "$exists_in_file" = true
+                set -a dasel_put_args -s ".tools.(repo=$repo)"
+                set dasel_types -t string -t string
+                set dasel_object_kvs "repo=$repo"
+                set -a dasel_object_kvs "pattern=$pattern"
+                if test -n "$bin_alias"
+                    set -a dasel_types -t string
+                    set -a dasel_object_kvs "alias=$bin_alias"
+                end
+                if test -n "$bin_filter"
+                    set -a dasel_types -t string
+                    set -a dasel_object_kvs "filter=$bin_filter"
+                end
+                set -a dasel_put_args $dasel_types
+                set -a dasel_put_args $dasel_object_kvs
+            else
+                set -a dasel_put_args -s ".tools.[]"
+                set dasel_types -t string -t string
+                set dasel_object_kvs "repo=$repo"
+                set -a dasel_object_kvs "pattern=$pattern"
+                if test -n "$bin_alias"
+                    set -a dasel_types -t string
+                    set -a dasel_object_kvs "alias=$bin_alias"
+                end
+                if test -n "$bin_filter"
+                    set -a dasel_types -t string
+                    set -a dasel_object_kvs "filter=$bin_filter"
+                end
+                set -a dasel_put_args $dasel_types
+                set -a dasel_put_args $dasel_object_kvs
+            end
+            __log debug "dasel_put_cmd : $dasel_put_args"
+            $dasel_put_args
         end
 
-        if test $download_status != 0
+        set download_status 0
+
+        set -x asset_download_cmd gh release --repo $repo download $latest_release_version --dir $version_directory
+
+        if test -n $pattern
+            set -a asset_download_cmd --pattern $pattern
+        end
+
+        $asset_download_cmd
+        if test $status != 0
+            __log error "Failed to download assets from GitHub"
+            return 3
+        end
+        set symlink_at_current_version (test (readlink "$repo_directory/$bin_alias") = ())
+
+        if test $symlink_at_current_version = true
             __log "Latest version already downloaded 🐟"
             return 0
         end
@@ -103,7 +155,7 @@ function github.release.download -d "Download a release from GitHub in the expec
 
         for asset in $downloaded_assets
             __versm_handle_asset -a "$asset" -d "$version_directory" -b "$bin_alias" -e "$bins_env_path" -f "$bin_filter"
-            if test "$cleanup_assets" = true
+            if $cleanup_assets
                 set -l asset_name (string split ':' $asset)[1]
                 __log "Deleting asset $asset_name"
                 rm -fv $asset_name
@@ -161,8 +213,12 @@ function github.release.download -d "Download a release from GitHub in the expec
                 # if the $env_path isn't already a symlink we will create it
                 __versm_create_symlink "$asset_current_link" "$env_dir/$bin_alias"
                 return 0
-            case "application/zip" 'application/gzip*'
-                file.extract -d (dirname "$asset_path") "$asset_path"
+            case application/zip 'application/gzip*'
+                file.extract -d (dirname "$asset_path") -a "$asset_path"
+                if test $status -ne 0
+                    __log error "Failed to extract file $asset_path"
+                    return 2
+                end
                 __versm_find_exec_after_extract "$version_directory" "$bin_filter" "$asset_path" "$bin_alias" "$env_dir"
             case inode/directory
                 return 3
@@ -230,7 +286,7 @@ function github.release.download -d "Download a release from GitHub in the expec
         set -l cli_symlink "$base_directory/github/cli/cli/gh"
         set -l symlink_exists (test -L "$cli_symlink"; and echo 'true'; or echo 'false')
         __log "symlink_exists: $symlink_exists"
-        if test "$symlink_exists" = true
+        if "$symlink_exists"
             # check that symlink is valid
             # return 0
         end
@@ -238,17 +294,66 @@ function github.release.download -d "Download a release from GitHub in the expec
         return 1
     end
 
+    function ___versm_update_installed_bins
+        set tool_count (dasel select -f $environment_file -m '.tools' --length)
+        for tool_num in (seq 0 (math $tool_count - 1))
+            set dasel_args select -f $environment_file --null --plain
+            set name (dasel $dasel_args -s ".tools.[$tool_num].repo" 2>/dev/null)
+            set pattern (dasel $dasel_args -s ".tools.[$tool_num].pattern" 2>/dev/null)
+            set alias (dasel $dasel_args -s ".tools.[$tool_num].alias" 2>/dev/null)
+            set filter (dasel $dasel_args -s ".tools.[$tool_num].filter" 2>/dev/null)
+            set tool_version (dasel $dasel_args -s ".tools.[$tool_num].version" 2>/dev/null)
+            set pre_release (dasel $dasel_args -s ".tools.[$tool_num].pre_release" 2>/dev/null)
+
+            if contains -- '@' "$tool_version"
+                __log debug "Version of $name is locked and will not be updated"
+                return 0
+            end
+
+            __log "Requesting updated for $name"
+            __log debug "name:         $name"
+            __log debug "alias:        $alias"
+            __log debug "filter:       $filter"
+            __log debug "tool_version: $tool_version"
+            __log debug "pre_release:  $pre_release"
+            __log debug "pattern:      $pattern"
+
+            set args --repo "$name" --pattern "$pattern"
+            if test $alias != null
+                set -a args --alias "$alias"
+            end
+            if test $filter != null
+                set -a args --filter "$filter"
+            end
+            if test "$pre_release" = true
+                set -a args --pre-release
+            end
+            # in the end we are just going to recurse to install the latest version
+            github.release.download $args
+        end
+    end
+
     function ___usage
-        set -a help_args -f 'e|env|Set path if necessary'
-        set -a help_args -f '|delete|Delete a release either all or just a specific version|$delete_only'
-        set -a help_args -f 'r|repo|The name of the repo to get release from [repo-owner/repo-name]'
-        set -a help_args -f 'p|pattern|File pattern for downloading from release asset list'
-        set -a help_args -f 'a|alias|How to call the release after downloaded if different from the repo name'
-        set -a help_args -f 'd|base-dir|Where to store the data for this script), default(\$HOME/.bins)'
-        set -a help_args -f 'f|filter|Filter for the name of the binary if not found automatically'
-        set -a help_args -f 'P|pre-release|Allow pre-releases to be pulled as well as stable'
-        set -a help_args -f 's|show|Show list of versions for the repo'
-        set -a help_args -f 'S|show-assets|Shows assets for a specific version"'
+        set -l help_args -a "Download a release from GitHub in the expected structure"
+
+        set -l help_args -d ''
+
+        set -a help_args -f "|defaults|Create a default environment with some helpful tools|false"
+        set -a help_args -f "A|add-to-env|When installing this will persist the install for upgrading later|$add_to_environment"
+        set -a help_args -f "a|alias|How to call the release after downloaded if different from the repo name|`second half of repo`"
+        set -a help_args -f "c|clean|Removes the downloaded assets after extracting|false"
+        set -a help_args -f "d|base-dir|Where to store the data for this script|$base_directory"
+        set -a help_args -f "D|delete|Delete a release either all or just a specific version|$delete_only"
+        set -a help_args -f "E|env-file|The file to add tools to|$environment_file"
+        set -a help_args -f "e|env|Set path if necessary|$set_env_only"
+        set -a help_args -f "f|filter|Filter for the name of the binary if not found automatically|$bin_filter"
+        set -a help_args -f "p|pattern|File pattern for downloading from release asset list|"
+        set -a help_args -f "P|pre-release|Allow pre-releases to be pulled as well as stable|$pre_release"
+        set -a help_args -f "r|repo|The name of the repo to get release from [repo-owner/repo-name]|"
+        set -a help_args -f "S|show-assets|Shows assets for a specific version|$show_assets_only"
+        set -a help_args -f "s|show|Show list of versions for the repo|$show_versions_only"
+        set -a help_args -f "U|update-all|Run an update for all tools in the environment file|$update_all"
+
         switch "$system_platform"
             case linux
                 __log debug 'Adding examples for Linux'
@@ -291,13 +396,15 @@ function github.release.download -d "Download a release from GitHub in the expec
             case '*'
                 __log error "Platform [$system_platform] doesn't have available examples"
         end
+
         set -a help_args -c "2|Invalid or missing configuration"
         set -a help_args -c "3|Github/Validation error"
         set -a help_args -c "4|No binary found"
+
         __dotfiles_help $help_args
     end
 
-    function __versm_get_system_defaults -d 'Gets a set of default repositories to fetch'
+    function __versm_set_system_defaults -d 'Gets a set of default repositories to fetch'
         set -l repositories
         switch "$system_platform"
             case darwin
@@ -328,7 +435,7 @@ function github.release.download -d "Download a release from GitHub in the expec
 
         for repo in $repositories
             __log debug "Setting up [$repo]"
-            eval "github.release.download$repo"
+            github.release.download $args --add-to-env
         end
     end
 
@@ -350,57 +457,61 @@ function github.release.download -d "Download a release from GitHub in the expec
     set -x show_assets_only false
     set -x cleanup_assets false
     set -x delete_only false
+    set -x update_all false
+    set -x add_to_environment false
+    set -x environment_file $HOME/.config/github.release.downloads.yml
 
     # Parse the option flags, fails without `getopts` package, if using dotfiles run `dotfiles.update -A`
     getopts $argv | while read -l key value
         switch $key
-            case D defaults
-                __versm_get_system_defaults
+            case defaults
+                __versm_set_system_defaults
                 return 0
-            case delete
+            case p pattern
+                set pattern "$value"
+            case a alias
+                set bin_alias "$value"
+            case d base-dir
+                set base_directory "$value"
+            case f filter
+                set bin_filter "$value"
+            case E env-file
+                set environment_file "$value"
+            case D delete
                 set delete_only true
             case e env
                 set set_env_only true
+            case A add-to-env
+                set add_to_environment true
             case s show
                 set show_versions true
                 set show_versions_only true
             case S show-assets
                 set show_versions true
                 set show_assets_only true
-            case r repo
-                set -x repo "$value"
-                set -l repo_split (string split '/' "$value")
-                set -x repo_owner $repo_split[1]
-                set -x repo_name $repo_split[2]
-                set -l repo_name_split (string split '@' $repo_name)
-                if string match -q "*@*" $repo_name
-                    # set -e repo_name
-                    set -x repo_name $repo_name_split[1]
-                    set -x repo "$repo_owner/$repo_name"
-                    set -x latest_release_version $repo_name_split[2]
-                else
-                    set -x repo_name $repo_name_split[1]
-                end
-            case p pattern
-                set -x pattern "$value"
             case c clean
                 set cleanup_assets true
-            case a alias
-                set -x bin_alias "$value"
-            case d base-dir
-                set -x base_directory "$value"
-            case f filter
-                set -x bin_filter "$value"
             case P pre-release
                 set release_filter pre-release
-            case U update
-                set -l os (string lower (uname))
-                github.release.download -r cli/cli -a gh -p "*_$os""_amd64.tar.gz"
-                return 0
+            case U update-all
+                set update_all true
+            case r repo
+                set repo "$value"
+                set -l repo_split (string split '/' "$value")
+                set repo_owner (string replace --filter --regex '(.+)\/(.+)' '$1' "$value")
+                set repo_name (string replace --filter --regex '(.+)\/(.+)' '$2' "$value")
+                set -l repo_name_split (string split '@' $repo_name)
+                if test (count $repo_name_split) -gt 1
+                    # set -e repo_name
+                    set repo_name $repo_name_split[1]
+                    set repo "$repo_owner/$repo_name"
+                    set latest_release_version $repo_name_split[2]
+                else
+                    set repo_name $repo_name_split
+                end
                 # Common args
             case h help
                 ___usage
-                return 0
             case q quiet
                 set -x QUIET true
             case v verbose
@@ -418,6 +529,10 @@ function github.release.download -d "Download a release from GitHub in the expec
         end
     end
 
+    if test $update_all = true
+        ___versm_update_installed_bins
+    end
+
     if test -z $bin_alias
         set bin_alias $repo_name
     end
@@ -429,27 +544,27 @@ function github.release.download -d "Download a release from GitHub in the expec
     set -x bins_env_path "$base_directory/envs"
     set -x show_versions_result ''
 
-    if test $set_env_only = true
+    if $set_env_only
         __versm_set_env $bins_env_path
         return 0
     end
 
-    if test $show_versions = true
-        set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t' | sk)
-        if test $show_versions_only = true
+    if $show_versions
+        set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t')
+        if $show_versions_only
             return 0
         end
     end
 
-    if test $show_assets_only = true
+    if $show_assets_only
         gh release --repo $repo view $show_versions_result
         return 0
     end
 
     __log debug "global.base_directory : $base_directory"
     __log debug "global.repo           : $repo"
-    __log debug "global.repo_name      : $repo_name"
     __log debug "global.repo_owner     : $repo_owner"
+    __log debug "global.repo_name      : $repo_name"
     set -q latest_release_version; and __log debug "global.latest_release_version  : $latest_release_version"
     __log debug "global.pattern        : $pattern"
     __log debug "global.release_filter : $release_filter"
@@ -458,10 +573,9 @@ function github.release.download -d "Download a release from GitHub in the expec
     __log debug "global.bins_env_path  : $bins_env_path"
 
     if test -z $repo_name || test -z $repo_owner
-        __log error 'Please provide a <repo_name> and a <repo_owner>'
+        __log error 'Please provide a <repo>'
         return 1
     end
-    # return 0
 
     ###########################################################
     # Main logic

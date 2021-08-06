@@ -1,0 +1,12 @@
+---
+- name: "Test for `npm` bin"
+  ansible.builtin.command: "command -v npm"
+  ignore_errors: yes
+  register: npm_bin_check_output
+
+- name: Installing Global Node packages
+  community.general.npm:
+    name: "{{ item }}"
+    global: yes
+  loop: "{{ packages.npm }}"
+  when: npm_bin_check_output is succeeded

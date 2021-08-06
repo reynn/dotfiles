@@ -93,8 +93,12 @@ function __dotfiles_help -d 'Specially formatted help messages'
         set -a complete_lines "\n"
     end
 
-    if test -x (command -v glow)
-        printf "$complete_lines" | glow -
+    set glow_cmd_path (command -v glow)
+
+    if test -n "$glow_cmd_path"
+        set glow_cmd glow -w (tput cols) -
+        __log debug "glow_cmd : $glow_cmd"
+        printf "$complete_lines" | $glow_cmd
     else
         printf "$complete_lines"
     end

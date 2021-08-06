@@ -1,0 +1,30 @@
+- name: "Create SSH Private Keys"
+  ansible.builtin.copy:
+    content: "{{ item.private_key }}"
+    dest: "{{ ansible_user_dir }}/.ssh/keys/{{ item.host }}"
+    mode: "u=rw,g=,o="
+  loop: "{{ ssh_keys }}"
+  loop_control:
+    label: "{{ item.host }}"
+
+- name: "Create SSH Public Keys"
+  ansible.builtin.copy:
+    content: "{{ item.public_key }}"
+    dest: "{{ ansible_user_dir }}/.ssh/keys/{{ item.host }}.pub"
+    mode: "u=rw,g=r,o=r"
+  loop: "{{ ssh_keys }}"
+  loop_control:
+    label: "{{ item.host }}"
+
+- name: "Adding hosts to the user SSH configuration"
+  community.general.ssh_config:
+    user: "{{ item.user | default(omit) }}"
+    host: "{{ item.host }}"
+    hostname: "{{ item.hostname }}"
+    identity_file: "{{ item.identity_file | default(omit) }}"
+    port: "{{ item.port | default(22) }}"
+    ssh_config_file: "{{ ansible_user_dir }}/.ssh/config"
+    state: present
+  loop: "{{ ssh_hosts }}"
+  loop_control:
+    label: "{{ item.host }}"

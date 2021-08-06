@@ -1,0 +1,10 @@
+---
+- name: "Test for `go` bin"
+  ansible.builtin.command: "command -v go"
+  ignore_errors: yes
+  register: go_bin_check_output
+
+- name: Installing Global Node packages
+  ansible.builtin.command: "go get -u {{ item }}"
+  loop: "{{ packages.go }}"
+  when: go_bin_check_output is succeeded

@@ -1,0 +1,15 @@
+---
+- name: "Test for `cargo` bin"
+  ansible.builtin.command: "command -v cargo"
+  ignore_errors: yes
+  register: cargo_bin_check_output
+
+- name: "Installing cargo packages"
+  ansible.builtin.command:
+    argv:
+      - cargo
+      - install
+      - --force
+      - "{{ item.name }}"
+  loop: "{{ packages.cargo }}"
+  when: cargo_bin_check_output is succeeded

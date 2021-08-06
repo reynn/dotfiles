@@ -55,16 +55,14 @@ function artifactory.build.download -d "Download files from Artifactory based on
 
     set -l spec_file (mktemp -t download-spec.json)
 
-    jarg \
-        "files[0][target]=$target" \
-        "files[0][repo]=$repo" \
-        "files[0][flat]=$flat" \
-        "files[0][pattern]=$repo/$glob_match" | tee $spec_file
+    echo '{"files":[]}' | dasel put object -p json \
+      -s '.files.[0]' \
+      -t string -t string -t bool -t string \
+      target=$target repo=$repo flat=$flat pattern="$repo/$glob_match" | tee $spec_file
 
     if test $dry_run = true
-        then
-        jfrog rt download --dry-run --spec $spec_file
+        echo jfrog rt download --dry-run --spec $spec_file
     else
-        jfrog rt download --spec $spec_file
+        echo jfrog rt download --spec $spec_file
     end
 end

@@ -46,6 +46,7 @@ function k8s.ctx.change -d "Set KUBECTX env variable as well as the active conte
     set -xg KUBECONFIG (string join ':' $kubeconfig_files)
 
     set context (kubectl config get-contexts -o name | sk --height 35% --select-1)
+
     if test -z $context
         kubectl config use-context $context
     end

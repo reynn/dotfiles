@@ -48,8 +48,15 @@ packages:
     - certifi
     - httpie
     - pre-commit
-  cargo: []
+  cargo:
+    - name: cargo-edit
+      features:
+        - vendored-openssl
   brew: []
+  npm:
+    - "yarn"
+    - "@bitwarden/cli"
+    - "quicktype"
 
 scripts:
   - name: installer.spacevim

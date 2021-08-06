@@ -16,61 +16,104 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
     end
 
     function ___extract
-        set -l file "$argv[1]"
-        set -l target_dir "$argv[2]"
-
-        switch $file
+        switch $archive_file
             case "*.tar.gz" "*.tgz"
-                tar zxvf "$file"
+                __log debug 'case "*.tar.gz" "*.tgz"'
+                set extract_cmd tar zxvf "$archive_file"
+                if test -n "$extract_destination"
+                    set -a extract_cmd -C $extract_destination
+                end
+                __log debug "extract_cmd: [$extract_cmd]"
+                $extract_cmd 2>/dev/null
             case "*.tar.bz2" "*.tbz" "*.tbz2"
-                tar xvjf "$file"
+                __log debug 'case "*.tar.bz2" "*.tbz" "*.tbz2"'
+                set extract_cmd tar xvjf "$archive_file"
+                if test -n "$extract_destination"
+                    set -a extract_cmd -C $extract_destination
+                end
+                __log debug "extract_cmd: [$extract_cmd]"
+                $extract_cmd 2>/dev/null
             case "*.tar.xz" "*.txz"
-                tar --xz --help &>/dev/null && tar --xz -xvf "$file" || xzcat "$file" | tar xvf -
+                __log debug "branch: case *.tar.xz *.txz"
+                tar --xz --help &>/dev/null && tar --xz -xvf "$archive_file" || xzcat "$archive_file" | tar xvf -
             case "*.tar.zma" "*.tlz"
-                tar --lzma --help &>/dev/null && tar --lzma -xvf "$file" || lzcat "$file" | tar xvf -
+                __log debug "branch: case *.tar.zma *.tlz"
+                tar --lzma --help &>/dev/null && tar --lzma -xvf "$archive_file" || lzcat "$archive_file" | tar xvf -
             case "*.tar.zst" "*.tzst"
-                tar --zstd --help &>/dev/null && tar --zstd -xvf "$file" || zstdcat "$file" | tar xvf -
+                __log debug "branch: case *.tar.zst *.tzst"
+                tar --zstd --help &>/dev/null && tar --zstd -xvf "$archive_file" || zstdcat "$archive_file" | tar xvf -
             case "*.tar"
-                tar xvf "$file"
+                __log debug 'case "*.tar"'
+                set extract_cmd tar xvf "$archive_file"
+                if test -n "$extract_destination"
+                    set -a extract_cmd -C $extract_destination
+                end
+                __log debug "extract_cmd: [$extract_cmd]"
+                $extract_cmd 2>/dev/null
             case "*.tar.lz"
-                tar xvf "$file"
+                __log debug 'case "*.tar.lz"'
+                set extract_cmd tar xvf "$archive_file"
+                if test -n "$extract_destination"
+                    set -a extract_cmd -C $extract_destination
+                end
+                __log debug "extract_cmd: [$extract_cmd]"
+                $extract_cmd 2>/dev/null
             case "*.tar.lz4"
-                lz4 -c -d "$file" | tar xvf -
+                __log debug "branch: case *.tar.lz4"
+                lz4 -c -d "$archive_file" | tar xvf -
             case "*.tar.lrz"
-                lrzuntar "$file"
+                __log debug "branch: case *.tar.lrz"
+                lrzuntar "$archive_file"
             case "*.gz"
-                gunzip -k "$file"
+                __log debug "branch: case *.gz"
+                gunzip -k "$archive_file"
             case "*.bz2"
-                bunzip2 "$file"
+                __log debug "branch: case *.bz2"
+                bunzip2 "$archive_file"
             case "*.xz"
-                unxz "$file"
+                __log debug "branch: case *.xz"
+                unxz "$archive_file"
             case "*.lrz"
-                lrunzip "$file"
+                __log debug "branch: case *.lrz"
+                lrunzip "$archive_file"
             case "*.lz4"
-                lz4 -d "$file"
+                __log debug "branch: case *.lz4"
+                lz4 -d "$archive_file"
             case "*.lzma"
-                unlzma "$file"
+                __log debug "branch: case *.lzma"
+                unlzma "$archive_file"
             case "*.z"
-                uncompress "$file"
+                __log debug "branch: case *.z"
+                uncompress "$archive_file"
             case "*.zip" "*.war" "*.jar" "*.sublime-package" "*.ipsw" "*.xpi" "*.apk" "*.aar" "*.whl"
-                unzip "$file" -d "$target_dir/"
+                __log debug 'case "*.zip" "*.war" "*.jar" "*.sublime-package" "*.ipsw" "*.xpi" "*.apk" "*.aar" "*.whl"'
+                set extract_cmd unzip "$archive_file"
+                if test -z "$extract_destination"
+                    set -a extract_cmd -d "$extract_destination"
+                end
+                __log debug "extract_cmd: [$extract_cmd]"
+                $extract_cmd
             case "*.rar"
-                unrar x -ad "$file"
+                __log debug "branch: case *.rar"
+                unrar x -ad "$archive_file"
             case "*.7z"
-                7za x "$file"
+                __log debug "branch: case *.7z"
+                7za x "$archive_file"
             case "*.zst"
-                unzstd "$file"
+                __log debug "branch: case *.zst"
+                unzstd "$archive_file"
             case '*'
-                __log fatal "File $file does not match an expected extension"
+                __log fatal "File $archive_file does not match an expected extension"
+                return 1
         end
     end
 
     getopts $argv | while read -l key value
         switch $key
-            case _
+            case a archive
                 set archive_file "$value"
             case d dest destination
-                set destination "$value"
+                set extract_destination "$value"
                 # Common args
             case h help
                 ___usage
@@ -82,8 +125,13 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
         end
     end
 
-    __log debug "archive_file : $archive_file"
-    __log debug "destination  : $destination"
+    if test -z $archive_file
+        __log error "Cannot proceed without providing a file to extract"
+        return 1
+    end
+
+    __log debug "archive_file         : $archive_file"
+    __log debug "extract_destination  : $extract_destination"
 
     ___extract $archive_file $extract_destination
 end

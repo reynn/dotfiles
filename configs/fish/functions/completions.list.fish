@@ -33,7 +33,7 @@ function completions.list -d 'Show completions that have been added to our dotfi
 
     __log debug "Show all completions: $show_all_completions"
 
-    if test "$show_all_completions" = true
+    if $show_all_completions
         for completion_path in $fish_complete_path
             __log "Listing completions available in $completion_path"
             __list_completions $completion_path

@@ -1,0 +1,12 @@
+---
+- name: "Test for `pip` bin"
+  ansible.builtin.command: "python3 -m pip"
+  ignore_errors: yes
+  register: pip_bin_check_output
+
+- name: "Installing pip packages"
+  ansible.builtin.pip:
+    name: "{{ packages.pip }}"
+    state: latest
+    extra_args: --user
+  when: pip_bin_check_output is succeeded

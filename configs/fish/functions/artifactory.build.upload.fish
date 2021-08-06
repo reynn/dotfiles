@@ -62,13 +62,12 @@ function artifactory.build.upload -d "Upload files to Artifactory"
     set -l spec_file (mktemp -t upload-spec.json)
     set -l env_excludes '*ansible*;*artifactory*;*gfp*;*git*;*aws*;*jenkins*;*k8s*;*khalani*;*languages*;*fzf*;*go*;*helm*;*help*;*hist*;*home*;*iterm*;*creds*;*pager*;*debug*;*dfp*;*dir_bins*;*launchinstanceid*;*oldpwd*;*path*;*pipenv*;*pwd*;*pyenv*;*reynn*;*user*;*xdg*;*zsh*;*session*'
 
-    jarg \
-        "files[0][target]=$repo" \
-        "files[0][recursive]=true" \
-        "files[0][pattern]=$pattern" \
-        "files[0][flat]=$flat" | tee $spec_file
+    echo '{"files":[]}' | dasel put object -p json \
+      -s '.files.[0]' \
+      -t string -t string -t bool -t string \
+      target=$target pattern="$pattern" recursive=true flat=$flat | tee $spec_file
 
-    if test $dry_run = true
+    if $dry_run
         jfrog rt upload --threads=(sysctl -n hw.logicalcpu) --dry-run --spec $spec_file --build-name=$build_name --build-number=$build_number
         if test $status -eq 0
             jfrog rt build-collect-env $build_name $build_number

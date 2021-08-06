@@ -1,0 +1,94 @@
+---
+# tasks file for base
+- name: "Create necessary files, folders and links"
+  ansible.builtin.file:
+    src: "{{ item.src | default(omit) }}"
+    dest: "{{ item.dest }}"
+    force: yes
+    state: "{{ item.state | default('link') }}"
+  loop: "{{ to_create + extra_to_create|default([]) }}"
+  loop_control:
+    label: "{{ item.dest }}"
+  tags: [always]
+
+- name: "Manage OS specific tasks"
+  ansible.builtin.include_tasks:
+    file: "os/{{ ansible_os_family | lower }}.yaml"
+    apply:
+      tags:
+        - os
+  tags:
+    - always
+
+- name: "Manage SSH config"
+  ansible.builtin.include_tasks:
+    file: ssh.yaml
+    apply:
+      tags:
+        - ssh
+  tags:
+    - always
+
+- name: "Install Go Tools"
+  ansible.builtin.include_tasks:
+    file: golang.yaml
+    apply:
+      tags:
+        - golang
+        - go
+  tags:
+    - always
+
+- name: "Install Node Tools"
+  ansible.builtin.include_tasks:
+    file: node.yaml
+    apply:
+      tags:
+        - node
+        - npm
+  tags:
+    - always
+
+- name: "Install Python Tools"
+  ansible.builtin.include_tasks:
+    file: python.yaml
+    apply:
+      tags:
+        - python
+        - pip
+  tags:
+    - always
+
+- name: "Install Rust tools"
+  ansible.builtin.include_tasks:
+    file: rust.yaml
+    apply:
+      tags:
+        - rust
+        - cargo
+  tags:
+    - always
+
+- name: "Clone git repos"
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+    depth: 1
+  ignore_errors: "{{ item.ignore_errors | default('no') }}"
+  loop: "{{ git_repos }}"
+  loop_control:
+    label: "{{ item.repo }}"
+  notify: "{{ item.handler | default(omit) }}"
+  tags: [git, repos]
+
+- name: "Downloading scripts"
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dir | default(ansible_user_dir + '/.local/bin') }}/{{ item.name }}"
+    mode: u=rwx,g=rx,o=rx
+    owner: "{{ ansible_user_uid | quote }}"
+    group: "{{ ansible_user_gid | quote }}"
+  register: base_script_downloads
+  when: item.url is defined
+  loop: "{{ scripts + os_scripts|default([])}}"
+  tags: [scripts]
