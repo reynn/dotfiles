@@ -76,6 +76,51 @@ function github.release.download -d "Download a release from GitHub in the expec
 
         mkdir -p "$version_directory"; and mkdir -p "$bins_env_path"
 
+        set download_status 0
+
+        set -x asset_download_cmd gh release --repo $repo download $latest_release_version --dir $version_directory
+
+        if test -n $pattern
+            set -a asset_download_cmd --pattern $pattern
+        end
+
+        set symlink_location (readlink "$repo_directory/$bin_alias")
+        set symlink_at_current_version (contains "$version_directory" "$symlink_location"; and echo 'true'; or echo 'false')
+        __log debug "symlink_location           : $symlink_location"
+        __log debug "symlink_at_current_version : $symlink_at_current_version"
+
+        if test "$symlink_at_current_version" = true
+            __log "Latest version already downloaded 🐟"
+            return 0
+        end
+
+        $asset_download_cmd
+        if test $status != 0
+            __log error "Failed to download assets from GitHub"
+            return 3
+        end
+
+        __log debug "Getting assets from $version_directory"
+        set -l downloaded_assets (__versm_get_asset_data $version_directory)
+
+        if test -z "$downloaded_assets"
+            __log error 'No assets downloaded from GitHub, try altering the pattern'
+            gh release --repo $repo view $latest_release_version
+            return 3
+        end
+
+        __log debug "Found "(count $downloaded_assets)" assets"
+        __log debug "Downloaded assets [$downloaded_assets]"
+
+        for asset in $downloaded_assets
+            __versm_handle_asset -a "$asset" -d "$version_directory" -b "$bin_alias" -e "$bins_env_path" -f "$bin_filter"
+            if $cleanup_assets
+                set -l asset_name (string split ':' $asset)[1]
+                __log "Deleting asset $asset_name"
+                rm -fv $asset_name
+            end
+        end
+
         if test "$add_to_environment" = true
             set tool_in_environment (dasel select -f $environment_file -w json -c --null --plain -s ".tools.(repo=$repo)")
             set exists_in_file (test $tool_in_environment != null; and echo true; or echo false)
@@ -119,47 +164,6 @@ function github.release.download -d "Download a release from GitHub in the expec
             end
             __log debug "dasel_put_cmd : $dasel_put_args"
             $dasel_put_args
-        end
-
-        set download_status 0
-
-        set -x asset_download_cmd gh release --repo $repo download $latest_release_version --dir $version_directory
-
-        if test -n $pattern
-            set -a asset_download_cmd --pattern $pattern
-        end
-
-        $asset_download_cmd
-        if test $status != 0
-            __log error "Failed to download assets from GitHub"
-            return 3
-        end
-        set symlink_at_current_version (test (readlink "$repo_directory/$bin_alias") = ())
-
-        if test $symlink_at_current_version = true
-            __log "Latest version already downloaded 🐟"
-            return 0
-        end
-
-        __log debug "Getting assets from $version_directory"
-        set -l downloaded_assets (__versm_get_asset_data $version_directory)
-
-        if test -z "$downloaded_assets"
-            __log error 'No assets downloaded from GitHub, try altering the pattern'
-            gh release --repo $repo view $latest_release_version
-            return 3
-        end
-
-        __log debug "Found "(count $downloaded_assets)" assets"
-        __log debug "Downloaded assets [$downloaded_assets]"
-
-        for asset in $downloaded_assets
-            __versm_handle_asset -a "$asset" -d "$version_directory" -b "$bin_alias" -e "$bins_env_path" -f "$bin_filter"
-            if $cleanup_assets
-                set -l asset_name (string split ':' $asset)[1]
-                __log "Deleting asset $asset_name"
-                rm -fv $asset_name
-            end
         end
     end
 
@@ -311,12 +315,12 @@ function github.release.download -d "Download a release from GitHub in the expec
             end
 
             __log "Requesting updated for $name"
-            __log debug "name:         $name"
-            __log debug "alias:        $alias"
-            __log debug "filter:       $filter"
-            __log debug "tool_version: $tool_version"
-            __log debug "pre_release:  $pre_release"
-            __log debug "pattern:      $pattern"
+            __log debug "update_installed_bins.name:         $name"
+            __log debug "update_installed_bins.alias:        $alias"
+            __log debug "update_installed_bins.filter:       $filter"
+            __log debug "update_installed_bins.tool_version: $tool_version"
+            __log debug "update_installed_bins.pre_release:  $pre_release"
+            __log debug "update_installed_bins.pattern:      $pattern"
 
             set args --repo "$name" --pattern "$pattern"
             if test $alias != null
@@ -329,7 +333,7 @@ function github.release.download -d "Download a release from GitHub in the expec
                 set -a args --pre-release
             end
             # in the end we are just going to recurse to install the latest version
-            github.release.download $args
+            github.release.download $args 2>/dev/null
         end
     end
 

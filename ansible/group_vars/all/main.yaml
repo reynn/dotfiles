@@ -28,6 +28,21 @@ git_repos:
 # ------------
 # Maps
 packages:
+  brew: []
+  cargo:
+    - name: cargo-edit
+      features:
+        - vendored-openssl
+  go: []
+  npm:
+    - "yarn"
+    - "@bitwarden/cli"
+    - "quicktype"
+  pip:
+    - ansible
+    - certifi
+    - httpie
+    - pre-commit
   system:
     basic:
       - curl
@@ -43,20 +58,6 @@ packages:
     apt:
       - build-essential
     dnf: []
-  pip:
-    - ansible
-    - certifi
-    - httpie
-    - pre-commit
-  cargo:
-    - name: cargo-edit
-      features:
-        - vendored-openssl
-  brew: []
-  npm:
-    - "yarn"
-    - "@bitwarden/cli"
-    - "quicktype"
 
 scripts:
   - name: installer.spacevim

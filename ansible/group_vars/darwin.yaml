@@ -1,10 +1,10 @@
 ---
 extra_to_create:
-  - dest: "{{ bins_dir }}/code"
+  - dest: "{{ bins_dir }}/envs/code"
     src: "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
     state: link
-  - dest: "{{ bins_dir }}/code-insiders"
-    src: "/Applications/Visual\ Studio\ Code\ -\ Insiders.app/Contents/MacOS/Electron"
+  - dest: "{{ bins_dir }}/envs/code-insiders"
+    src: "/Applications/Visual Studio Code - Insiders.app/Contents/MacOS/Electron"
     state: link
 os_scripts:
   - name: "installer.brew"
