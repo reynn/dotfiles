@@ -550,9 +550,11 @@ function github.release.download -d "Download a release from GitHub in the expec
     end
 
     if $show_versions
-        set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t')
         if $show_versions_only
+            gh release --repo $repo list | awk '{print $3}' FS='\t'
             return 0
+        else
+            set show_versions_result (gh release --repo $repo list | awk '{print $3}' FS='\t' | sk --height 35%)
         end
     end
 
