@@ -50,7 +50,7 @@ function go.version.update -d "Get a version of Go or source the latest environm
     else
         set -l go_version (\
           string split ' ' $existing_versions |\
-          fzf --select-1 --prompt 'Go version> ' --height 40%)
+          sk --select-1 --prompt 'Go version> ' --height 40%)
         __log "Changing to go version $go_version"
         __go_change_version_set_env $go_version
     end

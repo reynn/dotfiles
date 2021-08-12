@@ -35,8 +35,10 @@ function k8s.ctx.change -d "Set KUBECTX env variable as well as the active conte
     end
 
     if test -z $kubeconfig_file; or test $no_kubeconfig_file = true
-        __log "No Kubeconfig, searching"
-        set kubeconfig_files (fd --absolute-path -tf -d1 . --base-directory $kubeconfig_path | sk --height 35% --multi --select-1)
+        __log debug "No Kubeconfig, searching"
+        set kubeconfig_files (fd --absolute-path -tf -d1 . --base-directory $kubeconfig_path |\
+          rg -v 'kubectx' |\
+          sk --height 35% --multi --select-1)
     end
 
     __log debug "kubeconfig_file    : $kubeconfig_file"
@@ -47,7 +49,8 @@ function k8s.ctx.change -d "Set KUBECTX env variable as well as the active conte
 
     set context (kubectl config get-contexts -o name | sk --height 35% --select-1)
 
-    if test -z $context
-        kubectl config use-context $context
+    if test -n $context
+        __log debug "No Kubeconfig, searching"
+        kubectl config use-context $context 2>/dev/null
     end
 end

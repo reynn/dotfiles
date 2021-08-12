@@ -121,24 +121,33 @@ function github.release.download -d "Download a release from GitHub in the expec
             $dasel_put_args
         end
 
+        set symlink_pointer (readlink "$repo_directory/$bin_alias")
+        set split_path (string split '/' "$symlink_pointer")
+        set symlink_version $split_path[8]
+
+        __log debug "symlink_pointer          : $symlink_pointer"
+        __log debug "symlink_version          : $symlink_version"
+        __log debug "latest_release_version   : $latest_release_version"
+
+        if test "$symlink_version" = "$latest_release_version"
+            __log "Latest version already downloaded 🐟"
+            return 0
+        else
+            __log debug "Deleting files under $version_directory"
+            rm -rf $version_directory
+            mkdir -p $version_directory
+        end
+
         set download_status 0
 
         set -x asset_download_cmd gh release --repo $repo download $latest_release_version --dir $version_directory
-
         if test -n $pattern
             set -a asset_download_cmd --pattern $pattern
         end
-
         $asset_download_cmd
         if test $status != 0
             __log error "Failed to download assets from GitHub"
             return 3
-        end
-        set symlink_at_current_version (test (readlink "$repo_directory/$bin_alias") = ())
-
-        if test $symlink_at_current_version = true
-            __log "Latest version already downloaded 🐟"
-            return 0
         end
 
         __log debug "Getting assets from $version_directory"

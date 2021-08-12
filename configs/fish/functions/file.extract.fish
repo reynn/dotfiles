@@ -7,6 +7,7 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
     function ___usage -d 'Show usage'
         set -l help_args -a "Extract a file [inspired by OpenZSH extract plugin]"
 
+        set -a help_args -f "a|archive|The archive to extract|$archive_file"
         set -a help_args -f "d|dest or destination|The target directory to extract files to|$extract_destination"
 
         set -a help_args -e " example.zip"
