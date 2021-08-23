@@ -42,10 +42,10 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.9'
-    set -Ux LANGUAGES_GO_VERSION '1.16'
-    set -Ux LANGUAGES_RUST_VERSION '1.52'
+    set -Ux LANGUAGES_GO_VERSION '1.17'
+    set -Ux LANGUAGES_RUST_VERSION '1.54'
 
-    #
+    # Add internal company repositories so go doesn't try to pull data from them.
     set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'
 
     ## Load any secrets

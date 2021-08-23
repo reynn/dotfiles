@@ -33,4 +33,12 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
         __log debug "Node Version $node_version"
         path.replace "$node_versions_path/$node_version/bin" 2
     end
+
+    # Setup Pyenv if it is available on the system
+    if not command.is_available -c pyenv or test -x "$HOME/.pyenv/bin/pyenv"
+        set -Ux PYENV_ROOT "$HOME/.pyenv"
+        __log debug "Pyenv from $PYENV_ROOT"
+        fish_add_path "$PYENV_ROOT/bin"
+        fish_add_path "$PYENV_ROOT/shims"
+    end
 end

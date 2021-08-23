@@ -43,11 +43,15 @@ function k8s.ctx.change -d "Set KUBECTX env variable as well as the active conte
     __log debug "no_kubeconfig_file : $no_kubeconfig_file"
     __log debug "kubeconfig_files   : "(count $kubeconfig_files)
 
-    set -xg KUBECONFIG (string join ':' $kubeconfig_files)
+    if test -n "$kubeconfig_files"
+        __log debug "Setting KUBECONFIG : $kubeconfig_files"
+        set -xg KUBECONFIG (string join ':' $kubeconfig_files)
+    end
 
     set context (kubectl config get-contexts -o name | sk --height 35% --select-1)
 
-    if test -z $context
+    if test -n "$context"
+        __log debug "Setting context    : $context"
         kubectl config use-context $context
     end
 end

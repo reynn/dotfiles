@@ -3,11 +3,14 @@ function aws.eks_kubeconfig.retrieve
     set aws_profile
     set alias
     set alias_prefix
+    set all_clusters false
     set kubeconfig_path "$HOME/.kube/config"
 
     function ___usage
         set -l help_args -a "Interactively get kubeconfigs from AWS for EKS clusters"
 
+        set -a help_args -f "|all-clusters|Retrieve Kubeconfigs for all clusters without prompt|$all_clusters"
+        set -a help_args -f "|all-profiles|Retrieve Kubeconfigs for all AWS profiles without prompt|$all_profiles"
         set -a help_args -f "a|alias|An alias for the context name that is put in the Kubeconfig file|<cluster_name>"
         set -a help_args -f "k|kubeconfig|The kubeconfig the cluster info will be added to|$kubeconfig_path"
         set -a help_args -f "n|name|Name of a cluster to get Kubeconfig for, can be provided multiple times|[]"
@@ -21,6 +24,10 @@ function aws.eks_kubeconfig.retrieve
         switch $key
             case a alias
                 set alias $value
+            case all-clusters
+                set all_clusters true
+            case all-profiles
+                set all_profiles true
             case k kubeconfig
                 set kubeconfig_path $value
             case n name
@@ -50,20 +57,24 @@ function aws.eks_kubeconfig.retrieve
     end
 
     if test -z "$cluster_names"
-        set cluster_names (aws --profile "$aws_profile" eks list-clusters |\
-            dasel select --plain -r json -m '.clusters.[*]' |\
-            sk --height 40% --multi --select-1)
+        set -x cluster_names (aws --profile "$aws_profile" eks list-clusters |\
+            dasel select --plain -r json -m '.clusters.[*]')
+        if test "$all_clusters" != true
+            set cluster_names (echo $cluster_names | sk --height 40% --multi --select-1)
+        end
     end
 
+    __log debug "Getting kubeconfig for "(count $cluster_names)" clusters"
+
     for cluster in $cluster_names
+        set cluster_alias
         if test -z $alias
-            set alias "$cluster"
+            set cluster_alias "$cluster"
         end
         if test -n $alias_prefix
-            set alias "$alias_prefix/$alias"
+            set cluster_alias "$alias_prefix/$cluster_alias"
         end
-        __log debug "Using cluster alias $alias"
-        aws --profile "$aws_profile" eks update-kubeconfig --alias "$alias" --name "$cluster" --kubeconfig "$kubeconfig_path"
-        set alias ''
+        __log debug "Using cluster alias $cluster_alias"
+        aws --profile "$aws_profile" eks update-kubeconfig --alias "$cluster_alias" --name "$cluster" --kubeconfig "$kubeconfig_path"
     end
 end
