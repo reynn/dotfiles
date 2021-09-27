@@ -47,6 +47,7 @@ local function init()
   use {"https://github.com/mhinz/vim-startify"}
   use {"https://github.com/sudormrfbin/cheatsheet.nvim"}
   use {"https://github.com/mhinz/vim-sayonara"}
+  use {"https://github.com/mfussenegger/nvim-dap"}
 
   -- Color Schemes
   use {"https://github.com/eddyekofo94/gruvbox-flat.nvim"}

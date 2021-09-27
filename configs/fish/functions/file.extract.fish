@@ -89,7 +89,7 @@ function file.extract -d 'Extract a file [Port of OpenZSH extract plugin]'
             case "*.zip" "*.war" "*.jar" "*.sublime-package" "*.ipsw" "*.xpi" "*.apk" "*.aar" "*.whl"
                 __log debug 'case "*.zip" "*.war" "*.jar" "*.sublime-package" "*.ipsw" "*.xpi" "*.apk" "*.aar" "*.whl"'
                 set extract_cmd unzip "$archive_file"
-                if test -z "$extract_destination"
+                if test -n "$extract_destination"
                     set -a extract_cmd -d "$extract_destination"
                 end
                 __log debug "extract_cmd: [$extract_cmd]"

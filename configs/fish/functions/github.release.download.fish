@@ -69,10 +69,10 @@ function github.release.download -d "Download a release from GitHub in the expec
 
         set -x version_directory "$repo_directory/$latest_release_version"
 
-        __log debug "Base directory           : $base_directory"
-        __log debug "Repo                     : $repo"
-        __log debug "Latest version           : $latest_release_version"
-        __log debug "Latest version directory : $version_directory"
+        __log debug "Base directory                             : $base_directory"
+        __log debug "Repo                                       : $repo"
+        __log debug "Latest version                             : $latest_release_version"
+        __log debug "Latest version directory                   : $version_directory"
 
         mkdir -p "$version_directory"; and mkdir -p "$bins_env_path"
 
@@ -125,9 +125,9 @@ function github.release.download -d "Download a release from GitHub in the expec
         set split_path (string split '/' "$symlink_pointer")
         set symlink_version $split_path[8]
 
-        __log debug "symlink_pointer          : $symlink_pointer"
-        __log debug "symlink_version          : $symlink_version"
-        __log debug "latest_release_version   : $latest_release_version"
+        __log debug "symlink_pointer                            : $symlink_pointer"
+        __log debug "symlink_version                            : $symlink_version"
+        __log debug "latest_release_version                     : $latest_release_version"
 
         if test "$symlink_version" = "$latest_release_version"
             __log "Latest version already downloaded 🐟"
@@ -199,14 +199,14 @@ function github.release.download -d "Download a release from GitHub in the expec
         set -x ver_base_dir (dirname $version_directory)
         set -x asset_current_link "$ver_base_dir/$bin_alias"
 
-        __log debug "handle_asset.asset               : $asset"
-        __log debug "handle_asset.bin_filter          : $bin_filter"
-        __log debug "handle_asset.version_directory   : $version_directory"
-        __log debug "handle_asset.asset_path          : $asset_path"
-        __log debug "handle_asset.asset_type          : $asset_type"
-        __log debug "handle_asset.asset_current_link  : $asset_current_link"
-        __log debug "handle_asset.ver_base_dir        : $ver_base_dir"
-        __log debug "handle_asset.env_dir             : $env_dir"
+        __log debug "handle_asset.asset                         : $asset"
+        __log debug "handle_asset.bin_filter                    : $bin_filter"
+        __log debug "handle_asset.version_directory             : $version_directory"
+        __log debug "handle_asset.asset_path                    : $asset_path"
+        __log debug "handle_asset.asset_type                    : $asset_type"
+        __log debug "handle_asset.asset_current_link            : $asset_current_link"
+        __log debug "handle_asset.ver_base_dir                  : $ver_base_dir"
+        __log debug "handle_asset.env_dir                       : $env_dir"
 
         if test "$asset_path" = "$asset_type"
             __log error "handle_asset The provided asset isn't in the right format (call [file --mime-type {}] on the file path)"
@@ -248,12 +248,12 @@ function github.release.download -d "Download a release from GitHub in the expec
         set -x alias "$argv[4]"
         set -x env_dir "$argv[5]"
 
-        __log debug "find_exec_after_extract.directory  : $directory"
-        __log debug "find_exec_after_extract.filter     : $filter"
-        __log debug "find_exec_after_extract.alias      : $alias"
-        __log debug "find_exec_after_extract.asset_name : $asset_name"
-        __log debug "find_exec_after_extract.env_dir    : $env_dir"
-        __log debug "find_exec_after_extract.Calling `find` for [$directory]"
+        __log debug "find_exec_after_extract.directory          : $directory"
+        __log debug "find_exec_after_extract.filter             : $filter"
+        __log debug "find_exec_after_extract.alias              : $alias"
+        __log debug "find_exec_after_extract.asset_name         : $asset_name"
+        __log debug "find_exec_after_extract.env_dir            : $env_dir"
+        __log debug "find_exec_after_extract.Calling `find` for : $directory"
 
         set -l executables (find "$directory" -type f -executable 2>/dev/null; or find "$directory" -type f -perm '+111')
         for executable in $executables
@@ -453,12 +453,12 @@ function github.release.download -d "Download a release from GitHub in the expec
     ###########################################################
     set -x system_platform (uname | string lower)
     set -x base_directory "$HOME/.bins"
-    set -x repo ''
-    set -x repo_name ''
-    set -x repo_owner ''
+    set -x repo
+    set -x repo_name
+    set -x repo_owner
     set -x pattern (__versm_default_github_pattern)
-    set -x bin_alias ''
-    set -x bin_filter ''
+    set -x bin_alias
+    set -x bin_filter
     set -x release_filter latest
     set -x set_env_only false
     set -x show_versions false
@@ -467,7 +467,7 @@ function github.release.download -d "Download a release from GitHub in the expec
     set -x cleanup_assets false
     set -x delete_only false
     set -x update_all false
-    set -x add_to_environment false
+    set -x add_to_environment true
     set -x environment_file $HOME/.config/github.release.downloads.yml
 
     # Parse the option flags, fails without `getopts` package, if using dotfiles run `dotfiles.update -A`
@@ -540,6 +540,12 @@ function github.release.download -d "Download a release from GitHub in the expec
 
     if test $update_all = true
         ___versm_update_installed_bins
+        if test $status -gt 0
+            __log error "Failed to initialize the GitHub CLI. code($status)"
+            return 1
+        else
+            return 0
+        end
     end
 
     if test -z $bin_alias
