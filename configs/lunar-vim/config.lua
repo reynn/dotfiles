@@ -53,21 +53,21 @@ lvim.builtin.which_key.vmappings["t"] = {
 	["a"] = {
 		name = "Align",
 		[" "] = { ":EasyAlign *\\ <CR>", "EasyAlign: Align on all ` ` character" },
-		[","] = { ":EasyAlign *,<CR>",   "EasyAlign: Align on all `,` character" },
-		["-"] = { ":EasyAlign *-<CR>",   "EasyAlign: Align on all `-` character" },
-		["="] = { ":EasyAlign *=<CR>",   "EasyAlign: Align on all `=` character" },
-		["l"] = { ":EasyAlign<CR>",      "EasyAlign: Live Mode" },
+		[","] = { ":EasyAlign *,<CR>", "EasyAlign: Align on all `,` character" },
+		["-"] = { ":EasyAlign *-<CR>", "EasyAlign: Align on all `-` character" },
+		["="] = { ":EasyAlign *=<CR>", "EasyAlign: Align on all `=` character" },
+		["l"] = { ":EasyAlign<CR>", "EasyAlign: Live Mode" },
 	},
 }
 -- lvim.builtin.which_key.vmappings["/"] = {  }
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Trouble",
-	["d"] = { "<cmd>Trouble lsp_document_diagnostics<cr>",  "Diagnostics" },
-	["f"] = { "<cmd>Trouble lsp_definitions<cr>",           "Definitions" },
-	["l"] = { "<cmd>Trouble loclist<cr>",                   "LocationList" },
-	["q"] = { "<cmd>Trouble quickfix<cr>",                  "QuickFix" },
-	["r"] = { "<cmd>Trouble lsp_references<cr>",            "References" },
+	["d"] = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },
+	["f"] = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
+	["l"] = { "<cmd>Trouble loclist<cr>", "LocationList" },
+	["q"] = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
+	["r"] = { "<cmd>Trouble lsp_references<cr>", "References" },
 	["w"] = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 }
 
@@ -80,7 +80,7 @@ lvim.lang.python.formatters = { { exe = "black" } }
 lvim.lang.python.linters = { { exe = "flake8" } }
 
 -- ###### Golang additions ######
-lvim.lang.go.formatters = { { exe = "gofumpt" } }
+lvim.lang.go.formatters = { { exe = "gofmt" } }
 
 -- ###### JSON settings ######
 lvim.lang.json.formatters = { { exe = "prettier" } }
