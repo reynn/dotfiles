@@ -31,6 +31,7 @@ packages:
   brew: []
   cargo:
     - name: cargo-edit
+      default_features: false
       features:
         - vendored-openssl
   go: []

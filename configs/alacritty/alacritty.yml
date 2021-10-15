@@ -143,6 +143,9 @@ color_schemes:
       cyan: "#427b58"
       white: "#3c3836"
   gruvbox_dark: &gruvbox_dark
+    primary:
+      background: "#1e1e1e"
+      foreground: "#e6d4a3"
     bright:
       black: "#7f7061"
       blue: "#719586"
@@ -164,9 +167,6 @@ color_schemes:
       red: "#be0f17"
       white: "#978771"
       yellow: "#cc881a"
-    primary:
-      background: "#1e1e1e"
-      foreground: "#e6d4a3"
     selection:
       background: "#e6d4a3"
       text: "#534a42"

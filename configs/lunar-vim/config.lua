@@ -22,6 +22,7 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.bufferline.active = true
 
+lvim.builtin.terminal.execs = { { "lg", "gg", "LazyGit" } }
 -- Set overrides for LunarVims builtin plugin configuration
 lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.show_icons.git = 1
@@ -59,8 +60,7 @@ lvim.builtin.which_key.vmappings["t"] = {
 		["l"] = { ":EasyAlign<CR>", "EasyAlign: Live Mode" },
 	},
 }
--- lvim.builtin.which_key.vmappings["/"] = {  }
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["sP"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Trouble",
 	["d"] = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },
