@@ -2,7 +2,7 @@
 
 # set fish_trace on
 set -gx TERM screen-256color
-set -gx EDITOR nvim
+set -gx EDITOR lvim
 
 set -gx reynn_fish_home "$HOME/git/github.com/reynn/dotfiles/configs/fish"
 # Add our dotfiles path to the list fish uses when loading functions
@@ -18,4 +18,6 @@ alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
 alias l 'exa -I ".git" -lah --icons --git --group-directories-first --time-style long-iso --color-scale'
 alias ll 'l --tree --level 3'
+alias lvim "'$HOME/.bins/envs/nvim' -u $LUNARVIM_RUNTIME_DIR/lvim/init.lua "
+
 # set fish_trace off

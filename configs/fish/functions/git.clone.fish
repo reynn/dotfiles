@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-function git.repos.clone -d "Clone repository to the layout used"
+function git.clone -d "Clone repository to the layout used"
     ###########################################################
     # Variables
     ###########################################################

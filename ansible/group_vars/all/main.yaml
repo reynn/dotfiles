@@ -61,10 +61,8 @@ packages:
     dnf: []
 
 scripts:
-  - name: installer.spacevim
-    url: "https://raw.githubusercontent.com/SpaceVim/SpaceVim/master/docs/install.sh"
   - name: installer.rustup
-    url: "https://raw.githubusercontent.com/rust-lang/rustup/master/rustup-init.sh"
+    url: https://raw.githubusercontent.com/rust-lang/rustup/master/rustup-init.sh
 
 to_create:
   - dest: "{{ ansible_user_dir }}/.ssh"
