@@ -3,8 +3,8 @@
 -- ###### ####################################
 
 -- General Vim settings
--- vim.opt.foldmethod = "nvim_treesitter#foldexpr(s)"
-vim.opt.foldmethod = "syntax"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- ###### ####################################
 -- ###### LunarVim Settings
@@ -27,6 +27,7 @@ lvim.builtin.terminal.execs = { { "lg", "gg", "LazyGit" } }
 -- Set overrides for LunarVims builtin plugin configuration
 lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.show_icons.git = 1
+lvim.builtin.nvimtree.hide_dotfiles = 0
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.ensure_installed = {
 	"bash",
@@ -58,10 +59,17 @@ lvim.builtin.which_key.vmappings["t"] = {
 		[","] = { ":EasyAlign *,<CR>", "EasyAlign: Align on all `,` character" },
 		["-"] = { ":EasyAlign *-<CR>", "EasyAlign: Align on all `-` character" },
 		["="] = { ":EasyAlign *=<CR>", "EasyAlign: Align on all `=` character" },
-		["l"] = { ":EasyAlign<CR>", "EasyAlign: Live Mode" },
+		["|"] = { ":EasyAlign *|<CR>", "EasyAlign: Align on all `|` character" },
+		["l"] = { ":LiveEasyAlign<CR>", "EasyAlign: Live Mode" },
 	},
 }
-lvim.builtin.which_key.mappings["sP"] = { "<cmd>Telescqope projects<CR>", "Projects" }
+
+lvim.builtin.which_key.mappings["T"] = {
+  name = "Telescope",
+  ["p"] = { ":Telescqope projects<CR>", "Projects" },
+  ["r"] = { ":Telescqope runnables<CR>", "Runnables" },
+}
+
 -- More easily view document diagnostics
 lvim.builtin.which_key.mappings["t"] = {
 	name = "Trouble",
@@ -73,20 +81,18 @@ lvim.builtin.which_key.mappings["t"] = {
 	["w"] = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 }
 -- Session management with Persistence
-lvim.builtin.which_key.mappings["Q"]= {
-  name = "+Quit",
-  s = { "<cmd>lua require('persistence').load()<cr>", "Restore for current dir" },
-  l = { "<cmd>lua require('persistence').load(last=true)<cr>", "Restore last session" },
-  d = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+lvim.builtin.which_key.mappings["S"]= {
+  name = "Session",
+  c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
+  l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
+  Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
 }
 
 -- ###### ####################################
 -- ###### Plugins
 -- ###### ####################################
-lvim.lsp.override = { "rust" }
 -- ###### Additional Plugins ######
 lvim.plugins = {
--- 	{ "https://github.com/andymass/vim-matchup" },
 	{ "https://github.com/bkad/CamelCaseMotion" },
 	{ "https://github.com/eddyekofo94/gruvbox-flat.nvim" },
 	{ "https://github.com/folke/trouble.nvim", cmd = "TroubleToggle" },
@@ -97,22 +103,52 @@ lvim.plugins = {
 	{ "https://github.com/tpope/vim-surround", keys = {"c", "d", "y"} },
 	{ "https://github.com/vim-scripts/argtextobj.vim" },
   { "https://github.com/p00f/nvim-ts-rainbow" },
+  {
+    "https://github.com/tzachar/compe-tabnine",
+    run = "./install.sh",
+    event = "InsertEnter",
+  },
 	{
 		"https://github.com/ray-x/lsp_signature.nvim",
+		event = "BufRead",
 		config = function()
 			require("lsp_signature").on_attach()
 		end,
-		event = "BufRead",
 	},
   {
     "https://github.com/folke/persistence.nvim",
-      event = "VimEnter",
-      module = "persistence",
-      config = function()
-        require("persistence").setup {
-          dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
-          options = { "buffers", "curdir", "tabpages", "winsize" },
-        }
+    event = "VimEnter",
+    module = "persistence",
+    config = function()
+      require("persistence").setup {
+        dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
+        options = { "buffers", "curdir", "tabpages", "winsize" },
+      }
     end,
   },
+  {
+    "https://github.com/simrat39/rust-tools.nvim",
+    config = function()
+      require("rust-tools").setup({
+        tools = {
+          autoSetHints = true,
+          hover_with_actions = true,
+          runnables = {
+            use_telescope = true,
+          },
+        },
+        server = {
+          cmd = { vim.fn.stdpath "data" .. "/lspinstall/rust/rust-analyzer" },
+        },
+      })
+    end,
+    ft = { "rust", "rs" },
+  },
+  {
+    "https://github.com/ray-x/go.nvim",
+    config = function()
+      require('go').setup({})
+    end,
+    ft = { "golang", "go" },
+  }
 }

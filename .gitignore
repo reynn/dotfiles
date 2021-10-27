@@ -15,9 +15,4 @@ configs/nvim/plugin/packer_compiled.lua
 
 **/node_modules/
 .yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+configs/lunar-vim/plugin/
