@@ -2,8 +2,9 @@
 
 function vim.lunar -d 'Cleanup files and reinstall LunarVim'
     set -x LUNARVIM_BRANCH rolling
-    set -x LUNARVIM_CONFIG_DIR "$HOME/git/github.com/reynn/dotfiles/configs/lunar-vim"
-    set -x LUNARVIM_RUNTIME_DIR "$HOME/.local/share/lunarvim"
+    set -x DOTFILES_CONFIG_DIR "$DFP/configs/lunar-vim"
+    set -x LUNARVIM_CONFIG_DIR "$HOME/.config/lunar-vim"
+    set -x LUNARVIM_RUNTIME_DIR "$HOME/.local/share/lunar-vim"
     set -x PACKER_NVIM_DIR "$LUNARVIM_RUNTIME_DIR/site/pack/packer/start/packer.nvim"
 
     set CLEAN_CACHE false
@@ -41,6 +42,16 @@ function vim.lunar -d 'Cleanup files and reinstall LunarVim'
     function ___setup_lunar_vim_env
         set -Ux LUNARVIM_CONFIG_DIR "$LUNARVIM_CONFIG_DIR"
         set -Ux LUNARVIM_RUNTIME_DIR "$LUNARVIM_RUNTIME_DIR"
+    end
+
+    function ___setup_lunar_vim_config
+        for config_dir in ftplugin lsp-settings
+            mkdir -p $LUNARVIM_CONFIG_DIR/$config_dir
+            for config_file in (fd -tf -e lua -p . --base-directory $DOTFILES_CONFIG_DIR/$config_dir)
+                symlink.create -s $config_dir -d $LUNARVIM_CONFIG_DIR/$config_dir/(basename $config_file)
+            end
+        end
+        symlink.create -s $DOTFILES_CONFIG_DIR/config.lua -d $LUNARVIM_CONFIG_DIR/config.lua
     end
 
     function ___usage
@@ -87,15 +98,19 @@ function vim.lunar -d 'Cleanup files and reinstall LunarVim'
     end
 
     if test "$CLEAN_LUNARVIM" = true
+        rm -rf "$HOME/.cache/nvim"
+        rm -rf "$HOME/.cache/vimfiles"
         rm -rf "$HOME/.config/nvim"
         rm -rf "$HOME/.local/share/nvim"
         rm -rf "$HOME/.local/nvim"
         rm -rf "$LUNARVIM_RUNTIME_DIR"
+        rm -rf "$LUNARVIM_CONFIG_DIR"
     end
 
     if test "$SETUP_LUNARVIM" = true
         ___setup_lunar_vim_env
         ___setup_lunar_vim
+        ___setup_lunar_vim_config
         ___setup_packer_nvim
 
         nvim --headless \

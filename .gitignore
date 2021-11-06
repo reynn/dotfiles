@@ -15,4 +15,4 @@ configs/nvim/plugin/packer_compiled.lua
 
 **/node_modules/
 .yarn/*
-configs/lunar-vim/plugin/
+configs/lunar-vim/plugin/*
