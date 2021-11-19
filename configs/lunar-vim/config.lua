@@ -72,6 +72,7 @@ lvim.plugins = {
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.conceallevel = 1
+vim.opt.relativenumber = true
 
 -- ###### ####################################
 -- ###### LunarVim Settings
@@ -134,8 +135,8 @@ lvim.builtin.which_key.vmappings["t"] = {
 
 lvim.builtin.which_key.mappings["T"] = {
   name = "Telescope",
-  ["p"] = { ":Telescqope projects<CR>", "Projects" },
-  ["r"] = { ":Telescqope runnables<CR>", "Runnables" },
+  ["p"] = { ":Telescope projects<CR>", "Projects" },
+  ["r"] = { ":Telescope runnables<CR>", "Runnables" },
 }
 
 -- More easily view document diagnostics

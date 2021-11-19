@@ -205,3 +205,8 @@ email = nic@reynn.dev
 path = ~/git/github.com/.gitconfig
 [includeIf "gitdir:~/git/github.concur.com/"]
 path = ~/git/github.concur.com/.gitconfig
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
