@@ -173,3 +173,4 @@ complete -c gh -e
 # The call to __gh_prepare_completions will setup __gh_comp_results
 # which provides the program's completion choices.
 complete -c gh -n '__gh_prepare_completions' -f -a '$__gh_comp_results'
+
