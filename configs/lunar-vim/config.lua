@@ -4,41 +4,31 @@
 -- ###### ####################################
 -- ###### Additional Plugins ######
 lvim.plugins = {
-	{ "https://github.com/bkad/CamelCaseMotion" },
-	{ "https://github.com/eddyekofo94/gruvbox-flat.nvim" },
-	{ "https://github.com/folke/trouble.nvim", cmd = "TroubleToggle" },
-	{ "https://github.com/junegunn/vim-easy-align" },
-	{ "https://github.com/michaeljsmith/vim-indent-object" },
-	{ "https://github.com/tpope/vim-repeat" },
-	{ "https://github.com/tpope/vim-surround", keys = {"cs", "ds", "ys"} },
-	{ "https://github.com/vim-scripts/argtextobj.vim" },
-  { "https://github.com/gpanders/editorconfig.nvim" },
-  { "https://github.com/p00f/nvim-ts-rainbow" },
+	{ "bkad/CamelCaseMotion" },
+	{ "eddyekofo94/gruvbox-flat.nvim" },
+	{ "folke/trouble.nvim", cmd = "TroubleToggle" },
+	{ "junegunn/vim-easy-align" },
+	{ "michaeljsmith/vim-indent-object" },
+	{ "tpope/vim-repeat" },
+	{ "tpope/vim-surround", keys = {"cs", "ds", "ys"} },
+	{ "vim-scripts/argtextobj.vim" },
+  { "gpanders/editorconfig.nvim" },
+  { "p00f/nvim-ts-rainbow" },
   {
-    "https://github.com/tzachar/compe-tabnine",
+    "tzachar/compe-tabnine",
     run = "./install.sh",
+    requires = "hrsh7th/nvim-cmp",
     event = "InsertEnter",
   },
 	{
-		"https://github.com/ray-x/lsp_signature.nvim",
+		"ray-x/lsp_signature.nvim",
 		event = "BufRead",
 		config = function()
 			require("lsp_signature").on_attach()
 		end,
 	},
   {
-    "https://github.com/folke/persistence.nvim",
-    event = "VimEnter",
-    module = "persistence",
-    config = function()
-      require("persistence").setup {
-        dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
-        options = { "buffers", "curdir", "tabpages", "winsize" },
-      }
-    end,
-  },
-  {
-    "https://github.com/simrat39/rust-tools.nvim",
+    "simrat39/rust-tools.nvim",
     config = function()
       require("rust-tools").setup({
         tools = {
@@ -56,7 +46,7 @@ lvim.plugins = {
     ft = { "rust", "rs" },
   },
   {
-    "https://github.com/ray-x/go.nvim",
+    "ray-x/go.nvim",
     config = function()
       require('go').setup({})
     end,
@@ -71,6 +61,7 @@ lvim.plugins = {
 -- General Vim settings
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.relativenumber = true
 vim.opt.conceallevel = 1
 vim.opt.relativenumber = true
 
@@ -91,11 +82,11 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.bufferline.active = true
 
-lvim.builtin.terminal.execs = { { "lg", "gg", "LazyGit" } }
+lvim.builtin.terminal.execs = { { "lg", "<leader>gg", "LazyGit" } }
 -- Set overrides for LunarVims builtin plugin configuration
 lvim.builtin.nvimtree.setup.view.side = "right"
-lvim.builtin.nvimtree.show_icons.git = 1
-lvim.builtin.nvimtree.hide_dotfiles = 0
+lvim.builtin.nvimtree.setup.git.enable = true
+lvim.builtin.nvimtree.setup.filters.dotfiles = false
 lvim.lsp.automatic_servers_installation = true
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.ensure_installed = {
@@ -149,10 +140,11 @@ lvim.builtin.which_key.mappings["t"] = {
   ["q"] = { "<cmd>TroubleToggle quickfix<cr>", "QuickFix list" },
   ["l"] = { "<cmd>TroubleToggle loclist<cr>", "Location List" },
 }
--- Session management with Persistence
-lvim.builtin.which_key.mappings["Q"]= {
-  name = "Quit",
-  ["s"] = { "<cmd>lua require('persistence').load()<cr>", "Restore for current dir" },
-  ["l"] = { "<cmd>lua require('persistence').load(last=true)<cr>", "Restore last session" },
-  ["d"] = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+
+lvim.autocommands.custom_groups = {
+  -- On entering a lua file, set the tab spacing and shift width to 8
+  { "BufWinEnter", "*.go", "setlocal ts=4 sw=4" },
+
+  -- On entering insert mode in any file, scroll the window so the cursor line is centered
+  { "InsertEnter", "*", ":normal zz" },
 }

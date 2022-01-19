@@ -61,7 +61,7 @@ scripts:
   - name: installer.rustup
     url: https://raw.githubusercontent.com/rust-lang/rustup/master/rustup-init.sh
   - name: installer.lunarvim
-    url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
+    url: https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh
 
 to_create:
   - dest: "{{ ansible_user_dir }}/.ssh"
