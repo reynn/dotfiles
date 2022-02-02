@@ -52,6 +52,13 @@ lvim.plugins = {
     end,
     ft = { "golang", "go" },
   },
+  {
+    "windwp/nvim-spectre",
+    event = "BufRead",
+    config = function()
+      require("spectre").setup()
+    end,
+  },
 }
 
 -- ###### ####################################
@@ -63,7 +70,6 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.relativenumber = true
 vim.opt.conceallevel = 1
-vim.opt.relativenumber = true
 
 -- ###### ####################################
 -- ###### LunarVim Settings
@@ -124,10 +130,19 @@ lvim.builtin.which_key.vmappings["t"] = {
 	},
 }
 
+lvim.builtin.which_key.mappings["r"] = {
+    name = "Replace",
+    ["t"] = { ":lua require('spectre').open()<CR>", "(Spectre) Use spectre to find and replace text" },
+    ["w"] = { ":lua require('spectre').open_visual({select_word=true})<CR>", "(Spectre) Use spectre to find and replace text" },
+    ["f"] = { "viw:lua require('spectre').open_file_search()<CR>", "(Spectre) Use spectre to find and replace text" },
+}
+
+-- Telescope selectors
 lvim.builtin.which_key.mappings["T"] = {
   name = "Telescope",
   ["p"] = { ":Telescope projects<CR>", "Projects" },
   ["r"] = { ":Telescope runnables<CR>", "Runnables" },
+  ["c"] = { ":Telescope colorscheme<CR>", "Color Schemes" },
 }
 
 -- More easily view document diagnostics
