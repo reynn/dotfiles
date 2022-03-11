@@ -108,7 +108,7 @@ function aws.okta.auth
             set name (echo $account_data | dasel select -r json -n '.name' --plain 2>/dev/null)
         end
         set -x preview (echo $account_data | dasel select -r json -n '.preview' --plain 2>/dev/null)
-        if test -n "$password_reset"
+        if test -z "$password_reset"
             set -x password_reset (echo $account_data | dasel select -r json -n -s '.password_reset' 2>/dev/null; or echo 'false')
         end
         set -x region (echo $account_data | dasel select -r json -n -s '.region' --plain 2>/dev/null)
