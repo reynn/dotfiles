@@ -18,6 +18,7 @@ alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
 alias l 'exa -I ".git" -I "target/" -lah --icons --git --group-directories-first --time-style long-iso --color-scale'
 alias ll 'l --tree --level 3'
-alias lvim "'$HOME/.bins/envs/nvim' -u $LUNARVIM_RUNTIME_DIR/lvim/init.lua "
+alias lvim "nvim -u $LUNARVIM_RUNTIME_DIR/lvim/init.lua "
+alias avim "nvim -u $HOME/.config/astro-vim/init.lua "
 
 # set fish_trace off

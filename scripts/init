@@ -171,7 +171,10 @@ platform_linux() {
 }
 
 ansible_run() {
-  __log 'Running ansible playbook'
+  __log 'Ensuring Ansible dependencies are available'
+  $PYTHON_BINARY -m pip install -r $TMP_DFP/ansible/requirements-python.txt
+  ansible-galaxy install -r $TMP_DFP/ansible/requirements-galaxy.yaml
+  __log 'Running Ansible playbook'
   ANSIBLE_CONFIG=$TMP_DFP/ansible/ansible.cfg ansible-playbook "$TMP_DFP/ansible/config.yaml" || __log 'fatal' 'Failure in ansible run'
 }
 

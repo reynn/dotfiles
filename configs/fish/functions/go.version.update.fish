@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 function go.version.update -d "Get a version of Go or source the latest environment from Gimme"
-    set -l go_version "$argv[1]"
+    set -l go_version ""
     set -x script_url 'https://raw.githubusercontent.com/travis-ci/gimme/master/gimme'
     set -x existing_versions (fd -td -d1 . --base-directory $HOME/.gimme/versions | tr -d 'go' | sort -ru)
 
@@ -19,10 +19,19 @@ function go.version.update -d "Get a version of Go or source the latest environm
         end
     end
 
+    function __go_change_version_set_env
+        set -l new_version $argv[1]
+        set -l go_path "$HOME/.gimme/versions/go$new_version"
+        __log debug "Setting GOROOT to $go_path"
+        set -xg GOROOT $go_path
+        path.replace $go_path/bin 3
+    end
+
     getopts $argv | while read -l key value
         switch $key
             case g gimme
                 __execute_gimme "$value"
+                return 0
             case V version
                 set go_version "$value"
                 # Common args
@@ -34,13 +43,6 @@ function go.version.update -d "Get a version of Go or source the latest environm
             case v verbose
                 set -x DEBUG true
         end
-    end
-
-    function __go_change_version_set_env
-        set -l new_version $argv[1]
-        set -l go_path "$HOME/.gimme/versions/go$new_version"
-        set -xU GOROOT $go_path
-        path.replace $go_path/bin 3
     end
 
     if test -n "$go_version"

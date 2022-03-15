@@ -3,6 +3,8 @@
 function dotfiles.path.update -d "Setup the fish_user_path variable"
     # Python exports
     set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
+    set -l go_versions_path "$HOME/.gimme/versions"
+    # set -l node_versions_path "$HOME/.local/"
 
     # These will add to the fish_user_paths only if necessary
     path.replace "$PYTHON_HOME/bin"
@@ -16,11 +18,13 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
 
     __log debug "Checking for go versions in $go_versions_path"
     if test -d "$go_versions_path"
-        set -l go_version (fd -td -d1 . --base-directory $go_versions_path | sort -r)
+        set -l go_version (fd -td -d1 . --base-directory $go_versions_path | string replace './' '' | sort -r)
         if test (count $go_version) -gt 1
+            # if we have multiple go versions set us up with the first one in the list
             set go_version $go_version[1]
         end
         __log debug "Go Version $go_version"
+        set -xg GOROOT "$go_versions_path/$go_version"
         path.replace "$go_versions_path/$go_version/bin" 2
     end
 

@@ -41,9 +41,9 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     set -Ux DFP "$GFP/github.com/reynn/dotfiles"
 
     ## Language versions
-    set -Ux LANGUAGES_PYTHON_VERSION '3.9'
-    set -Ux LANGUAGES_GO_VERSION '1.16'
-    set -Ux LANGUAGES_RUST_VERSION '1.52'
+    set -Ux LANGUAGES_PYTHON_VERSION '3.10'
+    set -Ux LANGUAGES_GO_VERSION '1.18'
+    set -Ux LANGUAGES_RUST_VERSION '1.59'
 
     #
     set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'

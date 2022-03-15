@@ -160,8 +160,7 @@ keybinds:
           key: [ Char: '9',]
     scroll:
         - action: [SwitchToMode: Normal,]
-          key: [Ctrl: 'r', Ctrl: 's', Char: ' ',
-          Char: "\n",]
+          key: [Ctrl: 'r', Ctrl: 's', Char: ' ', Char: "\n",]
         - action: [SwitchToMode: Tab,]
           key: [Ctrl: 't',]
         - action: [SwitchToMode: Locked,]
