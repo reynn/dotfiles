@@ -4,28 +4,6 @@ return function(config)
 
 	if cmp_ok and luasnip_ok then
 		config.mapping["<CR>"] = cmp.mapping.confirm()
-		config.mapping["<Tab>"] = cmp.mapping(function(fallback)
-			if luasnip.expandable() then
-				luasnip.expand()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			else
-				fallback()
-			end
-		end, {
-			"i",
-			"s",
-		})
-		config.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
-			if luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			else
-				fallback()
-			end
-		end, {
-			"i",
-			"s",
-		})
 
 		config.sources = {
 			{ name = "luasnip" },
@@ -36,16 +14,9 @@ return function(config)
 			{ name = "emoji" },
 			{ name = "latex_symbols" },
 			{ name = "buffer" },
-			{ name = "cmp_tabnine" },
+			-- { name = "cmp_tabnine" },
 		}
 
-		local tabnine = require("cmp_tabnine.config")
-		tabnine:setup({
-			sort = true,
-			max_num_results = 10,
-			run_on_every_keystroke = true,
-		})
+		return config
 	end
-
-	return config
 end

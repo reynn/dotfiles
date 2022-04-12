@@ -22,6 +22,7 @@ local Dmappings = {
 	F = { "<c-r>=strftime('%H:%M:%S')<cr>", "H:M:S" },
 	d = { "<c-r>=strftime('%Y/%m/%d %H:%M:%S -')<cr>", "Y/m/d H:M:S -" },
 }
+
 local Vmappings = {
 	["/"] = { "Comment" },
 	x = {

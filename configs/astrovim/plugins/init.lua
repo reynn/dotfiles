@@ -11,6 +11,9 @@ return function(plugins)
 						theme = "gruvbox-flat",
 					},
 				})
+				vim.g.gruvbox_flat_style = "hard"
+				vim.g.gruvbox_sidebars = { "qf", "terminal", "vista_kind", "packer" }
+				vim.cmd "colorscheme gruvbox-flat"
 			end,
 		},
 		{ "folke/trouble.nvim", cmd = "TroubleToggle" },
@@ -25,17 +28,26 @@ return function(plugins)
 				vim.g.table_mode_corner = "|"
 			end,
 		},
-		-- Text objects
+		-- Text objects/Motions
 		{ "bkad/CamelCaseMotion" },
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			after = "nvim-treesitter",
 		},
-		{
-			"tzachar/cmp-tabnine",
-			requires = { "hrsh7th/nvim-cmp" },
-			run = "./install.sh",
-		},
+		-- {
+		-- 	"tzachar/cmp-tabnine",
+		-- 	after = { "hrsh7th/nvim-cmp" },
+		-- 	requires = { "hrsh7th/nvim-cmp" },
+		-- 	run = "./install.sh",
+		-- 	config = function()
+		-- 		local tabnine = require("cmp_tabnine.config")
+		-- 		tabnine:setup({
+		-- 			sort = true,
+		-- 			max_num_results = 10,
+		-- 			run_on_every_keystroke = true,
+		-- 		})
+		-- 	end
+		-- },
 		{
 			"ray-x/lsp_signature.nvim",
 			event = "BufRead",
@@ -75,12 +87,12 @@ return function(plugins)
 		-- Language specific additions
 		{
 			"simrat39/rust-tools.nvim",
-			requires = {
-				"nvim-lspconfig",
-				"nvim-lsp-installer",
-				"nvim-dap",
-				"Comment.nvim",
-			},
+			-- requires = {
+			-- 	"nvim-lspconfig",
+			-- 	"nvim-lsp-installer",
+			-- 	"nvim-dap",
+			-- 	"Comment.nvim",
+			-- },
 			ft = { "rust", "rs" },
 		},
 		{
