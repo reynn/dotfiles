@@ -61,13 +61,7 @@ return function(plugins)
 				end
 			end,
 		},
-		{
-			"Pocco81/DAPInstall.nvim",
-			config = function()
-				require("dap-install").setup({})
-			end,
-		},
-		-- Language specific additions
+				-- Language specific additions
 		{
 			"simrat39/rust-tools.nvim",
 			requires = {
