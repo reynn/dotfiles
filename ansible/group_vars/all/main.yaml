@@ -34,7 +34,6 @@ packages:
   go: []
   npm:
     - "yarn"
-    - "@bitwarden/cli"
     - "quicktype"
   pip:
     - ansible
@@ -55,6 +54,8 @@ packages:
       - cmake
     apt:
       - build-essential
+      - pkg-config
+      - libssl-dev
     dnf: []
 
 scripts:

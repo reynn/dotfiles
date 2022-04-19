@@ -1,21 +1,18 @@
 return function(plugins)
 	return vim.tbl_deep_extend("force", plugins, {
-		-- Extended file type support
-		{ "sheerun/vim-polyglot" },
 		-- Color Schemes
+		{ "eddyekofo94/gruvbox-flat.nvim" },
 		{
-			"eddyekofo94/gruvbox-flat.nvim",
+			"luisiacc/gruvbox-baby",
 			config = function()
-				require("lualine").setup({
-					options = {
-						theme = "gruvbox-flat",
-					},
-				})
-				vim.g.gruvbox_flat_style = "hard"
-				vim.g.gruvbox_sidebars = { "qf", "terminal", "vista_kind", "packer" }
-				vim.cmd "colorscheme gruvbox-flat"
+				vim.g.gruvbox_baby_telescope_theme = 1
+				vim.g.gruvbox_baby_function_style = "NONE"
+				vim.g.gruvbox_baby_keyword_style = "italic"
+
+				vim.cmd("colorscheme gruvbox-baby")
 			end,
 		},
+		{ "sainnhe/gruvbox-material" },
 		{ "folke/trouble.nvim", cmd = "TroubleToggle" },
 		{ "junegunn/vim-easy-align" },
 		{ "tpope/vim-repeat" },
@@ -34,20 +31,6 @@ return function(plugins)
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			after = "nvim-treesitter",
 		},
-		-- {
-		-- 	"tzachar/cmp-tabnine",
-		-- 	after = { "hrsh7th/nvim-cmp" },
-		-- 	requires = { "hrsh7th/nvim-cmp" },
-		-- 	run = "./install.sh",
-		-- 	config = function()
-		-- 		local tabnine = require("cmp_tabnine.config")
-		-- 		tabnine:setup({
-		-- 			sort = true,
-		-- 			max_num_results = 10,
-		-- 			run_on_every_keystroke = true,
-		-- 		})
-		-- 	end
-		-- },
 		{
 			"ray-x/lsp_signature.nvim",
 			event = "BufRead",
@@ -87,28 +70,21 @@ return function(plugins)
 		-- Language specific additions
 		{
 			"simrat39/rust-tools.nvim",
-			-- requires = {
-			-- 	"nvim-lspconfig",
-			-- 	"nvim-lsp-installer",
-			-- 	"nvim-dap",
-			-- 	"Comment.nvim",
-			-- },
+			requires = {
+				"nvim-lspconfig",
+				"nvim-lsp-installer",
+				"nvim-dap",
+				"Comment.nvim",
+			},
 			ft = { "rust", "rs" },
 		},
 		{
 			"Saecki/crates.nvim",
 			after = "nvim-cmp",
-			requires = {
-				"nvim-lua/plenary.nvim",
-			},
+			requires = { "nvim-lua/plenary.nvim" },
 			event = { "BufRead Cargo.toml" },
 			config = function()
 				require("crates").setup({})
-
-				local cmp = require("cmp")
-				local config = cmp.get_config()
-				table.insert(config.sources, { name = "crates" })
-				cmp.setup(config)
 			end,
 		},
 		{

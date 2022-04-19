@@ -3,4 +3,10 @@ return function(client, bufnr)
 		title = "Language Server",
 		timeout = 200,
 	})
+	require("lsp_signature").on_attach({
+			bind = true,
+			handler_opts = {
+				border = "rounded"
+			}
+		}, bufnr)
 end

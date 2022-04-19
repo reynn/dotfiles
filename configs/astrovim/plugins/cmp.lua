@@ -6,15 +6,11 @@ return function(config)
 		config.mapping["<CR>"] = cmp.mapping.confirm()
 
 		config.sources = {
+      { name = "crates" },
 			{ name = "luasnip" },
 			{ name = "nvim_lsp" },
-			{ name = "pandoc_references" },
 			{ name = "path" },
-			{ name = "calc" },
-			{ name = "emoji" },
-			{ name = "latex_symbols" },
 			{ name = "buffer" },
-			-- { name = "cmp_tabnine" },
 		}
 
 		return config

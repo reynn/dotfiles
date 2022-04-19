@@ -41,13 +41,14 @@ local Gmappings = {
 	I = { "Go to implementation" },
 	r = { "Go to references" },
 	o = { "Open diagnostic" },
+	R = { "Trouble LSP references" },
 }
 local NextBracketmappings = {
 	d = { "Next diagnostic" },
-	f = "Next function start",
-	x = "Next class start",
-	F = "Next function end",
-	X = "Next class end",
+	f = { "Next function start" },
+	x = { "Next class start" },
+	F = { "Next function end" },
+	X = { "Next class end" },
 }
 local PrevBracketmappings = {
 	d = { "Previous diagnostic" },
@@ -96,6 +97,14 @@ return {
 		p = { "Next Parameter" },
 		P = { "Previous Parameter" },
 	},
+  T = {
+    name = "Trouble",
+    x = { "<cmd>TroubleToggle<cr>", "Toggle Trouble" },
+    w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Trouble Workspace Diagnostics" },
+    d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Trouble Document Diagnostics" },
+    q = { "<cmd>TroubleToggle quickfix<cr>", "Trouble Quickfix" },
+    l = { "<cmd>TroubleToggle loclist<cr>", "Trouble LOC List" },
+  },
 	x = {
 		name = "Debugger",
 		b = {
