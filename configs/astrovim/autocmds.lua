@@ -1,16 +1,5 @@
 return {
 	setup = function()
-		-- vim.cmd([[
-		--     augroup packer_conf
-		--       autocmd!
-		--       autocmd bufwritepost plugins.lua source <afile> | PackerSync
-		--     augroup end
-		--
-		--     augroup go_style
-		--       autocmd!
-		--       autocmd BufEnter *.go textwidth=4 tabstop=4 shiftwidth=4
-		--     augroup end
-		--   ]])
 		local map = vim.keymap.set
 		local cmd = vim.api.nvim_create_autocmd
 		local augroup = vim.api.nvim_create_augroup

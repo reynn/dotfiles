@@ -43,7 +43,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.10'
     set -Ux LANGUAGES_GO_VERSION '1.18'
-    set -Ux LANGUAGES_RUST_VERSION '1.59'
+    set -Ux LANGUAGES_RUST_VERSION '1.60'
 
     #
     set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'

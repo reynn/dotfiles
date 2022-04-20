@@ -2,7 +2,7 @@ return function()
 	local set = vim.opt
 
 	-- show whitespace characters
-	set.list = true
+	set.list = false
 	set.listchars = {
 		tab = "│→",
 		extends = "⟩",
