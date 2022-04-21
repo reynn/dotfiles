@@ -61,7 +61,7 @@ return function(plugins)
 				end
 			end,
 		},
-				-- Language specific additions
+		-- Language specific additions
 		{
 			"simrat39/rust-tools.nvim",
 			requires = {
@@ -71,6 +71,9 @@ return function(plugins)
 				"Comment.nvim",
 			},
 			ft = { "rust", "rs" },
+			config = function()
+				require("rust-tools").setup({})
+			end,
 		},
 		{
 			"Saecki/crates.nvim",

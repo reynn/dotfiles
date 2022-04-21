@@ -42,16 +42,15 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.10'
-    set -Ux LANGUAGES_GO_VERSION '1.18'
-    set -Ux LANGUAGES_RUST_VERSION '1.60'
+    set -Ux LANGUAGES_GO_VERSION '1.18.1'
+    set -Ux LANGUAGES_RUST_VERSION '1.60.0'
+    set -Ux LANGUAGES_NODE_VERSION '18.0.0'
 
-    #
     set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'
 
     ## Load any secrets
     source "$DFP/.host/$hostname.fish" 1&>>/dev/null; or __log debug 'Unable to load host values'
     source "$DFP/.secrets/__global.fish" 1&>>/dev/null; or __log debug 'Unable to load global secrets'
-    source "$DFP/.secrets/$hostname.fish" 1&>>/dev/null; or __log debug 'Unable to load secrets'
 
     dotfiles.path.update
 end

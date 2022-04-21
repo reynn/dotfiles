@@ -1,3 +1,6 @@
 return function()
-  require("trouble").setup({})
+  require("trouble").setup({
+    height = 15,
+    width = 55,
+  })
 end
