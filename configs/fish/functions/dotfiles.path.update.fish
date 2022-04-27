@@ -17,7 +17,10 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     fish_add_path "$HOME/go/bin"
 
     __log debug "Checking for Go version path: $go_version_path"
-    test -e "$go_version_path"; and path.replace "$go_version_path" '2'
+    if test -e "$go_version_path"
+        path.replace "$go_version_path" '2'
+        set -Ux GOROOT (dirname $go_version_path)
+    end
     __log debug "Checking for Node version path: $node_version_path"
     test -e "$node_version_path"; and path.replace "$node_version_path" '2'
     __log debug "Checking for Cargo install"
