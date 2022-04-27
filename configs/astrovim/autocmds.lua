@@ -14,14 +14,20 @@ return {
 			pattern = "*.go",
 			command = "setlocal textwidth=4 tabstop=4 shiftwidth=4",
 		})
+		cmd("FileType", {
+			desc = "Enable crates as a completion source",
+			group = "style",
+			pattern = "Cargo.toml",
+			command = "lua require('cmp').setup.buffer { sources = { { 'crates' } } }",
+		})
 
-    augroup("packer_conf", {})
-    cmd("BufWritePost", {
+		augroup("packer_conf", {})
+		cmd("BufWritePost", {
 			desc = "Run packer sync if the plugins.lua is updated",
 			group = "packer_conf",
 			pattern = "plugins.lua",
 			command = "source <afile> | PackerSync",
-    })
+		})
 
 		augroup("autocomp", {})
 		cmd("VimLeave", {

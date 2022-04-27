@@ -23,7 +23,3 @@ alias lvim "nvim -u $LUNARVIM_RUNTIME_DIR/lvim/init.lua "
 alias avim "nvim -u $HOME/.config/astro-vim/init.lua "
 
 # set fish_trace off
-
-# Setting PATH for Python 3.10
-# The original version is saved in /Users/reynn/.config/fish/config.fish.pysave
-set -x PATH "/Library/Frameworks/Python.framework/Versions/3.10/bin" "$PATH"

@@ -39,8 +39,8 @@ function vim.astro -d 'Cleanup files and reinstall AstroVim'
     getopts $argv | while read -l key value
         switch $key
             case a setup-all
-                set CLEAN_CACHE true
-                set CLEAN_LOCAL true
+                set CLEAN_CACHE false
+                set CLEAN_LOCAL false
                 set SETUP_ASTROVIM true
             case A clean-all
                 set CLEAN_CACHE true
@@ -63,8 +63,11 @@ function vim.astro -d 'Cleanup files and reinstall AstroVim'
         end
     end
 
-    if test "$CLEAN_LOCAL" = true
+    if test "$CLEAN_CACHE" = true
         rm -rf "$HOME/.cache/nvim"
+    end
+
+    if test "$CLEAN_LOCAL" = true
         rm -rf "$HOME/.config/nvim"
         rm -rf "$HOME/.local/share/nvim"
         rm -rf "$HOME/.local/nvim"
