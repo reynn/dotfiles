@@ -2,17 +2,53 @@ return function(plugins)
 	return vim.tbl_deep_extend("force", plugins, {
 		-- Color Schemes
 		{ "eddyekofo94/gruvbox-flat.nvim" },
+		{ "sainnhe/gruvbox-material" },
 		{
 			"luisiacc/gruvbox-baby",
 			config = function()
 				vim.g.gruvbox_baby_telescope_theme = 1
-				vim.g.gruvbox_baby_function_style = "NONE"
+				-- vim.g.gruvbox_baby_function_style = "NONE"
 				vim.g.gruvbox_baby_keyword_style = "italic"
 
-				vim.cmd("colorscheme gruvbox-baby")
+				-- vim.cmd("colorscheme gruvbox-baby")
 			end,
 		},
-		{ "sainnhe/gruvbox-material" },
+		{
+			"tiagovla/tokyodark.nvim",
+			config = function()
+				vim.cmd("colorscheme tokyodark")
+			end,
+		},
+		{
+			"catppuccin/nvim",
+			as = "catppuccin",
+			config = function()
+				require("catppuccin").setup({
+					integrations = {
+						ts_rainbow = true,
+						lsp_trouble = true,
+					},
+				})
+				require("lualine").setup({
+					options = {
+						theme = "catppuccin",
+					},
+				})
+
+				-- vim.cmd("colorscheme catppuccin")
+			end,
+		},
+		{
+			"marko-cerovac/material.nvim",
+			config = function()
+				require("material").setup({
+					lualine_style = "stealth",
+				})
+				vim.g.material_style = "darker"
+				-- vim.cmd("colorscheme material")
+			end,
+		},
+		-- general vim improvements
 		{ "folke/trouble.nvim", cmd = "TroubleToggle" },
 		{ "junegunn/vim-easy-align" },
 		{ "tpope/vim-repeat" },
@@ -31,11 +67,36 @@ return function(plugins)
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			after = "nvim-treesitter",
 		},
+		-- LSP additions
 		{
 			"ray-x/lsp_signature.nvim",
 			event = "BufRead",
 			config = function()
 				require("lsp_signature").on_attach()
+			end,
+		},
+		{
+			"m-demare/hlargs.nvim",
+			config = function()
+				require("hlargs").setup({})
+			end,
+		},
+		{
+			"onsails/lspkind.nvim",
+			config = function()
+				-- local cmp = require("cmp")
+				require("lspkind").init({
+          mode = 'symbol_text',
+        })
+
+				-- cmp.setup({
+				-- 	formatting = {
+				-- 		format = lspkind.cmp_format({
+				-- 			mode = "text_symbol",
+				-- 			max_width = 50,
+				-- 		}),
+				-- 	},
+				-- })
 			end,
 		},
 		-- DAP:
@@ -61,7 +122,21 @@ return function(plugins)
 				end
 			end,
 		},
+		{
+			"mfussenegger/nvim-lint",
+			config = function()
+				require("lint").linters_by_ft = {
+					markdown = { "markdownlint", "vale" },
+					python = { "pylint" },
+					yaml = { "yamllint" },
+					golang = { "revive", "golangcilint" },
+					lua = { "luacheck" },
+				}
+				vim.cmd([[ au BufWritePost <buffer> lua require('lint').try_lint() ]])
+			end,
+		},
 		-- Language specific additions
+		{ "ellisonleao/glow.nvim" },
 		{
 			"simrat39/rust-tools.nvim",
 			requires = {
