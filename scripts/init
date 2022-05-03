@@ -172,10 +172,10 @@ platform_linux() {
 
 ansible_run() {
   __log 'Ensuring Ansible dependencies are available'
-  $PYTHON_BINARY -m pip install -r $TMP_DFP/ansible/requirements-python.txt
-  ansible-galaxy install -r $TMP_DFP/ansible/requirements-galaxy.yaml
+  $PYTHON_BINARY -m pip install -r $DFP/ansible/requirements-python.txt
+  ansible-galaxy install -r $DFP/ansible/requirements-galaxy.yaml
   __log 'Running Ansible playbook'
-  ANSIBLE_CONFIG=$TMP_DFP/ansible/ansible.cfg ansible-playbook "$TMP_DFP/ansible/config.yaml" || __log 'fatal' 'Failure in ansible run'
+  ANSIBLE_CONFIG=$DFP/ansible/ansible.cfg ansible-playbook "$DFP/ansible/config.yaml" || __log 'fatal' 'Failure in ansible run'
 }
 
 clone() {
@@ -198,8 +198,8 @@ clone() {
   # *) __log 'error' "Unknown [$key_added]" ;;
   # esac
 
-  __log "Cloning the dotfiles repo to $TMP_DFP"
-  git clone $DOTFILES_REPO $TMP_DFP
+  __log "Cloning the dotfiles repo to $DFP"
+  git clone $DOTFILES_REPO $DFP
 }
 
 main() {
@@ -240,7 +240,6 @@ main() {
 }
 
 export BREW_BINARY="$(command -v brew)"
-export TMP_DFP="/tmp/dotfiles"
 export DFP="$HOME/git/github.com/reynn/dotfiles"
 export DOTFILES_REPO="https://github.com/reynn/dotfiles"
 export GROUP_ID="$(id -g)"
