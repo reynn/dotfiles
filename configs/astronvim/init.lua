@@ -49,6 +49,30 @@ return {
 			},
 		},
 	},
+	options = {
+		opt = {
+			-- show whitespace characters
+			list = false,
+			listchars = {
+				tab = "│→",
+				extends = "⟩",
+				precedes = "⟨",
+				trail = "·",
+				nbsp = "␣",
+			},
+			showbreak = "↪ ",
+
+			scrolloff = 15,
+			sidescrolloff = 15,
+			numberwidth = 4,
+			relativenumber = true,
+
+			-- set Treesitter based folding and disable auto-folding on open
+			foldenable = false,
+			foldmethod = "expr",
+			foldexpr = "nvim_treesitter#foldexpr()",
+		},
+	},
 	ui = {
 		nui_input = true,
 	},

@@ -1,30 +1,48 @@
 return function()
-	local set = vim.opt
+	local map = vim.keymap.set
+	local create_au = vim.api.nvim_create_autocmd
+	local augroup = vim.api.nvim_create_augroup
+	local del_augroup = vim.api.nvim_del_augroup_by_name
 
-	-- show whitespace characters
-	set.list = false
-	set.listchars = {
-		tab = "│→",
-		extends = "⟩",
-		precedes = "⟨",
-		trail = "·",
-		nbsp = "␣",
-	}
-	set.showbreak = "↪ "
-	-- soft wrap lines
+	del_augroup("TermMappings")
 
-	set.scrolloff = 15
-	set.sidescrolloff = 15
-	set.numberwidth = 4
+	augroup("style", {})
+	create_au("BufEnter", {
+		desc = "apply settings for proper Go",
+		group = "style",
+		pattern = "*.go",
+		command = "setlocal textwidth=4 tabstop=4 shiftwidth=4",
+	})
+	create_au("FileType", {
+		desc = "Enable crates as a completion source",
+		group = "style",
+		pattern = "Cargo.toml",
+		command = "lua require('cmp').setup.buffer { sources = { { 'crates' } } }",
+	})
 
-	-- Set options
-	set.relativenumber = true
+	augroup("packer_conf", {})
+	create_au("BufWritePost", {
+		desc = "Run packer sync if the plugins.lua is updated",
+		group = "packer_conf",
+		pattern = "plugins.lua",
+		command = "source <afile> | PackerSync",
+	})
 
-	-- set Treesitter based folding and disable auto-folding on open
-	set.foldenable = false
-	set.foldmethod = "expr"
-	set.foldexpr = "nvim_treesitter#foldexpr()"
+	augroup("autocomp", {})
+	create_au("VimLeave", {
+		desc = "Stop running auto compiler",
+		group = "autocomp",
+		pattern = "*",
+		command = "!autocomp %:p stop",
+	})
 
-	-- Auto Commands
-	require("user.autocmds").setup()
+	augroup("dapui", {})
+	create_au("FileType", {
+		desc = "Make q close dap floating windows",
+		group = "dapui",
+		pattern = "dap-float",
+		callback = function()
+			map("n", "q", "<cmd>close!<cr>")
+		end,
+	})
 end
