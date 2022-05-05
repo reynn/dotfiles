@@ -12,12 +12,18 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
     set -x SETUP_CHEOVIM false
 
     function ___usage
-        set -l help_args -a 'Cleanup files and reinstall AstroVim [**UNSTABLE**]'
+        set -l help_args -a 'Cleanup files and reinstall AstroNvim [**UNSTABLE**]'
 
         set -a help_args -f 'a|setup-all|Run through all setup options in proper order|true'
         set -a help_args -f 'A|clean-all|Clean all directories (complete uninstall)|true'
 
         __dotfiles_help $help_args
+    end
+
+    function packer_sync
+        nvim --headless \
+            -c 'autocmd User PackerComplete quitall' \
+            -c PackerSync
     end
 
     getopts $argv | while read -l key value
@@ -55,15 +61,20 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         symlink.create \
             -s "$DOTFILES_CONFIG_DIR/cheovim/profiles.lua" \
             -d "$NVIM_CONFIG_DIR/profiles.lua"
-        nvim --headless \
-            -c 'autocmd User PackerComplete quitall' \
-            -c PackerSync
+        packer_sync
     end
 
     if test "$SETUP_ASTRONVIM" = true
-        symlink.create \
-            -s $DOTFILES_CONFIG_DIR/astrovim \
-            -d $CHEOVIM_LOCAL_DIR/astronvim/lua/user
+        if test -L $DOTFILES_CONFIG_DIR/astronvim
+            nvim --headless \
+                -c 'autocmd User PackerComplete quitall' \
+                -c PackerSync
+        else
+            symlink.create \
+                -s $DOTFILES_CONFIG_DIR/astronvim \
+                -d $CHEOVIM_LOCAL_DIR/astronvim/lua/user
+            packer_sync
+        end
     end
 
     if test "$SETUP_DOOMNVIM" = true
@@ -72,9 +83,14 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
 
     if test "$SETUP_LUNARVIM" = true
         mkdir $CHEOVIM_LOCAL_DIR/lunarvim
-        symlink.create \
-            -s $DOTFILES_CONFIG_DIR/lunar-vim/config.lua \
-            -d $CHEOVIM_LOCAL_DIR/lunarvim/config.lua
+        if test -L $DOTFILES_CONFIG_DIR/lunar-vim/config.lua
+            packer_sync
+        else
+            symlink.create \
+                -s $DOTFILES_CONFIG_DIR/lunar-vim/config.lua \
+                -d $CHEOVIM_LOCAL_DIR/lunarvim/config.lua
+            packer_sync
+        end
     end
 
 end

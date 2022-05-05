@@ -9,10 +9,10 @@ Format: <tool>.<optional_subject>.<action>*
 # actions are typically one of [list, create, update, remove, connect, generate]. This should not limit naming though and others should be freely considered.
 ```
 
-[dotfiles.ansible.update][./functions/dotfiles.ansible.update.fish]
-[dotfiles.env.update][./functions/dotfiles.env.update.fish]
-[dotfiles.system.update][./functions/dotfiles.system.update.fish]
-[dotfiles.update][./functions/dotfiles.update.fish]
+[dotfiles.ansible.update](./functions/dotfiles.ansible.update.fish)
+[dotfiles.env.update](./functions/dotfiles.env.update.fish)
+[dotfiles.system.update](./functions/dotfiles.system.update.fish)
+[dotfiles.update](./functions/dotfiles.update.fish)
 
 Helper functions are functions that dont execute any permanent action and should have no long term affect on the environment.
 They typically are used to create complex JSON or YAML on the fly for things like the AWS CLI or the `jfrog` cli.

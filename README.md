@@ -1,4 +1,4 @@
-# dotfiles
+# reynn/dotfiles
 
 ## Installation
 
@@ -15,5 +15,5 @@ This will run the installation script and setup all necessary dependencies and l
 | Terminal        | [Alacritty](configs/alacritty/readme.md)     |
 | Shell           | [Fish Shell](configs/fish/readme.md)         |
 | Prompt          | [Starship](configs/starship/readme.md)       |
-| Multiplexer     | [TMUX](configs/tmux/readme.md)               |
+| Multiplexer     | [Zellij](configs/zellij/readme.md)           |
 | Neo(Vim) Config | [SpaceVim](configs/spacevim/readme.md)       |

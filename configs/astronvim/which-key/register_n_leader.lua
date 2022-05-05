@@ -70,6 +70,7 @@ return {
 		name = "Telescope",
 		["?"] = { "<cmd>Telescope help_tags<cr>", "Find Help" },
 		["'"] = { "<cmd>Telescope marks<cr>", "Marks" },
+		a = { "<cmd>Telescope aerial<cr>", "Aerial" },
 		b = { "<cmd>Telescope buffers<cr>", "Buffers" },
 		c = { "<cmd>Telescope commands<cr>", "Commands" },
 		f = { "<cmd>Telescope find_files<cr>", "Files" },
@@ -97,14 +98,14 @@ return {
 		p = { "Next Parameter" },
 		P = { "Previous Parameter" },
 	},
-  T = {
-    name = "Trouble",
-    x = { "<cmd>TroubleToggle<cr>", "Toggle Trouble" },
-    w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Trouble Workspace Diagnostics" },
-    d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Trouble Document Diagnostics" },
-    q = { "<cmd>TroubleToggle quickfix<cr>", "Trouble Quickfix" },
-    l = { "<cmd>TroubleToggle loclist<cr>", "Trouble LOC List" },
-  },
+	T = {
+		name = "Trouble",
+		x = { "<cmd>TroubleToggle<cr>", "Toggle Trouble" },
+		w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Trouble Workspace Diagnostics" },
+		d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Trouble Document Diagnostics" },
+		q = { "<cmd>TroubleToggle quickfix<cr>", "Trouble Quickfix" },
+		l = { "<cmd>TroubleToggle loclist<cr>", "Trouble LOC List" },
+	},
 	x = {
 		name = "Debugger",
 		b = {
