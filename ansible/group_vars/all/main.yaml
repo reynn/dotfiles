@@ -44,7 +44,8 @@ packages:
     basic:
       - curl
       - wget
-      - tmux
+      - zip
+      - unzip
     pacman:
       - gcc
       - pulseaudio

@@ -11,4 +11,5 @@
     - gather_facts:
       tags: [always]
 
-  roles: [base]
+  roles:
+    - base
