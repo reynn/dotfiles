@@ -1,9 +1,5 @@
 return function()
-	local lint_ok, lint = pcall(require, "lint")
-	if not lint_ok then
-		return
-	end
-	lint.linters_by_ft = {
+	require("lint").linters_by_ft = {
 		markdown = { "markdownlint", "vale" },
 		python = { "pylint" },
 		yaml = { "yamllint" },

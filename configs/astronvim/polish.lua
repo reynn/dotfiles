@@ -2,9 +2,9 @@ return function()
 	local map = vim.keymap.set
 	local create_au = vim.api.nvim_create_autocmd
 	local augroup = vim.api.nvim_create_augroup
-	local del_augroup = vim.api.nvim_del_augroup_by_name
+	-- local del_augroup = vim.api.nvim_del_augroup_by_name
 
-	del_augroup("TermMappings")
+	-- del_augroup("TermMappings")
 
 	augroup("style", {})
 	create_au("BufEnter", {
