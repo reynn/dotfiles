@@ -12,7 +12,6 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     path.replace "$PYTHON_HOME/bin" '2'
     fish_add_path "$DFP/scripts"
     fish_add_path "$HOME/.local/bin"
-    fish_add_path "$HOME/.bins/envs"
     fish_add_path "$HOME/.cargo/bin"
     fish_add_path "$HOME/go/bin"
 

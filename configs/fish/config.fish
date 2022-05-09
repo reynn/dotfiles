@@ -23,3 +23,6 @@ alias lvim "nvim -u $LUNARVIM_RUNTIME_DIR/lvim/init.lua "
 alias avim "nvim -u $HOME/.config/astro-vim/init.lua "
 
 # set fish_trace off
+if test -x (which vers)
+  vers env -s fish | source
+end

@@ -1,36 +1,23 @@
 return function(default_plugins)
 	local user_plugins = {
 		-- Color Schemes
-		{
-			"eddyekofo94/gruvbox-flat.nvim",
-			-- config = require("user.colors.gruvbox.flat"),
-		},
-		{
-			"sainnhe/gruvbox-material",
-			-- config = require("user.colors.gruvbox.material"),
-		},
-		{
-			"luisiacc/gruvbox-baby",
-			-- config = require("user.colors.gruvbox.baby"),
-		},
-		{
-			"tiagovla/tokyodark.nvim",
-			-- config = require("user.colors.tokyodark"),
-		},
+		{ "eddyekofo94/gruvbox-flat.nvim" },
+		{ "sainnhe/gruvbox-material" },
+		{ "luisiacc/gruvbox-baby" },
+		{ "tiagovla/tokyodark.nvim" },
+		{ "marko-cerovac/material.nvim" },
 		{
 			"catppuccin/nvim",
 			as = "catppuccin",
-			-- config = require("user.colors.catppuccin"),
-		},
-		{
-			"marko-cerovac/material.nvim",
-			-- config = require("user.colors.material"),
 		},
 		-- general vim improvements
 		{ "folke/trouble.nvim", cmd = "TroubleToggle" },
+		{
+			"echasnovski/mini.nvim",
+			config = require("user.plugins.mini"),
+		},
 		{ "junegunn/vim-easy-align" },
 		{ "tpope/vim-repeat" },
-		-- { "tpope/vim-surround", keys = { "cs", "ds", "ys" } },
 		{ "gpanders/editorconfig.nvim" },
 		{
 			"dhruvasagar/vim-table-mode",
@@ -49,10 +36,6 @@ return function(default_plugins)
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			after = "nvim-treesitter",
-		},
-		{
-			"echasnovski/mini.nvim",
-			config = require("user.plugins.mini"),
 		},
 		-- LSP additions
 		{
@@ -93,6 +76,7 @@ return function(default_plugins)
 			"ellisonleao/glow.nvim",
 			ft = { "markdown", "rmd" },
 		},
+		{ "slint-ui/vim-slint" },
 		{
 			"simrat39/rust-tools.nvim",
 			requires = {
@@ -129,7 +113,7 @@ return function(default_plugins)
 
 	-- default_plugins["Darazaki/indent-o-matic"] = nil
 	-- default_plugins["JoosepAlviste/nvim-ts-context-commentstring"] = nil
-	-- default_plugins["numToStr/Comment.nvim"] = nil
+	default_plugins["numToStr/Comment.nvim"] = nil
 	default_plugins["lukas-reineke/indent-blankline.nvim"] = nil
 
 	for _, plugin in pairs(default_plugins) do
