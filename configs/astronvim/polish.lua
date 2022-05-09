@@ -2,9 +2,6 @@ return function()
 	local map = vim.keymap.set
 	local create_au = vim.api.nvim_create_autocmd
 	local augroup = vim.api.nvim_create_augroup
-	-- local del_augroup = vim.api.nvim_del_augroup_by_name
-
-	-- del_augroup("TermMappings")
 
 	augroup("style", {})
 	create_au("BufEnter", {
@@ -45,4 +42,28 @@ return function()
 			map("n", "q", "<cmd>close!<cr>")
 		end,
 	})
+
+  augroup("mini", {clear = true})
+  create_au("FileType", {
+    desc = "Disable indent scope for conent types",
+    group = "mini",
+    callback = function()
+      if vim.tbl_contains({
+          "NvimTree",
+          "TelescopePrompt",
+          "Trouble",
+          "alpha",
+          "help",
+          "lsp-installer",
+          "lspinfo",
+          "neo-tree",
+          "neogitstatus",
+          "packer",
+          "startify",
+        }, vim.bo.filetype) or vim.tbl_contains({ "nofile", "terminal" }, vim.bo.buftype)
+      then
+        vim.b.miniindentscope_disable = true
+      end
+    end,
+  })
 end
