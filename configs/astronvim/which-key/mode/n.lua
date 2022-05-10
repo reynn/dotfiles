@@ -13,13 +13,7 @@ local mappings = {
 	},
 	["<leader>"] = {
 		p = {
-			C = { ":PackerClean<cr>", "Clean" },
-			p = {
-				function()
-					require("telescope").extensions.packer.packer()
-				end,
-				"Packer Search",
-			},
+			C = { ":PackerClean<cr>", "Packer Clean" },
 		},
 		["N"] = { "<cmd>tabnew<cr>", "New Buffer" },
 		f = {
@@ -34,7 +28,6 @@ local mappings = {
 			h = { "<cmd>Telescope oldfiles<cr>", "History" },
 			k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
 			m = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-			M = { "<cmd>Telescope media_files<cr>", "Media" },
 			n = { "<cmd>Telescope notify<cr>", "Notifications" },
 			p = { "<cmd>Telescope project<cr>", "Projects" },
 			r = { "<cmd>Telescope registers<cr>", "Registers" },

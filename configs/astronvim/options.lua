@@ -1,7 +1,7 @@
 return {
 	opt = {
 		-- show whitespace characters
-		list = true,
+		list = false,
 		listchars = {
 			tab = "→ ",
 			extends = "⟩",

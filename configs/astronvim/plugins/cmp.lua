@@ -1,5 +1,4 @@
 local cmp = require("cmp")
-local neogen = require("neogen")
 local luasnip = require("luasnip")
 local lspkind = require("lspkind")
 
@@ -18,8 +17,6 @@ return {
 				luasnip.expand()
 			elseif luasnip.expand_or_jumpable() then
 				luasnip.expand_or_jump()
-			elseif neogen.jumpable() then
-				neogen.jump_next()
 			else
 				fallback()
 			end
@@ -32,8 +29,6 @@ return {
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then
 				luasnip.jump(-1)
-			elseif neogen.jumpable(true) then
-				neogen.jump_prev()
 			else
 				fallback()
 			end

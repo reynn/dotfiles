@@ -18,7 +18,7 @@ return {
 		"toml",
 		"yaml",
 	},
-	sync_install = true,
+	-- sync_install = true,
 	highlight = {
 		additional_vim_regex_highlighting = { "markdown" },
 	},

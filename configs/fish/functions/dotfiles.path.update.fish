@@ -14,6 +14,9 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     fish_add_path "$HOME/.local/bin"
     fish_add_path "$HOME/.cargo/bin"
     fish_add_path "$HOME/go/bin"
+    if test -e (which vers)
+      fish_add_path "$(vers env -s fish)"
+    end
 
     __log debug "Checking for Go version path: $go_version_path"
     if test -e "$go_version_path"
