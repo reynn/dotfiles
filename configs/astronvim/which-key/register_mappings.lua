@@ -5,5 +5,6 @@ end
 return {
 	n = mode("n"),
 	v = mode("v"),
+  x = mode("x"),
 	i = mode("i"),
 }

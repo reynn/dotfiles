@@ -10,12 +10,6 @@ return function()
 		pattern = "*.go",
 		command = "setlocal textwidth=4 tabstop=4 shiftwidth=4",
 	})
-	create_au("FileType", {
-		desc = "Enable crates as a completion source",
-		group = "style",
-		pattern = "Cargo.toml",
-		command = "lua require('cmp').setup.buffer { sources = { { 'crates' } } }",
-	})
 
 	augroup("packer_conf", {})
 	create_au("BufWritePost", {
@@ -43,30 +37,31 @@ return function()
 		end,
 	})
 
-  augroup("mini", {clear = true})
-  create_au("FileType", {
-    desc = "Disable indent scope for conent types",
-    group = "mini",
-    callback = function()
-      if vim.tbl_contains({
-          "NvimTree",
-          "TelescopePrompt",
-          "Trouble",
-          "alpha",
-          "help",
-          "lsp-installer",
-          "lspinfo",
-          "neo-tree",
-          "neogitstatus",
-          "packer",
-          "startify",
-        }, vim.bo.filetype) or vim.tbl_contains({
-          "nofile",
-          "terminal",
-        }, vim.bo.buftype)
-      then
-        vim.b.miniindentscope_disable = true
-      end
-    end,
-  })
+	augroup("mini", { clear = true })
+	create_au("FileType", {
+		desc = "Disable indent scope for conent types",
+		group = "mini",
+		callback = function()
+			if
+				vim.tbl_contains({
+					"NvimTree",
+					"TelescopePrompt",
+					"Trouble",
+					"alpha",
+					"help",
+					"lsp-installer",
+					"lspinfo",
+					"neo-tree",
+					"neogitstatus",
+					"packer",
+					"startify",
+				}, vim.bo.filetype) or vim.tbl_contains({
+					"nofile",
+					"terminal",
+				}, vim.bo.buftype)
+			then
+				vim.b.miniindentscope_disable = true
+			end
+		end,
+	})
 end
