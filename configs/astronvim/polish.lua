@@ -60,7 +60,10 @@ return function()
           "neogitstatus",
           "packer",
           "startify",
-        }, vim.bo.filetype) or vim.tbl_contains({ "nofile", "terminal" }, vim.bo.buftype)
+        }, vim.bo.filetype) or vim.tbl_contains({
+          "nofile",
+          "terminal",
+        }, vim.bo.buftype)
       then
         vim.b.miniindentscope_disable = true
       end

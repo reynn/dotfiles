@@ -1,7 +1,7 @@
 return {
 	theme = "gruvbox-baby",
-  -- theme = 'tokyodark',
-  -- theme = 'catppuccin',
+	-- theme = 'tokyodark',
+	-- theme = 'catppuccin',
 	setup = function(theme_name)
 		if theme_name == "catppuccin" then
 			require("catppuccin").setup({
@@ -17,7 +17,7 @@ return {
 					nvimtree = {
 						enabled = false,
 					},
-          telescope = true,
+					telescope = true,
 					ts_rainbow = true,
 					which_key = true,
 				},

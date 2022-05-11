@@ -66,10 +66,6 @@ return {
 		after = "nvim-dap",
 		config = require("user.plugins.dap_ui"),
 	},
-	{
-		"mfussenegger/nvim-lint",
-		config = require("user.plugins.nvim-lint"),
-	},
 	-- Language specific additions
 	{
 		"lukas-reineke/headlines.nvim",
@@ -79,6 +75,7 @@ return {
 	{
 		"ellisonleao/glow.nvim",
 		ft = { "markdown", "rmd" },
+		config = require("user.plugins.glow"),
 	},
 	{
 		"simrat39/rust-tools.nvim",
@@ -88,7 +85,6 @@ return {
 	{
 		"Saecki/crates.nvim",
 		after = "nvim-cmp",
-		event = { "BufRead Cargo.toml" },
 		config = require("user.plugins.crates-nvim"),
 		ft = { "toml" },
 	},

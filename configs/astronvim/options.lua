@@ -12,11 +12,10 @@ return {
 		},
 		showbreak = "↪ ",
 
-		scrolloff = 15,
+		scrolloff = 10,
 		sidescrolloff = 15,
 		numberwidth = 4,
 		relativenumber = true,
-		-- lazyredraw = true,
 		updatetime = 100,
 		timeoutlen = 100,
 
