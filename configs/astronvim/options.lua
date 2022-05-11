@@ -12,12 +12,23 @@ return {
 		},
 		showbreak = "↪ ",
 
-		scrolloff = 10,
-		sidescrolloff = 15,
+		fillchars = {
+			horiz = "━",
+			horizup = "┻",
+			horizdown = "┳",
+			vert = "┃",
+			vertleft = "┨",
+			vertright = "┣",
+			verthoriz = "╋",
+		},
+		laststatus = 3,
+
 		numberwidth = 4,
 		relativenumber = true,
-		updatetime = 100,
+		scrolloff = 10,
+		sidescrolloff = 15,
 		timeoutlen = 100,
+		updatetime = 100,
 
 		-- set Treesitter based folding and disable auto-folding on open
 		foldenable = false,
