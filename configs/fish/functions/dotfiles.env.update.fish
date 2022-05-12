@@ -42,7 +42,7 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.10'
-    set -Ux LANGUAGES_GO_VERSION '1.18.1'
+    set -Ux LANGUAGES_GO_VERSION '1.18.2'
     set -Ux LANGUAGES_RUST_VERSION '1.60.0'
     set -Ux LANGUAGES_NODE_VERSION '18.1.0'
 
