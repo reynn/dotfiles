@@ -3,11 +3,6 @@ return {
 	["Darazaki/indent-o-matic"] = { disable = true },
 	["numToStr/Comment.nvim"] = { disable = true },
 	["lukas-reineke/indent-blankline.nvim"] = { disable = true },
-	["neovim/nvim-lspconfig"] = {
-		setup = function()
-			require("core.utils").defer_plugin("nvim-lspconfig")
-		end,
-	},
 	["williamboman/nvim-lsp-installer"] = {
 		opt = true,
 		setup = function()

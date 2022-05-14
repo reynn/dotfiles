@@ -1,17 +1,5 @@
 return {
 	opt = {
-		-- show whitespace characters
-		list = false,
-		listchars = {
-			tab = "→ ",
-			extends = "⟩",
-			precedes = "⟨",
-			trail = "·",
-			nbsp = "␣",
-			eol = "↲",
-		},
-		showbreak = "↪ ",
-
 		fillchars = {
 			horiz = "━",
 			horizup = "┻",
@@ -21,18 +9,26 @@ return {
 			vertright = "┣",
 			verthoriz = "╋",
 		},
+		foldenable = false,
+		foldexpr = "nvim_treesitter#foldexpr()",
+		foldmethod = "expr",
 		laststatus = 3,
-
+		list = false,
+		listchars = {
+			tab = "→ ",
+			extends = "⟩",
+			precedes = "⟨",
+			trail = "·",
+			nbsp = "␣",
+			eol = "↲",
+		},
 		numberwidth = 4,
 		relativenumber = true,
 		scrolloff = 10,
+		showbreak = "↪ ",
 		sidescrolloff = 15,
 		timeoutlen = 100,
 		updatetime = 100,
-
-		-- set Treesitter based folding and disable auto-folding on open
-		foldenable = false,
-		foldmethod = "expr",
-		foldexpr = "nvim_treesitter#foldexpr()",
+    conceallevel = 2,
 	},
 }

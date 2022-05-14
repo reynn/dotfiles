@@ -5,7 +5,7 @@ return function()
 		draw = {
       delay = 0,
 			animation = require("mini.indentscope").gen_animation("cubicInOut", {
-				duration = 150,
+				duration = 100,
 				unit = "total",
 			}),
 		},
@@ -14,7 +14,9 @@ return function()
 		},
 		symbol = "▏",
 	})
-	require("mini.surround").setup()
+	require("mini.surround").setup({
+    highlight_duration = 2000,
+  })
 
   local disable = {
     "base16",
