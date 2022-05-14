@@ -13,17 +13,17 @@ return function()
 				command = "cfn-lint",
 				to_stdin = true,
 				to_stdout = true,
-        format = "line",
+				format = "line",
 				args = { "--format", "parseable", "-" },
 				check_exit_code = function(code)
 					return code == 0 or code == 255
 				end,
-        on_output = helpers.diagnostics.from_patterns({
-          {
-              pattern = [[:(%d+):(%d+):(%d+):(%d+):(.*):(.*)]],
-              groups = { 'row', 'col', 'end_row', 'end_col', 'code', 'message'},
-          },
-        }),
+				on_output = helpers.diagnostics.from_patterns({
+					{
+						pattern = [[:(%d+):(%d+):(%d+):(%d+):(.*):(.*)]],
+						groups = { "row", "col", "end_row", "end_col", "code", "message" },
+					},
+				}),
 			}),
 		}
 
@@ -36,7 +36,7 @@ return function()
 				builtins.formatting.shfmt,
 				builtins.diagnostics.cue_fmt,
 				builtins.diagnostics.fish,
-        builtins.diagnostics.trail_space,
+				builtins.diagnostics.trail_space,
 				builtins.diagnostics.revive,
 				builtins.diagnostics.rubocop,
 				builtins.diagnostics.shellcheck,

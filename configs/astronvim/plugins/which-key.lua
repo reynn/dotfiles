@@ -1,5 +1,5 @@
 return {
-  window = {
-    border = "none",
-  }
+	window = {
+		border = "none",
+	},
 }

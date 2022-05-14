@@ -10,12 +10,21 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
 
     # These will add to the fish_user_paths only if necessary
     path.replace "$PYTHON_HOME/bin" '2'
-    fish_add_path "$DFP/scripts"
-    fish_add_path "$HOME/.local/bin"
-    fish_add_path "$HOME/.cargo/bin"
-    fish_add_path "$HOME/go/bin"
+    set -l user_paths "$DFP/scripts" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/go/bin"
     if test -e (which vers)
-      fish_add_path "$(vers env -s fish)"
+      set -l vers_path (vers env -n global -s fish)
+      set -a user_paths (string replace -r '.*?\"(.+)\"' '$1' $vers_path)
+    end
+
+    __log debug "Paths to add :: $user_paths"
+
+    for u_path in $user_paths
+      if not contains -- "$u_path" $fish_user_paths
+        __log debug "Adding $u_path"
+        set -Up fish_user_paths "$u_path"
+      else
+        __log debug "Skipped adding '$u_path'"
+      end
     end
 
     __log debug "Checking for Go version path: $go_version_path"

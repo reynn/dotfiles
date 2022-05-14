@@ -3,6 +3,11 @@ return {
 	["Darazaki/indent-o-matic"] = { disable = true },
 	["numToStr/Comment.nvim"] = { disable = true },
 	["lukas-reineke/indent-blankline.nvim"] = { disable = true },
+	["neovim/nvim-lspconfig"] = {
+		setup = function()
+			require("core.utils").defer_plugin("nvim-lspconfig")
+		end,
+	},
 	["williamboman/nvim-lsp-installer"] = {
 		opt = true,
 		setup = function()
@@ -29,6 +34,7 @@ return {
 	{ "folke/trouble.nvim", cmd = "TroubleToggle" },
 	{
 		"echasnovski/mini.nvim",
+		after = "nvim-treesitter",
 		config = require("user.plugins.mini"),
 	},
 	{ "junegunn/vim-easy-align" },
@@ -87,6 +93,7 @@ return {
 	},
 	{
 		"m-demare/hlargs.nvim",
+		after = "nvim-treesitter",
 		config = function()
 			require("hlargs").setup({})
 		end,
@@ -95,11 +102,11 @@ return {
 	-- DAP:
 	{
 		"mfussenegger/nvim-dap",
-		config = require("user.plugins.dap"),
+		config = require("user.plugins.dap-config"),
 	},
 	{
 		"rcarriga/nvim-dap-ui",
-		after = "nvim-dap",
+		after = { "nvim-dap", "rust-tools.nvim" },
 		config = require("user.plugins.dap_ui"),
 	},
 	{
@@ -113,7 +120,7 @@ return {
 	{
 		"lukas-reineke/headlines.nvim",
 		ft = { "markdown", "rmd" },
-		config = require("user.plugins.headlines"),
+		config = require("user.plugins.markdown"),
 	},
 	{
 		"ellisonleao/glow.nvim",
@@ -123,7 +130,7 @@ return {
 	{
 		"simrat39/rust-tools.nvim",
 		ft = { "rust", "rs" },
-		config = require("user.plugins.rust-tools"),
+		config = require("user.plugins.rust_tools"),
 	},
 	{
 		"Saecki/crates.nvim",

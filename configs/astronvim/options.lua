@@ -29,6 +29,6 @@ return {
 		sidescrolloff = 15,
 		timeoutlen = 100,
 		updatetime = 100,
-    conceallevel = 2,
+		conceallevel = 2,
 	},
 }
