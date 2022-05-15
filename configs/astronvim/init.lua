@@ -22,19 +22,18 @@ return {
 		-- add to the server on_attach function
 		on_attach = function(client, bufnr)
 			local lspsignature_ok, lspsignature = pcall(require, "lsp_signature")
-
 			if lspsignature_ok then
 				lspsignature.on_attach({
 					bind = true,
 					handler_opts = {
-						border = "rounded",
+						border = "double",
 					},
+					transparent = 75,
 				}, bufnr)
 			end
 
 			if client.resolved_capabilities.document_formatting then
 				vim.api.nvim_create_augroup("LspFormatting", {})
-
 				vim.api.nvim_create_autocmd("BufWritePre", {
 					desc = "Use LSP formatter before writing file",
 					group = "LspFormatting",
@@ -107,6 +106,13 @@ return {
 		},
 	},
 	polish = function()
+		vim.filetype.add({
+			pattern = {
+				[".*/cfn/.*.yaml"] = "cloudformation",
+				[".*.cfn.yaml"] = "cloudformation",
+			},
+		})
+
 		require("user.autocmds")
 		require("user.mappings")
 	end,

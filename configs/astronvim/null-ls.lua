@@ -8,7 +8,7 @@ return function()
 		local cfn_lint = {
 			name = "cfn-lint",
 			method = null_ls.methods.DIAGNOSTICS,
-			filetypes = { "yaml" },
+			filetypes = { "cloudformation" },
 			generator = helpers.generator_factory({
 				command = "cfn-lint",
 				to_stdin = true,
