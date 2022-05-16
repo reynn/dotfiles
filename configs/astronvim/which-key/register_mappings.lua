@@ -11,7 +11,7 @@ local function vim_opt_toggle(opt, on, off, name)
 end
 
 return {
-	n = {
+  n = {
     g = {
       name = "GoTo",
       d = { "Definition" },
@@ -20,6 +20,12 @@ return {
       r = { "References" },
       R = { "References (Trouble)" },
       o = { "Open Diagnostics" },
+    },
+    ["K"] = {
+      function()
+        vim.lsp.buf.hover()
+      end,
+      "Show Hover"
     },
     ["<leader>"] = {
       C = {
@@ -75,7 +81,13 @@ return {
           function()
             vim.lsp.buf.code_action()
           end,
-          "Code Actions"
+          "Code Actions",
+        },
+        l = {
+          function()
+            vim.lsp.codelens.run()
+          end,
+          "CodeLens Actions",
         }
       },
       N = { "<cmd>tabnew<cr>", "New Buffer" },
@@ -233,7 +245,7 @@ return {
       },
     },
   },
-	v = {
+  v = {
     ["<leader>"] = {
       ["C"] = {
         name = "Crates.io",
@@ -317,7 +329,7 @@ return {
       "Navigate to child TS node",
     },
   },
-	i = {
+  i = {
     ["<c-d>"] = {
       n = { "<c-r>=strftime('%Y-%m-%d')<cr>", "Y-m-d" },
       x = { "<c-r>=strftime('%m/%d/%y')<cr>", "m/d/y" },

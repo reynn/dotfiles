@@ -1,5 +1,5 @@
 local unmap = vim.keymap.del
-local is_available = require("core.utils").is_available
+-- local is_available = require("core.utils").is_available
 
 -- remove default bindings
 unmap("n", "<C-Down>")
@@ -8,15 +8,11 @@ unmap("n", "<C-Right>")
 unmap("n", "<C-Up>")
 unmap("n", "<C-q>")
 unmap("n", "<C-s>")
-unmap("v", "<")
-unmap("v", ">")
-unmap("t", "<esc>")
 unmap("t", "jk")
-unmap("n", "<leader>h")
-if is_available("nvim-toggleterm.lua") then
+if astronvim.is_available("nvim-toggleterm.lua") then
 	unmap("n", "<C-\\>")
 end
-if is_available("telescope.nvim") then
+if astronvim.is_available("telescope.nvim") then
 	unmap("n", "<leader>fh")
 	unmap("n", "<leader>fm")
 	unmap("n", "<leader>fn")

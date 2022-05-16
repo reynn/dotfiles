@@ -7,6 +7,7 @@ return {
 			buffer = 300,
 		},
 	},
+	colorscheme = "kanagawa",
 	-- Extend LSP configuration
 	lsp = {
 		servers = {
@@ -31,6 +32,25 @@ return {
 					transparent = 75,
 				}, bufnr)
 			end
+
+			local status_ok, codelens_supported = pcall(function()
+				return client.supports_method "textDocument/codeLens"
+			end)
+			if not status_ok or not codelens_supported then
+				return
+			end
+
+			local augroup_exist, _ = pcall(vim.api.nvim_get_autocmds, {
+				group = "lsp_code_lens_refresh",
+			})
+			if not augroup_exist then
+				vim.api.nvim_create_augroup("lsp_code_lens_refresh", {})
+			end
+			vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+				group = "lsp_code_lens_refresh",
+				buffer = bufnr,
+				callback = vim.lsp.codelens.refresh,
+			})
 
 			if client.resolved_capabilities.document_formatting then
 				vim.api.nvim_create_augroup("LspFormatting", {})

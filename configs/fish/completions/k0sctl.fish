@@ -2,7 +2,7 @@
 
 function __fish_k0sctl_no_subcommand --description 'Test if there has been any subcommand yet'
     for i in (commandline -opc)
-        if contains -- $i version apply kubeconfig init reset backup completion help h
+        if contains -- $i version apply kubeconfig init reset backup config edit status completion help h
             return 1
         end
     end
@@ -63,6 +63,25 @@ complete -c k0sctl -n '__fish_seen_subcommand_from backup' -f -l trace -d 'Enabl
 complete -c k0sctl -n '__fish_seen_subcommand_from backup' -f -l no-redact -d 'Do not hide sensitive information in the output'
 complete -c k0sctl -n '__fish_seen_subcommand_from backup' -f -l disable-telemetry -d 'Do not send anonymous telemetry'
 complete -c k0sctl -n '__fish_seen_subcommand_from backup' -f -l disable-upgrade-check -d 'Do not check for a k0sctl upgrade'
+complete -c k0sctl -n '__fish_seen_subcommand_from config' -f -l help -s h -d 'show help'
+complete -r -c k0sctl -n '__fish_k0sctl_no_subcommand' -a 'config' -d 'Configuration related sub-commands'
+complete -c k0sctl -n '__fish_seen_subcommand_from edit' -f -l help -s h -d 'show help'
+complete -r -c k0sctl -n '__fish_seen_subcommand_from config' -a 'edit' -d 'Edit k0s dynamic config in SHELL\'s default editor'
+complete -c k0sctl -n '__fish_seen_subcommand_from edit' -l config -s c -r -d 'Path to cluster config yaml. Use \'-\' to read from stdin.'
+complete -c k0sctl -n '__fish_seen_subcommand_from edit' -f -l debug -s d -d 'Enable debug logging'
+complete -c k0sctl -n '__fish_seen_subcommand_from edit' -f -l trace -d 'Enable trace logging'
+complete -c k0sctl -n '__fish_seen_subcommand_from edit' -f -l no-redact -d 'Do not hide sensitive information in the output'
+complete -c k0sctl -n '__fish_seen_subcommand_from edit' -f -l disable-telemetry -d 'Do not send anonymous telemetry'
+complete -c k0sctl -n '__fish_seen_subcommand_from edit' -f -l disable-upgrade-check -d 'Do not check for a k0sctl upgrade'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -f -l help -s h -d 'show help'
+complete -r -c k0sctl -n '__fish_seen_subcommand_from config' -a 'status' -d 'Show k0s dynamic config reconciliation events'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -l config -s c -r -d 'Path to cluster config yaml. Use \'-\' to read from stdin.'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -f -l debug -s d -d 'Enable debug logging'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -f -l trace -d 'Enable trace logging'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -f -l no-redact -d 'Do not hide sensitive information in the output'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -f -l disable-telemetry -d 'Do not send anonymous telemetry'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -f -l disable-upgrade-check -d 'Do not check for a k0sctl upgrade'
+complete -c k0sctl -n '__fish_seen_subcommand_from status' -f -l output -s o -r -d 'kubectl output formatting'
 complete -c k0sctl -n '__fish_seen_subcommand_from completion' -f -l help -s h -d 'show help'
 complete -r -c k0sctl -n '__fish_k0sctl_no_subcommand' -a 'completion'
 complete -c k0sctl -n '__fish_seen_subcommand_from completion' -f -l shell -s s -r -d 'Shell to generate the script for'

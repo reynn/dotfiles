@@ -38,20 +38,9 @@ return function()
 				builtins.diagnostics.fish,
 				builtins.diagnostics.trail_space,
 				builtins.diagnostics.revive,
-				builtins.diagnostics.rubocop,
 				builtins.diagnostics.shellcheck,
 				cfn_lint,
 			},
-			on_attach = function(client)
-				-- vim.notify(client.name, "info", { title = "Language Server", timeout = 500 })
-				if client.resolved_capabilities.document_formatting then
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						desc = "Auto format before save",
-						pattern = "<buffer>",
-						callback = vim.lsp.buf.formatting_sync,
-					})
-				end
-			end,
 		})
 	end
 end

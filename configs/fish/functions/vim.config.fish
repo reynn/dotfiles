@@ -61,19 +61,14 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         symlink.create \
             -s "$DOTFILES_CONFIG_DIR/cheovim/profiles.lua" \
             -d "$NVIM_CONFIG_DIR/profiles.lua"
-        packer_sync
     end
 
     if test "$SETUP_ASTRONVIM" = true
-        if test -L $DOTFILES_CONFIG_DIR/astronvim
-            nvim --headless \
-                -c 'autocmd User PackerComplete quitall' \
-                -c PackerSync
-        else
+        if test ! -L $CHEOVIM_LOCAL_DIR/astronvim/lua/user
+            git clone https://github.com/AstroNvim/AstroNvim $CHEOVIM_LOCAL_DIR/astronvim
             symlink.create \
                 -s $DOTFILES_CONFIG_DIR/astronvim \
                 -d $CHEOVIM_LOCAL_DIR/astronvim/lua/user
-            packer_sync
         end
     end
 
@@ -83,9 +78,7 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
 
     if test "$SETUP_LUNARVIM" = true
         mkdir $CHEOVIM_LOCAL_DIR/lunarvim
-        if test -L $DOTFILES_CONFIG_DIR/lunar-vim/config.lua
-            packer_sync
-        else
+        if test ! -L $DOTFILES_CONFIG_DIR/lunar-vim/config.lua
             symlink.create \
                 -s $DOTFILES_CONFIG_DIR/lunar-vim/config.lua \
                 -d $CHEOVIM_LOCAL_DIR/lunarvim/config.lua

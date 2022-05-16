@@ -3,15 +3,9 @@ return {
 	["Darazaki/indent-o-matic"] = { disable = true },
 	["numToStr/Comment.nvim"] = { disable = true },
 	["lukas-reineke/indent-blankline.nvim"] = { disable = true },
-	["neovim/nvim-lspconfig"] = {
-		setup = function()
-			require("core.utils").defer_plugin("nvim-lspconfig")
-		end,
-	},
 	["williamboman/nvim-lsp-installer"] = {
 		opt = true,
 		setup = function()
-			require("core.utils").defer_plugin("nvim-lsp-installer")
 			-- reload the current file so lsp actually starts for it
 			vim.defer_fn(function()
 				vim.cmd('if &ft == "packer" | echo "" | else | silent! e %')
@@ -23,12 +17,70 @@ return {
 		end,
 	},
 	-- Color Schemes
-	{ "rebelot/kanagawa.nvim" },
-	{ "luisiacc/gruvbox-baby" },
-	{ "tiagovla/tokyodark.nvim" },
+	{
+		"rebelot/kanagawa.nvim",
+		-- after = "lualine",
+		config = function()
+			if require('user').colorscheme == "kanagawa" then
+				print('Configuring Kanagawa theme')
+				require("kanagawa").setup({
+					dimInactive = true,
+					globalStatus = true,
+				})
+			end
+		end,
+	},
+	{
+		"luisiacc/gruvbox-baby",
+		config = function()
+			if require('user').colorscheme == "gruvbox-baby" then
+				print('Configuring GruvboxBaby theme')
+				vim.g.gruvbox_baby_telescope_theme = 1
+				vim.g.gruvbox_baby_background_color = "medium"
+
+				vim.g.gruvbox_baby_comment_style = "italic"
+				vim.g.gruvbox_baby_function_style = "bold,italic"
+				vim.g.gruvbox_baby_keyword_style = "bold"
+				vim.g.gruvbox_baby_variable_style = "standout"
+			end
+		end,
+	},
+	{
+		"tiagovla/tokyodark.nvim",
+		config = function()
+			if require('user').colorscheme == "tokyodark" then
+				print('Configuring TokyoDark theme')
+				vim.g.tokyodark_enable_italic_comment = true
+				vim.g.tokyodark_enable_italic = true
+			end
+		end,
+	},
 	{
 		"catppuccin/nvim",
 		as = "catppuccin",
+		config = function()
+			if require('user').colorscheme == "catppuccin" then
+				print("Setting up Catppuccin theme")
+				require("catppuccin").setup({
+					term_colors = true,
+					integrations = {
+						indent_blankline = {
+							enabled = false,
+						},
+						lsp_trouble = false,
+						neotree = {
+							enabled = true,
+						},
+						nvimtree = {
+							enabled = false,
+						},
+						telescope = true,
+						ts_rainbow = true,
+						which_key = true,
+					},
+				})
+			end
+		end,
 	},
 	-- general vim improvements
 	{ "folke/trouble.nvim", cmd = "TroubleToggle" },
@@ -51,27 +103,27 @@ return {
 		config = function()
 			require("telescope").load_extension("project")
 		end,
-		{
-			"nvim-telescope/telescope-dap.nvim",
-			after = "telescope.nvim",
-			config = function()
-				require("telescope").load_extension("dap")
-			end,
-		},
-		{
-			"nvim-telescope/telescope-packer.nvim",
-			after = "telescope.nvim",
-			config = function()
-				require("telescope").load_extension("packer")
-			end,
-		},
-		{
-			"cljoly/telescope-repo.nvim",
-			after = "telescope.nvim",
-			config = function()
-				require("telescope").load_extension("repo")
-			end,
-		},
+	},
+	{
+		"nvim-telescope/telescope-dap.nvim",
+		after = "telescope.nvim",
+		config = function()
+			require("telescope").load_extension("dap")
+		end,
+	},
+	{
+		"nvim-telescope/telescope-packer.nvim",
+		after = "telescope.nvim",
+		config = function()
+			require("telescope").load_extension("packer")
+		end,
+	},
+	{
+		"cljoly/telescope-repo.nvim",
+		after = "telescope.nvim",
+		config = function()
+			require("telescope").load_extension("repo")
+		end,
 	},
 	-- Text objects/Motions and TreeSitter enhancements
 	{ "bkad/CamelCaseMotion" },
@@ -105,26 +157,7 @@ return {
 		run = "./install.sh",
 		requires = "hrsh7th/nvim-cmp",
 		event = "InsertEnter",
-		config = function()
-			require("core.utils").add_cmp_source({
-				name = "cmp_tabnine",
-				priority = 1000,
-				keyword_length = 2,
-			})
-			local tabnine = require("cmp_tabnine.config")
-			tabnine:setup({
-				max_lines = 1000,
-				max_num_results = 20,
-				sort = true,
-				run_on_every_keystroke = true,
-				snippet_placeholder = "..",
-				ignored_file_types = { -- default is not to ignore
-					-- uncomment to ignore in lua:
-					-- lua = true
-				},
-				show_prediction_strength = false,
-			})
-		end,
+		config = require('user.plugins.tabnine'),
 	},
 	-- DAP:
 	{
@@ -166,10 +199,32 @@ return {
 		ft = { "toml" },
 	},
 	{
-		"ray-x/go.nvim",
+		'crispgm/nvim-go',
 		config = function()
-			require("go").setup({})
+			require('go').setup({
+				-- notify: use nvim-notify
+				notify = true,
+				-- auto commands
+				auto_format = true,
+				auto_lint = true,
+				-- linters: revive, errcheck, staticcheck, golangci-lint
+				linter = 'revive',
+				-- linter_flags: e.g., {revive = {'-config', '/path/to/config.yml'}}
+				linter_flags = {},
+				-- lint_prompt_style: qf (quickfix), vt (virtual text)
+				lint_prompt_style = 'vt',
+				-- formatter: goimports, gofmt, gofumpt
+				formatter = 'gofumpt',
+				test_flags = {'-v'},
+			})
 		end,
 		ft = { "golang", "go" },
 	},
+	-- {
+	-- 	"ray-x/go.nvim",
+	-- 	config = function()
+	-- 		require("go").setup({})
+	-- 	end,
+	-- 	ft = { "golang", "go" },
+	-- },
 }
