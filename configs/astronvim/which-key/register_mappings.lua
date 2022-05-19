@@ -266,25 +266,13 @@ return {
         },
       },
     },
-    ["J"] = {
-      function()
-        require("syntax-tree-surfer").surf("next", "visual")
-      end,
-      "Next",
-    },
-    ["K"] = {
-      function()
-        require("syntax-tree-surfer").surf("prev", "visual")
-      end,
-      "Prev",
-    },
-    ["H"] = {
+    ["<C-h>"] = {
       function()
         require("syntax-tree-surfer").surf("parent", "visual")
       end,
       "Parent",
     },
-    ["L"] = {
+    ["<C-l>"] = {
       function()
         require("syntax-tree-surfer").surf("child", "visual")
       end,

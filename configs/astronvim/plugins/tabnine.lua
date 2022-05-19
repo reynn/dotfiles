@@ -1,7 +1,7 @@
 return function()
   astronvim.add_cmp_source({
     name = "cmp_tabnine",
-    priority = 1500,
+    priority = 1000,
     keyword_length = 3,
   })
   local tabnine = require("cmp_tabnine.config")

@@ -6,9 +6,10 @@ return function()
 		},
 	})
 
-	require("core.utils").add_cmp_source({
-		name = "crates",
-		priority = 1000,
-		keyword_length = 2,
-	})
+  astronvim.add_cmp_source({
+    name = "crates",
+    priority = 1000,
+    keyword_length = 2,
+    max_item_count = 7,
+  })
 end

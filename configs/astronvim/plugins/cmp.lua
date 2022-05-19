@@ -1,60 +1,20 @@
-local cmp = require("cmp")
-local luasnip = require("luasnip")
-local lspkind = require("lspkind")
+local cmp_ok, cmp = pcall(require, "cmp")
+local luasnip_ok, luasnip = pcall(require, "luasnip")
+local lspkind_ok, lspkind = pcall(require, "lspkind")
 
--- local source_mapping = {
--- 	-- if you change or add symbol here
--- 	-- replace corresponding line in readme
--- 	Text = "",
--- 	Method = "",
--- 	Function = "",
--- 	Constructor = "",
--- 	Field = "ﰠ",
--- 	Variable = "",
--- 	Class = "ﴯ",
--- 	Interface = "",
--- 	Module = "",
--- 	Property = "ﰠ",
--- 	Unit = "塞",
--- 	Value = "",
--- 	Enum = "",
--- 	Keyword = "",
--- 	Snippet = "",
--- 	Color = "",
--- 	File = "",
--- 	Reference = "",
--- 	Folder = "",
--- 	EnumMember = "",
--- 	Constant = "",
--- 	Struct = "פּ",
--- 	Event = "",
--- 	Operator = "",
--- 	TypeParameter = "",
--- }
+local config = {}
 
-return {
-	formatting = {
+if lspkind_ok then
+  config["formatting"] = {
 		format = lspkind.cmp_format({
 			mode = "symbol_text",
 			max_width = 75,
-			-- before = function(entry, vim_item)
-			-- 	vim_item.kind = lspkind.presets.default[vim_item.kind]
-			--
-			-- 	local menu = source_mapping[entry.source.name]
-			-- 	if entry.source.name == "cmp_tabnine" then
-			-- 		if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-			-- 			menu = entry.completion_item.data.detail .. " " .. menu
-			-- 		end
-			-- 		vim_item.kind = ""
-			-- 	end
-			--
-			-- 	vim_item.menu = menu
-			--
-			-- 	return vim_item
-			-- end,
 		}),
-	},
-	mappings = {
+	}
+end
+
+if cmp_ok and luasnip_ok then
+  config["mappings"] = {
 		["<tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
@@ -81,5 +41,7 @@ return {
 			"i",
 			"s",
 		}),
-	},
-}
+	}
+end
+
+return config
