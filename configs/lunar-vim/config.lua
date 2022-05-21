@@ -96,14 +96,10 @@ lvim.builtin.nvimtree.setup.filters.dotfiles = false
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.ensure_installed = {
 	"bash",
-	"css",
 	"fish",
 	"go",
-	"graphql",
 	"java",
-	"javascript",
 	"json",
-	"json5",
 	"lua",
 	"python",
 	"rust",

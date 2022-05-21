@@ -91,6 +91,12 @@ return {
         }
       },
       N = { "<cmd>tabnew<cr>", "New Buffer" },
+      z = {
+        function ()
+          require('zen-mode').toggle()
+        end,
+        "Toggle Zen Mode"
+      },
       o = {
         name = 'Options',
         c = {

@@ -85,10 +85,14 @@ return {
     end,
   },
   {
-    "yamatsum/nvim-nonicons",
+    "projekt0n/circles.nvim",
+    requires = {
+      {"kyazdani42/nvim-web-devicons"},
+      {"kyazdani42/nvim-tree.lua", opt = true},
+    },
     config = function()
-      vim.g.override_nvim_web_devicons = true
-    end,
+      require("circles").setup()
+    end
   },
   -- general vim improvements
   { "folke/trouble.nvim", cmd = "TroubleToggle" },
