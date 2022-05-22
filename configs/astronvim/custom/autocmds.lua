@@ -1,20 +1,13 @@
 local map = vim.keymap.set
 local create_au = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
+
 augroup("style", {})
 create_au("BufEnter", {
 	desc = "apply settings for proper Go",
 	group = "style",
 	pattern = "*.go",
-	command = "setlocal textwidth=4 tabstop=4 shiftwidth=4",
-})
-
-augroup("packer_conf", {})
-create_au("BufWritePost", {
-	desc = "Run packer sync if the plugins.lua is updated",
-	group = "packer_conf",
-	pattern = "plugins.lua",
-	command = "source <afile> | PackerSync",
+	command = "setlocal tabstop=4 shiftwidth=4",
 })
 
 augroup("autocomp", {})
@@ -37,7 +30,7 @@ create_au("FileType", {
 
 augroup("mini", { clear = true })
 create_au("FileType", {
-	desc = "Disable indent scope for conent types",
+	desc = "Disable indent scope for certain buffer types",
 	group = "mini",
 	callback = function()
 		if

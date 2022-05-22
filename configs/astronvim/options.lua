@@ -22,7 +22,7 @@ return {
 			nbsp = "␣",
 			eol = "↲",
 		},
-		numberwidth = 4,
+		numberwidth = 2,
 		relativenumber = true,
 		scrolloff = 10,
 		showbreak = "↪ ",
