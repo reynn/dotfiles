@@ -1,7 +1,7 @@
 ---
 - name: "Test for `cargo` bin"
   ansible.builtin.command: "command -v cargo"
-  ignore_errors: yes
+  ignore_errors: true
   register: cargo_bin_check_output
 
 - name: "Installing cargo packages"

@@ -4,7 +4,7 @@
   ansible.builtin.file:
     src: "{{ item.src | default(omit) }}"
     dest: "{{ item.dest }}"
-    force: yes
+    force: true
     state: "{{ item.state | default('link') }}"
   loop: "{{ to_create + extra_to_create|default([]) }}"
   loop_control:
@@ -94,5 +94,5 @@
     group: "{{ ansible_user_gid | quote }}"
   register: base_script_downloads
   when: item.url is defined
-  loop: "{{ scripts + os_scripts|default([])}}"
+  loop: "{{ scripts + os_scripts | default([]) }}"
   tags: [scripts]

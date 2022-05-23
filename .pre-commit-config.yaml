@@ -5,7 +5,8 @@ repos:
     rev: v4.2.0
     hooks:
       - id: check-added-large-files
-        args: ["--maxkb=5120"]
+        args:
+          - "--maxkb=5120"
       - id: check-byte-order-marker
       - id: check-executables-have-shebangs
       - id: check-symlinks
@@ -17,3 +18,11 @@ repos:
       - id: forbid-new-submodules
       - id: sort-simple-yaml
       - id: trailing-whitespace
+  - repo: https://github.com/IamTheFij/ansible-pre-commit
+    rev: v1.0.0
+    hooks:
+      - id: encryption-check
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v0.13.1
+    hooks:
+      - id: stylua
