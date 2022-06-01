@@ -39,9 +39,7 @@ return {
 	{
 		"projekt0n/circles.nvim",
 		requires = { "kyazdani42/nvim-web-devicons" },
-		config = function()
-			require("circles").setup()
-		end,
+		config = require("user.plugins.circles"),
 	},
 	{
 		"folke/trouble.nvim",
@@ -107,8 +105,15 @@ return {
 		after = "nvim-treesitter",
 	},
 	{
+		"phaazon/hop.nvim",
+		cmd = { "HopChar1", "HopChar2", "HopLine", "HopPattern", "HopWord" },
+		config = require("user.plugins.hop"),
+	},
+	-- ## Treesitter additions
+	{
 		"ziontee113/syntax-tree-surfer",
 		module = "syntax-tree-surfer",
+		config = require("user.plugins.syntax_tree_surfer"),
 	},
 	-- ## LSP Additions
 	{
@@ -119,9 +124,7 @@ return {
 	{
 		"m-demare/hlargs.nvim",
 		after = "nvim-treesitter",
-		config = function()
-			require("hlargs").setup({})
-		end,
+		config = require("user.plugins.hlargs"),
 	},
 	{ "onsails/lspkind.nvim" },
 	{
@@ -143,9 +146,7 @@ return {
 	{
 		"theHamsta/nvim-dap-virtual-text",
 		after = "nvim-dap",
-		config = function()
-			require("nvim-dap-virtual-text").setup()
-		end,
+		config = require("user.plugins.dap_virtual_text"),
 	},
 	-- ## Language Additions
 	{

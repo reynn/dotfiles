@@ -30,6 +30,65 @@ return {
 			r = { "References" },
 			R = { "References (Trouble)" },
 			o = { "Open Diagnostics" },
+			t = {
+				name = "Treesitter",
+				v = {
+					function()
+						require("syntax-tree-surfer").targeted_jump({ "variable_declaration" })
+					end,
+					"Go to Variable",
+				},
+				f = {
+					function()
+						require("syntax-tree-surfer").targeted_jump({ "function" })
+					end,
+					"Go to Function",
+				},
+				i = {
+					function()
+						require("syntax-tree-surfer").targeted_jump({
+							"if_declaration",
+							"else_clause",
+							"else_statement",
+							"elseif_statement",
+						})
+					end,
+					"Go to `if` Statement",
+				},
+				r = {
+					function()
+						require("syntax-tree-surfer").targeted_jump({ "for_statement" })
+					end,
+					"Go to `for` Statement",
+				},
+				w = {
+					function()
+						require("syntax-tree-surfer").targeted_jump({ "while_statement" })
+					end,
+					"Go to `while` Statement",
+				},
+				s = {
+					function()
+						require("syntax-tree-surfer").targeted_jump({ "switch_statement" })
+					end,
+					"Go to `switch` Statement",
+				},
+				t = {
+					function()
+						require("syntax-tree-surfer").targeted_jump({
+							"function",
+							"if_declaration",
+							"else_clause",
+							"else_statement",
+							"elseif_statement",
+							"for_statement",
+							"while_statement",
+							"switch_statment",
+						})
+					end,
+					"Go to Statement",
+				},
+			},
 		},
 		["K"] = {
 			function()
@@ -38,6 +97,12 @@ return {
 			"Show Hover",
 		},
 		["<leader>"] = {
+			c = {
+				function()
+					MiniBufremove.delete()
+				end,
+				"Close Buffer",
+			},
 			["C"] = {
 				name = "Crates.io",
 				t = {
@@ -256,32 +321,6 @@ return {
 				require("syntax-tree-surfer").surf("prev", "visual", true)
 			end,
 			"Swap Prev",
-		},
-	},
-	x = {
-		["J"] = {
-			function()
-				require("syntax-tree-surfer").surf("next", "visual")
-			end,
-			"Navigate to next TS node",
-		},
-		["K"] = {
-			function()
-				require("syntax-tree-surfer").surf("prev", "visual")
-			end,
-			"Navigate to previous TS node",
-		},
-		["H"] = {
-			function()
-				require("syntax-tree-surfer").surf("parent", "visual")
-			end,
-			"Navigate to parent TS node",
-		},
-		["L"] = {
-			function()
-				require("syntax-tree-surfer").surf("child", "visual")
-			end,
-			"Navigate to child TS node",
 		},
 	},
 }
