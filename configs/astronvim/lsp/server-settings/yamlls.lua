@@ -2,6 +2,7 @@ return {
 	settings = {
 		yaml = {
 			completion = true,
+			-- add tags to support CloudFormation templates
 			customTags = {
 				"!Fn",
 				"!And",

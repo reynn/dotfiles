@@ -1,9 +1,11 @@
 return {
-	"ansiblels",
-	"dockerls",
-	"gopls",
-	"jdtls",
-	"rust_analyzer",
-	"sumneko_lua",
-	"yamlls",
+	"ansiblels", -- Ansible
+	"dockerls", -- Docker
+	"gopls", -- Golang
+	"jdtls", -- Java
+	"jsonls", -- JSON
+	"rust_analyzer", -- Rust
+	"sumneko_lua", -- Lua
+	"taplo", -- TOML
+	"yamlls", -- YAML
 }

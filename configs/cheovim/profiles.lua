@@ -4,8 +4,7 @@ return "astronvim",
 		astronvim = {
 			"https://github.com/AstroNvim/AstroNvim.git",
 			{
-				url = "https://github.com/AstroNvim/AstroNvim.git",
-				plugins = "packer",
+				url = true,
 				preconfigure = "packer",
 				config = "PackerSync",
 			},
@@ -13,18 +12,17 @@ return "astronvim",
 		doomnvim = {
 			"https://github.com/NTBBloodbath/doom-nvim.git",
 			{
-				url = "https://github.com/NTBBloodbath/doom-nvim.git",
-				plugins = "packer",
+				url = true,
+				config = "PackerSync",
 				preconfigure = "doom-nvim",
 			},
 		},
 		lunarvim = {
 			"https://github.com/LunarVim/LunarVim.git",
 			{
-				url = "https://github.com/LunarVim/LunarVim.git",
-				plugins = "packer",
-				preconfigure = "packer",
+				url = true,
 				config = "PackerSync",
+				preconfigure = "lunarvim",
 			},
 		},
 	}

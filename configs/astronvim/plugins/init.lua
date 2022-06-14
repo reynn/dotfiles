@@ -5,19 +5,6 @@ return {
 	["max397574/better-escape.nvim"] = { disable = true },
 	["lukas-reineke/indent-blankline.nvim"] = { disable = true },
 	["Darazaki/indent-o-matic"] = { disable = true },
-	["williamboman/nvim-lsp-installer"] = {
-		opt = true,
-		setup = function()
-			-- reload the current file so lsp actually starts for it
-			vim.defer_fn(function()
-				vim.cmd('if &ft == "packer" | echo "" | else | silent! e %')
-			end, 0)
-		end,
-		config = function()
-			require("configs.nvim-lsp-installer").config()
-			require("configs.lsp")
-		end,
-	},
 	-- ## Colorschemes
 	{
 		"rebelot/kanagawa.nvim",
@@ -69,24 +56,26 @@ return {
 		},
 		config = require("user.plugins.nvim_test"),
 	},
+	{
+		"lukas-reineke/headlines.nvim",
+		ft = { "markdown", "rmd" },
+		config = function()
+			require("headlines").setup({})
+		end,
+	},
 	-- ## Telescope extensions
 	{
 		"nvim-telescope/telescope-project.nvim",
 		after = "telescope.nvim",
+		module = "telescope._extensions.project",
 		config = function()
 			require("telescope").load_extension("project")
 		end,
 	},
 	{
-		"nvim-telescope/telescope-dap.nvim",
-		after = "telescope.nvim",
-		config = function()
-			require("telescope").load_extension("dap")
-		end,
-	},
-	{
 		"nvim-telescope/telescope-packer.nvim",
 		after = "telescope.nvim",
+		module = "telescope._extensions.packer",
 		config = function()
 			require("telescope").load_extension("packer")
 		end,
@@ -94,6 +83,7 @@ return {
 	{
 		"cljoly/telescope-repo.nvim",
 		after = "telescope.nvim",
+		module = "telescope._extensions.repo",
 		config = function()
 			require("telescope").load_extension("repo")
 		end,
@@ -126,7 +116,9 @@ return {
 		after = "nvim-treesitter",
 		config = require("user.plugins.hlargs"),
 	},
-	{ "onsails/lspkind.nvim" },
+	{
+		"onsails/lspkind.nvim",
+	},
 	{
 		"tzachar/compe-tabnine",
 		run = "./install.sh",
@@ -136,32 +128,48 @@ return {
 	-- ## DAP
 	{
 		"mfussenegger/nvim-dap",
+		module = "dap",
 		config = require("user.plugins.dap"),
-	},
-	{
-		"rcarriga/nvim-dap-ui",
-		after = { "nvim-dap" },
-		config = require("user.plugins.dap_ui"),
-	},
-	{
-		"theHamsta/nvim-dap-virtual-text",
-		after = "nvim-dap",
-		config = require("user.plugins.dap_virtual_text"),
+		requires = {
+			{
+				"rcarriga/nvim-dap-ui",
+				after = "nvim-dap",
+				config = require("user.plugins.dap_ui"),
+			},
+			{
+				"theHamsta/nvim-dap-virtual-text",
+				after = "nvim-dap",
+				config = function()
+					require("user.plugins.dap_virtual_text")
+				end,
+			},
+			{
+				"nvim-telescope/telescope-dap.nvim",
+				after = "telescope.nvim",
+				module = "telescope._extensions.dap",
+				config = function()
+					require("telescope").load_extension("dap")
+				end,
+			},
+		},
 	},
 	-- ## Language Additions
 	{
 		"simrat39/rust-tools.nvim",
-		after = { "nvim-lspconfig" },
+		ft = { "rust" },
+		after = { "nvim-lsp-installer" },
 		config = require("user.plugins.rust_tools"),
 	},
 	{
 		"Saecki/crates.nvim",
 		after = "nvim-cmp",
 		event = { "BufRead Cargo.toml" },
+		requires = { "plenary.nvim" },
 		config = require("user.plugins.crates-nvim"),
 	},
 	{
 		"ray-x/go.nvim",
+		ft = { "go" },
 		config = require("user.plugins.golang"),
 	},
 }

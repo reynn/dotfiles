@@ -1,3 +1,3 @@
 return function()
-	require("circles").setup()
+	require("circles").setup({})
 end

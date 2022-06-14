@@ -1,11 +1,13 @@
 return {
 	settings = {
+		-- to enable rust-analyzer settings visit:
+		-- https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
 		["rust-analyzer"] = {
-			server = {
-				path = "~/.local/share/nvim/lsp_servers/rust/rust-analyzer",
-			},
-			inlayHints = {
-				closureReturnTypeHints = true,
+			cargo = { allFeatures = true },
+			-- enable clippy diagnostics on save
+			checkOnSave = {
+				command = "clippy",
+				extraArgs = { "--no-deps" },
 			},
 			diagnostics = {
 				enableExperimental = true,

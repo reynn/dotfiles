@@ -1,21 +1,17 @@
 #!/usr/bin/env fish
 
 function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
-    set -x DOTFILES_CONFIG_DIR "$DFP/configs/"
-    set -x NVIM_CONFIG_DIR "$HOME/.config/nvim/"
-    set -x CHEOVIM_LOCAL_DIR "$HOME/.local/share/nvim/cheovim/"
-    set -x CLEAN_CACHE false
-    set -x CLEAN_LOCAL false
-    set -x SETUP_ASTRONVIM false
-    set -x SETUP_DOOMNVIM false
-    set -x SETUP_LUNARVIM false
-    set -x SETUP_CHEOVIM false
+    set -lx DOTFILES_CONFIG_DIR "$DFP/configs"
+    set -lx NVIM_CONFIG_DIR "$HOME/.config/nvim"
+    set -lx CHEOVIM_LOCAL_DIR "$HOME/.local/share/nvim/cheovim"
+    set -l CONFIGURATION_OPTIONS doomnvim astronvim lunarvim
+    set -l CONFIGURATIONS
 
     function ___usage
         set -l help_args -a 'Cleanup files and reinstall AstroNvim [**UNSTABLE**]'
 
-        set -a help_args -f 'a|setup-all|Run through all setup options in proper order|true'
-        set -a help_args -f 'A|clean-all|Clean all directories (complete uninstall)|true'
+        set -a help_args -f "c|config|Install some of the configurations; Available options ($CONFIGURATION_OPTIONS)|"
+        set -a help_args -f 'C|clean|Clean all directories (complete uninstall)|true'
 
         __dotfiles_help $help_args
     end
@@ -26,64 +22,82 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
             -c PackerSync
     end
 
-    getopts $argv | while read -l key value
-        switch $key
-            case a setup-all
-                set SETUP_CHEOVIM true
-                set SETUP_ASTRONVIM true
-                set SETUP_DOOMNVIM true
-                set SETUP_LUNARVIM true
-            case A clean-all
-                set CLEAN_CACHE true
-                set CLEAN_LOCAL true
-                # Common args
-            case h help
-                ___usage
-                return 0
-            case q quiet
-                set -x QUIET true
-            case v verbose
-                set -x DEBUG true
-        end
-    end
-
-    if test "$CLEAN_CACHE" = true
-        rm -rf "$HOME/.cache/nvim"
-    end
-
-    if test "$CLEAN_LOCAL" = true
-        rm -rf "$HOME/.config/nvim"
-        rm -rf "$HOME/.local/share/nvim"
-    end
-
-    if test "$SETUP_CHEOVIM" = true
+    function setup_cheovim
         git clone https://github.com/NTBBloodbath/cheovim "$NVIM_CONFIG_DIR"
         symlink.create \
             -s "$DOTFILES_CONFIG_DIR/cheovim/profiles.lua" \
             -d "$NVIM_CONFIG_DIR/profiles.lua"
     end
 
-    if test "$SETUP_ASTRONVIM" = true
-        if test ! -L $CHEOVIM_LOCAL_DIR/astronvim/lua/user
-            git clone https://github.com/AstroNvim/AstroNvim $CHEOVIM_LOCAL_DIR/astronvim
-            symlink.create \
-                -s $DOTFILES_CONFIG_DIR/astronvim \
-                -d $CHEOVIM_LOCAL_DIR/astronvim/lua/user
+    function setup_astronvim
+        git clone https://github.com/AstroNvim/AstroNvim $CHEOVIM_LOCAL_DIR/astronvim
+        symlink.create \
+            -s $DOTFILES_CONFIG_DIR/astronvim \
+            -d $CHEOVIM_LOCAL_DIR/astronvim/lua/user
+    end
+
+    function setup_doomnvim
+        git clone https://github.com/NTBBloodbath/doom-nvim.git $CHEOVIM_LOCAL_DIR/doomnvim
+        symlink.create \
+            -s $DOTFILES_CONFIG_DIR/doomnvim/doom_config.lua \
+            -d $CHEOVIM_LOCAL_DIR/doomnvim/doom_config.lua
+        symlink.create \
+            -s $DOTFILES_CONFIG_DIR/doomnvim/doom_modules.lua \
+            -d $CHEOVIM_LOCAL_DIR/doomnvim/doom_modules.lua
+        symlink.create \
+            -s $DOTFILES_CONFIG_DIR/doomnvim/doom_userplugins.lua \
+            -d $CHEOVIM_LOCAL_DIR/doomnvim/doom_userplugins.lua
+    end
+
+    function setup_lunarvim
+        git clone https://github.com/LunarVim/LunarVim.git $CHEOVIM_LOCAL_DIR/lunarvim
+        symlink.create \
+            -s $DOTFILES_CONFIG_DIR/lunar-vim/config.lua \
+            -d $CHEOVIM_LOCAL_DIR/lunarvim/config.lua
+    end
+
+    function clean
+        rm -rf "$HOME/.cache/nvim"
+        rm -rf "$HOME/.config/nvim"
+        rm -rf "$HOME/.local/share/nvim"
+    end
+
+    getopts $argv | while read -l key value
+        switch $key
+            case C clean
+                clean
+                return
+            case c config
+                set -p CONFIGURATIONS "$value"
+            case h help
+                ___usage
+                return 0
+            case q quiet
+                set -l QUIET true
+            case v verbose
+                set -l DEBUG true
         end
     end
 
-    if test "$SETUP_DOOMNVIM" = true
-
-    end
-
-    if test "$SETUP_LUNARVIM" = true
-        mkdir $CHEOVIM_LOCAL_DIR/lunarvim
-        if test ! -L $DOTFILES_CONFIG_DIR/lunar-vim/config.lua
-            symlink.create \
-                -s $DOTFILES_CONFIG_DIR/lunar-vim/config.lua \
-                -d $CHEOVIM_LOCAL_DIR/lunarvim/config.lua
-            packer_sync
+    set -l configs_setup
+    setup_cheovim
+    for config in $CONFIGURATIONS
+        __log "Setting up $config"
+        switch $config
+            case lunarvim
+                setup_lunarvim
+                set configs_setup true
+            case doomnvim
+                setup_doomnvim
+                set configs_setup true
+            case astronvim
+                setup_astronvim
+                set configs_setup true
         end
     end
 
+    if test "$configs_setup"
+        __log "Running PackerSync"
+        packer_sync
+    end
 end
