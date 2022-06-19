@@ -116,14 +116,11 @@ return {
 		after = "nvim-treesitter",
 		config = require("user.plugins.hlargs"),
 	},
+	{ "onsails/lspkind.nvim" },
 	{
-		"onsails/lspkind.nvim",
-	},
-	{
-		"tzachar/compe-tabnine",
+		"tzachar/cmp-tabnine",
+		requires = { "hrsh7th/nvim-cmp" },
 		run = "./install.sh",
-		requires = "hrsh7th/nvim-cmp",
-		event = "InsertEnter",
 	},
 	-- ## DAP
 	{
@@ -139,9 +136,7 @@ return {
 			{
 				"theHamsta/nvim-dap-virtual-text",
 				after = "nvim-dap",
-				config = function()
-					require("user.plugins.dap_virtual_text")
-				end,
+				config = require("user.plugins.dap_virtual_text"),
 			},
 			{
 				"nvim-telescope/telescope-dap.nvim",
@@ -152,6 +147,10 @@ return {
 				end,
 			},
 		},
+	},
+	{
+		"leoluz/nvim-dap-go",
+		config = require("user.plugins.golang-dap"),
 	},
 	-- ## Language Additions
 	{

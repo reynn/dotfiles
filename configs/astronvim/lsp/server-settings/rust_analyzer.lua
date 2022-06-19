@@ -9,15 +9,15 @@ return {
 				command = "clippy",
 				extraArgs = { "--no-deps" },
 			},
-			diagnostics = {
-				enableExperimental = true,
-			},
-			hoverActions = {
-				references = true,
-			},
-			lens = {
-				references = true,
-			},
+			-- diagnostics = {
+			-- 	enableExperimental = true,
+			-- },
+			-- hoverActions = {
+			-- 	references = true,
+			-- },
+			-- lens = {
+			-- 	references = true,
+			-- },
 		},
 	},
 }

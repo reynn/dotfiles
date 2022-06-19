@@ -23,3 +23,7 @@ alias lvim "nvim -u $LUNARVIM_RUNTIME_DIR/lvim/init.lua "
 alias avim "nvim -u $HOME/.config/astro-vim/init.lua "
 
 # set fish_trace off
+
+# Wasmer
+export WASMER_DIR="/Users/reynn/.wasmer"
+[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"

@@ -1,8 +1,16 @@
 return function()
-	local dap, dapui = require("dap"), require("dapui")
+	local dap_ok, dap = pcall(require, "dap")
+	local dapui_ok, dapui = pcall(require, "dapui")
+
+	if not dap_ok and not dapui_ok then
+		return
+	end
 
 	dapui.setup({
-		icons = { expanded = "▾", collapsed = "▸" },
+		icons = {
+			expanded = "▾",
+			collapsed = "▸",
+		},
 		mappings = {
 			expand = "<cr>",
 			open = "o",
@@ -11,19 +19,23 @@ return function()
 			repl = "r",
 			toggle = "t",
 		},
-		sidebar = {
-			elements = {
-				{ id = "scopes", size = 0.5 },
-				{ id = "breakpoints", size = 0.25 },
-				{ id = "stacks", size = 0.25 },
+		layouts = {
+			{
+				elements = {
+					"scopes",
+					"breakpoints",
+					"stacks",
+				},
+				size = 40,
+				position = "right",
 			},
-			size = 40,
-			position = "right",
-		},
-		tray = {
-			elements = { "repl" },
-			size = 10,
-			position = "bottom",
+			{
+				elements = {
+					"repl",
+				},
+				size = 10,
+				position = "bottom",
+			},
 		},
 		floating = {
 			border = "rounded",

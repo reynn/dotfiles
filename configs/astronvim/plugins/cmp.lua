@@ -5,17 +5,17 @@ if not cmp_ok then
 end
 
 local config = {
-	-- experimental = {
-	-- 	ghost_text = true,
-	-- },
-	-- view = {
-	-- 	entries = { name = "custom", selection_order = "near_cursor" },
-	-- },
-	-- window = {
-	-- 	documentation = {
-	-- 		border = { " ", " ", " ", " ", " ", " ", " ", " " },
-	-- 	},
-	-- },
+	experimental = {
+		ghost_text = true,
+	},
+	view = {
+		entries = { name = "custom", selection_order = "near_cursor" },
+	},
+	window = {
+		documentation = {
+			border = { " ", " ", " ", " ", " ", " ", " ", " " },
+		},
+	},
 	-- mapping = {
 	-- 	["<CR>"] = cmp.mapping.confirm(),
 	-- 	["<Tab>"] = cmp.mapping(function(fallback)

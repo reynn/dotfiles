@@ -1,7 +1,7 @@
 return function()
-	local extension_path = vim.env.HOME .. "/.vscode-insiders/extensions/vadimcn.vscode-lldb-1.7.0/"
-	local codelldb_path = extension_path .. "adapter/codelldb"
-	local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+	local extension_path = vim.env.HOME .. "/.vscode-insiders/extensions/vadimcn.vscode-lldb-1.7.0"
+	local codelldb_path = extension_path .. "/adapter/codelldb"
+	local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
 
 	require("rust-tools").setup({
 		tools = {
