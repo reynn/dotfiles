@@ -3,7 +3,7 @@
 # set fish_trace on
 
 set -gx TERM screen-256color
-set -gx EDITOR lvim
+set -gx EDITOR nvim
 
 set -gx reynn_fish_home "$HOME/git/github.com/reynn/dotfiles/configs/fish"
 # Add our dotfiles path to the list fish uses when loading functions
@@ -19,11 +19,5 @@ alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
 alias l 'exa -I ".git" -I "target/" -lah --icons --git --group-directories-first --time-style long-iso --color-scale'
 alias ll 'l --tree --level 3'
-alias lvim "nvim -u $LUNARVIM_RUNTIME_DIR/lvim/init.lua "
-alias avim "nvim -u $HOME/.config/astro-vim/init.lua "
 
 # set fish_trace off
-
-# Wasmer
-export WASMER_DIR="/Users/reynn/.wasmer"
-[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"

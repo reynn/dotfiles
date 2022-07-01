@@ -26,7 +26,7 @@ return function()
 					"breakpoints",
 					"stacks",
 				},
-				size = 40,
+				size = 30,
 				position = "right",
 			},
 			{
@@ -40,10 +40,15 @@ return function()
 		floating = {
 			border = "rounded",
 			mappings = {
-				close = { "q", "<esc>" },
+				close = {
+					"q",
+					"<esc>",
+				},
 			},
 		},
-		windows = { indent = 1 },
+		windows = {
+			indent = 1,
+		},
 	})
 
 	-- add listeners to auto open DAP UI
