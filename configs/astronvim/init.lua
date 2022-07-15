@@ -8,7 +8,7 @@ return {
 			path = 500,
 		},
 	},
-	colorscheme = "catppuccin",
+	colorscheme = "kanagawa",
 	diagnostics = {
 		virtual_text = true,
 		underline = true,

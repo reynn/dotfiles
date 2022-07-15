@@ -21,6 +21,13 @@ create_au("FileType", {
 	end,
 })
 
+create_au({ "BufNewFile", "BufRead" }, {
+	pattern = "*.dockerfile",
+	callback = function()
+		vim.bo.filetype = "dockerfile"
+	end,
+})
+
 create_au("FileType", {
 	desc = "Disable indent scope for certain buffer types",
 	callback = function()
