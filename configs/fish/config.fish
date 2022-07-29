@@ -21,3 +21,7 @@ alias l 'exa -I ".git" -I "target/" -lah --icons --git --group-directories-first
 alias ll 'l --tree --level 3'
 
 # set fish_trace off
+
+set -gx PNPM_HOME "/Users/reynn/Library/pnpm"
+set -gx PATH "$PNPM_HOME" $PATH
+# pnpm end
