@@ -89,3 +89,6 @@ to_create:
   - dest: "{{ ansible_user_dir }}/.config/alacritty"
     src: "{{ dotfiles_path }}/configs/alacritty"
     state: link
+  - dest: "{{ ansible_user_dir }}/.config/wezterm"
+    src: "{{ dotfiles_path }}/configs/wezterm"
+    state: link
