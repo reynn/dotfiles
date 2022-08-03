@@ -1,9 +1,9 @@
 ---
 extra_to_create:
-  - dest: "{{ bins_dir }}/envs/code"
+  - dest: "{{ bins_dir }}/code"
     src: "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
     state: link
-  - dest: "{{ bins_dir }}/envs/code-insiders"
+  - dest: "{{ bins_dir }}/code-insiders"
     src: "/Applications/Visual Studio Code - Insiders.app/Contents/MacOS/Electron"
     state: link
 os_scripts:

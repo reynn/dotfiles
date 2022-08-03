@@ -4,8 +4,12 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     # Python exports
     set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
     set -l os_name (uname | string lower)
+    set -l arch (uname -m)
+    if test "$arch" = 'x86_64'
+        set arch amd64
+    end
 
-    set -l go_version_path "$HOME/.gimme/versions/go$LANGUAGES_GO_VERSION.$os_name.amd64/bin"
+    set -l go_version_path "$HOME/.gimme/versions/go$LANGUAGES_GO_VERSION.$os_name.$arch/bin"
     set -l node_version_path "$HOME/.local/share/nvm/v$LANGUAGES_NODE_VERSION/bin"
     set -l node_pnpm_path "$HOME/Library/pnpm"
 

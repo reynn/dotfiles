@@ -1,7 +1,7 @@
 # ------------
 # Strings
 
-bins_dir: "{{ ansible_user_dir }}/.bins"
+bins_dir: "{{ ansible_user_dir }}/.local/bin"
 git_path: "{{ ansible_user_dir }}/git"
 github_path: "{{ git_path }}/github.com"
 dotfiles_path: "{{ github_path }}/reynn/dotfiles"

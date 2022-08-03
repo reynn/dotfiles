@@ -7,7 +7,7 @@ return {
 	font_size = 16.0,
 	freetype_load_target = "HorizontalLcd",
 	color_scheme = "kanagawabones",
-	initial_cols = 120, -- 80
+	initial_cols = 160, -- 80
 	initial_rows = 40, -- 24
 	window_decorations = "NONE",
 }
