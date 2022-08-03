@@ -24,7 +24,7 @@ function go.project.init -d "Initialize a new Go project including mod file"
         end
     end
 
-    # go mod init "$project_name"
+    go mod init "$project_name"
     printf "package main\n\nfunc main() {\n\n}" >> main.go
     mkdir -p {internal,cmds}
 end
