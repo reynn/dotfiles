@@ -156,7 +156,7 @@ return {
 	{
 		"simrat39/rust-tools.nvim",
 		ft = { "rust" },
-		after = { "nvim-lsp-installer" },
+		-- after = { "nvim-lsp-installer" },
 		config = require("user.plugins.rust_tools"),
 	},
 	{

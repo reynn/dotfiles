@@ -4,8 +4,8 @@ return function()
 	if cmp_nvim_lsp_ok then
 		capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 	end
-	local path = require("nvim-lsp-installer.core.path")
-	local install_root_dir = path.concat({ vim.fn.stdpath("data"), "lsp_servers" })
+	-- local path = require("nvim-lsp-installer.core.path")
+	-- local install_root_dir = path.concat({ vim.fn.stdpath("data"), "lsp_servers" })
 
 	require("go").setup({
 		goimport = "gopls",
@@ -33,9 +33,9 @@ return function()
 		lsp_gofumpt = true,
 		lsp_keymaps = false,
 		lsp_on_attach = astronvim.lsp and astronvim.lsp.on_attach or nil,
-		lsp_diag_virtual_text = false,
+		lsp_diag_virtual_text = true,
 		lsp_document_formatting = true,
-		gopls_cmd = { install_root_dir .. "/gopls/gopls" },
+		-- gopls_cmd = { install_root_dir .. "/gopls/gopls" },
 		dap_debug = true,
 		dap_debug_gui = true,
 		textobjects = false,
