@@ -1,0 +1,316 @@
+{
+  "name": "global",
+  "tools": [
+    {
+      "name": "jesseduffield/lazygit",
+      "alias": "lg",
+      "asset_pattern": "",
+      "file_pattern": "lazygit",
+      "current_version": "0.35",
+      "installed_versions": [
+        "0.35"
+      ]
+    },
+    {
+      "name": "neovim/neovim",
+      "alias": "nvim",
+      "asset_pattern": "^nvim-macos.tar.gz$",
+      "file_pattern": "nvim",
+      "current_version": "0.7.2",
+      "installed_versions": [
+        "0.7.2"
+      ]
+    },
+    {
+      "name": "koalaman/shellcheck",
+      "alias": "shellcheck",
+      "asset_pattern": ".+darwin.x86_64.tar.xz",
+      "file_pattern": "shellcheck",
+      "current_version": "0.8.0",
+      "installed_versions": [
+        "0.8.0"
+      ]
+    },
+    {
+      "name": "BurntSushi/RipGrep",
+      "alias": "rg",
+      "asset_pattern": "",
+      "file_pattern": "rg",
+      "current_version": "13.0.0",
+      "installed_versions": [
+        "13.0.0"
+      ]
+    },
+    {
+      "name": "bitwarden/cli",
+      "alias": "bw",
+      "asset_pattern": ".+macos.+\\.zip",
+      "file_pattern": "bw",
+      "current_version": "1.22.1",
+      "installed_versions": [
+        "1.22.1"
+      ]
+    },
+    {
+      "name": "TomWright/dasel",
+      "alias": "dasel",
+      "asset_pattern": "^dasel_darwin_amd64$",
+      "file_pattern": "dasel",
+      "current_version": "1.26.0",
+      "installed_versions": [
+        "1.26.0"
+      ]
+    },
+    {
+      "name": "bootandy/dust",
+      "alias": "dust",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "dust",
+      "current_version": "0.8.1",
+      "installed_versions": [
+        "0.8.1"
+      ]
+    },
+    {
+      "name": "ClementTsang/bottom",
+      "alias": "btm",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "btm",
+      "current_version": "0.6.8",
+      "installed_versions": [
+        "nightly"
+      ]
+    },
+    {
+      "name": "chmln/sd",
+      "alias": "sd",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "sd",
+      "current_version": "0.7.6",
+      "installed_versions": [
+        "0.7.6"
+      ]
+    },
+    {
+      "name": "dalance/procs",
+      "alias": "procs",
+      "asset_pattern": ".*x86_64-mac.*",
+      "file_pattern": "procs",
+      "current_version": "0.13.0",
+      "installed_versions": [
+        "0.13.0"
+      ]
+    },
+    {
+      "name": "denisidoro/navi",
+      "alias": "navi",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "navi",
+      "current_version": "2.20.1",
+      "installed_versions": [
+        "2.20.1"
+      ]
+    },
+    {
+      "name": "derailed/k9s",
+      "alias": "k9s",
+      "asset_pattern": ".*Darwin.*",
+      "file_pattern": "k9s",
+      "current_version": "0.26.0",
+      "installed_versions": [
+        "0.26.0"
+      ]
+    },
+    {
+      "name": "digitalocean/doctl",
+      "alias": "doctl",
+      "asset_pattern": ".*darwin-amd64.*",
+      "file_pattern": "doctl",
+      "current_version": "1.78.0",
+      "installed_versions": [
+        "1.78.0"
+      ]
+    },
+    {
+      "name": "helix-editor/helix",
+      "alias": "hx",
+      "asset_pattern": ".*x86_64-macos.*",
+      "file_pattern": "hx",
+      "current_version": "22.05",
+      "installed_versions": [
+        "22.05"
+      ]
+    },
+    {
+      "name": "kubernetes-sigs/kustomize",
+      "alias": "kustomize",
+      "asset_pattern": "",
+      "file_pattern": "kustomize",
+      "current_version": "kustomize/v4.5.4",
+      "installed_versions": [
+        "kustomize/v4.5.4"
+      ]
+    },
+    {
+      "name": "lotabout/skim",
+      "alias": "sk",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "sk",
+      "current_version": "0.9.4",
+      "installed_versions": [
+        "0.9.4"
+      ]
+    },
+    {
+      "name": "ogham/exa",
+      "alias": "exa",
+      "asset_pattern": ".*macos.*",
+      "file_pattern": "exa",
+      "current_version": "0.10.1",
+      "installed_versions": [
+        "0.10.1"
+      ]
+    },
+    {
+      "name": "sharkdp/bat",
+      "alias": "bat",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "bat",
+      "current_version": "0.21.0",
+      "installed_versions": [
+        "0.21.0"
+      ]
+    },
+    {
+      "name": "sharkdp/fd",
+      "alias": "fd",
+      "asset_pattern": ".*-x86_64-apple.*",
+      "file_pattern": "fd",
+      "current_version": "8.4.0",
+      "installed_versions": [
+        "8.4.0"
+      ]
+    },
+    {
+      "name": "sharkdp/hexyl",
+      "alias": "hexyl",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "hexyl",
+      "current_version": "0.10.0",
+      "installed_versions": [
+        "0.10.0"
+      ]
+    },
+    {
+      "name": "uutils/coreutils",
+      "alias": "coreutils",
+      "asset_pattern": ".*-x86_64-apple-darwin.tar.gz",
+      "file_pattern": "coreutils",
+      "current_version": "0.0.13",
+      "installed_versions": [
+        "0.0.13"
+      ]
+    },
+    {
+      "name": "XAMPPRocky/tokei",
+      "alias": "tokei",
+      "asset_pattern": ".*x86_64-apple.*",
+      "file_pattern": "tokei",
+      "current_version": "12.1.2",
+      "installed_versions": [
+        "12.1.2"
+      ]
+    },
+    {
+      "name": "zellij-org/zellij",
+      "alias": "zellij",
+      "asset_pattern": ".*x86_64-apple-darwin.*",
+      "file_pattern": "zellij",
+      "current_version": "0.31.0",
+      "installed_versions": [
+        "0.31.0"
+      ]
+    },
+    {
+      "name": "charmbracelet/glow",
+      "alias": "glow",
+      "asset_pattern": ".*Darwin_x86_64.tar.gz",
+      "file_pattern": "glow",
+      "current_version": "1.4.1",
+      "installed_versions": [
+        "1.4.1"
+      ]
+    },
+    {
+      "name": "k0sproject/k0sctl",
+      "alias": "k0sctl",
+      "asset_pattern": ".*darwin-x64",
+      "file_pattern": "k0sctl",
+      "current_version": "0.13.1",
+      "installed_versions": [
+        "0.13.1"
+      ]
+    },
+    {
+      "name": "gohugoio/hugo",
+      "alias": "hugo",
+      "asset_pattern": "hugo_extended_.+_macOS-64bit.tar.gz",
+      "file_pattern": "hugo",
+      "current_version": "0.101.0",
+      "installed_versions": [
+        "0.101.0"
+      ]
+    },
+    {
+      "name": "nushell/nushell",
+      "alias": "nu",
+      "asset_pattern": ".*_macOS.zip",
+      "file_pattern": "nu",
+      "current_version": "0.63.0",
+      "installed_versions": [
+        "0.62.0",
+        "0.63.0"
+      ]
+    },
+    {
+      "name": "cli/cli",
+      "alias": "gh",
+      "asset_pattern": "",
+      "file_pattern": "gh",
+      "current_version": "2.14.3",
+      "installed_versions": [
+        "2.14.3"
+      ]
+    },
+    {
+      "name": "sharkdp/hyperfine",
+      "alias": "hyperfine",
+      "asset_pattern": "",
+      "file_pattern": "hyperfine",
+      "current_version": "1.14.0",
+      "installed_versions": [
+        "1.14.0"
+      ]
+    },
+    {
+      "name": "stern/stern",
+      "alias": "stern",
+      "asset_pattern": "",
+      "file_pattern": "stern",
+      "current_version": "1.21.0",
+      "installed_versions": [
+        "1.21.0"
+      ]
+    },
+    {
+      "name": "michaeleisel/zld",
+      "alias": "zld",
+      "asset_pattern": "zld.zip",
+      "file_pattern": "zld",
+      "current_version": "1.3.4",
+      "installed_versions": [
+        "1.3.4"
+      ]
+    }
+  ]
+}

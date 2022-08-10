@@ -165,6 +165,12 @@ return {
 					end,
 					"Toggle list chars",
 				},
+				h = {
+					function()
+						require("hlargs").toggle()
+					end,
+					"Taggle hlargs",
+				},
 			},
 			p = {
 				C = { ":PackerClean<cr>", "Packer Clean" },

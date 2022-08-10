@@ -116,12 +116,6 @@ return {
 		after = "nvim-treesitter",
 		config = require("user.plugins.hlargs"),
 	},
-	{ "onsails/lspkind.nvim" },
-	{
-		"tzachar/cmp-tabnine",
-		requires = { "hrsh7th/nvim-cmp" },
-		run = "./install.sh",
-	},
 	-- ## DAP
 	{
 		"mfussenegger/nvim-dap",

@@ -1,4 +1,4 @@
-local cmp_ok, cmp = pcall(require, "cmp")
+local cmp_ok, _ = pcall(require, "cmp")
 local lspkind_ok, lspkind = pcall(require, "lspkind")
 if not cmp_ok then
 	return
@@ -16,29 +16,6 @@ local config = {
 			border = { " ", " ", " ", " ", " ", " ", " ", " " },
 		},
 	},
-	-- mapping = {
-	-- 	["<CR>"] = cmp.mapping.confirm(),
-	-- 	["<Tab>"] = cmp.mapping(function(fallback)
-	-- 		if cmp.visible() then
-	-- 			cmp.select_next_item()
-	-- 		else
-	-- 			fallback()
-	-- 		end
-	-- 	end, {
-	-- 		"i",
-	-- 		"s",
-	-- 	}),
-	-- 	["<S-Tab>"] = cmp.mapping(function(fallback)
-	-- 		if cmp.visible() then
-	-- 			cmp.select_prev_item()
-	-- 		else
-	-- 			fallback()
-	-- 		end
-	-- 	end, {
-	-- 		"i",
-	-- 		"s",
-	-- 	}),
-	-- },
 }
 
 if lspkind_ok then
