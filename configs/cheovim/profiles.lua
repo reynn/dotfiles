@@ -17,12 +17,4 @@ return "astronvim",
 				preconfigure = "doom-nvim",
 			},
 		},
-		lunarvim = {
-			"https://github.com/LunarVim/LunarVim.git",
-			{
-				url = true,
-				config = "PackerSync",
-				preconfigure = "lunarvim",
-			},
-		},
 	}

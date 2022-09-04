@@ -1,4 +1,18 @@
-return {
+-- doom_config - Doom Nvim user configurations file
+--
+-- This file contains the user-defined configurations for Doom nvim.
+-- Just override stuff in the `doom` global table (it's injected into scope
+-- automatically).
+
+-- ADDING A PACKAGE
+--
+doom.use_package(
+	{
+		"ur4ltz/surround.nvim",
+		config = function()
+			require("surround").setup({ mappings_style = "sandwich" })
+		end,
+	},
 	-- ## Colorschemes
 	{ "rebelot/kanagawa.nvim" },
 	{ "luisiacc/gruvbox-baby" },
@@ -83,22 +97,6 @@ return {
 		after = "nvim-treesitter",
 	},
 	{ "onsails/lspkind.nvim" },
-	{
-		"tzachar/compe-tabnine",
-		run = "./install.sh",
-		requires = "hrsh7th/nvim-cmp",
-		event = "InsertEnter",
-	},
-	-- ## DAP
-	{ "mfussenegger/nvim-dap" },
-	{
-		"rcarriga/nvim-dap-ui",
-		after = { "nvim-dap" },
-	},
-	{
-		"theHamsta/nvim-dap-virtual-text",
-		after = "nvim-dap",
-	},
 	-- ## Language Additions
 	{
 		"simrat39/rust-tools.nvim",
@@ -109,5 +107,51 @@ return {
 		after = "nvim-cmp",
 		event = { "BufRead Cargo.toml" },
 	},
-	{ "ray-x/go.nvim" },
-}
+	{ "ray-x/go.nvim" }
+)
+-- doom.use_package()
+
+-- ADDING A KEYBIND
+--
+-- doom.use_keybind({
+--   -- The `name` field will add the keybind to whichkey
+--   {"<leader>s", name = '+search', {
+--     -- Bind to a vim command
+--     {"g", "Telescope grep_string<CR>", name = "Grep project"},
+--     -- Or to a lua function
+--     {"p", function()
+--       print("Not implemented yet")
+--     end, name = ""}
+--   }}
+-- })
+
+-- ADDING A COMMAND
+--
+-- doom.use_cmd({
+--   {"CustomCommand1", function() print("Trigger my custom command 1") end},
+--   {"CustomCommand2", function() print("Trigger my custom command 2") end}
+-- })
+
+-- ADDING AN AUTOCOMMAND
+--
+doom.use_autocmd({
+	{
+		"FileType",
+		"javascript",
+		function()
+			print("This is a javascript file")
+		end,
+	},
+}, {
+	{
+		"BufWritePre",
+		"*",
+		function()
+			vim.lsp.buf.formatting_sync()
+		end,
+	},
+})
+
+doom.indent = 2
+
+-- vim: sw=2 sts=2 ts=2 expandtab

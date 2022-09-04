@@ -23,7 +23,7 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
     end
 
     function setup_cheovim
-        git clone https://github.com/NTBBloodbath/cheovim "$NVIM_CONFIG_DIR"
+        git clone --depth=1 https://github.com/NTBBloodbath/cheovim "$NVIM_CONFIG_DIR"
         symlink.create \
             -s "$DOTFILES_CONFIG_DIR/cheovim/profiles.lua" \
             -d "$NVIM_CONFIG_DIR/profiles.lua"
@@ -39,14 +39,11 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
     function setup_doomnvim
         git clone https://github.com/NTBBloodbath/doom-nvim.git $CHEOVIM_LOCAL_DIR/doomnvim
         symlink.create \
-            -s $DOTFILES_CONFIG_DIR/doomnvim/doom_config.lua \
-            -d $CHEOVIM_LOCAL_DIR/doomnvim/doom_config.lua
+            -s $DOTFILES_CONFIG_DIR/doomnvim/config.lua \
+            -d $CHEOVIM_LOCAL_DIR/doomnvim/config.lua
         symlink.create \
-            -s $DOTFILES_CONFIG_DIR/doomnvim/doom_modules.lua \
-            -d $CHEOVIM_LOCAL_DIR/doomnvim/doom_modules.lua
-        symlink.create \
-            -s $DOTFILES_CONFIG_DIR/doomnvim/doom_userplugins.lua \
-            -d $CHEOVIM_LOCAL_DIR/doomnvim/doom_userplugins.lua
+            -s $DOTFILES_CONFIG_DIR/doomnvim/modules.lua \
+            -d $CHEOVIM_LOCAL_DIR/doomnvim/modules.lua
     end
 
     function setup_lunarvim

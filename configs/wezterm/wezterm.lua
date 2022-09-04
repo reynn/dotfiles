@@ -9,5 +9,5 @@ return {
 	color_scheme = "kanagawabones",
 	initial_cols = 160, -- 80
 	initial_rows = 40, -- 24
-	window_decorations = "NONE",
+	-- window_decorations = "NONE",
 }

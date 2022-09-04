@@ -1,6 +1,0 @@
-{
-  "go.enableCodeLens": {
-    "references": true,
-    "runtest": true
-  }
-}
