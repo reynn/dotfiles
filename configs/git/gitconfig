@@ -199,6 +199,7 @@ defaultBranch = main
 [user]
 	name = Nic Patterson
 	email = nic@reynn.dev
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMDWoFsCXOiyDHFhCCJDK/Yb6TM9PAK4ba1lBgPl9Q1g
 
 [includeIf "gitdir:~/git/github.com/"]
 path = ~/git/github.com/.gitconfig
@@ -209,3 +210,7 @@ path = ~/git/github.concur.com/.gitconfig
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh

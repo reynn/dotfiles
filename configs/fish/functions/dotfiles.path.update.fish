@@ -37,6 +37,7 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
         path.replace "$go_version_path" 2
         set -Ux GOROOT (dirname $go_version_path)
     end
+
     __log debug "Checking for Node version path: $node_version_path"
     test -e "$node_version_path"; and path.replace "$node_version_path" 2
 
@@ -46,6 +47,13 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
         fish_add_path -pm "$node_pnpm_path"
     end
 
+    __log debug "Checking for Brew"
+    if test -x /opt/homebrew/bin/brew
+        fish_add_path /opt/homebrew/bin
+    end
+
     __log debug "Checking for Cargo install"
-    command.is_available -c cargo; and fish_add_path "$HOME/.cargo/bin"
+    if command.is_available -c cargo
+        fish_add_path "$HOME/.cargo/bin"
+    end
 end
