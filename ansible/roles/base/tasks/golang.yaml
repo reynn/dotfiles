@@ -4,7 +4,7 @@
   ignore_errors: true
   register: go_bin_check_output
 
-- name: Installing Global Node packages
+- name: Installing Golang packages
   ansible.builtin.command: "go install {{ item }}"
   loop: "{{ packages.go }}"
   when: go_bin_check_output is succeeded

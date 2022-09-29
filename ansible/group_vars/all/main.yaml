@@ -25,7 +25,8 @@ git_repos:
 # ------------
 # Maps
 packages:
-  brew: []
+  brew:
+    - graphviz
   cargo:
     - name: cargo-edit
       default_features: false
@@ -36,7 +37,8 @@ packages:
     - name: fd-find
     - name: skim
     - name: ripgrep
-  go: []
+  go:
+    - github.com/loov/goda@latest
   npm:
     - yarn
     - quicktype
