@@ -17,8 +17,8 @@ alias mkdir 'mkdir -p'
 alias mv 'mv -v'
 alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
-alias l 'exa -I ".git" -I "target/" -lah --icons --git --group-directories-first --time-style long-iso --color-scale'
-alias ll 'l --tree --level 3'
+alias l 'lsd -l'
+alias ll 'l --tree'
 
 # set fish_trace off
 

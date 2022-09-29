@@ -1,0 +1,43 @@
+classic: false
+
+blocks:
+  - permission
+  - user
+  - size
+  - date
+  - name
+
+color:
+  when: auto
+  theme: default
+
+date: '+%Y-%m-%d %X'
+
+display: almost-all
+
+header: true
+
+icons:
+  when: auto
+  theme: fancy
+  separator: " "
+
+ignore-globs:
+  - .git
+  - target
+  - Library
+  - Pictures
+  - .Trash
+
+indicators: true
+
+layout: oneline
+
+recursion:
+  enabled: false
+  depth: 3
+
+sorting:
+  column: name
+  reverse: false
+  dir-grouping: first

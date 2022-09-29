@@ -31,10 +31,15 @@ packages:
       default_features: false
       features:
         - vendored-openssl
+    - name: lsd
+    - name: vers
+    - name: fd-find
+    - name: skim
+    - name: ripgrep
   go: []
   npm:
-    - "yarn"
-    - "quicktype"
+    - yarn
+    - quicktype
   pip:
     - ansible
     - certifi
@@ -80,9 +85,6 @@ to_create:
   - dest: "{{ ansible_user_dir }}/.config/fish/fish_plugins"
     src: "{{ dotfiles_path }}/configs/fish/fish_plugins"
     state: link
-  - dest: "{{ ansible_user_dir }}/.gitconfig"
-    src: "{{ dotfiles_path }}/configs/git/gitconfig"
-    state: link
   - dest: "{{ github_path }}/.gitconfig"
     src: "{{ dotfiles_path }}/configs/git/public_github"
     state: link
@@ -91,4 +93,7 @@ to_create:
     state: link
   - dest: "{{ ansible_user_dir }}/.config/wezterm"
     src: "{{ dotfiles_path }}/configs/wezterm"
+    state: link
+  - dest: "{{ ansible_user_dir }}/.config/lsd"
+    src: "{{ dotfiles_path }}/configs/lsd"
     state: link
