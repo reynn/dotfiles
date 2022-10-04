@@ -10,6 +10,7 @@ function git.commit.reset -d 'Show a list of commits in MRU order. Will use sele
         set -a help_args -f "p|preview|Overwrite the default FZF preview command|$fzf_preview"
         set -a help_args -f "n|max-count|Max number of commits to show in the FZF list|$result_count"
         set -a help_args -f "s|sha|Provide a SHA instead of using FZF to select one|$target"
+
         __dotfiles_help $help_args
     end
 

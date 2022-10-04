@@ -3,3 +3,13 @@
   ansible.builtin.shell: "sh '/Applications/Python {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}/Install\ Certificates.command'"
   register: cert_handler
   changed_when: '"Requirement already up-to-date" not in cert_handler.stdout'
+
+- name: "Test for `brew` bin"
+  ansible.builtin.command: "command -v brew"
+  ignore_errors: true
+  register: brew_bin_check_output
+
+- name: Installing Brew packages
+  ansible.builtin.command: "brew install {{ item }}"
+  loop: "{{ packages.system.brew }}"
+  when: brew_bin_check_output is succeeded

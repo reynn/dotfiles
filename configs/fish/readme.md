@@ -26,7 +26,6 @@ Plugins are managed by [Fisher][fish-plugin-fisher], run `fisher update` to inst
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [Fisher][fish-plugin-fisher]                       | The Plugin Manager                                                                         |
 | [getopts][fish-plugin-getopts]                     | Fish version of GNU getopts for flag parsing                                               |
-| [sk.fish][fish-plugin-sk.fish]                     | SK (FZF Alt.) key bindings, more convenient than official                                  |
 | [fish-nvm][fish-plugin-fish-nvm]                   | Use Node Version Manager in Fish                                                           |
 | [bass][fish-plugin-bass]                           | Use bash utilities in Fish                                                                 |
 | [YSU][fish-plugin-ysu]                             | Reminder of aliases                                                                        |
