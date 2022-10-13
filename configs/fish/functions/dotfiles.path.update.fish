@@ -56,4 +56,9 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     if command.is_available -c cargo
         fish_add_path "$HOME/.cargo/bin"
     end
+
+    __log debug "Checking for Rancher Desktop"
+    if test -d "$HOME/.rd/bin"
+        fish_add_path "$HOME/.rd/bin"
+    end
 end
