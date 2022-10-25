@@ -1,4 +1,4 @@
 return {
-	timeout = 1500,
-	opacity = 0,
+  timeout = 1500,
+  opacity = 0,
 }

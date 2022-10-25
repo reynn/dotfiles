@@ -1,3 +1,3 @@
 return function(opts)
-	opts.icons = nil
+  opts.icons = nil
 end

@@ -1,4 +1,4 @@
-return{
+return {
   after = "telescope.nvim",
   module = "telescope._extensions.dap",
   config = function()
