@@ -76,7 +76,7 @@ function aws.okta.auth
         end
     end
 
-    __log debug "Dasel Binary: "(which dasel)" version "(dasel --version | awk '{print $3}')
+    __log debug "Dasel Binary: $(which dasel) version $(dasel --version | awk '{print $3}')"
 
     if test -z "$accounts_to_generate"
         if test -n "$fuzzy_filter"
@@ -108,9 +108,6 @@ function aws.okta.auth
             set name (echo $account_data | dasel select -r json -n '.name' --plain 2>/dev/null)
         end
         set -x preview (echo $account_data | dasel select -r json -n '.preview' --plain 2>/dev/null)
-        if test -z "$password_reset"
-            set -x password_reset (echo $account_data | dasel select -r json -n -s '.password_reset' 2>/dev/null; or echo 'false')
-        end
         set -x region (echo $account_data | dasel select -r json -n -s '.region' --plain 2>/dev/null)
         set -x org (echo $account_data | dasel select -r json -n -s '.okta_org' --plain 2>/dev/null)
         if test -n "$aws_profile_override"
@@ -143,12 +140,12 @@ function aws.okta.auth
         # Use keymans built in password cache by default, reset by providing '--password-reset'
         set -a keyman_args --password_cache
 
-        test -n "$cred_profile_name" && test "$cred_profile_name" != "null"; and set profile_name $cred_profile_name
-        test -n "$profile_name" && test "$profile_name" != "null"; and set -a keyman_args --name "$profile_name"
-        test -n "$appid" && test "$appid" != "null"; and set -a keyman_args --appid "$appid"
-        test -n "$aws_role_override" && test "$aws_role_override" != "null"; and set role "$aws_role_override"
-        test -n "$role" && test "$role" != "null"; and set -a keyman_args --role "$role"
-        test -n "$duration" && test "$duration" != "null"; and set -a keyman_args -du $duration
+        test -n "$cred_profile_name" && test "$cred_profile_name" != null; and set profile_name $cred_profile_name
+        test -n "$profile_name" && test "$profile_name" != null; and set -a keyman_args --name "$profile_name"
+        test -n "$appid" && test "$appid" != null; and set -a keyman_args --appid "$appid"
+        test -n "$aws_role_override" && test "$aws_role_override" != null; and set role "$aws_role_override"
+        test -n "$role" && test "$role" != null; and set -a keyman_args --role "$role"
+        test -n "$duration" && test "$duration" != null; and set -a keyman_args -du $duration
         test "$preview" = true; and set -a keyman_args --oktapreview
         test "$password_reset" = true; and set -a keyman_args -R
         test "$reup" = true; and set -a keyman_args -r
