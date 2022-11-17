@@ -1,7 +1,7 @@
 function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI package'
-    set -lx base_directory "$HOME/.bins"
-    set -lx latest_version (gh api /repos/aws/aws-cli/tags | dasel select -r json --plain -s '.[0].name')
-    set -lx installed_version (cat $base_directory/aws-cli/installed_version 2>/dev/null; or echo '')
+    set -lx base_directory "$HOME/.local/bin"
+    set -lx latest_version (gh api /repos/aws/aws-cli/tags --jq '.[0].name')
+    set -lx installed_version (aws --version | string split ' ' | head -1 | string split '/' | tail -1)
 
     if test -z "$installed_version"
         __log "AWS CLI is not installed"
@@ -13,27 +13,26 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
         else
             __log info "==> Installed but not on latest version"
             set -l choices_tmp_file (mktemp -t aws-cli-choices)
-            set -l choices_tmp_file (mktemp -t aws-cli-choices)
 
-            wget -q "https://awscli.amazonaws.com/AWSCLIV2-$latest_version.pkg"
+            curl -s -o "/tmp/AWSCLIV2-$latest_version.pkg" "https://awscli.amazonaws.com/AWSCLIV2-$latest_version.pkg"
 
             echo '<?xml version="1.0" encoding="UTF-8"?>' >$choices_tmp_file
             echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >>$choices_tmp_file
             echo '<plist version="1.0">' >>$choices_tmp_file
-            echo '<array>' >>$choices_tmp_file
-            echo '<dict>' >>$choices_tmp_file
-            echo '<key>choiceAttribute</key>' >>$choices_tmp_file
-            echo '<string>customLocation</string>' >>$choices_tmp_file
-            echo '<key>attributeSetting</key>' >>$choices_tmp_file
-            echo "<string>$base_directory</string>" >>$choices_tmp_file
-            echo '<key>choiceIdentifier</key>' >>$choices_tmp_file
-            echo '<string>default</string>' >>$choices_tmp_file
-            echo '</dict>' >>$choices_tmp_file
-            echo '</array>' >>$choices_tmp_file
+            echo '  <array>' >>$choices_tmp_file
+            echo '    <dict>' >>$choices_tmp_file
+            echo '      <key>choiceAttribute</key>' >>$choices_tmp_file
+            echo '      <string>customLocation</string>' >>$choices_tmp_file
+            echo '      <key>attributeSetting</key>' >>$choices_tmp_file
+            echo "      <string>$base_directory</string>" >>$choices_tmp_file
+            echo '      <key>choiceIdentifier</key>' >>$choices_tmp_file
+            echo '      <string>default</string>' >>$choices_tmp_file
+            echo '    </dict>' >>$choices_tmp_file
+            echo '  </array>' >>$choices_tmp_file
             echo '</plist>' >>$choices_tmp_file
 
             installer \
-                -pkg "AWSCLIV2-$latest_version.pkg" \
+                -pkg "/tmp/AWSCLIV2-$latest_version.pkg" \
                 -target CurrentUserHomeDirectory \
                 -applyChoiceChangesXML $choices_tmp_file
 
@@ -42,13 +41,11 @@ function aws.cli.install --description 'Handle install and/or upgrade of AWS CLI
                 return 2
             end
 
-            echo "$latest_version" >$base_directory/aws-cli/installed_version
-
-            if not test -L "$base_directory/envs/aws"
-                ln -s "$base_directory/aws-cli/aws" "$base_directory/envs/aws"
+            if not test -L "$base_directory/aws"
+                ln -s "$base_directory/aws-cli/aws" "$base_directory/aws"
             end
-            if not test -L "$base_directory/envs/aws_completer"
-                ln -s "$base_directory/aws-cli/aws_completer" "$base_directory/envs/aws_completer"
+            if not test -L "$base_directory/aws_completer"
+                ln -s "$base_directory/aws-cli/aws_completer" "$base_directory/aws_completer"
             end
         end
     end

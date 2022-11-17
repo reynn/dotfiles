@@ -1,7 +1,6 @@
 #!/usr/bin/env fish
 
 function tokens.list -d 'List all environment variables that have token in the name'
-
     function ___usage
         set -l help_args -a 'List all environment variables that have token in the name'
         __dotfiles_help $help_args

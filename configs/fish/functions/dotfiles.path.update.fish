@@ -5,7 +5,7 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
     set -l os_name (uname | string lower)
     set -l arch (uname -m)
-    if test "$arch" = 'x86_64'
+    if test "$arch" = x86_64
         set arch amd64
     end
 
@@ -17,8 +17,7 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     path.replace "$PYTHON_HOME/bin" 2
     set -l user_paths "$DFP/scripts" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/go/bin"
     if test -e (which vers)
-        set -l vers_path (vers env -n global -s fish)
-        set -a user_paths (string replace -r '.*?\"(.+)\"' '$1' $vers_path)
+        set -a user_paths (vers env -n global -s fish --bare-path)
     end
 
     __log debug "Paths to add :: $user_paths"
@@ -59,6 +58,6 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
 
     __log debug "Checking for Rancher Desktop"
     if test -d "$HOME/.rd/bin"
-        fish_add_path "$HOME/.rd/bin"
+        fish_add_path -a "$HOME/.rd/bin"
     end
 end

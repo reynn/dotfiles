@@ -185,7 +185,8 @@ whitespace = fix
   default = simple
   # Make `git push` push relevant annotated tags when pushing branches out.
   followTags = true
-  rebase = "true"
+  rebase = true
+  autoSetupRemote = true
 
 [tag]
   forceSignAnnotated = true
@@ -202,8 +203,10 @@ whitespace = fix
 
 [includeIf "gitdir:~/git/github.com/"]
   path = ~/git/github.com/.gitconfig
+
 [includeIf "gitdir:~/git/github.concur.com/"]
   path = ~/git/github.concur.com/.gitconfig
+
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
