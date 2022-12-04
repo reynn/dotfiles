@@ -25,6 +25,9 @@ function go.project.init -d "Initialize a new Go project including mod file"
     end
 
     go mod init "$project_name"
-    printf "package main\n\nfunc main() {\n\n}" >> main.go
-    mkdir -p {internal,cmds}
+    if not test -x (which cobra-cli)
+        go install github.com/spf13/cobra-cli@latest
+    end
+    cobra-cli init --author (git config user.name)
+    go mod tidy
 end
