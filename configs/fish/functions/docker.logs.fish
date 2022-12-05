@@ -28,7 +28,7 @@ function docker.logs -d 'Show logs for a running container'
     end
 
     if test -z "$container"
-        set container (docker container ls --format "{{ .Names }}" | sk --select-1 --preview "$sk_preview")
+        set container (docker container ls --format "{{ .Names }}" | fzf --select-1 --height=40% --preview "$sk_preview")
     end
 
     docker logs $docker_args $container

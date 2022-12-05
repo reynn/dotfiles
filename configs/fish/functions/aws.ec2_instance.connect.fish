@@ -80,6 +80,9 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
         return 1
     end
 
+    # use the configured env profile if set
+    set -q AWS_PROFILE; and set aws_profile $AWS_PROFILE
+
     __log debug "Filters        : $filters"
     __log debug "Tmp_File       : $tmp_file"
     __log debug "ConnectMethod  : $connect_method"
@@ -94,11 +97,11 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
             aws --profile "$aws_profile" ec2 describe-instances --filters "$filters" >$tmp_file
         end
         set instance_id (dasel select -f $tmp_file -p json --plain -m '.(?:-=InstanceId)' |
-          sk --select-1 --prompt 'instance-id> ' --height 40% --select-1 \
+          fzf --select-1 --prompt 'instance-id> ' --height 40% --select-1 \
           --preview "dasel select -f $tmp_file -p json -m '.Reservations.[].Instances.(InstanceId={})'")
     end
     __log debug "instance.id : $instance_id"
-    rm -f $tmp_file
+    # rm -f $tmp_file
     if ! test -z "$instance_id"
         switch $connect_method
             case ssh

@@ -1,15 +1,16 @@
 function aws.okta.auth
-    set -x accounts_to_generate
-    set -x config_file_path "$HOME/.config/aws_okta_keyman.yaml"
-    set -x auth_file_path "$HOME/.config/aws_okta_keyman.auth.yaml"
-    set -x aws_profile_name
-    set -x duration 3600
-    set -x password_reset false
-    set -x aws_profile_override
-    set -x reup false
-    set -x fuzzy_filter
-    set -x aws_role_override
-    set -x cred_profile_name
+    set accounts_to_generate
+    set config_file_path "$HOME/.config/aws_okta_keyman.yaml"
+    set auth_file_path "$HOME/.config/aws_okta_keyman.auth.yaml"
+    set aws_profile_name
+    set duration 3600
+    set password_reset false
+    set aws_profile_override
+    set reup false
+    set fuzzy_filter
+    set aws_role_override
+    set cred_profile_name
+    set accounts_to_generate
 
     function ___usage -d 'Show usage'
         set -l help_args -a "Use the AWS Okta Keyman tool to connect to get AWS credentials, FZF or Skim are used for user selection"
@@ -45,8 +46,6 @@ function aws.okta.auth
         __dotfiles_help $help_args
     end
 
-    set -x accounts_to_generate
-
     getopts $argv | while read -l key value
         switch $key
             case a account-name
@@ -81,10 +80,10 @@ function aws.okta.auth
     if test -z "$accounts_to_generate"
         if test -n "$fuzzy_filter"
             __log debug "Using filter '$fuzzy_filter' on "(dasel select -f $config_file_path -m '.okta[#]')" total accounts"
-            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | sk --height 40% --filter $fuzzy_filter --multi --select-1)
+            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | fzf --height 40% --filter $fuzzy_filter --multi --select-1)
             __log debug "Filtered to "(count $accounts_to_generate)" accounts"
         else
-            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | sk --height 40% --multi --select-1)
+            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | fzf --height 40% --multi --select-1)
         end
     end
 
@@ -100,25 +99,17 @@ function aws.okta.auth
         set account_data (dasel select -f $config_file_path -s ".okta.(name=$account)" -w json -c)
         __log debug "Full account data: $account_data"
 
-        set -x username (echo $account_data | dasel select -r json -n '.username' --plain 2>/dev/null)
-        set -x appid (echo $account_data | dasel select -r json -n '.app_id' --plain 2>/dev/null)
-        if test -n "$aws_profile_name"
-            set -x name "$aws_profile_name"
-        else
-            set name (echo $account_data | dasel select -r json -n '.name' --plain 2>/dev/null)
-        end
-        set -x preview (echo $account_data | dasel select -r json -n '.preview' --plain 2>/dev/null)
-        set -x region (echo $account_data | dasel select -r json -n -s '.region' --plain 2>/dev/null)
-        set -x org (echo $account_data | dasel select -r json -n -s '.okta_org' --plain 2>/dev/null)
-        if test -n "$aws_profile_override"
-            set -x profile_name $aws_profile_override
-        else
-            set -x profile_name (echo $account_data | dasel select -r json -n -s '.profile_name' --plain 2>/dev/null)
-        end
-        set -x bw_id (echo $account_data | dasel select -r json -n -s '.bw_id' --plain 2>/dev/null)
-        set -x role (echo $account_data | dasel select -r json -n -s '.role' --plain 2>/dev/null)
+        set username (echo $account_data | dasel select -r json -n '.username' --plain 2>/dev/null)
+        set appid (echo $account_data | dasel select -r json -n '.app_id' --plain 2>/dev/null)
+        set preview (echo $account_data | dasel select -r json -n '.preview' --plain 2>/dev/null)
+        set region (echo $account_data | dasel select -r json -n -s '.region' --plain 2>/dev/null)
+        set org (echo $account_data | dasel select -r json -n -s '.okta_org' --plain 2>/dev/null)
+        set bw_id (echo $account_data | dasel select -r json -n -s '.bw_id' --plain 2>/dev/null)
+        set role (echo $account_data | dasel select -r json -n -s '.role' --plain 2>/dev/null)
+        test -n "$aws_profile_name"; and set name $aws_profile_name; or set name (echo $account_data | dasel select -r json -n '.name' --plain 2>/dev/null)
+        test -n "$aws_profile_override"; and set profile_name $aws_profile_override; or set profile_name (echo $account_data | dasel select -r json -n -s '.profile_name' --plain 2>/dev/null)
 
-        __log debug "[---> AWS Okta Keyman data]"
+        __log debug "[---> AWS Okta Keyman data <---]"
         __log debug "username           : $username"
         __log debug "appid              : $appid"
         __log debug "name               : $name"
@@ -134,7 +125,7 @@ function aws.okta.auth
         __log debug "aws_role_override  : $aws_role_override"
         __log debug "duration           : $duration"
 
-        set -x keyman_args --region "$region"
+        set keyman_args --region "$region"
         set -a keyman_args --org "$org"
         set -a keyman_args --username "$username"
         # Use keymans built in password cache by default, reset by providing '--password-reset'

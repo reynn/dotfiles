@@ -47,7 +47,7 @@ function aws.change.profile
     end
 
     if test -z "$selected_profile"
-        set selected_profile (aws configure list-profiles | sk --height 35% -p 'Profile> ' --preview='aws --profile {} sts get-caller-identity | dasel select -r json --plain -s "."')
+        set selected_profile (aws configure list-profiles | fzf --height 35% --prompt 'Profile> ' --preview='aws --profile {} sts get-caller-identity | dasel select -r json --plain -s "."')
     end
 
     set -xg AWS_PROFILE $selected_profile
