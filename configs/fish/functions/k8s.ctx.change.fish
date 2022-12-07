@@ -49,10 +49,10 @@ function k8s.ctx.change -d "Set KUBECTX env variable as well as the active conte
 
     set -xg KUBECONFIG (string join ':' $kubeconfig_files)
 
-    set context (dasel select -f $KUBECONFIG -p yaml -m '.contexts.[*].name' --plain | sort -r | fzf --height 35% --select-1)
+    set context (dasel -f $KUBECONFIG -r yaml -s '.contexts.all().name' -w plain | sort -r | fzf --height 35% --select-1)
     __log debug "kube_context       :  $context"
     if test -n $context
         __log debug "No Kubeconfig, searching"
-        dasel put string -f $KUBECONFIG -p yaml -s '.current-context' $context
+        kubectl --kubeconfig $KUBECONFIG config set current-context $context
     end
 end

@@ -1,7 +1,6 @@
 #!/usr/bin/env fish
 
 function go.test_coverage.generate -d "Generate a coverage report for Golang tests"
-
     function ___usage
         set -l help_args -a 'Generate a coverage report for Golang tests'
         __dotfiles_help $help_args

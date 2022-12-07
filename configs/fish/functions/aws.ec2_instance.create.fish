@@ -1,6 +1,10 @@
 #!/usr/bin/env fish
 
 function aws.ec2_instance.create -d "Create an instance in AWS"
+    if not command.is_available -c aws
+        __log error '`aws` is not installed'
+        return 1
+    end
 
     set -x user_email (git config user.email)
     set -x cfn_template "$DFP/infra/aws/standard-instance.cfn.yaml"
@@ -32,11 +36,6 @@ function aws.ec2_instance.create -d "Create an instance in AWS"
             case v verbose
                 set -x DEBUG true
         end
-    end
-
-    if not command.is_available -c aws
-        __log error '`aws` is not installed'
-        return 1
     end
 
     __log debug "aws cloudformation deploy --stack-name $stack_name--template-file "$cfn_template""

@@ -23,6 +23,7 @@ complete -c rustup -n "__fish_use_subcommand" -f -a "completions" -d 'Generate t
 complete -c rustup -n "__fish_use_subcommand" -f -a "help" -d 'Prints this message or the help of the given subcommand(s)'
 complete -c rustup -n "__fish_seen_subcommand_from dump-testament" -s h -l help -d 'Prints help information'
 complete -c rustup -n "__fish_seen_subcommand_from dump-testament" -s V -l version -d 'Prints version information'
+complete -c rustup -n "__fish_seen_subcommand_from show" -s v -l verbose -d 'Enable verbose output with rustc information for all installed toolchains'
 complete -c rustup -n "__fish_seen_subcommand_from show" -s h -l help -d 'Prints help information'
 complete -c rustup -n "__fish_seen_subcommand_from show" -s V -l version -d 'Prints version information'
 complete -c rustup -n "__fish_seen_subcommand_from show" -f -a "active-toolchain" -d 'Show the active toolchain'
@@ -44,6 +45,7 @@ complete -c rustup -n "__fish_seen_subcommand_from help" -s V -l version -d 'Pri
 complete -c rustup -n "__fish_seen_subcommand_from install" -l profile -r -f -a "minimal default complete"
 complete -c rustup -n "__fish_seen_subcommand_from install" -l no-self-update -d 'Don\'t perform self-update when running the `rustup install` command'
 complete -c rustup -n "__fish_seen_subcommand_from install" -l force -d 'Force an update, even if some components are missing'
+complete -c rustup -n "__fish_seen_subcommand_from install" -l force-non-host -d 'Install toolchains that require an emulator. See https://github.com/rust-lang/rustup/wiki/Non-host-toolchains'
 complete -c rustup -n "__fish_seen_subcommand_from install" -s h -l help -d 'Prints help information'
 complete -c rustup -n "__fish_seen_subcommand_from install" -s V -l version -d 'Prints version information'
 complete -c rustup -n "__fish_seen_subcommand_from uninstall" -s h -l help -d 'Prints help information'
@@ -73,6 +75,7 @@ complete -c rustup -n "__fish_seen_subcommand_from install" -s t -l target -d 'A
 complete -c rustup -n "__fish_seen_subcommand_from install" -l no-self-update -d 'Don\'t perform self update when running the`rustup toolchain install` command'
 complete -c rustup -n "__fish_seen_subcommand_from install" -l force -d 'Force an update, even if some components are missing'
 complete -c rustup -n "__fish_seen_subcommand_from install" -l allow-downgrade -d 'Allow rustup to downgrade the toolchain to satisfy your component choice'
+complete -c rustup -n "__fish_seen_subcommand_from install" -l force-non-host -d 'Install toolchains that require an emulator. See https://github.com/rust-lang/rustup/wiki/Non-host-toolchains'
 complete -c rustup -n "__fish_seen_subcommand_from install" -s h -l help -d 'Prints help information'
 complete -c rustup -n "__fish_seen_subcommand_from install" -s V -l version -d 'Prints version information'
 complete -c rustup -n "__fish_seen_subcommand_from uninstall" -s h -l help -d 'Prints help information'

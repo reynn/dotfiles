@@ -1,4 +1,4 @@
-return {
+local m = {
   ensure_installed = {
     "bash",
     "dockerfile",
@@ -13,7 +13,7 @@ return {
     "toml",
     "yaml",
   },
-  sync_install = false,
+  sync_install = true,
   highlight = {
     additional_vim_regex_highlighting = { "markdown" },
   },
@@ -22,8 +22,12 @@ return {
   },
   matchup = {
     enable = true,
-  },
-  textobjects = {
+  }
+}
+
+local text_objects_ok, _ = pcall(require, "nvim-treesitter-textobjects")
+if not text_objects_ok then
+  m.textobjects = {
     select = {
       enable = true,
       lookahead = true,
@@ -70,5 +74,7 @@ return {
         ["<leader>sP"] = "@parameter.inner",
       },
     },
-  },
-}
+  }
+end
+
+return m

@@ -43,10 +43,10 @@ function dotfiles.env.update -d 'Setup global/universal variables'
     set -Ux ZELLIJ_CONFIG_DIR "$DFP/configs/zellij"
 
     ## Language versions
-    set -Ux LANGUAGES_PYTHON_VERSION '3.10'
-    set -Ux LANGUAGES_GO_VERSION '1.19.3'
+    set -Ux LANGUAGES_PYTHON_VERSION '3.11'
+    set -Ux LANGUAGES_GO_VERSION '1.19.4'
     set -Ux LANGUAGES_RUST_VERSION '1.65.0'
-    set -Ux LANGUAGES_NODE_VERSION '19.1.0'
+    set -Ux LANGUAGES_NODE_VERSION '19.2.0'
 
     set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'
 

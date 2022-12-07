@@ -1,5 +1,9 @@
 function aws.change.profile
-    set -lx credentials_file
+    if not command.is_available -c aws
+        __log error '`aws` is not installed'
+        return 1
+    end
+    set credentials_file
 
     function ___usage -d 'Show usage'
         set -l help_args -a "Set AWS_PROFILE to a specific credential, with fuzzy finder support"
@@ -47,7 +51,8 @@ function aws.change.profile
     end
 
     if test -z "$selected_profile"
-        set selected_profile (aws configure list-profiles | fzf --height 35% --prompt 'Profile> ' --preview='aws --profile {} sts get-caller-identity | dasel select -r json --plain -s "."')
+        set selected_profile (aws configure list-profiles |\
+          fzf --height 35% --prompt 'Profile> ' --preview='aws --profile {} sts get-caller-identity | dasel -r json -w plain .')
     end
 
     set -xg AWS_PROFILE $selected_profile

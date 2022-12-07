@@ -7,7 +7,6 @@
 ## #######################################################################
 
 function fonts.list -d 'List all installed font families, sorted by name'
-
     function ___usage
         set -l help_args -a 'List all installed font families, sorted by name'
         set -a help_args -c '1|Command not available'

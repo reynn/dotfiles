@@ -1,2 +1,6 @@
 [user]
   email = nic@reynn.dev
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOulHtavEm2ZH6tSImUYnVhi+dtNzW/yCgaRJUE8QbNm reynn@Nics-MacBook-Pro.local
+
+[gpg]
+  format = ssh

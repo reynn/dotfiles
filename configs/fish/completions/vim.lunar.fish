@@ -1,4 +1,4 @@
-#!/usr/bin/fish
+#!/usr/bin/env fish
 
 # --- vim.lunar ---
 complete -c 'vim.lunar' -d 'Run through all setup options in proper order' -l 'setup-all' -s 'a' -x

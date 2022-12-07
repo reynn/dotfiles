@@ -8,7 +8,6 @@
 ## #######################################################################
 
 function ansible.config.generate -d "Generate valid SSH config from an Ansible inventory"
-
     set -l INVENTORY_FILE "$argv[1]"
     set -l CONFIG_DIRECTORY "$HOME/.ssh/config.d"
 
@@ -45,12 +44,12 @@ function ansible.config.generate -d "Generate valid SSH config from an Ansible i
 
     for entry in $ENTRIES
         if string match --quiet --invert -- "*windows*" $entry
-            set -l name (echo $entry | dasel select -r json '.name' --plain)
+            set -l name (echo $entry | dasel -w plain -r json '.name')
             set -l splitName (string split '_' "$name")
             set -l dc "$splitName[1]"
-            set -l ip (echo $entry | dasel select -r json '.ip' --plain)
-            set -l user (echo $entry | dasel select -r json '.user' --plain; or echo "centos")
-            set -l identFile (echo $entry | dasel select -r json '.ident' --plain)
+            set -l ip (echo $entry | dasel -r json '.ip' -w plain)
+            set -l user (echo $entry | dasel -r json '.user' -w plain; or echo "centos")
+            set -l identFile (echo $entry | dasel -r json '.ident' -w plain)
             __log debug "name       : [$name]"
             __log debug "splitName  : [$splitName]"
             __log debug "dc         : [$dc]"

@@ -40,14 +40,14 @@ function github.repos.clean -d "Delete forks from GitHub"
     # #######################
     # Main logic
     # #######################
-    set forked_repos (gh api users/$owner/repos --paginate | dasel select --null -r json --plain -m '.(fork=true).full_name')
+    set forked_repos (gh api users/$owner/repos --paginate | dasel -r json -w plain -s '.all().filter(equal(fork,true)).full_name')
 
     for forked_repo in $forked_repos
         if test "$noop" = false
             gh api repos/$forked_repo --method DELETE
             __log "Repo ($forked_repo) deleted"
         else
-            __log "Repo ($forked_repo) deleted -->NOOP<--"
+            __log "Repo ($forked_repo) deleted ==> NOOP <=="
         end
     end
 end

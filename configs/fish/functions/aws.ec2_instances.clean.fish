@@ -1,7 +1,6 @@
 #!/usr/bin/env fish
 
 function aws.ec2_instances.clean -d "Cleanup any instances that were created to test with"
-
     if not command.is_available -c aws
         __log error '`aws` is not installed'
         return 1

@@ -106,7 +106,7 @@ function dotfiles.completions.generate -d 'Generate completions from the functio
             set -a complete_lines (___get_completion_file_lines $gen_args)
         end
         __log debug " ------- "(count $complete_lines)" lines of completions"
-        printf "#!/usr/bin/fish\n\n# --- $function_name ---\n\n"(string join '\n' $complete_lines)'\n' >$completion_file
+        printf "#!/usr/bin/env fish\n\n# --- $function_name ---\n\n"(string join '\n' $complete_lines)'\n' >$completion_file
     end
     __log "Completed generating completions"
 end

@@ -141,9 +141,12 @@ complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subco
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from new-pane" -l cwd -d 'Change the working directory of the new pane' -r -F
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from new-pane" -s n -l name -d 'Name of the new pane' -r
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from new-pane" -s f -l floating -d 'Open the new pane in floating mode'
+complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from new-pane" -s c -l close-on-exit -d 'Close the pane immediately when its command exits'
+complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from new-pane" -s s -l start-suspended -d 'Start the command suspended, only running it after the you first press ENTER'
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from new-pane" -s h -l help -d 'Print help information'
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from edit" -s d -l direction -d 'Direction to open the new pane in' -r
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from edit" -s l -l line-number -d 'Open the file in the specified line number' -r
+complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from edit" -l cwd -d 'Change the working directory of the editor' -r -F
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from edit" -s f -l floating -d 'Open the new pane in floating mode'
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from edit" -s h -l help -d 'Print help information'
 complete -c zellij -n "__fish_seen_subcommand_from action; and __fish_seen_subcommand_from switch-mode" -s h -l help -d 'Print help information'
@@ -166,9 +169,12 @@ complete -c zellij -n "__fish_seen_subcommand_from run" -s d -l direction -d 'Di
 complete -c zellij -n "__fish_seen_subcommand_from run" -l cwd -d 'Change the working directory of the new pane' -r -F
 complete -c zellij -n "__fish_seen_subcommand_from run" -s n -l name -d 'Name of the new pane' -r
 complete -c zellij -n "__fish_seen_subcommand_from run" -s f -l floating -d 'Open the new pane in floating mode'
+complete -c zellij -n "__fish_seen_subcommand_from run" -s c -l close-on-exit -d 'Close the pane immediately when its command exits'
+complete -c zellij -n "__fish_seen_subcommand_from run" -s s -l start-suspended -d 'Start the command suspended, only running after you first presses ENTER'
 complete -c zellij -n "__fish_seen_subcommand_from run" -s h -l help -d 'Print help information'
 complete -c zellij -n "__fish_seen_subcommand_from edit" -s l -l line-number -d 'Open the file in the specified line number' -r
 complete -c zellij -n "__fish_seen_subcommand_from edit" -s d -l direction -d 'Direction to open the new pane in' -r
+complete -c zellij -n "__fish_seen_subcommand_from edit" -l cwd -d 'Change the working directory of the editor' -r -F
 complete -c zellij -n "__fish_seen_subcommand_from edit" -s f -l floating -d 'Open the new pane in floating mode'
 complete -c zellij -n "__fish_seen_subcommand_from edit" -s h -l help -d 'Print help information'
 complete -c zellij -n "__fish_seen_subcommand_from convert-config" -s h -l help -d 'Print help information'

@@ -1,10 +1,14 @@
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+local go_ok, go = pcall(require, "go")
 if cmp_nvim_lsp_ok then
   capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 end
+if not go_ok then
+  return
+end
 
-require("go").setup({
+go.setup({
   goimport = "gopls",
   fillstruct = "gopls",
   gofmt = "gofumpt", --gofmt cmd,

@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
-function __get_json --description ''
-    set -lx local_cache_dir "$HOME/.cache/reynn"
+function __get_json
+    set -lx local_cache_dir "$HOME/.cache/$USER"
     set -lx cache_timeout (math '(7*24)*(60*60)') # Timeout after 1 week
     set -lx urls
 
@@ -80,6 +80,6 @@ function __get_json --description ''
       if test "$last_updated_at" -gt "$cache_timeout"
           ___update_file_cache $cache_loc $url
       end
-      dasel select -f $cache_loc -s '.'
+      dasel -f $cache_loc -r json -s '.'
     end
 end

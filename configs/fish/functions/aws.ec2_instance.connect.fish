@@ -1,6 +1,10 @@
 #!/usr/bin/env fish
 
 function aws.ec2_instance.connect -d "Interactively connect to a created instance"
+    if not command.is_available -c aws
+        __log error '`aws` is not installed'
+        return 1
+    end
     set -x tmp_file (mktemp)
     set -x filters "Name=tag:Owner,Values=$EMAIL" "Name=instance-state-name,Values=running"
     set -x connect_method ssh
@@ -25,17 +29,18 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
     function ___connect_via_ssh
         set -l instance $argv[1]
         __log "Connecting to $instance via SSH (AWS Profile: $aws_profile)"
-        set -l instance_data (aws --profile "$aws_profile" ec2 describe-instances --instance-ids "$instance" |\
-          dasel select -p json -c -m '.Reservations.[*].Instances.[*]')
+        set -l instance_data (aws --profile "$aws_profile" \
+          ec2 describe-instances --instance-ids "$instance" |\
+          dasel -p json -m '.Reservations.all().Instances.all()')
 
         if contains error $instance
             __log error "Failed to get instance data: $instance_data"
             return 1
         end
 
-        set -l ip (echo "$instance_data" | dasel select --null --plain -r json -s '.PrivateIpAddress')
-        set -l key_name (echo "$instance_data" | dasel select --null --plain -r json -s '.KeyName')
-        set -l instance_name (echo "$instance_data" | dasel select --null --plain -r json -s '.Tags(Key="Name").Value')
+        set -l ip (echo "$instance_data" | dasel -w plain -r json '.PrivateIpAddress')
+        set -l key_name (echo "$instance_data" | dasel -w plain -r json '.KeyName')
+        set -l instance_name (echo "$instance_data" | dasel -w plain -r json '.Tags.filter(equal(Key,Name)).Value')
 
         __log debug "instance       : $instance"
         __log debug "ip             : $ip"
@@ -75,11 +80,6 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
         end
     end
 
-    if not command.is_available -c aws
-        __log error 'AWS CLI is not installed'
-        return 1
-    end
-
     # use the configured env profile if set
     set -q AWS_PROFILE; and set aws_profile $AWS_PROFILE
 
@@ -96,7 +96,7 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
             __log debug "Getting instances with filters"
             aws --profile "$aws_profile" ec2 describe-instances --filters "$filters" >$tmp_file
         end
-        set instance_id (dasel select -f $tmp_file -p json --plain -m '.(?:-=InstanceId)' |
+        set instance_id (dasel -f $tmp_file -r json -w plain '.(?:-=InstanceId)' |
           fzf --select-1 --prompt 'instance-id> ' --height 40% --select-1 \
           --preview "dasel select -f $tmp_file -p json -m '.Reservations.[].Instances.(InstanceId={})'")
     end

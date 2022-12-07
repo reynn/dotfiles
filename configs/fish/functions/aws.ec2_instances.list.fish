@@ -1,6 +1,10 @@
 #!/usr/bin/env fish
 # TODO: Update to list more than just untagged in a better way
 function aws.ec2.untagged -d 'List all untagged EC2 instances'
+    if not command.is_available -c aws
+        __log error '`aws` is not installed'
+        return 1
+    end
 
     function ___usage
         set -l help_args -a "List all untagged EC2 instances"
@@ -19,11 +23,6 @@ function aws.ec2.untagged -d 'List all untagged EC2 instances'
             case v verbose
                 set -x DEBUG true
         end
-    end
-
-    if not command.is_available -c aws
-        __log error '`aws` is not installed'
-        return 1
     end
 
     aws ec2 \

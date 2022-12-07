@@ -1,6 +1,6 @@
 local cmp_ok, _ = pcall(require, "cmp")
 local lspkind_ok, lspkind = pcall(require, "lspkind")
-if not cmp_ok then
+if not cmp_ok or not lspkind_ok then
   return
 end
 

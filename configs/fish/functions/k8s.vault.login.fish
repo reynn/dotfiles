@@ -30,7 +30,7 @@ function k8s.vault.login --description 'Obtain a vault token using Kubernetes se
                 set k8s_sa $value
             case k8s-cluster
                 set k8s_cluster $value
-            # Common args
+                # Common args
             case h help
                 ___usage
                 return 0
@@ -73,7 +73,7 @@ function k8s.vault.login --description 'Obtain a vault token using Kubernetes se
     set K8S_SA_TOKEN (kubectl get --context $k8s_context secret (kubectl get --context $k8s_context sa $k8s_sa -o json | jq -r .secrets[0].name) -o json | jq -r .data.token | base64 -d)
     __log debug "K8S_SA_TOKEN: $K8S_SA_TOKEN"
 
-    set LOGIN_PAYLOAD (echo '{}' | dasel put -r json string -v $VAULT_ROLE .role | dasel put -c -r json string -v $K8S_SA_TOKEN .jwt)
+    set LOGIN_PAYLOAD (echo '{}' | dasel put -r json -t string -v $VAULT_ROLE .role | dasel put --pretty=false -r json -t string -v $K8S_SA_TOKEN .jwt)
     __log debug "Login Payload: $LOGIN_PAYLOAD"
     set login_response (curl -k -s -H "X-Vault-Namespace: $vault_namespace" -X POST -d $LOGIN_PAYLOAD $vault_server/v1/auth/kraken/$k8s_cluster/login)
     __log debug "Login Response: $login_response"

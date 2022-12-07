@@ -47,7 +47,7 @@ function aws.dynamodb_table.clear -d "Clear items from a DynamoDB table without 
     if not test "$projection" = ""
         set -a scan_args --projection-expression $projection
     else
-        set key_schema (aws --profile integration-data-lake dynamodb describe-table --table-name $table_name | dasel select -r json --plain -m '.Table.KeySchema.[*].AttributeName' | string join ', ')
+        set key_schema (aws --profile integration-data-lake dynamodb describe-table --table-name $table_name | dasel -r json -w plain '.Table.KeySchema.all().AttributeName' | string join ', ')
         set -a scan_args --projection-expression "$key_schema"
     end
 

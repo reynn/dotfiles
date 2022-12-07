@@ -1,4 +1,8 @@
 function aws.eks_kubeconfig.retrieve
+    if not command.is_available -c aws
+        __log error '`aws` is not installed'
+        return 1
+    end
     set cluster_names
     set aws_profile
     set alias
@@ -38,11 +42,6 @@ function aws.eks_kubeconfig.retrieve
             case v verbose
                 set -x DEBUG true
         end
-    end
-
-    if not command.is_available -c aws
-        __log error '`aws` is not installed'
-        return 1
     end
 
     if test -z "$aws_profile"

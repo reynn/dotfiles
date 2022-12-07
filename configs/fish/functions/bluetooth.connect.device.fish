@@ -1,7 +1,6 @@
 #!/usr/bin/env fish
 
 function bluetooth.connect.device -d 'Connect to a Bluetooth device'
-
     function __list_devices
         echo "use framework \"IOBluetooth\"
               use scripting additions
@@ -60,12 +59,13 @@ function bluetooth.connect.device -d 'Connect to a Bluetooth device'
         return 1
     end
 
-    set  selected (__list_devices \
+    set selected (__list_devices \
         | sed '/^$/d' \
-        | sk \
+        | fzf \
             --delimiter '\t' \
             --with-nth 2,3 \
-            --preview "system_profiler SPBluetoothDataType -json 2>/dev/null | dasel select --null -r json -s '.SPBluetoothDataType.[*].device_title.[*]'"
+            --height 50% \
+            --preview "system_profiler SPBluetoothDataType -json 2>/dev/null | dasel -w plain -r json '.SPBluetoothDataType.all().device_title.all()'"
     )
 
     set device_address (string replace --regex -a '\t' ',' $selected | string split ',')[1]

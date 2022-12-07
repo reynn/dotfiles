@@ -1,7 +1,6 @@
 #!/usr/bin/env fish
 
 function python.pip.update -d "Update all outdated Python packages using PIP"
-
     function ___usage
         set -l help_args -a 'Update all outdated Python packages using pip'
         __dotfiles_help $help_args
@@ -26,7 +25,7 @@ function python.pip.update -d "Update all outdated Python packages using PIP"
 
     # attempt to always update pip
     if not contains pip $packages
-      set -p packages pip
+        set -p packages pip
     end
 
     if test (count $packages) -eq 0

@@ -35,7 +35,7 @@ function git.clone -d "Clone repository to the layout used"
             case c cd
                 set cd_into true
             case F full-checkout
-                set full_checkout "true"
+                set full_checkout true
             case H host
                 set git_host "$value"
             case p protocol
@@ -43,7 +43,7 @@ function git.clone -d "Clone repository to the layout used"
             case r repos
                 set repos "$value"
             case R recursive
-                set recursive "true"
+                set recursive true
                 # Common args
             case h help
                 ___usage
@@ -61,12 +61,12 @@ function git.clone -d "Clone repository to the layout used"
         __log debug "git_host : $git_host"
         __log debug "repo     : $repo"
         __log debug "protocol : $protocol"
-        test "$protocol" = "ssh"; and set -x git_url "git@$git_host:$repo"; or set -x git_url "https://$git_host/$repo"
+        test "$protocol" = ssh; and set -x git_url "git@$git_host:$repo"; or set -x git_url "https://$git_host/$repo"
         __log debug "git_url  : $git_url"
         set -l local_dir "$base_directory/$git_host/$repo"
         set -l git_clone_args clone
-        test "$full_checkout" != "true"; and set -a git_clone_args "--depth" "1"
-        test "$recursive" = "true"; and set -a git_clone_args "--recursive"
+        test "$full_checkout" != true; and set -a git_clone_args --depth 1
+        test "$recursive" = true; and set -a git_clone_args --recursive
         set -a git_clone_args "$git_url"
         set -a git_clone_args "$local_dir"
 

@@ -1,6 +1,10 @@
 #!/usr/bin/env fish
 
 function aws.cfn_stacks.search -d 'Get a list of AWS Cloudformation stacks that match the specified pattern'
+    if not command.is_available -c aws
+        __log error '`aws` is not installed'
+        return 1
+    end
     set -x matcher
 
     function ___usage
@@ -24,11 +28,6 @@ function aws.cfn_stacks.search -d 'Get a list of AWS Cloudformation stacks that 
             case v verbose
                 set -x DEBUG true
         end
-    end
-
-    if not command.is_available -c aws
-        __log error '`aws` is not installed'
-        return 1
     end
 
     aws cloudformation list-stacks --query "StackSummaries[].StackName" | jq -r "map(match(\".*$matcher.*\"; \"ig\")) | .[].string"

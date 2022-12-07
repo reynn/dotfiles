@@ -76,14 +76,15 @@ function aws.okta.auth
     end
 
     __log debug "Dasel Binary: $(which dasel) version $(dasel --version | awk '{print $3}')"
+    __log debug "Config file: $config_file_path"
 
     if test -z "$accounts_to_generate"
         if test -n "$fuzzy_filter"
-            __log debug "Using filter '$fuzzy_filter' on "(dasel select -f $config_file_path -m '.okta[#]')" total accounts"
-            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | fzf --height 40% --filter $fuzzy_filter --multi --select-1)
+            __log debug "Using filter '$fuzzy_filter' on "(dasel -f $config_file_path -s '.okta.len()')" total accounts"
+            set accounts_to_generate (dasel -f $config_file_path -s '.okta.all().name' | fzf --height 40% --filter $fuzzy_filter --multi --select-1)
             __log debug "Filtered to "(count $accounts_to_generate)" accounts"
         else
-            set accounts_to_generate (dasel select -f $config_file_path -m '.okta.[*].name' | fzf --height 40% --multi --select-1)
+            set accounts_to_generate (dasel -f $config_file_path -s '.okta.all().name' | fzf --height 40% --multi --select-1)
         end
     end
 
@@ -96,18 +97,18 @@ function aws.okta.auth
 
     for account in $accounts_to_generate
         __log "Getting credentials for the [$account] account"
-        set account_data (dasel select -f $config_file_path -s ".okta.(name=$account)" -w json -c)
+        set account_data (dasel -f $config_file_path -s ".okta.all().filter(equal(name,$account))" -w json --pretty=false)
         __log debug "Full account data: $account_data"
 
-        set username (echo $account_data | dasel select -r json -n '.username' --plain 2>/dev/null)
-        set appid (echo $account_data | dasel select -r json -n '.app_id' --plain 2>/dev/null)
-        set preview (echo $account_data | dasel select -r json -n '.preview' --plain 2>/dev/null)
-        set region (echo $account_data | dasel select -r json -n -s '.region' --plain 2>/dev/null)
-        set org (echo $account_data | dasel select -r json -n -s '.okta_org' --plain 2>/dev/null)
-        set bw_id (echo $account_data | dasel select -r json -n -s '.bw_id' --plain 2>/dev/null)
-        set role (echo $account_data | dasel select -r json -n -s '.role' --plain 2>/dev/null)
-        test -n "$aws_profile_name"; and set name $aws_profile_name; or set name (echo $account_data | dasel select -r json -n '.name' --plain 2>/dev/null)
-        test -n "$aws_profile_override"; and set profile_name $aws_profile_override; or set profile_name (echo $account_data | dasel select -r json -n -s '.profile_name' --plain 2>/dev/null)
+        set username (echo $account_data | dasel -r json -s '.username' -w plain)
+        set appid (echo $account_data | dasel -r json -s '.app_id' -w plain)
+        set preview (echo $account_data | dasel -r json -s '.preview' -w plain)
+        set region (echo $account_data | dasel -r json -s '.region' -w plain)
+        set org (echo $account_data | dasel -r json -s '.okta_org' -w plain)
+        set bw_id (echo $account_data | dasel -r json -s '.bw_id' -w plain)
+        set role (echo $account_data | dasel -r json -s '.role' -w plain)
+        test -n "$aws_profile_name"; and set name $aws_profile_name; or set name (echo $account_data | dasel -r json -s '.name' -w plain)
+        test -n "$aws_profile_override"; and set profile_name $aws_profile_override; or set profile_name (echo $account_data | dasel -r json -s '.profile_name' -w plain)
 
         __log debug "[---> AWS Okta Keyman data <---]"
         __log debug "username           : $username"

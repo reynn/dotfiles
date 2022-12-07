@@ -1,4 +1,7 @@
-local dap = require("dap")
+local dap_ok, dap = pcall(require, "dap")
+if not dap_ok then
+  return
+end
 
 local function start_session(_, _)
   local info_string = string.format("%s", dap.session().config.program)
