@@ -1,6 +1,8 @@
 return {
-  module = "syntax-tree-surfer",
-  config = function()
-    require("user.plugins.syntax-tree-surfer.config")
-  end,
+	module = "syntax-tree-surfer",
+	config = function()
+		require("syntax-tree-surfer").setup({
+			highlight_group = "HopNextkey",
+		})
+	end,
 }

@@ -1,6 +1,6 @@
 return {
-  after = "nvim-treesitter",
-  config = function()
-    require("user.plugins.hlargs.config")
-  end,
+	after = "nvim-treesitter",
+	config = function()
+		require("hlargs").setup()
+	end,
 }

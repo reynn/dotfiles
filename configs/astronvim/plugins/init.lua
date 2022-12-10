@@ -21,11 +21,12 @@ return {
 	["lukas-reineke/headlines.nvim"] = require("user.plugins.headlines"),
 	{ "tpope/vim-repeat" },
 	{ "junegunn/vim-easy-align" },
+	["WhoIsSethDaniel/mason-tool-installer.nvim"] = require("user.plugins.mason-tool-installer"),
 
 	-- -- ## Telescope extensions
 	["nvim-telescope/telescope-project.nvim"] = require("user.plugins.telescope.project"),
 	-- ["nvim-telescope/telescope-packer.nvim"] = require("user.plugins.telescope.packer"),
-	-- ["nvim-telescope/telescope-dap.nvim"] = require("user.plugins.telescope.dap"),
+	["nvim-telescope/telescope-dap.nvim"] = require("user.plugins.telescope.dap"),
 	["cljoly/telescope-repo.nvim"] = require("user.plugins.telescope.repo"),
 
 	-- -- ## Text Objects/Motions
@@ -41,10 +42,10 @@ return {
 	["m-demare/hlargs.nvim"] = require("user.plugins.hlargs"),
 
 	-- -- ## DAP
-	-- ["mfussenegger/nvim-dap"] = require("user.plugins.dap"),
-	-- ["leoluz/nvim-dap-go"] = require("user.plugins.golang.dap"),
-	-- ["rcarriga/nvim-dap-ui"] = require("user.plugins.dap.ui"),
-	-- ["theHamsta/nvim-dap-virtual-text"] = require("user.plugins.dap.virtual-text"),
+	["mfussenegger/nvim-dap"] = require("user.plugins.dap"),
+	["leoluz/nvim-dap-go"] = require("user.plugins.golang.dap"),
+	["rcarriga/nvim-dap-ui"] = require("user.plugins.dap.ui"),
+	["theHamsta/nvim-dap-virtual-text"] = require("user.plugins.dap.virtual-text"),
 
 	-- -- ## Language Additions
 	["simrat39/rust-tools.nvim"] = require("user.plugins.rust"),
