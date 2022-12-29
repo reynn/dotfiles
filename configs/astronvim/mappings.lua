@@ -15,6 +15,17 @@ map("x", "ie", "<Plug>CamelCaseMotion_ie", { silent = true })
 map("i", "<S-Left>", "<C-o><Plug>CamelCaseMotion_b", { silent = true })
 map("i", "<S-Right>", "<C-o><Plug>CamelCaseMotion_w", { silent = true })
 
+-- Join lines but leave cursor where it is
+map("n", "J", "mzJ`z")
+-- move highlighted lines up or down
+map("v", "J", ":m '>+1<CR>gv=gv")
+map("v", "K", ":m '<-2<CR>gv=gv")
+-- keep search terms centered on screen
+map("n", "n", "nzzzv")
+map("n", "N", "Nzzzv")
+-- deletes the highlighted text without overwriting current paste buffer
+map("x", "<leader>p", "\"_dP")
+
 -- resize with arrows
 map("n", "<Up>", function()
   require("smart-splits").resize_up(2)
