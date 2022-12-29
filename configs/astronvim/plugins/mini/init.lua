@@ -1,12 +1,19 @@
 return {
 	config = function()
-		require("mini.bufremove").setup()
-		require("mini.comment").setup()
-		require("mini.cursorword").setup()
-		require("mini.indentscope").setup({
+		local indent_scope = require("mini.indentscope")
+		local surround = require("mini.surround")
+		local bufremove = require("mini.bufremove")
+		local comment = require("mini.comment")
+		local cursor_word = require("mini.cursorword")
+
+		bufremove.setup({})
+		comment.setup({})
+		cursor_word.setup({})
+		indent_scope.setup({
 			draw = {
 				delay = 0,
-				animation = require("mini.indentscope").gen_animation("cubicInOut", {
+				animation = indent_scope.gen_animation.cubic({
+					easing = "in-out",
 					duration = 100,
 					unit = "total",
 				}),
@@ -16,7 +23,7 @@ return {
 			},
 			symbol = "▏",
 		})
-		require("mini.surround").setup({
+		surround.setup({
 			highlight_duration = 2000,
 		})
 

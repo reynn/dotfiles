@@ -28,16 +28,16 @@ map("x", "<leader>p", "\"_dP")
 
 -- resize with arrows
 map("n", "<Up>", function()
-  require("smart-splits").resize_up(2)
+	require("smart-splits").resize_up(2)
 end, { desc = "Resize split up" })
 map("n", "<Down>", function()
-  require("smart-splits").resize_down(2)
+	require("smart-splits").resize_down(2)
 end, { desc = "Resize split down" })
 map("n", "<Left>", function()
-  require("smart-splits").resize_left(2)
+	require("smart-splits").resize_left(2)
 end, { desc = "Resize split left" })
 map("n", "<Right>", function()
-  require("smart-splits").resize_right(2)
+	require("smart-splits").resize_right(2)
 end, { desc = "Resize split right" })
 
 -- easy splits

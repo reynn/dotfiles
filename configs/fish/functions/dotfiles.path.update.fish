@@ -2,7 +2,7 @@
 
 function dotfiles.path.update -d "Setup the fish_user_path variable"
     # Python exports
-    set -Ux PYTHON_HOME (python3 -c 'import site; print(site.USER_BASE)')
+    set -Ux PYTHON_USER_HOME (python3 -c 'import site; print(site.USER_BASE)')
     set -l os_name (uname | string lower)
     set -l arch (uname -m)
     if test "$arch" = x86_64
@@ -14,7 +14,7 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
     set -l node_pnpm_path "$HOME/Library/pnpm"
 
     # These will add to the fish_user_paths only if necessary
-    path.replace "$PYTHON_HOME/bin" 2
+    path.replace "$PYTHON_USER_HOME/bin" 2
     set -l user_paths "$DFP/scripts" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/go/bin"
     if test -e (which vers)
         set -a user_paths (vers env -n global -s fish --bare-path)

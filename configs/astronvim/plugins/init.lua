@@ -19,9 +19,9 @@ return {
 	["echasnovski/mini.nvim"] = require("user.plugins.mini"),
 	["klen/nvim-test"] = require("user.plugins.nvim-test"),
 	["lukas-reineke/headlines.nvim"] = require("user.plugins.headlines"),
+  ["WhoIsSethDaniel/mason-tool-installer.nvim"] = require("user.plugins.mason-tool-installer"),
 	{ "tpope/vim-repeat" },
 	{ "junegunn/vim-easy-align" },
-	["WhoIsSethDaniel/mason-tool-installer.nvim"] = require("user.plugins.mason-tool-installer"),
 
 	-- -- ## Telescope extensions
 	["nvim-telescope/telescope-project.nvim"] = require("user.plugins.telescope.project"),
@@ -51,5 +51,7 @@ return {
 	["simrat39/rust-tools.nvim"] = require("user.plugins.rust"),
 	["Saecki/crates.nvim"] = require("user.plugins.rust.crates"),
 	["ray-x/go.nvim"] = require("user.plugins.golang"),
+	["tzachar/cmp-tabnine"] = require("user.plugins.tabnine"),
 	{ "hashivim/vim-terraform" },
+	{ "terrastruct/d2-vim" },
 }

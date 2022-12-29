@@ -1,5 +1,5 @@
 return {
-  channel = "nightly",
-  skip_prompts = true,
-  show_changelog = true,
+	channel = "nightly",
+	skip_prompts = true,
+	show_changelog = true,
 }
