@@ -1,19 +1,20 @@
 local map = vim.keymap.set
+local silentOpt = { silent = true }
 
-map("n", "ga", "<Plug>(EasyAlign)", { silent = true })
-map("x", "ga", "<Plug>(EasyAlign)", { silent = true })
-map("n", "w", "<Plug>CamelCaseMotion_w", { silent = true })
-map("n", "b", "<Plug>CamelCaseMotion_b", { silent = true })
-map("n", "e", "<Plug>CamelCaseMotion_e", { silent = true })
-map("n", "ge", "<Plug>CamelCaseMotion_ge", { silent = true })
-map("o", "iw", "<Plug>CamelCaseMotion_iw", { silent = true })
-map("x", "iw", "<Plug>CamelCaseMotion_iw", { silent = true })
-map("o", "ib", "<Plug>CamelCaseMotion_ib", { silent = true })
-map("x", "ib", "<Plug>CamelCaseMotion_ib", { silent = true })
-map("o", "ie", "<Plug>CamelCaseMotion_ie", { silent = true })
-map("x", "ie", "<Plug>CamelCaseMotion_ie", { silent = true })
-map("i", "<S-Left>", "<C-o><Plug>CamelCaseMotion_b", { silent = true })
-map("i", "<S-Right>", "<C-o><Plug>CamelCaseMotion_w", { silent = true })
+map("n", "ga", "<Plug>(EasyAlign)", silentOpt)
+map("x", "ga", "<Plug>(EasyAlign)", silentOpt)
+map("n", "w", "<Plug>CamelCaseMotion_w", silentOpt)
+map("n", "b", "<Plug>CamelCaseMotion_b", silentOpt)
+map("n", "e", "<Plug>CamelCaseMotion_e", silentOpt)
+map("n", "ge", "<Plug>CamelCaseMotion_ge", silentOpt)
+map("o", "iw", "<Plug>CamelCaseMotion_iw", silentOpt)
+map("x", "iw", "<Plug>CamelCaseMotion_iw", silentOpt)
+map("o", "ib", "<Plug>CamelCaseMotion_ib", silentOpt)
+map("x", "ib", "<Plug>CamelCaseMotion_ib", silentOpt)
+map("o", "ie", "<Plug>CamelCaseMotion_ie", silentOpt)
+map("x", "ie", "<Plug>CamelCaseMotion_ie", silentOpt)
+map("i", "<S-Left>", "<C-o><Plug>CamelCaseMotion_b", silentOpt)
+map("i", "<S-Right>", "<C-o><Plug>CamelCaseMotion_w", silentOpt)
 
 -- Join lines but leave cursor where it is
 map("n", "J", "mzJ`z")
@@ -24,7 +25,7 @@ map("v", "K", ":m '<-2<CR>gv=gv")
 map("n", "n", "nzzzv")
 map("n", "N", "Nzzzv")
 -- deletes the highlighted text without overwriting current paste buffer
-map("x", "<leader>p", "\"_dP")
+map("x", "<leader>p", '"_dP')
 
 -- resize with arrows
 map("n", "<Up>", function()

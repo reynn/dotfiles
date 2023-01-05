@@ -1,5 +1,17 @@
 return {
+	g = {
+		gruvbox_baby_telescope_theme = 1,
+		gruvbox_baby_background_color = "medium",
+		gruvbox_baby_comment_style = "italic",
+		gruvbox_baby_function_style = "bold",
+		gruvbox_baby_keyword_style = "bold",
+		gruvbox_baby_variable_style = "standout",
+
+		tokyodark_enable_italic_comment = true,
+		tokyodark_enable_italic = true,
+	},
 	opt = {
+		conceallevel = 2,
 		fillchars = {
 			horiz = "━",
 			horizup = "┻",
@@ -29,6 +41,6 @@ return {
 		sidescrolloff = 15,
 		timeoutlen = 100,
 		updatetime = 100,
-		conceallevel = 2,
+		wrap = false,
 	},
 }

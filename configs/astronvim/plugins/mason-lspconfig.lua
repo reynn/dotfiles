@@ -1,3 +1,3 @@
 return {
-  automatic_installation = true,
+	automatic_installation = true,
 }

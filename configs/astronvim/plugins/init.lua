@@ -1,4 +1,6 @@
-return {
+local plugin_configs = require("user.plugins.configs")
+
+local plugins = {
 	-- ## Change AstroNvim plugin defaults
 	["famiu/bufdelete.nvim"] = { disable = true },
 	["numToStr/Comment.nvim"] = { disable = true },
@@ -6,52 +8,136 @@ return {
 	["lukas-reineke/indent-blankline.nvim"] = { disable = true },
 	["Darazaki/indent-o-matic"] = { disable = true },
 
-	-- ## Colorschemes
-	["rebelot/kanagawa.nvim"] = require("user.plugins.colorschemes.kanagawa"),
-	-- ["luisiacc/gruvbox-baby"] = require("user.plugins.colorschemes.gruvbox-baby"),
-	-- ["tiagovla/tokyodark.nvim"] = require("user.plugins.colorschemes.tokyodark"),
-	-- ["catppuccin/nvim"] = require("user.plugins.colorschemes.catppuccin"),
+	-- -- ## Colorschemes
+	{ "rebelot/kanagawa.nvim" },
+	{ "luisiacc/gruvbox-baby" },
+	{ "catppuccin/nvim", as = "catppuccin" },
 
 	-- -- ## NeoVim UI/UX improvements
-	["projekt0n/circles.nvim"] = require("user.plugins.circles-nvim"),
-	["folke/trouble.nvim"] = require("user.plugins.trouble"),
-	["folke/zen-mode.nvim"] = require("user.plugins.zen-mode"),
-	["echasnovski/mini.nvim"] = require("user.plugins.mini"),
-	["klen/nvim-test"] = require("user.plugins.nvim-test"),
-	["lukas-reineke/headlines.nvim"] = require("user.plugins.headlines"),
-  ["WhoIsSethDaniel/mason-tool-installer.nvim"] = require("user.plugins.mason-tool-installer"),
-	{ "tpope/vim-repeat" },
+	{
+		"projekt0n/circles.nvim",
+		config = function()
+			require("circles").setup({})
+		end,
+		requires = {
+			"kyazdani42/nvim-web-devicons",
+		},
+	},
+	{
+		"lukas-reineke/headlines.nvim",
+		config = function()
+			require("headlines").setup({})
+		end,
+		ft = { "markdown", "rmd" },
+	},
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		config = plugin_configs.mason_tool_installer,
+	},
+	{
+		"echasnovski/mini.nvim",
+		config = plugin_configs.mini,
+	},
+	{
+		"folke/trouble.nvim",
+		cmd = "TroubleToggle",
+		config = plugin_configs.trouble,
+	},
+	{
+		"folke/zen-mode.nvim",
+		cmd = "ZenMode",
+		config = plugin_configs.zen_mode,
+		module = "zen-mode",
+	},
 	{ "junegunn/vim-easy-align" },
+	{ "tpope/vim-repeat" },
 
 	-- -- ## Telescope extensions
-	["nvim-telescope/telescope-project.nvim"] = require("user.plugins.telescope.project"),
-	-- ["nvim-telescope/telescope-packer.nvim"] = require("user.plugins.telescope.packer"),
-	["nvim-telescope/telescope-dap.nvim"] = require("user.plugins.telescope.dap"),
-	["cljoly/telescope-repo.nvim"] = require("user.plugins.telescope.repo"),
+	{
+		"nvim-telescope/telescope-packer.nvim",
+		after = "telescope.nvim",
+		config = function()
+			require("telescope").load_extension("packer")
+		end,
+		module = "telescope._extensions.packer",
+	},
+	{
+		"nvim-telescope/telescope-project.nvim",
+		after = "telescope.nvim",
+		config = function()
+			require("telescope").load_extension("project")
+		end,
+		module = "telescope._extensions.project",
+	},
+	{
+		"cljoly/telescope-repo.nvim",
+		after = "telescope.nvim",
+		config = function()
+			require("telescope").load_extension("repo")
+		end,
+		module = "telescope._extensions.repo",
+	},
 
 	-- -- ## Text Objects/Motions
 	{ "bkad/CamelCaseMotion" },
-	["nvim-treesitter/nvim-treesitter-textobjects"] = require("user.plugins.treesitter.textobjects"),
-	["phaazon/hop.nvim"] = require("user.plugins.hop"),
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		after = "nvim-treesitter",
+	},
 
 	-- -- ## Treesitter additions
-	["ziontee113/syntax-tree-surfer"] = require("user.plugins.syntax-tree-surfer"),
+	{
+		"ziontee113/syntax-tree-surfer",
+		config = plugin_configs.tree_surfer,
+		module = "syntax-tree-surfer",
+	},
 
 	-- -- ## LSP Additions
-	["ray-x/lsp_signature.nvim"] = require("user.plugins.lsp-signature"),
-	["m-demare/hlargs.nvim"] = require("user.plugins.hlargs"),
-
-	-- -- ## DAP
-	["mfussenegger/nvim-dap"] = require("user.plugins.dap"),
-	["leoluz/nvim-dap-go"] = require("user.plugins.golang.dap"),
-	["rcarriga/nvim-dap-ui"] = require("user.plugins.dap.ui"),
-	["theHamsta/nvim-dap-virtual-text"] = require("user.plugins.dap.virtual-text"),
+	{
+		"m-demare/hlargs.nvim",
+		after = "nvim-treesitter",
+		config = function()
+			require("hlargs").setup({})
+		end,
+	},
+	{
+		"lvimuser/lsp-inlayhints.nvim",
+		config = function()
+			require("lsp-inlayhints").setup({})
+		end,
+	},
+	{
+		"ray-x/lsp_signature.nvim",
+		config = plugin_configs.lsp_signature,
+		event = "BufRead",
+	},
 
 	-- -- ## Language Additions
-	["simrat39/rust-tools.nvim"] = require("user.plugins.rust"),
-	["Saecki/crates.nvim"] = require("user.plugins.rust.crates"),
-	["ray-x/go.nvim"] = require("user.plugins.golang"),
-	["tzachar/cmp-tabnine"] = require("user.plugins.tabnine"),
+	{
+		"simrat39/rust-tools.nvim",
+		config = plugin_configs.rust_tools,
+		ft = { "rust" },
+	},
+	{
+		"Saecki/crates.nvim",
+		after = "nvim-cmp",
+		config = plugin_configs.rust_crates,
+		event = { "BufRead Cargo.toml" },
+		requires = { "plenary.nvim" },
+	},
+	{
+		"ray-x/go.nvim",
+		config = plugin_configs.golang,
+		ft = { "go" },
+	},
+	-- {
+	-- 	"tzachar/cmp-tabnine",
+	-- 	after = "nvim-cmp",
+	-- 	config = plugin_configs.cmp_tabnine,
+	-- 	run = "./install.sh",
+	-- },
 	{ "hashivim/vim-terraform" },
 	{ "terrastruct/d2-vim" },
 }
+
+return plugins

@@ -72,12 +72,16 @@ utils.augroup("dap", {
 	},
 })
 
-utils.augroup("tabnine-prefetch", {
+utils.augroup("LspAttach_inlayhints", {
 	{
-		event = "BufRead",
-		pattern = "*.lua",
-		command = function()
-			require("cmp_tabnine"):prefetch(vim.fn.expand("%:p"))
+		event = "BufEnter",
+		command = function(args)
+			if not (args.data and args.data.client_id) then
+				return
+			end
+			local bufnr = args.buf
+			local client = vim.lsp.get_client_by_id(args.data.client_id)
+			require("lsp-inlayhints").on_attach(client, bufnr)
 		end,
 	},
 })
