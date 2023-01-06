@@ -12,16 +12,11 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         __dotfiles_help $help_args
     end
 
-    function packer_sync
-        nvim --headless \
-            -c 'autocmd User PackerComplete quitall' \
-            -c PackerSync
-    end
-
     function clean
-        rm -rf "$HOME/.cache/nvim"
-        rm -rf "$HOME/.config/nvim"
-        rm -rf "$HOME/.local/share/nvim"
+        rm -rf ~/.cache/nvim
+        rm -rf ~/.config/nvim
+        rm -rf ~/.local/share/nvim
+        rm -rf ~/.local/state/nvim
     end
 
     getopts $argv | while read -l key value
@@ -39,12 +34,21 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         end
     end
 
-    __log "Cloning $ASTRONVIM_REPO to $NVIM_CONFIG_DIR"
-    git clone $ASTRONVIM_REPO $NVIM_CONFIG_DIR
+    if test ! -d $NVIM_CONFIG_DIR
+        __log "Cloning $ASTRONVIM_REPO to $NVIM_CONFIG_DIR"
+        git clone $ASTRONVIM_REPO $NVIM_CONFIG_DIR
 
-    __log "Symlinking AstroNVIM user config"
-    symlink.create -s $DOTFILES_CONFIG_DIR/astronvim -d $NVIM_CONFIG_DIR/lua/user
+        __log "Running initial PackerSync"
+        nvim -c 'autocmd User PackerComplete quitall'
+    else
+        __log "AstroNVim already cloned"
+    end
 
-    __log "Running PackerSync"
-    packer_sync
+    if test ! -L "$NVIM_CONFIG_DIR/lua/user"
+        __log "Symlinking AstroNVIM user config"
+        symlink.create -s $DOTFILES_CONFIG_DIR/astronvim -d $NVIM_CONFIG_DIR/lua/user
+
+        __log "Running user PackerSync"
+        nvim -c 'autocmd User PackerSync quitall' -c PackerSync
+    end
 end
