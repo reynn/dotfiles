@@ -21,35 +21,6 @@ M.cmp_tabnine = function()
 	})
 end
 
-M.colorscheme = function(name)
-	local opts = {
-		kanagawa = {
-			dimInactive = true,
-			globalStatus = true,
-		},
-		catppuccin = {
-			term_colors = true,
-			integrations = {
-				indent_blankline = {
-					enabled = false,
-				},
-				lsp_trouble = false,
-				neotree = {
-					enabled = true,
-				},
-				nvimtree = {
-					enabled = false,
-				},
-				telescope = true,
-				ts_rainbow = true,
-				which_key = true,
-			},
-		},
-	}
-
-	require(name).setup(opts[name])
-end
-
 M.golang = function()
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
@@ -89,6 +60,13 @@ M.golang = function()
 		max_line_len = 120,
 		textobjects = false,
 		verbose = false,
+	})
+end
+
+M.kanagawa = function()
+	require("kanagawa").setup({
+		dimInactive = true,
+		globalStatus = true,
 	})
 end
 

@@ -9,9 +9,11 @@ local plugins = {
 	["Darazaki/indent-o-matic"] = { disable = true },
 
 	-- -- ## Colorschemes
-	{ "rebelot/kanagawa.nvim" },
+	{
+		"rebelot/kanagawa.nvim",
+		config = plugin_configs.kanagawa,
+	},
 	{ "luisiacc/gruvbox-baby" },
-	{ "catppuccin/nvim", as = "catppuccin" },
 
 	-- -- ## NeoVim UI/UX improvements
 	{
