@@ -8,6 +8,22 @@ return {
 		-- -- easy splits
 		["\\"] = { "<cmd>split<cr>", desc = "Horizontal split" },
 		["|"] = { "<cmd>vsplit<cr>", desc = "Vertical split" },
+
+    -- ["g"] = {name = "Go To"},
+
+    -- -- Trouble
+		["<leader>T"] = { name = "Trouble" },
+		["<leader>Tx"] = { "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" },
+		["<leader>Tw"] = {
+			"<cmd>TroubleToggle workspace_diagnostics<cr>",
+			desc = "Trouble Workspace Diagnostics",
+		},
+		["<leader>Td"] = {
+			"<cmd>TroubleToggle document_diagnostics<cr>",
+			desc = "Trouble Document Diagnostics",
+		},
+		["<leader>Tq"] = { "<cmd>TroubleToggle quickfix<cr>", desc = "Trouble Quickfix" },
+		["<leader>Tl"] = { "<cmd>TroubleToggle loclist<cr>", desc = "Trouble LOC List" },
 	},
 	v = {
 		-- -- move highlighted lines up or down

@@ -2,7 +2,6 @@ local utils = require("user.utils")
 
 return function()
 	require("user.autocmds")
-	require("user.mappings")
 
 	vim.keymap.del("n", "<leader>c")
 	if require("core.utils").is_available("bufdelete.nvim") then
