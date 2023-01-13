@@ -1,5 +1,5 @@
 return {
-	astronvim.plugin({
+	{
 		"echasnovski/mini.nvim",
 		lazy = false,
 		config = function(_, _)
@@ -48,5 +48,5 @@ return {
 				vim.g["mini" .. plugin .. "_disable"] = true
 			end
 		end,
-	}),
+	},
 }

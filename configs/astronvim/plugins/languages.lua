@@ -1,5 +1,5 @@
 return {
-	astronvim.plugin({
+	{
 		"ray-x/go.nvim",
 		config = function()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -43,8 +43,8 @@ return {
 			})
 		end,
 		ft = { "go" },
-	}),
-	astronvim.plugin({
+	},
+	{
 		"Saecki/crates.nvim",
 		after = "nvim-cmp",
 		event = { "BufRead Cargo.toml" },
@@ -52,8 +52,8 @@ return {
 			require("crates").setup({})
 			-- astronvim.add_user_cmp_source("crates")
 		end,
-	}),
-	astronvim.plugin({
+	},
+	{
 		"simrat39/rust-tools.nvim",
 		config = function()
 			local lldb_version = "1.8.1"
@@ -77,5 +77,5 @@ return {
 			})
 		end,
 		ft = { "rust" },
-	}),
+	},
 }

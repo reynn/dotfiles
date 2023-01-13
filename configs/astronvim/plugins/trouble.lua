@@ -1,5 +1,5 @@
 return {
-	astronvim.plugin({
+	{
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
 		config = function(_, _)
@@ -44,5 +44,5 @@ return {
 				use_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
 			})
 		end,
-	}),
+	},
 }

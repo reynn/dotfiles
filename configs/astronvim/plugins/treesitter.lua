@@ -1,5 +1,5 @@
 return {
-	astronvim.plugin({
+	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {
 			ensure_installed = {
@@ -15,8 +15,8 @@ return {
 				"toml",
 			},
 		},
-	}),
-	astronvim.plugin({
+	},
+	{
 		"ziontee113/syntax-tree-surfer",
 		config = function()
 			require("syntax-tree-surfer").setup({
@@ -24,10 +24,10 @@ return {
 			})
 		end,
 		module = "syntax-tree-surfer",
-	}),
-	astronvim.plugin({
+	},
+	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		event = "BufEnter",
 		after = "nvim-treesitter",
-	}),
+	},
 }

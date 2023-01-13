@@ -1,5 +1,5 @@
 return {
-	astronvim.plugin({
+	{
 		"jay-babu/mason-nvim-dap.nvim",
 		opts = {
 			ensure_installed = {
@@ -8,8 +8,8 @@ return {
 				"codelldb",
 			},
 		},
-	}),
-	astronvim.plugin({
+	},
+	{
 		"jay-babu/mason-null-ls.nvim",
 		opts = {
 			ensure_installed = {
@@ -22,8 +22,8 @@ return {
 				"yamllint",
 			},
 		},
-	}),
-	astronvim.plugin({
+	},
+	{
 		"williamboman/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
@@ -34,11 +34,10 @@ return {
 				"jedi_language_server",
 				"jdtls",
 				"jsonls",
-				"remark_ls",
 				"rust_analyzer",
 				"taplo",
 				"yamlls",
 			},
 		},
-	}),
+	},
 }

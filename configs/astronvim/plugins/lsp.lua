@@ -1,5 +1,5 @@
 return {
-	astronvim.plugin({
+	{
 		"ray-x/lsp_signature.nvim",
 		config = function(_, _)
 			require("lsp_signature").setup({
@@ -13,5 +13,5 @@ return {
 			})
 		end,
 		event = "BufRead",
-	}),
+	},
 }
