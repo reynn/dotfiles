@@ -23,8 +23,7 @@ This will run the installation script and setup all necessary dependencies and l
 
 | Config          | Link                                     |
 | --------------- | ---------------------------------------- |
-| Terminal        | [Alacritty](configs/alacritty/readme.md) |
+| Terminal        | [WezTerm](configs/wezterm/readme.md)     |
 | Shell           | [Fish Shell](configs/fish/readme.md)     |
-| Prompt          | [Starship](configs/starship/readme.md)   |
 | Multiplexer     | [Zellij](configs/zellij/readme.md)       |
-| Neo(Vim) Config | [SpaceVim](configs/spacevim/readme.md)   |
+| Neo(Vim) Config | [AstroNvim](configs/astronvim/readme.md) |

@@ -35,32 +35,6 @@ utils.augroup("docker", {
 	},
 })
 
-utils.augroup("mini", {
-	{
-		event = { "FileType", "BufEnter" },
-		description = "Disable indent scope for content types",
-		command = function()
-			if
-				vim.tbl_contains({
-					"NvimTree",
-					"TelescopePrompt",
-					"Trouble",
-					"alpha",
-					"help",
-					"lsp-installer",
-					"lspinfo",
-					"neo-tree",
-					"neogitstatus",
-					"packer",
-					"startify",
-				}, vim.bo.filetype) or vim.tbl_contains({ "nofile", "terminal" }, vim.bo.buftype)
-			then
-				vim.b.miniindentscope_disable = true
-			end
-		end,
-	},
-})
-
 utils.augroup("dap", {
 	{
 		event = "FileType",

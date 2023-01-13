@@ -6,7 +6,7 @@ function M.alpha_on_bye(cmd)
 	local bufs = vim.fn.getbufinfo({ buflisted = true })
 	vim.cmd(cmd)
 	if require("core.utils").is_available("alpha-nvim") and not bufs[2] then
-		require("alpha-nvim").start(true)
+		require("alpha").start(true)
 	end
 end
 
@@ -26,6 +26,18 @@ function M.augroup(name, commands)
 		})
 	end
 	return id
+end
+
+function M.vim_opt_toggle(opt, on, off, name)
+	local message = name
+	if vim.opt[opt]._value == off then
+		vim.opt[opt] = on
+		message = message .. " Enabled"
+	else
+		vim.opt[opt] = off
+		message = message .. " Disabled"
+	end
+	vim.notify(message, "info", {})
 end
 
 return M

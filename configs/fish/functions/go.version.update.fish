@@ -1,8 +1,9 @@
 #!/usr/bin/env fish
 
 function go.version.update -d "Get a version of Go or source the latest environment from Gimme"
-    set -l go_version "$argv[1]"
+    set -x go_version "$argv[1]"
     set -x script_url 'https://raw.githubusercontent.com/travis-ci/gimme/master/gimme'
+    set -x script_location "$HOME/.local/bin/gimme"
     set -x existing_versions (fd -td -d1 . --base-directory $HOME/.gimme/versions | tr -d 'go' | sort -ru)
 
     function ___usage
@@ -12,10 +13,17 @@ function go.version.update -d "Get a version of Go or source the latest environm
     end
 
     function __execute_gimme
+        if test ! -e $script_location
+            __log debug "Getting gimme script from $script_url"
+            curl -sSL $script_url > $script_location
+            chmod +x $script_location
+        end
         if test -z "$argv"
-            curl -sL $script_url | bash
+            bash $script_location
+            # curl -sL $script_url | bash
         else
-            curl -sL $script_url | env $argv bash
+            env $argv bash $script_location
+            # curl -sL $script_url | env $argv bash
         end
     end
 
@@ -42,6 +50,12 @@ function go.version.update -d "Get a version of Go or source the latest environm
                 set -x DEBUG true
         end
     end
+
+    __log debug "go_version        $go_version"
+    __log debug "script_url        $script_url"
+    __log debug "script_location   $script_location"
+    __log debug "existing_versions $existing_versions"
+
 
     if test -n "$go_version"
         contains -- $go_version $existing_versions

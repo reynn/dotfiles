@@ -48,7 +48,8 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         __log "Symlinking AstroNVIM user config"
         symlink.create -s $DOTFILES_CONFIG_DIR/astronvim -d $NVIM_CONFIG_DIR/lua/user
 
-        __log "Running user PackerSync"
-        nvim -c 'autocmd User PackerSync quitall' -c PackerSync
+        nvim
+        # __log "Running user PackerSync"
+        # nvim -c 'autocmd User PackerSync quitall' -c PackerSync
     end
 end
