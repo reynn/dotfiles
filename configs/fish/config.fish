@@ -20,4 +20,8 @@ alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
 alias l 'lsd -l'
 alias ll 'l --tree'
 
+# Abbreviations
+abbr --add dotdot --regex '^\.\.+$' --function dot_dot_expand
+abbr --add !! --position anywhere --function last_history_item
+
 # set fish_trace off

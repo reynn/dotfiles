@@ -39,16 +39,13 @@ function dotfiles.env.update -d 'Setup global/universal variables'
 
     set -Ux GFP "$HOME/git"
     set -Ux DFP "$GFP/github.com/reynn/dotfiles"
-
     set -Ux ZELLIJ_CONFIG_DIR "$DFP/configs/zellij"
 
     ## Language versions
     set -Ux LANGUAGES_PYTHON_VERSION '3.11'
     set -Ux LANGUAGES_GO_VERSION '1.19.5'
-    set -Ux LANGUAGES_RUST_VERSION '1.66.0'
-    set -Ux LANGUAGES_NODE_VERSION '19.3.0'
-
-    set -Ux GOPRIVATE '*.concur.com,*.wdf.sap.corp,*.tools.sap'
+    set -Ux LANGUAGES_RUST_VERSION '1.66.1'
+    set -Ux LANGUAGES_NODE_VERSION '19.4.0'
 
     ## Load any secrets
     source "$DFP/.host/$hostname.fish" 1&>>/dev/null; or __log debug 'Unable to load host values'
