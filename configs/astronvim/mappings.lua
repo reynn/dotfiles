@@ -8,6 +8,19 @@ return {
 		["<c-d>d"] = { "<c-r>=strftime('%Y/%m/%d %H:%M:%S -')<cr>", desc = "Y/m/d H:M:S -" },
 	},
 	n = {
+		["<S-h>"] = {
+			function()
+				astronvim.nav_buf(-(vim.v.count > 0 and vim.v.count or 1))
+			end,
+			desc = "Next Buffer",
+		},
+		["<S-l>"] = {
+			function()
+				astronvim.nav_buf(vim.v.count > 0 and vim.v.count or 1)
+			end,
+			desc = "Next Buffer",
+		},
+		-- smart splits
 		["<Up>"] = {
 			function()
 				require("smart-splits").resize_up(2)
@@ -224,17 +237,3 @@ return {
 		["<leader>p"] = { "_dP" },
 	},
 }
--- -- resize with arrows
--- map("n", "<Up>", function()
--- 	require("smart-splits").resize_up(2)
--- end, { desc = "Resize split up" })
--- map("n", "<Down>", function()
--- 	require("smart-splits").resize_down(2)
--- end, { desc = "Resize split down" })
--- map("n", "<Left>", function()
--- 	require("smart-splits").resize_left(2)
--- end, { desc = "Resize split left" })
--- map("n", "<Right>", function()
--- 	require("smart-splits").resize_right(2)
--- end, { desc = "Resize split right" })
---
