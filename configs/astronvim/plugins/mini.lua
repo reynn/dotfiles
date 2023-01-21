@@ -3,19 +3,13 @@ return {
 		"echasnovski/mini.nvim",
 		lazy = false,
 		config = function(_, _)
-			local indent_scope = require("mini.indentscope")
-			local surround = require("mini.surround")
-			local bufremove = require("mini.bufremove")
-			local comment = require("mini.comment")
-			local cursor_word = require("mini.cursorword")
-
-			bufremove.setup({})
-			comment.setup({})
-			cursor_word.setup({})
-			indent_scope.setup({
+			require("mini.bufremove").setup({})
+			require("mini.comment").setup({})
+			require("mini.cursorword").setup({})
+			require("mini.indentscope").setup({
 				draw = {
 					delay = 0,
-					animation = indent_scope.gen_animation.cubic({
+					animation = require("mini.indentscope").gen_animation.cubic({
 						easing = "in-out",
 						duration = 100,
 						unit = "total",
@@ -26,7 +20,7 @@ return {
 				},
 				symbol = "▏",
 			})
-			surround.setup({
+			require("mini.surround").setup({
 				highlight_duration = 2000,
 			})
 

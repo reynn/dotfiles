@@ -128,11 +128,6 @@ return {
 			desc = "Go to Statement",
 		},
 
-		-- Parameter swapping
-		-- ["<leader>s"] = { name = "Swap" },
-		-- ["<leader>sp"] = { desc = "Next Parameter" },
-		-- ["<leader>sP"] = { desc = "Previous Parameter" },
-
 		-- Telescope
 		["<leader>f?"] = { "<cmd>Telescope help_tags<cr>", desc = "Find Help" },
 		["<leader>fa"] = { "<cmd>Telescope aerial<cr>", desc = "Aerial" },
@@ -145,7 +140,7 @@ return {
 		["<leader>H"] = { "<cmd>set hlsearch!<cr>", desc = "Toggle Highlight" },
 		["<leader>c"] = {
 			function()
-				require("mini.bufremove").delete()
+				MiniBufremove.delete(0)
 			end,
 			desc = "Close Buffer",
 		},

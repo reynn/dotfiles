@@ -6,8 +6,8 @@ return {
   cursor_fg = "#ebdbb2",
   cursor_border = "#ebdbb2",
 
-  selection_fg = "#ebdbb2",
-  selection_bg = "#1d2021",
+  selection_fg = "#1d2021",
+  selection_bg = "#ebdbb2",
 
   scrollbar_thumb = "#16161d",
   split = "#16161d",
