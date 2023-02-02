@@ -27,14 +27,14 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
-				"gopls",
-				"sumneko_lua",
 				"bashls",
 				"dockerls",
-				"jedi_language_server",
+				"gopls",
 				"jdtls",
+				"jedi_language_server",
 				"jsonls",
 				"rust_analyzer",
+				"sumneko_lua",
 				"taplo",
 				"yamlls",
 			},

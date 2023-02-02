@@ -99,3 +99,6 @@ to_create:
   - dest: "{{ ansible_user_dir }}/.config/lsd"
     src: "{{ dotfiles_path }}/configs/lsd"
     state: link
+  - dest: "{{ ansible_user_dir }}/revive.toml"
+    src: "{{ dotfiles_path }}/configs/revive.toml"
+    state: link
