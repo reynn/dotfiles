@@ -22,6 +22,7 @@ repos:
     rev: v1.0.0
     hooks:
       - id: encryption-check
+        files: ^ansible/
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v0.15.2
     hooks:

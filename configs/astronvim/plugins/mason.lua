@@ -34,7 +34,7 @@ return {
 				"jedi_language_server",
 				"jsonls",
 				"rust_analyzer",
-				"sumneko_lua",
+				"lua_ls",
 				"taplo",
 				"yamlls",
 			},
