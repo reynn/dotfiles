@@ -28,7 +28,7 @@ return function()
 	})
 	vim.keymap.del("n", "<leader>c")
 
-	if require("core.utils").is_available("bufdelete.nvim") then
+	if require("astronvim.utils").is_available("bufdelete.nvim") then
 		vim.keymap.set("n", "<leader>c", function()
 			utils.alpha_on_bye("Bdelete!")
 		end, { desc = "Close buffer" })
