@@ -1,3 +1,5 @@
+local astro_utils = require("astronvim.utils")
+
 return {
 	i = {
 		["<c-d>n"] = { "<c-r>=strftime('%Y-%m-%d')<cr>", desc = "Y-m-d" },
@@ -8,17 +10,18 @@ return {
 		["<c-d>d"] = { "<c-r>=strftime('%Y/%m/%d %H:%M:%S -')<cr>", desc = "Y/m/d H:M:S -" },
 	},
 	n = {
-		["<S-h>"] = {
+		["<Tab>"] = {
 			function()
-				astronvim.nav_buf(-(vim.v.count > 0 and vim.v.count or 1))
+				if #vim.t.bufs > 1 then
+					require("telescope.builtin").buffers({
+						sort_mru = true,
+						ignore_current_buffer = true,
+					})
+				else
+					astro_utils.notify("No other buffers open")
+				end
 			end,
-			desc = "Next Buffer",
-		},
-		["<S-l>"] = {
-			function()
-				astronvim.nav_buf(vim.v.count > 0 and vim.v.count or 1)
-			end,
-			desc = "Next Buffer",
+			desc = "Switch Buffers",
 		},
 		-- smart splits
 		["<Up>"] = {
@@ -53,9 +56,7 @@ return {
 		-- -- easy splits
 		["\\"] = { "<cmd>split<cr>", desc = "Horizontal split" },
 		["|"] = { "<cmd>vsplit<cr>", desc = "Vertical split" },
-
 		["g"] = { name = "Go To" },
-
 		-- -- Trouble
 		["<leader>T"] = { name = "Trouble" },
 		["<leader>Tx"] = { "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" },
@@ -69,7 +70,6 @@ return {
 		},
 		["<leader>Tq"] = { "<cmd>TroubleToggle quickfix<cr>", desc = "Trouble Quickfix" },
 		["<leader>Tl"] = { "<cmd>TroubleToggle loclist<cr>", desc = "Trouble LOC List" },
-
 		["gt"] = { name = "TreeSitter" },
 		["gtv"] = {
 			function()
@@ -127,7 +127,7 @@ return {
 			end,
 			desc = "Go to Statement",
 		},
-
+		-- LSP
 		-- Telescope
 		["<leader>f?"] = { "<cmd>Telescope help_tags<cr>", desc = "Find Help" },
 		["<leader>fa"] = { "<cmd>Telescope aerial<cr>", desc = "Aerial" },
@@ -135,7 +135,6 @@ return {
 		["<leader>fp"] = { "<cmd>Telescope project<cr>", desc = "Projects" },
 		["<leader>fR"] = { "<cmd>Telescope repo list<cr>", desc = "Repos" },
 		["<leader>ft"] = { "<cmd>Telescope colorscheme<cr>", desc = "Themes" },
-
 		-- UX improvements
 		["<leader>H"] = { "<cmd>set hlsearch!<cr>", desc = "Toggle Highlight" },
 		["<leader>c"] = {
@@ -144,7 +143,6 @@ return {
 			end,
 			desc = "Close Buffer",
 		},
-
 		-- UI changes
 		["<leader>uh"] = {
 			function()
@@ -158,7 +156,6 @@ return {
 			end,
 			desc = "Toggle Zen Mode",
 		},
-
 		-- Rust mappings
 		["<leader>r"] = { name = "Rust" },
 		["<leader>rc"] = {

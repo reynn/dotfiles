@@ -5,7 +5,7 @@ local M = {}
 function M.alpha_on_bye(cmd)
 	local bufs = vim.fn.getbufinfo({ buflisted = true })
 	vim.cmd(cmd)
-	if require("core.utils").is_available("alpha-nvim") and not bufs[2] then
+	if require("astronvim.utils").is_available("alpha-nvim") and not bufs[2] then
 		require("alpha").start(true)
 	end
 end
