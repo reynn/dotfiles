@@ -255,7 +255,7 @@ simplified_ui true
 pane_frames false
 
 // Choose the theme that is specified in the themes section.
-theme "gruvbox-dark" 
+theme "gruvbox-dark"
 
 // Toggle enabling the mouse mode.
 // On certain configurations, or terminals this could

@@ -173,4 +173,3 @@ complete -c doctl -e
 # The call to __doctl_prepare_completions will setup __doctl_comp_results
 # which provides the program's completion choices.
 complete -c doctl -n '__doctl_prepare_completions' -f -a '$__doctl_comp_results'
-

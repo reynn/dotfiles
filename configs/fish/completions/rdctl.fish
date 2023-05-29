@@ -173,4 +173,3 @@ complete -c rdctl -e
 # The call to __rdctl_prepare_completions will setup __rdctl_comp_results
 # which provides the program's completion choices.
 complete -c rdctl -n '__rdctl_prepare_completions' -f -a '$__rdctl_comp_results'
-

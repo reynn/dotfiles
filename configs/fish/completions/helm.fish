@@ -173,4 +173,3 @@ complete -c helm -e
 # The call to __helm_prepare_completions will setup __helm_comp_results
 # which provides the program's completion choices.
 complete -c helm -n '__helm_prepare_completions' -f -a '$__helm_comp_results'
-

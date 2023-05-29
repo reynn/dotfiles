@@ -13,7 +13,8 @@ return {
 				fold_closed = "", -- icon used for closed folds
 				group = true, -- group results by file
 				padding = true, -- add an extra new line on top of the list
-				action_keys = { -- key mappings for actions in the trouble list
+				action_keys = {
+					-- key mappings for actions in the trouble list
 					-- map to {} to remove a mapping, for example: close = {},
 					close = "q", -- close the list
 					cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor

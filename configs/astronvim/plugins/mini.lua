@@ -3,9 +3,9 @@ return {
 		"echasnovski/mini.nvim",
 		lazy = false,
 		config = function(_, _)
-			require("mini.bufremove").setup({})
-			require("mini.comment").setup({})
-			require("mini.cursorword").setup({})
+			require("mini.bufremove").setup()
+			require("mini.comment").setup()
+			require("mini.cursorword").setup()
 			require("mini.indentscope").setup({
 				draw = {
 					delay = 0,

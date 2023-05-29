@@ -174,4 +174,3 @@ complete -c dasel -e
 # The call to __dasel_prepare_completions will setup __dasel_comp_results
 # which provides the program's completion choices.
 complete -c dasel -n '__dasel_prepare_completions' -f -a '$__dasel_comp_results'
-

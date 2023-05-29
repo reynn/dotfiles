@@ -174,4 +174,3 @@ complete -c nerdctl -e
 # The call to __nerdctl_prepare_completions will setup __nerdctl_comp_results
 # which provides the program's completion choices.
 complete -c nerdctl -n '__nerdctl_prepare_completions' -f -a '$__nerdctl_comp_results'
-
