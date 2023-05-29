@@ -55,6 +55,60 @@ function __stern_perform_completion
     printf "%s\n" "$directiveLine"
 end
 
+# this function limits calls to __stern_perform_completion, by caching the result behind $__stern_perform_completion_once_result
+function __stern_perform_completion_once
+    __stern_debug "Starting __stern_perform_completion_once"
+
+    if test -n "$__stern_perform_completion_once_result"
+        __stern_debug "Seems like a valid result already exists, skipping __stern_perform_completion"
+        return 0
+    end
+
+    set --global __stern_perform_completion_once_result (__stern_perform_completion)
+    if test -z "$__stern_perform_completion_once_result"
+        __stern_debug "No completions, probably due to a failure"
+        return 1
+    end
+
+    __stern_debug "Performed completions and set __stern_perform_completion_once_result"
+    return 0
+end
+
+# this function is used to clear the $__stern_perform_completion_once_result variable after completions are run
+function __stern_clear_perform_completion_once_result
+    __stern_debug ""
+    __stern_debug "========= clearing previously set __stern_perform_completion_once_result variable =========="
+    set --erase __stern_perform_completion_once_result
+    __stern_debug "Succesfully erased the variable __stern_perform_completion_once_result"
+end
+
+function __stern_requires_order_preservation
+    __stern_debug ""
+    __stern_debug "========= checking if order preservation is required =========="
+
+    __stern_perform_completion_once
+    if test -z "$__stern_perform_completion_once_result"
+        __stern_debug "Error determining if order preservation is required"
+        return 1
+    end
+
+    set -l directive (string sub --start 2 $__stern_perform_completion_once_result[-1])
+    __stern_debug "Directive is: $directive"
+
+    set -l shellCompDirectiveKeepOrder 32
+    set -l keeporder (math (math --scale 0 $directive / $shellCompDirectiveKeepOrder) % 2)
+    __stern_debug "Keeporder is: $keeporder"
+
+    if test $keeporder -ne 0
+        __stern_debug "This does require order preservation"
+        return 0
+    end
+
+    __stern_debug "This doesn't require order preservation"
+    return 1
+end
+
+
 # This function does two things:
 # - Obtain the completions and store them in the global __stern_comp_results
 # - Return false if file completion should be performed
@@ -65,17 +119,17 @@ function __stern_prepare_completions
     # Start fresh
     set --erase __stern_comp_results
 
-    set -l results (__stern_perform_completion)
-    __stern_debug "Completion results: $results"
+    __stern_perform_completion_once
+    __stern_debug "Completion results: $__stern_perform_completion_once_result"
 
-    if test -z "$results"
+    if test -z "$__stern_perform_completion_once_result"
         __stern_debug "No completion, probably due to a failure"
         # Might as well do file completion, in case it helps
         return 1
     end
 
-    set -l directive (string sub --start 2 $results[-1])
-    set --global __stern_comp_results $results[1..-2]
+    set -l directive (string sub --start 2 $__stern_perform_completion_once_result[-1])
+    set --global __stern_comp_results $__stern_perform_completion_once_result[1..-2]
 
     __stern_debug "Completions are: $__stern_comp_results"
     __stern_debug "Directive is: $directive"
@@ -171,6 +225,11 @@ end
 # Remove any pre-existing completions for the program since we will be handling all of them.
 complete -c stern -e
 
+# this will get called after the two calls below and clear the $__stern_perform_completion_once_result global
+complete -c stern -n '__stern_clear_perform_completion_once_result'
 # The call to __stern_prepare_completions will setup __stern_comp_results
 # which provides the program's completion choices.
-complete -c stern -n '__stern_prepare_completions' -f -a '$__stern_comp_results'
+# If this doesn't require order preservation, we don't use the -k flag
+complete -c stern -n 'not __stern_requires_order_preservation && __stern_prepare_completions' -f -a '$__stern_comp_results'
+# otherwise we use the -k flag
+complete -k -c stern -n '__stern_requires_order_preservation && __stern_prepare_completions' -f -a '$__stern_comp_results'
