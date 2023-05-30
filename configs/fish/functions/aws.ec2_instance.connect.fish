@@ -19,6 +19,7 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
         set -a help_args -f "I|instance-id|ID of the instance to connect to|[]"
         set -a help_args -f "f|filter|Set of filters to narrow down list of instances|$filters"
         set -a help_args -f "F|no-filters|Removes all filters (Will grab all running instances)|false"
+        set -a help_args -f "|json|Uses the provided file as a JSON dict with keys being a friendly name and values being instance IDs|"
         set -a help_args -f "c|connect-method|Method use to connect to the instance (ssh or ssm)|ssh"
         set -a help_args -f "u|username|The name of the SSH user to connect to|$ssh_user_name"
         set -a help_args -f "p|profile|AWS Profile used for auth|$aws_profile"
@@ -65,6 +66,8 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
                 set -a filters "$value"
             case no-filters
                 set filters "Name=instance-state-name,Values=running"
+            case json
+                set json_list $value
             case c connect-method
                 set connect_method $value
             case p profile
@@ -89,16 +92,21 @@ function aws.ec2_instance.connect -d "Interactively connect to a created instanc
     __log debug "Profile        : $aws_profile"
 
     if test -z "$instance_id"
-        if test -z "$filters"
-            __log debug "Getting instances without filters"
-            aws --profile "$aws_profile" ec2 describe-instances >$tmp_file
+        if test -n $json_list
+            set -l selection (dasel -w plain -f $json_list 'all().key()' | fzf --height 40%)
+            set instance_id (dasel -w plain -f $json_list ".$selection")
         else
-            __log debug "Getting instances with filters"
-            aws --profile "$aws_profile" ec2 describe-instances --filters "$filters" >$tmp_file
+            if test -z "$filters"
+                __log debug "Getting instances without filters"
+                aws --profile "$aws_profile" ec2 describe-instances >$tmp_file
+            else
+                __log debug "Getting instances with filters"
+                aws --profile "$aws_profile" ec2 describe-instances --filters "$filters" >$tmp_file
+            end
+            set instance_id (dasel -f $tmp_file -r json -w plain '.(?:-=InstanceId)' |
+              fzf --select-1 --prompt 'instance-id> ' --height 40% --select-1 \
+              --preview "dasel select -f $tmp_file -p json -m '.Reservations.[].Instances.(InstanceId={})'")
         end
-        set instance_id (dasel -f $tmp_file -r json -w plain '.(?:-=InstanceId)' |
-          fzf --select-1 --prompt 'instance-id> ' --height 40% --select-1 \
-          --preview "dasel select -f $tmp_file -p json -m '.Reservations.[].Instances.(InstanceId={})'")
     end
     __log debug "instance.id : $instance_id"
     # rm -f $tmp_file
