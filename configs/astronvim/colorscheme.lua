@@ -1,2 +1,2 @@
-return "gruvbox-baby"
--- return "kanagawa"
+-- return "gruvbox-baby"
+return "kanagawa"
