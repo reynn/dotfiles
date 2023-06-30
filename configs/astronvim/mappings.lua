@@ -139,7 +139,7 @@ return {
 		["<leader>H"] = { "<cmd>set hlsearch!<cr>", desc = "Toggle Highlight" },
 		["<leader>c"] = {
 			function()
-				MiniBufremove.delete(0)
+				require("mini.bufremove").delete(0)
 			end,
 			desc = "Close Buffer",
 		},
