@@ -8,11 +8,11 @@ utils.augroup("gosettings", {
 		pattern = "*.go",
 		command = "setlocal tabstop=4 shiftwidth=4",
 	},
-	{
-		event = { "BufWritePre" },
-		pattern = { "*.go" },
-		command = 'silent! lua require("go.format").goimport()',
-	},
+	-- {
+	-- 	event = { "BufWritePre" },
+	-- 	pattern = { "*.go" },
+	-- 	command = 'silent! lua require("go.format").goimport()',
+	-- },
 })
 
 utils.augroup("autocomp", {
