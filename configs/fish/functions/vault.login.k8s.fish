@@ -33,6 +33,25 @@ function vault.login.k8s -d 'Login to a vault instance using a Kubernetes servic
         end
     end
 
+    if not set -q K8S_SA
+        __log error "Must provide a Kubernetes service account name"
+    end
+    set -l k8s_common
+    if set -q K8S_CONTEXT
+        set -a k8s_common --context $K8S_CONTEXT
+    end
+    if not set -q CLUSTER_NAME
+        __log debug 'cluster name not set, retrieving from configmap: kraken-env'
+        set -xg CLUSTER_NAME (kubectl get cm $k8s_common kraken-env -o json | dasel -r json -w plain '.data.CLUSTER_NAME')
+    end
+    if not set -q VAULT_ADDR
+        __log debug 'vault addr name not set, retrieving from configmap: kraken-env'
+        set -xg VAULT_ADDR "https://$(kubectl get cm $k8s_common kraken-env -o json | dasel -r json -w plain '.data.VAULT_SERVER')"
+    end
+    if set -q K8S_NAMESPACE
+        set -a k8s_common -n $K8S_NAMESPACE
+    end
+
     __log debug "CLUSTER_NAME     : $CLUSTER_NAME"
     __log debug "VAULT_ADDR       : $VAULT_ADDR"
     __log debug "VAULT_ROLE       : $VAULT_ROLE"
@@ -40,17 +59,6 @@ function vault.login.k8s -d 'Login to a vault instance using a Kubernetes servic
     __log debug "K8S_SA           : $K8S_SA"
     __log debug "K8S_NAMESPACE    : $K8S_NAMESPACE"
     __log debug "K8S_CONTEXT      : $K8S_CONTEXT"
-
-    if not set -q K8S_SA
-        __log error "Must provide a Kubernetes service account name"
-    end
-    set -l k8s_common
-    if set -q K8S_NAMESPACE
-        set -a k8s_common -n $K8S_NAMESPACE
-    end
-    if set -q K8S_CONTEXT
-        set -a k8s_common --context $K8S_CONTEXT
-    end
 
     set -x k8s_secret_name (kubectl get sa $k8s_common $K8S_SA -o json | dasel -r json -w plain '.secrets.first().name')
     set -x k8s_sa_token (kubectl get secret $k8s_common $k8s_secret_name -o json | dasel -r json -w plain .data.token | base64 -d)
@@ -60,8 +68,10 @@ function vault.login.k8s -d 'Login to a vault instance using a Kubernetes servic
 
     set login_payload (echo '{}' | dasel put -r json -t string -v $VAULT_ROLE .role | dasel put --pretty=false -r json -t string -v $k8s_sa_token .jwt)
     __log debug "LOGIN_PAYLOAD    : '$login_payload'"
+    set vault_endpoint "$VAULT_ADDR/v1/auth/kraken/$CLUSTER_NAME/login"
+    __log debug "VAULT ENDPOINT   : $vault_endpoint"
 
-    set login_result (curl -k -s -H "X-Vault-Namespace: $VAULT_NAMESPACE" -X POST -d $login_payload $VAULT_ADDR/v1/auth/kraken/$CLUSTER_NAME/login)
+    set login_result (curl -k -s -H "X-Vault-Namespace: $VAULT_NAMESPACE" -X POST -d $login_payload $vault_endpoint)
     __log debug "LOGIN_RESULT     : '$login_result'"
     set -xg VAULT_TOKEN (echo $login_result | dasel -r json -w plain .auth.client_token)
 end
