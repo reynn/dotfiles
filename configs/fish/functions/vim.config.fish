@@ -38,8 +38,8 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         __log "Cloning $ASTRONVIM_REPO to $NVIM_CONFIG_DIR"
         git clone $ASTRONVIM_REPO $NVIM_CONFIG_DIR
 
-        __log "Running initial PackerSync"
-        nvim -c 'autocmd User PackerComplete quitall'
+        __log "Syncing plugins..."
+        nvim --headless "+Lazy! sync" +qa
     else
         __log "AstroNVim already cloned"
     end
@@ -48,8 +48,6 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         __log "Symlinking AstroNVIM user config"
         symlink.create -s $DOTFILES_CONFIG_DIR/astronvim -d $NVIM_CONFIG_DIR/lua/user
 
-        nvim
-        # __log "Running user PackerSync"
-        # nvim -c 'autocmd User PackerSync quitall' -c PackerSync
+        nvim --headless "+Lazy! sync" +qa
     end
 end
