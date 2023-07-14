@@ -49,7 +49,7 @@ return {
     config = function()
       local hlargs = require('hlargs')
       hlargs.setup({})
-      vim.keymap.set("n", "<leader>oh", hlargs.toggle, {desc = "Toggle `hlargs`"})
+      vim.keymap.set("n", "<leader>oh", hlargs.toggle, {desc = "Toggle: hlargs"})
     end
   },
   {

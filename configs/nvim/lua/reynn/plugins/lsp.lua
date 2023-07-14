@@ -24,9 +24,27 @@ return {
       local lsp = require("lsp-zero")
       lsp.preset("recommended")
       lsp.ensure_installed({
+        -- Golang
         'gopls',
+        -- 'revive',
+        -- Rust
         'rust_analyzer',
-        'lua_ls'
+        -- Lua
+        'lua_ls',
+        -- 'luacheck',
+        -- 'luaformatter',
+        -- Docker
+        'dockerls',
+        -- Markdown
+        -- 'markdownlint',
+        -- JSON
+        'jsonls',
+        -- TOML
+        'taplo',
+        -- YAML
+        'yamlls',
+        -- SQL
+        'sqlls',
       })
 
       -- Fix Undefined global 'vim'
@@ -51,7 +69,7 @@ return {
         suggest_lsp_servers = true,
       })
 
-      lsp.on_attach(function(client, bufnr)
+      lsp.on_attach(function(_, _)
         vim.keymap.set("n", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help" })
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, {desc="Go to definition"})
@@ -85,23 +103,7 @@ return {
   },
   {
     "lvimuser/lsp-inlayhints.nvim",
-    event = "BufEnterPre",
-    init = function()
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
-        callback = function(args)
-          if not (args.data and args.data.client_id) then
-            return
-          end
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          if client.server_capabilities.inlayHintProvider then
-            local inlayhints = require("lsp-inlayhints")
-            inlayhints.on_attach(client, args.buf)
-            print('inlay hints available')
-            vim.keymap.set("n", "<leader>oH", inlayhints.toggle,{desc="Toggle: InlayHints"})
-          end
-        end,
-      })
-    end,
+    lazy = true,
+    event = "BufEnter",
   },
 }

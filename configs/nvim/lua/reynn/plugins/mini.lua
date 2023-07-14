@@ -1,9 +1,11 @@
 return {
   {
     "echasnovski/mini.bufremove",
+    event = "BufEnter",
     config = function()
-      vim.keymap.set("n", "<leader>c", function() MiniBufremove.delete(0) end, { desc = "Close current buffer" })
       require('mini.bufremove').setup({})
+
+      vim.keymap.set("n", "<leader>c", function() MiniBufremove.delete(0) end, { desc = "Close current buffer" })
     end
   },
   {
@@ -21,11 +23,21 @@ return {
   },
   {
     "echasnovski/mini.surround",
-    keys = {"sr"},
+    event = "BufEnter",
+    keys = {
+      "sr",
+      "sd",
+      "sa",
+      "sf",
+      "sF",
+      "sh",
+      "sn",
+    },
     opts = {}
   },
   {
     "echasnovski/mini.statusline",
+    event = "BufEnter",
     config = function()
       require('mini.statusline').setup({
         content = {
@@ -53,6 +65,7 @@ return {
   },
   {
     "echasnovski/mini.comment",
+    event = "BufEnter",
     opts = {}
   },
 }
