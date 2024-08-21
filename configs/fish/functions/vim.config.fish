@@ -3,7 +3,6 @@
 function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
     set -lx DOTFILES_CONFIG_DIR "$DFP/configs"
     set -lx NVIM_CONFIG_DIR "$HOME/.config/nvim"
-    set -lx ASTRONVIM_REPO "https://github.com/AstroNvim/AstroNvim"
     set -l CONFIGURATIONS
 
     function ___usage
@@ -34,21 +33,11 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
         end
     end
 
-    if test ! -d $NVIM_CONFIG_DIR
-        __log "Cloning $ASTRONVIM_REPO to $NVIM_CONFIG_DIR"
-        git clone $ASTRONVIM_REPO $NVIM_CONFIG_DIR
-
-        __log "Running initial PackerSync"
-        nvim -c 'autocmd User PackerComplete quitall'
-    else
-        __log "AstroNVim already cloned"
-    end
-
     if test ! -L "$NVIM_CONFIG_DIR/lua/user"
         __log "Symlinking AstroNVIM user config"
-        symlink.create -s $DOTFILES_CONFIG_DIR/astronvim -d $NVIM_CONFIG_DIR/lua/user
-
-        nvim
+        symlink.create -s $DOTFILES_CONFIG_DIR/astronvim -d $NVIM_CONFIG_DIR
+        sleep 10
+        nvim #--headless "+Lazy! sync" +qa
         # __log "Running user PackerSync"
         # nvim -c 'autocmd User PackerSync quitall' -c PackerSync
     end
