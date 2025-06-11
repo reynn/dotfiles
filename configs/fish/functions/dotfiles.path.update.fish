@@ -9,7 +9,6 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
         set arch amd64
     end
 
-    set -l go_version_path "$HOME/.gimme/versions/go$LANGUAGES_GO_VERSION.$os_name.$arch/bin"
     set -l node_version_path "$HOME/.local/share/nvm/v$LANGUAGES_NODE_VERSION/bin"
     set -l node_pnpm_path "$HOME/Library/pnpm"
 
@@ -29,12 +28,6 @@ function dotfiles.path.update -d "Setup the fish_user_path variable"
         else
             __log debug "Skipped adding '$u_path'"
         end
-    end
-
-    __log debug "Checking for Go version path: $go_version_path"
-    if test -e "$go_version_path"
-        path.replace "$go_version_path" 2
-        set -Ux GOROOT (dirname $go_version_path)
     end
 
     __log debug "Checking for Node version path: $node_version_path"
