@@ -80,6 +80,7 @@ return {
         gruvbox_baby_function_style = "bold",
         gruvbox_baby_keyword_style = "bold",
         gruvbox_baby_variable_style = "bold",
+        gruvbox_baby_highlights = { SnacksDashboardHeader = { fg = "#fb4934" } },
 
         tokyodark_enable_italic_comment = true,
         tokyodark_enable_italic = true,
