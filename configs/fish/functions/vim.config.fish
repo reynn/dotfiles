@@ -1,8 +1,9 @@
 #!/usr/bin/env fish
 
-function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
+function vim.config -d 'Configure NeoVIM'
     set -lx DOTFILES_CONFIG_DIR "$DFP/configs"
     set -lx NVIM_CONFIG_DIR "$HOME/.config/nvim"
+    set -lx NVIM_CONFIG "lazyvim"
     set -l CONFIGURATIONS
 
     function ___usage
@@ -34,8 +35,8 @@ function vim.config -d 'Configure NeoVIM with Cheovim and other configs'
     end
 
     if test ! -L "$NVIM_CONFIG_DIR/lua/user"
-        __log "Symlinking AstroNVIM user config"
-        symlink.create -s $DOTFILES_CONFIG_DIR/astronvim -d $NVIM_CONFIG_DIR
+        __log "Symlinking NVIM user config"
+        symlink.create -s $DOTFILES_CONFIG_DIR/$NVIM_CONFIG -d $NVIM_CONFIG_DIR
         sleep 10
         nvim #--headless "+Lazy! sync" +qa
         # __log "Running user PackerSync"
