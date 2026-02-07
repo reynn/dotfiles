@@ -19,6 +19,7 @@ alias rm 'rm -iv'
 alias history 'builtin history --show-time="%m/%e %H:%M:%S | "'
 alias l 'lsd -l'
 alias ll 'l --tree'
+alias lg lazygit
 
 # Abbreviations
 abbr --add dotdot --regex '^\.\.+$' --function dot_dot_expand
